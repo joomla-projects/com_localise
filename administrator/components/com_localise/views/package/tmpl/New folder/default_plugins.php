@@ -9,4 +9,4 @@
 # Technical Support:  Forum - http://joomlacode.org/gf/project/com_localise/forum/
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;

@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomlacode.org/gf/project/com_localise/forum/
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 ?>
 
 <form action="<?php JRoute::_('index.php?option=com_localise'); ?>" method="post" name="adminForm" id="localise-package-form">
