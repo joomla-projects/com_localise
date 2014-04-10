@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset
+		name="global"
+		addfieldpath="/administrator/components/com_localise/models/fields"
+		label="COM_LOCALISE_CONFIG_GLOBAL_LABEL"
+		description="COM_LOCALISE_CONFIG_GLOBAL_DESC">
+		<!-- <field
+			name="backticks"
+			type="list"
+			default="0"
+			label="COM_LOCALISE_BACKTICKS"
+			description="COM_LOCALISE_BACKTICKS_DESC">
+			<option value="0">NO</option>
+			<option value="1">YES (single-quote to backtick)</option>
+			<option value="-1">REVERSE (backtick to single-quote)</option>
+		</field>
+		<field
+			name="globalChanges"
+			type="radio"
+			default="0"
+			label="COM_LOCALISE_GLOBAL_CHANGES"
+			description="COM_LOCALISE_GLOBAL_CHANGES_DESC">
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</field>
+		<field
+			name="searchStyle"
+			type="text"
+			size="80"
+			default="background-color:yellow;"
+			label="COM_LOCALISE_SEARCHSTYLE"
+			description="COM_LOCALISE_SEARCHSTYLE_DESC" />
+		<field
+			name="autoCorrect"
+			type="text"
+			size="80"
+			default="a^=â;e^=ê;i^=î;o^=ô;w^=ŵ;y^=ŷ;O^=Ô;i&quot;=ï"
+			label="COM_LOCALISE_AUTOCORRECT"
+			description="COM_LOCALISE_AUTOCORRECT_DESC" />-->
+		<field
+			name="reference"
+			type="referencelanguage"
+			required="true"
+			label="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE"
+			description="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE_DESC" />
+		<field
+			name="filesavepermission"
+			type="text"
+			size="4"
+			maxlength="4"
+			minlength="4"
+			class="ltr"
+			required="true"
+			pattern="[0-7]{4}"
+			default="0444"
+			label="COM_LOCALISE_LABEL_SAVE_PERMISSION"
+			description="COM_LOCALISE_LABEL_SAVE_PERMISSION_DESC" />
+		<field
+			name="installation"
+			type="folderlist"
+			label="COM_LOCALISE_LABEL_INSTALLATION_FOLDER"
+			description="COM_LOCALISE_LABEL_INSTALLATION_FOLDER_DESC"
+			hide_default="1"
+			default="installation"
+			exclude="administrator|component|cache|images|includes|language|libraries|logs|media|modules|plugins|templates|test|tmp|bin|cli|layouts" />
+		<field
+			name="suffixes"
+			type="textarea"
+			class="ltr"
+			default=".sys,.menu"
+			label="COM_LOCALISE_LABEL_SUFFIXES"
+			description="COM_LOCALISE_LABEL_SUFFIXES_DESC" />
+		<field
+			name="clientID"
+			type="text"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_BING_CLIENTID"
+			description="COM_LOCALISE_LABEL_BING_CLIENTID_DESC" />
+		<field
+			name="client_secret"
+			type="text"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_BING_CLIENTSECRET"
+			description="COM_LOCALISE_LABEL_BING_CLIENTSECRET_DESC" />
+		<field
+			name="author"
+			type="text"
+			label="COM_LOCALISE_LABEL_AUTHOR"
+			description="COM_LOCALISE_LABEL_AUTHOR_DESC" />
+		<field
+			name="authorEmail"
+			type="email"
+			validate="email"
+			class="validate-email ltr"
+			label="COM_LOCALISE_LABEL_LANGUAGE_EMAIL"
+			description="COM_LOCALISE_LABEL_LANGUAGE_EMAIL_DESC" />
+		<field
+			name="authorUrl"
+			type="url"
+			validate="url"
+			scheme="http,https"
+			class="validate-url ltr"
+			label="COM_LOCALISE_LABEL_LANGUAGE_URL"
+			description="COM_LOCALISE_LABEL_LANGUAGE_URL_DESC" />
+		<field
+			name="copyright"
+			type="text"
+			label="COM_LOCALISE_LABEL_COPYRIGHT"
+			description="COM_LOCALISE_LABEL_COPYRIGHT_DESC" />
+		<field
+			name="additionalcopyright"
+			type="textarea"
+			label="COM_LOCALISE_LABEL_ADDITIONAL_COPYRIGHT"
+			description="COM_LOCALISE_LABEL_ADDITIONAL_COPYRIGHT_DESC" />
+		<field
+			name="license"
+			type="text"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_LICENSE"
+			description="COM_LOCALISE_LABEL_LICENSE_DESC" />
+	</fieldset>
+	<fieldset
+		name="permissions"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC">
+		<field
+			name="rules"
+			type="rules"
+			label="JConfig_Permissions_Label"
+			filter="rules"
+			component="com_localise"
+			section="component" />
+	</fieldset>
+</config>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="search">
+		<fieldset name="search">
+			<field
+				id="expr"
+				name="expr"
+				type="search"
+				label="JSEARCH_FILTER"
+				placeholder="JSEARCH_FILTER"
+				description="JSEARCH_FILTER" />
+		</fieldset>
+	</fields>
+</form>

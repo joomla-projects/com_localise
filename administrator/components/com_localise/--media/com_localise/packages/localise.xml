@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: localise.xml 177 2010-02-03 00:19:55Z chdemko $ -->
+<package>
+  <title>com_localise_package_localise</title>
+  <description>com_localise_package_localise_desc</description>
+  <manifest client="administrator">com_localise</manifest>
+  <icon>/administrator/templates/bluestork/images/menu/icon-16-language.png</icon>
+  <author>Localise Team</author>
+  <maincopyright>Copyright (C) 2012 - today Localise Team. All rights reserved.</maincopyright>
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <administrator>
+    <filename>com_localise</filename>
+    <filename>com_localise.menu</filename>
+    <filename>com_localise.manage</filename>
+  </administrator>
+  <site />
+  <installation />
+</package>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: install_add.xml 25 2009-02-08 08:07:40Z chdemko $ -->
+<form>
+  <fields
+    group="search"
+    array="true">
+    <field
+      id="expr"
+      name="expr"
+      type="search"
+      label="JSearch_Filter_Label"
+      description="JSearch_Filter" />
+  </fields>
+  <fields
+    group="select"
+    array="true">
+    <field
+      id="storage"
+      name="storage"
+      type="storage"
+      hidden="true">
+      <option value="">COM_LOCALISE_OPTION_TRANSLATIONS_STORAGE_SELECT</option>
+    </field>
+    <field
+      id="origin"
+      name="origin"
+      type="origin"
+      hidden="true">
+      <option value="">COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_SELECT</option>
+    </field>
+    <field
+      id="existence"
+      name="existence"
+      type="existence"
+      hidden="true">
+      <option value="">COM_LOCALISE_OPTION_TRANSLATIONS_EXISTENCE_SELECT</option>
+    </field>
+    <field
+      id="type"
+      name="type"
+      type="type"
+      hidden="true">
+      <option value="">COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_SELECT</option>
+    </field>
+    <field
+      id="client"
+      name="client"
+      type="client"
+      hidden="true"
+      onchange="this.form.submit()">
+      <option value="">COM_LOCALISE_OPTION_CLIENT_SELECT</option>
+    </field>
+    <field
+      id="tag"
+      name="tag"
+      type="language"
+      client="site"
+      hidden="true"
+      onchange="this.form.submit()">
+      <option value="">COM_LOCALISE_OPTION_LANGUAGE_SELECT</option>
+    </field>
+  </fields>
+</form>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: thirdparty.xml 149 2009-12-30 01:52:00Z chdemko $ -->
+<form>
+  <fields
+    label="COM_LOCALISE_FIELDSET_TRANSLATION_DETAIL"
+    description="COM_LOCALISE_FIELDSET_TRANSLATION_DETAIL_DESC">
+    <field
+      id="author"
+      name="author"
+      type="text"
+      size="40"
+      class="inputbox"
+      default=""
+      readonly="true"
+      label="COM_LOCALISE_LABEL_TRANSLATION_AUTHOR"
+      description="COM_LOCALISE_LABEL_TRANSLATION_AUTHOR_DESC" />
+    <field
+      id="version"
+      name="version"
+      type="text"
+      size="40"
+      class="inputbox"
+      default=""
+      label="COM_LOCALISE_LABEL_TRANSLATION_VERSION"
+      description="COM_LOCALISE_LABEL_TRANSLATION_VERSION_DESC" />
+    <field
+      id="creationdate"
+      name="creationdate"
+      type="text"
+      size="40"
+      class="inputbox"
+      default=""
+      label="COM_LOCALISE_LABEL_TRANSLATION_CREATIONDATE"
+      description="COM_LOCALISE_LABEL_TRANSLATION_CREATIONDATE_DESC"/>
+    <field
+      id="description"
+      name="description"
+      type="textarea"
+      class="inputbox"
+      cols="50"
+      default="[Description] [Name of language]([Country code])"
+      readonly="true"
+      label="COM_LOCALISE_LABEL_TRANSLATION_DESCRIPTION"
+      description="COM_LOCALISE_LABEL_TRANSLATION_DESCRIPTION_DESC" />
+    <field
+      id="maincopyright"
+      name="maincopyright"
+      type="text"
+      size="50"
+      default=""
+      readonly="true"
+      label="COM_LOCALISE_LABEL_TRANSLATION_COPYRIGHT"
+      description="COM_LOCALISE_LABEL_TRANSLATION_COPYRIGHT_DESC" />
+    <field
+      id="additionalcopyright"
+      name="additionalcopyright"
+      type="textarea"
+      cols="50"
+      class="inputbox"
+      default=""
+      label="COM_LOCALISE_LABEL_TRANSLATION_ADDITIONALCOPYRIGHT"
+      description="COM_LOCALISE_LABEL_TRANSLATION_ADDITIONALCOPYRIGHT_DESC" />
+    <field
+      id="license"
+      name="license"
+      readonly="true"
+      type="text"
+      size="50"
+      class="inputbox"
+      default="http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL"
+      label="COM_LOCALISE_LABEL_TRANSLATION_LICENSE"
+      description="COM_LOCALISE_LABEL_TRANSLATION_LICENSE_DESC" />
+    <field
+      id="id"
+      name="id"
+      type="hidden" />
+  </fields>
+</form>

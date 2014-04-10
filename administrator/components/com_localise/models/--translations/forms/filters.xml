@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+  <fields
+    label="COM_LOCALISE_FILTERS_TRANSLATIONS">
+    <field
+      id="global"
+      name="global"
+      type="checkbox"
+      value="1"
+      label="COM_LOCALISE_TRANSLATION_INSTALLED_IN_CORE_FOLDER"
+      description="COM_LOCALISE_TRANSLATION_INSTALLED_IN_CORE_FOLDER_DESC" />
+    <field
+      id="local"
+      name="local"
+      type="checkbox"
+      value="1"
+      label="COM_LOCALISE_TRANSLATION_INSTALLED_IN_EXTENSION_FOLDER"
+      description="COM_LOCALISE_TRANSLATION_INSTALLED_IN_EXTENSION_FOLDER_DESC" />
+    <field
+      id="core"
+      name="core"
+      type="checkbox"
+      value="1"
+      label="COM_LOCALISE_CORE_TRANSLATION"
+      description="COM_LOCALISE_CORE_TRANSLATION_DESC" />
+    <field
+      id="thirdparty"
+      name="thirdparty"
+      type="checkbox"
+      value="1"
+      label="COM_LOCALISE_THIRDPARTY_TRANSLATION"
+      description="COM_LOCALISE_THIRDPARTY_TRANSLATION_DESC" />
+    <field
+      id="exists_in_language"
+      name="exists_in_language"
+      type="checkbox"
+      value="1"
+      label="COM_LOCALISE_TRANSLATION_EXISTS_IN_LANGUAGE"
+      description="COM_LOCALISE_TRANSLATION_EXISTS_IN_LANGUAGE_DESC" />
+    <field
+      id="does_not_exists_in_ref_language"
+      name="does_not_exists_in_ref_language"
+      type="checkbox"
+      value="1"
+      label="COM_LOCALISE_TRANSLATION_DOES_NOT_EXIST_IN_REFERENCE_LANGUAGE"
+      description="COM_LOCALISE_TRANSLATION_DOES_NOT_EXIST_IN_REFERENCE_LANGUAGE_DESC" />
+    <field
+      id="does_not_exists_in_language"
+      name="does_not_exists_in_language"
+      type="checkbox"
+      value="1"
+      label="COM_LOCALISE_TRANSLATION_DOES_NOT_EXIST_IN_LANGUAGE"
+      description="COM_LOCALISE_TRANSLATION_DOES_NOT_EXIST_IN_LANGUAGE_DESC" />
+    <field
+      id="component"
+      name="component"
+      type="checkbox"
+      value="1"
+      label="COM_LOCALISE_COMPONENT_TRANSLATION"
+      description="COM_LOCALISE_COMPONENT_TRANSLATION_DESC" />
+    <field
+      id="menu"
+      name="menu"
+      type="checkbox"
+      value="1"
+      label="COM_LOCALISE_MENU_TRANSLATION"
+      description="COM_LOCALISE_MENU_TRANSLATION_DESC" />
+    <field
+      id="module"
+      name="module"
+      type="checkbox"
+      value="1"
+      label="COM_LOCALISE_MODULE_TRANSLATION"
+      description="COM_LOCALISE_MODULE_TRANSLATION_DESC" />
+    <field
+      id="plugin"
+      name="plugin"
+      type="checkbox"
+      value="1"
+      label="COM_LOCALISE_PLUGIN_TRANSLATION"
+      description="COM_LOCALISE_PLUGIN_TRANSLATION_DESC" />
+    <field
+      id="template"
+      name="template"
+      type="checkbox"
+      value="1"
+      label="COM_LOCALISE_TEMPLATE_TRANSLATION"
+      description="COM_LOCALISE_TEMPLATE_TRANSLATION_DESC" />
+    <field
+      id="joomla"
+      name="joomla"
+      type="checkbox"
+      value="1"
+      label="COM_LOCALISE_JOOMLA_TRANSLATION"
+      description="COM_LOCALISE_JOOMLA_TRANSLATION_DESC" />
+    <field
+      id="overrides"
+      name="overrides"
+      type="checkbox"
+      value="1"
+      label="COM_LOCALISE_OVERRIDES_TRANSLATION"
+      description="COM_LOCALISE_OVERRIDES_TRANSLATION_DESC" />
+    <field
+      id="text"
+      name="text"
+      type="text"
+      value="0"
+      label="COM_LOCALISE_TEXT_FILTER"
+      description="COM_LOCALISE_TEXT_FILTER_DESC" />
+  </fields>
+</form>

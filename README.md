@@ -1,4 +1,4 @@
-com_localise
-============
+Localise
+========
 
-forked version of the original com_localise for experimental purposes
+ Nice and easy management of languages and translation files.

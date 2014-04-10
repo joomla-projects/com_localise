@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset
+		name="default"
+		label="COM_LOCALISE_FIELDSET_TRANSLATION_DETAIL"
+		description="COM_LOCALISE_FIELDSET_TRANSLATION_DETAIL_DESC">
+		<field
+			name="package"
+			type="text"
+			label="COM_LOCALISE_LABEL_TRANSLATION_PACKAGE"
+			description="COM_LOCALISE_LABEL_TRANSLATION_PACKAGE_DESC" />
+		<field
+			name="subpackage"
+			type="text"
+			label="COM_LOCALISE_LABEL_TRANSLATION_SUBPACKAGE"
+			description="COM_LOCALISE_LABEL_TRANSLATION_SUBPACKAGE_DESC" />
+		<field
+			name="author"
+			type="text"
+			label="COM_LOCALISE_LABEL_TRANSLATION_AUTHOR"
+			description="COM_LOCALISE_LABEL_TRANSLATION_AUTHOR_DESC" />
+		<field
+			name="version"
+			type="text"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_TRANSLATION_VERSION"
+			description="COM_LOCALISE_LABEL_TRANSLATION_VERSION_DESC" />
+		<field
+			name="creationdate"
+			type="calendar"
+			default="NOW"
+			label="COM_LOCALISE_LABEL_TRANSLATION_CREATIONDATE"
+			description="COM_LOCALISE_LABEL_TRANSLATION_CREATIONDATE_DESC" />
+		<field
+			name="description"
+			type="textarea"
+			cols="50"
+			default="[Description] [Name of language]([Country code])"
+			label="COM_LOCALISE_LABEL_TRANSLATION_DESCRIPTION"
+			description="COM_LOCALISE_LABEL_TRANSLATION_DESCRIPTION_DESC" />
+		<field
+			id="maincopyright"
+			name="maincopyright"
+			type="text"
+			label="COM_LOCALISE_LABEL_TRANSLATION_COPYRIGHT"
+			description="COM_LOCALISE_LABEL_TRANSLATION_COPYRIGHT_DESC" />
+		<field
+			name="additionalcopyright"
+			type="textarea"
+			label="COM_LOCALISE_LABEL_TRANSLATION_ADDITIONALCOPYRIGHT"
+			description="COM_LOCALISE_LABEL_TRANSLATION_ADDITIONALCOPYRIGHT_DESC" />
+		<field
+			name="license"
+			type="text"
+			class="ltr"
+			default="http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL"
+			label="COM_LOCALISE_LABEL_TRANSLATION_LICENSE"
+			description="COM_LOCALISE_LABEL_TRANSLATION_LICENSE_DESC" />
+		<field
+			name="complete"
+			type="checkbox"
+			value="1"
+			default="0"
+			label="COM_LOCALISE_LABEL_TRANSLATION_COMPLETE"
+			description="COM_LOCALISE_LABEL_TRANSLATION_COMPLETE_DESC" />
+		<field
+			name="asset_id"
+			type="hidden"
+			filter="unset" />
+		<field
+			name="id"
+			type="hidden" />
+		<field
+			name="svn"
+			type="hidden" />
+	</fieldset>
+	<fieldset
+		label="COM_LOCALISE_FIELDSET_TRANSLATION_LEGEND"
+		description="COM_LOCALISE_FIELDSET_TRANSLATION_LEGEND_DESC"
+		name="legend">
+		<field
+			name="legend"
+			id="legend"
+			type="legend"
+			label="COM_LOCALISE_LABEL_TRANSLATION_KEY"
+			description="COM_LOCALISE_LABEL_TRANSLATION_KEY_DESC" />
+	</fieldset>
+	<fieldset
+		name="permissions"
+		label="COM_LOCALISE_FIELDSET_TRANSLATION_PERMISSIONS"
+		array="true">
+		<field
+			id="rules"
+			name="rules"
+			type="rules"
+			label="COM_LOCALISE_LABEL_LANGUAGE_RULES"
+			description="COM_LOCALISE_LABEL_LANGUAGE_RULES_DESC"
+			filter="rules"
+			component="com_localise"
+			section="translation"
+			hidden="true" />
+	</fieldset>
+	<fieldset
+		name="source"
+		label="COM_LOCALISE_LABEL_TRANSLATION_SOURCE"
+		description="COM_LOCALISE_LABEL_TRANSLATION_SOURCE_DESC">
+		<field
+			name="source"
+			type="ini"
+			class="span12"
+			rows="20"
+			cols="80"
+			filter="raw" />
+	</fieldset>
+</form>

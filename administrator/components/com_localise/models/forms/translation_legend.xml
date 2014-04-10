@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset
+		label="COM_LOCALISE_FIELDSET_TRANSLATION_LEGEND"
+		description="COM_LOCALISE_FIELDSET_TRANSLATION_LEGEND_DESC"
+		name="legend">
+		<field
+			name="legend"
+			id="legend"
+			type="legend"
+			label="COM_LOCALISE_LABEL_TRANSLATION_KEY"
+			description="COM_LOCALISE_LABEL_TRANSLATION_KEY_DESC" />
+	</fieldset>
+</form>

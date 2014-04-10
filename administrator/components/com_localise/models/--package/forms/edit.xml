@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+  <fields group="package" label="COM_LOCALISE_PACKAGE_DETAIL">
+    <field
+      id="filename"
+      name="filename"
+      type="text"
+      class="inputbox"
+      default=""
+      readonly="true"
+      label="COM_LOCALISE_FILENAME"
+      description="COM_LOCALISE_FILENAME_DESC" />
+  </fields>
+</form>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+  <fields>
+    <field
+      id="tag"
+      name="tag"
+      type="language"
+      client="administrator"
+      label="COM_LOCALISE_LANGUAGE"
+      description="COM_LOCALISE_LANGUAGE_DESC">
+      <option value="">COM_LOCALISE_SELECT_A_LANGUAGE</option>
+    </field>
+    <field
+      id="reftag"
+      name="reftag"
+      type="language"
+      client="administrator"
+      label="COM_LOCALISE_REF_LANGUAGE"
+      description="COM_LOCALISE_REF_LANGUAGE_DESC" />
+  </fields>
+</form>

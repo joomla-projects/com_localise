@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset
+		name="default"
+		label="COM_LOCALISE_FIELDSET_LANGUAGE_LANGUAGE"
+		description="COM_LOCALISE_FIELDSET_LANGUAGE_LANGUAGE_DESC">
+		<field
+			name="client"
+			type="client"
+			default="site"
+			label="COM_LOCALISE_LABEL_LANGUAGE_CLIENT"
+			description="COM_LOCALISE_LABEL_LANGUAGE_CLIENT_DESC"
+			required="true" />
+		<field
+			name="firstDay"
+			type="list"
+			default="0"
+			required="true"
+			label="COM_LOCALISE_LABEL_LANGUAGE_FIRSTDAY"
+			description="COM_LOCALISE_LABEL_LANGUAGE_FIRSTDAT_DESC">
+			<option value="0">SUNDAY</option>
+			<option value="1">MONDAY</option>
+			<option value="2">TUESDAY</option>
+			<option value="3">WEDNESDAY</option>
+			<option value="4">THURSDAY</option>
+			<option value="5">FRIDAY</option>
+			<option value="6">SATURDAY</option>
+		</field>
+		<field
+			name="tag"
+			type="text"
+			maxlength="7"
+			size="10"
+			required="true"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_LANGUAGE_TAG"
+			description="COM_LOCALISE_LABEL_LANGUAGE_TAG_DESC" />
+		<field
+			name="name"
+			type="text"
+			required="true"
+			class="span4"
+			default="[Name of language] ([Country name])"
+			label="COM_LOCALISE_LABEL_LANGUAGE_NAME"
+			description="COM_LOCALISE_LABEL_LANGUAGE_NAME_DESC" />
+		<field
+			name="description"
+			type="textarea"
+			class="span4"
+			default="[Name of language] [site, administrator or installation] language for Joomla"
+			label="COM_LOCALISE_LABEL_LANGUAGE_DESCRIPTION"
+			description="COM_LOCALISE_LABEL_LANGUAGE_DESCRIPTION_DESC" />
+		<field
+			name="rtl"
+			type="radio"
+			class="btn-group"
+			default="0"
+			required="true"
+			label="COM_LOCALISE_LABEL_LANGUAGE_RTL"
+			description="COM_LOCALISE_LABEL_LANGUAGE_RTL_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+			name="locale"
+			type="text"
+			label="COM_LOCALISE_LABEL_LANGUAGE_LOCALE"
+			description="COM_LOCALISE_LABEL_LANGUAGE_LOCALE_DESC" />
+		<field
+			name="asset_id"
+			type="hidden"
+			filter="unset" />
+		<field
+			name="id"
+			type="hidden" />
+	</fieldset>
+	<fieldset
+		name="permissions"
+		label="COM_LOCALISE_FIELDSET_LANGUAGE_PERMISSIONS">
+		<field
+			id="rules"
+			name="rules"
+			type="rules"
+			label="COM_LOCALISE_LABEL_LANGUAGE_RULES"
+			description="COM_LOCALISE_LABEL_LANGUAGE_RULES_DESC"
+			filter="rules"
+			component="com_localise"
+			section="language"
+			hidden="true" />
+	</fieldset>
+	<fieldset
+		name="author"
+		label="COM_LOCALISE_FIELDSET_LANGUAGE_AUTHOR"
+		description="COM_LOCALISE_FIELDSET_LANGUAGE_AUTHOR_DESC">
+		<field
+			name="author"
+			type="text"
+			label="COM_LOCALISE_LABEL_LANGUAGE_AUTHOR"
+			description="COM_LOCALISE_LABEL_LANGUAGE_AUTHOR_DESC" />
+		<field
+			name="authorEmail"
+			type="email"
+			validate="email"
+			class="validate-email ltr"
+			label="COM_LOCALISE_LABEL_LANGUAGE_EMAIL"
+			description="COM_LOCALISE_LABEL_LANGUAGE_EMAIL_DESC" />
+		<field
+			name="authorUrl"
+			type="text"
+			validate="url"
+			scheme="http,https"
+			class="validate-url ltr"
+			label="COM_LOCALISE_LABEL_LANGUAGE_URL"
+			description="COM_LOCALISE_LABEL_LANGUAGE_URL_DESC" />
+		<field
+			name="version"
+			type="text"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_LANGUAGE_VERSION"
+			description="COM_LOCALISE_LABEL_LANGUAGE_VERSION_DESC" />
+		<field
+			name="creationDate"
+			type="calendar"
+			default="now"
+			label="COM_LOCALISE_LABEL_LANGUAGE_CREATIONDATE"
+			description="COM_LOCALISE_LABEL_LANGUAGE_CREATIONDATE_DESC" />
+		<field
+			name="joomlacopyright"
+			readonly="true"
+			type="text"
+			size="50"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_LANGUAGE_JOOMLACOPYRIGHT"
+			description="COM_LOCALISE_LABEL_LANGUAGE_JOOMLACOPYRIGHT_DESC" />
+		<field
+			name="copyright"
+			type="textarea"
+			label="COM_LOCALISE_LABEL_LANGUAGE_AUTHORCOPYRIGHT"
+			description="COM_LOCALISE_LABEL_LANGUAGE_AUTHORCOPYRIGHT_DESC" />
+		<field
+			name="license"
+			type="text"
+			class="ltr"
+			default="http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL"
+			label="COM_LOCALISE_LABEL_LANGUAGE_LICENSE"
+			description="COM_LOCALISE_LABEL_LANGUAGE_LICENSE_DESC" />
+	</fieldset>
+</form>

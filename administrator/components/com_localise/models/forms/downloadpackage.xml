@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id:$ -->
+<form>
+	<fieldset
+		name="default"
+		label="COM_LOCALISE_FIELDSET_DOWNLOADPACKAGE_PACKAGE"
+		description="COM_LOCALISE_FIELDSET_DOWNLOADPACKAGE_PACKAGE_DESC">
+		<field
+			id="author"
+			name="author"
+			type="text"
+			label="COM_LOCALISE_LABEL_DOWNLOADPACKAGE_AUTHOR"
+			description="COM_LOCALISE_LABEL_DOWNLOADPACKAGE_AUTHOR_DESC" />
+		<field
+			id="copyright"
+			name="copyright"
+			type="text"
+			label="COM_LOCALISE_LABEL_DOWNLOADPACKAGE_COPYRIGHT"
+			description="COM_LOCALISE_LABEL_DOWNLOADPACKAGE_COPYRIGHT_DESC" />
+		<field
+			id="email"
+			name="email"
+			type="email"
+			validate="email"
+			class="validate-email ltr"
+			label="COM_LOCALISE_LABEL_DOWNLOADPACKAGE_EMAIL"
+			description="COM_LOCALISE_LABEL_DOWNLOADPACKAGE_EMAIL_DESC" />
+		<field
+			id="url"
+			name="url"
+			type="url"
+			validate="url"
+			scheme="http,https"
+			class="validate-url ltr"
+			label="COM_LOCALISE_LABEL_DOWNLOADPACKAGE_URL"
+			description="COM_LOCALISE_LABEL_DOWNLOADPACKAGE_URL_DESC" />
+		<field
+			id="version"
+			name="version"
+			type="text"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_DOWNLOADPACKAGE_VERSION"
+			description="COM_LOCALISE_LABEL_DOWNLOADPACKAGE_VERSION_DESC" />
+		<field
+			id="license"
+			name="license"
+			type="text"
+			label="COM_LOCALISE_LABEL_DOWNLOADPACKAGE_LICENSE"
+			description="COM_LOCALISE_LABEL_DOWNLOADPACKAGE_LICENSE_DESC"
+			class="ltr" />
+		<field
+			id="name"
+			name="name"
+			type="hidden" />
+	</fieldset>
+</form>

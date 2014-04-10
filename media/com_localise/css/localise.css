@@ -1,0 +1,277 @@
+[class^="iconlist-"]:before,
+[class*=" iconlist-"]:before {
+	font-family: 'IcoMoon';
+	font-style: normal;
+	margin-right: 5px;
+}
+#localise-translation-form .translated,
+#localise-translation-form .untranslated,
+#localise-translation-form .unchanged,
+#localise-translation-form .extra {
+	padding: 2px;
+	float: left;
+	margin: 3px 0 0 2px;
+}
+#localise-translation-form .translated {
+	background-color: #CCFFCC;
+}
+#localise-translation-form .untranslated {
+	background-color:#FFCCCC;
+}
+#localise-translation-form .unchanged {
+	background-color:#FFDDBB;
+}
+#localise-translation-form .extra {
+	background-color:#CCCCFF;
+}
+#localise-translation-form .width-50 {
+	width: 50%;
+}
+#localise-translation-form .width-45 {
+	width: 45%;
+}
+#localise-translation-form div.key label {
+	max-width: 45%;
+	min-width: 45%;
+	text-align: right;
+	width: 45%;
+}
+#localise-translation-form div.key .adminformlist label {
+	direction: ltr;
+	float: left;
+	padding: 0 5px 0 0;
+}
+#localise-translation-form div.key span.spacer > span.text label {
+	text-align: left;
+	white-space: nowrap;
+	font-weight: bold;
+	color: #666;
+	width: 100%;
+	max-width: 100%;
+	min-width: 100%;
+	margin: 0px;
+}
+#localise-translation-form div.key input {
+	width: 45%;
+	max-width: 45%;
+	min-width: 45%;
+}
+.icon-16-global:before,
+.iconlist-16-global:before {
+	content: "!";
+	color: #796D67;
+}
+.icon-16-local:before,
+.iconlist-16-local:before {
+	content: "-";
+	color: #EF8F00;
+}
+.icon-16-core:before {
+	content: "!";
+	color: #796D67;
+}
+.icon-16-thirdparty:before,
+.iconlist-16-thirdparty:before {
+	content: "";
+	color: #EF8F00;
+}
+.icon-16-inlanguage:before,
+.iconlist-16-inlanguage:before {
+	content: "G";
+	color: #EF8F00;
+}
+.icon-16-notinreference:before,
+.iconlist-16-notinreference:before {
+	content: "J";
+	color: #E14E5A;
+}
+.icon-16-delete:before {
+	content: "J";
+	color: #E14E5A;
+}
+.icon-16-unexisting:before,
+.iconlist-16-unexisting:before {
+	content: "K";
+	color: #FF5656;
+}
+.icon-16-joomla:before,
+.iconlist-16-joomla:before {
+	content: "F";
+	color: #000000;
+}
+.icon-16-override:before,
+.iconlist-16-override:before {
+	content: "?";
+	color: #368BF9;
+}
+.icon-16-template:before,
+.iconlist-16-template:before {
+	content: "C";
+	color: #629FB2;
+}
+.icon-16-package:before,
+.iconlist-16-package:before {
+	content: "3";
+	color: #629FB2;
+}
+.icon-16-library:before,
+.iconlist-16-library:before {
+	content: "-";
+	color: #EF8F00;
+}
+.icon-16-file:before,
+.iconlist-16-file:before {
+	content: "";
+}
+.icon-16-reference:before,
+.iconlist-16-reference:before {
+	content: "8";
+	color: #2A7BA1;
+}
+.icon-16-site:before,
+.iconlist-16-site:before {
+	content: "h";
+	color: #2A7BA1;
+}
+.icon-16-administrator:before,
+.iconlist-16-administrator:before {
+	content: "6";
+	color: #2A7BA1;
+}
+.icon-16-installation:before,
+.iconlist-16-installation:before {
+	content: "y";
+	color: #2A7BA1;
+}
+.icon-16-translations:before {
+	content: "1";
+}
+.icon-16-error:before,
+.iconlist-16-error:before {
+	content: "H";
+	color: #EF8F00;
+}
+.icon-16-complete:before {
+	content: "G";
+	color: #EF8F00;
+}
+.icon-16-default:before {
+	content: "B";
+	color: orange;
+}
+.icon-16-component:before,
+.iconlist-16-component:before {
+	content: "";
+	color: #629FB2;
+}
+.icon-16-module:before,
+.iconlist-16-module:before {
+	content: "X";
+	color: #629FB2;
+}
+.icon-16-plugin:before,
+.iconlist-16-plugin:before {
+	content: "2";
+	color: #EF8F00;
+}
+.icon-reset:before,
+.icon-reset:before {
+	content: "\'";
+	color: #C47505;
+}
+.icon-translate-bing {
+	background-image: url("../../../media/com_localise/images/icon-16-bing.png");
+	background-repeat: no-repeat;
+	height: 16px !important;
+	vertical-align: text-top;
+	width: 16px !important;
+}
+.pointer {
+	cursor: pointer;
+	float: left;
+	margin: 5px 5px 5px 0;
+}
+div.filter-select select {
+	background-image: none;
+}
+#adminForm option.inlanguage {
+	background-color: #ffffdd;
+}
+#adminForm .unexisting td,
+#adminForm .unexisting {
+	background-color: #ffcccc;
+}
+#adminForm .notinreference td,
+#adminForm .notinreference {
+	background-color: #aaddff;
+}
+#adminForm .unchanged td,
+#adminForm .unchanged {
+	background-color: #ffddaa;
+}
+#adminForm .translated td,
+#adminForm .translated {
+	background-color: #ccffcc;
+}
+#adminForm .error td,
+#adminForm .error {
+	background-color: #ffd9b2;
+}
+.editbox {
+	margin: .4em;
+	padding: 0;
+	font-family: monospace;
+	font-size: 10pt;
+	color: black;
+}
+pre.code,
+.editbox {
+	color: #666666;
+}
+.editbox p {
+	margin: 0;
+}
+.cm-s-default span.cm-group {
+	color: #ff8000;
+}
+.cm-s-default span.cm-identifier {
+	color: #00AA00;
+}
+.cm-s-default span.cm-comment {
+	color: #a0a0a0;
+}
+.cm-s-default span.cm-string {
+	color: #AA2222;
+}
+.cm-s-default span.cm-equal {
+	color: #000000;
+}
+.cm-s-default span.cm-constant {
+	color: #0000AA;
+}
+.cm-s-default span.cm-error {
+	color: #000000;
+	background-color: #FF0000;
+}
+.pane-sliders .content {
+	padding: 5px !important;
+}
+ul.adminformlist,
+ul.adminformlist li {
+	display: inline-block;
+	margin: 0;
+	width: 100%;
+}
+#translationbar {
+	text-align: right;
+	padding-right:7%
+}
+.CodeMirror {
+	direction: ltr;
+}
+/* Codemirror */
+.cm-trailingspace {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUXCToH00Y1UgAAACFJREFUCNdjPMDBUc/AwNDAAAFMTAwMDA0OP34wQgX/AQBYgwYEx4f9lQAAAABJRU5ErkJggg==);
+	background-position: bottom left;
+	background-repeat: repeat-x;
+}

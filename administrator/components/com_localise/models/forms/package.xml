@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset
+		name="default"
+		label="COM_LOCALISE_FIELDSET_PACKAGE_DETAIL"
+		description="COM_LOCALISE_FIELDSET_PACKAGE_DETAIL_DESC">
+		<field
+			name="asset_id"
+			type="hidden"
+			filter="unset" />
+		<field
+			id="name"
+			name="name"
+			type="text"
+			class="ltr"
+			required="true"
+			label="COM_LOCALISE_LABEL_PACKAGE_NAME"
+			description="COM_LOCALISE_LABEL_PACKAGE_NAME_DESC" />
+		<field
+			id="title"
+			name="title"
+			type="text"
+			required="true"
+			label="COM_LOCALISE_LABEL_PACKAGE_TITLE"
+			description="COM_LOCALISE_LABEL_PACKAGE_TITLE_DESC" />
+		<field
+			id="description"
+			name="description"
+			type="textarea"
+			label="COM_LOCALISE_LABEL_PACKAGE_DESCRIPTION"
+			description="COM_LOCALISE_LABEL_PACKAGE_DESCRIPTION_DESC" />
+		<field
+			id="icon"
+			name="icon"
+			type="media"
+			label="COM_LOCALISE_LABEL_PACKAGE_ICON"
+			description="COM_LOCALISE_LABEL_PACKAGE_ICON_DESC" />
+		<field
+			id="author"
+			name="author"
+			type="text"
+			label="COM_LOCALISE_LABEL_PACKAGE_AUTHOR"
+			description="COM_LOCALISE_LABEL_PACKAGE_AUTHOR_DESC" />
+		<field
+			id="copyright"
+			name="copyright"
+			type="text"
+			label="COM_LOCALISE_LABEL_PACKAGE_COPYRIGHT"
+			description="COM_LOCALISE_LABEL_PACKAGE_COPYRIGHT_DESC" />
+		<field
+			id="license"
+			name="license"
+			type="text"
+			class="ltr"
+			default="http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL"
+			label="COM_LOCALISE_LABEL_PACKAGE_LICENSE"
+			description="COM_LOCALISE_LABEL_PACKAGE_LICENSE_DESC" />
+		<field
+			id="id"
+			name="id"
+			type="hidden" />
+		<field
+			id="core"
+			name="core"
+			type="hidden" />
+	</fieldset>
+	<fieldset
+		name="translations"
+		label="COM_LOCALISE_FIELDSET_PACKAGE_TRANSLATIONS">
+		<field
+			id="translations"
+			name="translations"
+			type="translations"
+			label="COM_LOCALISE_LABEL_PACKAGE_TRANSLATIONS"
+			description="COM_LOCALISE_LABEL_PACKAGE_TRANSLATIONS_DESC"
+			multiple="true"
+			size="20"
+			hidden="true"
+			class="span12"
+			required="true" />
+	</fieldset>
+	<fieldset
+		name="permissions"
+		label="COM_LOCALISE_FIELDSET_PACKAGE_PERMISSIONS">
+		<field
+			id="rules"
+			name="rules"
+			type="rules"
+			label="COM_LOCALISE_LABEL_PACKAGE_RULES"
+			description="COM_LOCALISE_LABEL_PACKAGE_RULES_DESC"
+			filter="rules"
+			component="com_localise"
+			section="package"
+			hidden="true" />
+	</fieldset>
+</form>

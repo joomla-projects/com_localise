@@ -1,0 +1,114 @@
+#localise-translation-form .translated, #localise-translation-form .untranslated, #localise-translation-form .unchanged, #localise-translation-forme .extra {
+  padding-left:2px;
+}
+#localise-translation-form .translated {
+  border-left:solid green 4px;
+}
+#localise-translation-form .untranslated {
+  border-left:solid red 4px;
+  background-color:#ffffcc;
+}
+#localise-translation-form .unchanged {
+  border-left:solid orange 4px;
+}
+#localise-translation-form .extra {
+  border-left:solid blue 4px;
+}
+#localise-translation-form .width-50 {
+  width: 50%;
+}
+#localise-translation-form .key-label {
+  text-align: right;
+}
+.icon-16-global {
+  background-image: url(../images/icon-16-frontpage.png);
+}
+.icon-16-local {
+  background-image: url(../../../../templates/bluestork/images/menu/icon-16-category.png);
+}
+.icon-16-core {
+  background-image: url(../../../../templates/bluestork/images/menu/icon-16-default.png);
+}
+.icon-16-thirdparty {
+  background-image: url(../../../../templates/bluestork/images/menu/icon-16-user.png);
+}
+.icon-16-inlanguage {
+  background-image: url(../../../../templates/bluestork/images/menu/icon-16-checkin.png);
+}
+.icon-16-notinreference {
+  background-image: url(../../../../templates/bluestork/images/menu/icon-16-delete.png);
+}
+.icon-16-unexisting {
+  background-image: url(../images/icon-16-disabled.png);
+}
+.icon-16-joomla {
+  background-image: url(../../../../templates/bluestork/images/mini_icon.png);
+}
+.icon-16-override {
+  background-image: url(../images/icon-16-override);
+}
+.icon-16-template {
+  background-image: url(../../../../templates/bluestork/images/menu/icon-16-themes.png);
+}
+.icon-16-package {
+  background-image: url(../../../../templates/bluestork/images/menu/icon-16-content.png);
+}
+.icon-16-library {
+  background-image: url(../../../../templates/bluestork/images/menu/icon-16-category.png);
+}
+.icon-16-file {
+  background-image: url(../../../../templates/bluestork/images/menu/icon-16-article.png);
+}
+.icon-16-reference {
+  background-image: url(../../../../templates/bluestork/images/menu/icon-16-maintenance.png);
+}
+.icon-16-site {
+  background-image: url(../../../../templates/bluestork/images/menu/icon-16-redirect.png);
+}
+.icon-16-administrator {
+  background-image: url(../../../../templates/bluestork/images/menu/icon-16-config.png);
+}
+.icon-16-installation {
+  background-image: url(../../../../templates/bluestork/images/menu/icon-16-install.png);
+}
+.icon-16-translations {
+  background-image: url(../../../../templates/bluestork/images/admin/expandall.png);
+}
+.icon-16-error {
+  background-image: url(../images/icon-16-warning.png);
+}
+.icon-16-complete {
+  background-image: url(../../../../templates/bluestork/images/menu/icon-16-checkin.png);
+}
+.pointer {
+  cursor: pointer;
+}
+.localise-icon {
+  background-repeat: no-repeat;
+  height: 20px;
+  padding-left: 18px;
+}
+option.localise-icon {
+  padding-top: 3px;
+}
+#adminForm option.inlanguage {
+  background-color: #ffffdd;
+}
+#adminForm .unexisting td, #adminForm .unexisting {
+  background-color: #ffcccc;
+}
+#adminForm .notinreference td, #adminForm .notinreference {
+  background-color: #aaddff;
+}
+#adminForm .unchanged td, #adminForm .unchanged {
+  background-color: #ffddaa;
+}
+#adminForm .translated td, #adminForm .translated {
+  background-color: #ccffcc;
+}
+#adminForm .error td, #adminForm .error {
+  background-color: #ffd9b2;
+}
+.tip {
+  max-width: 400px;
+}

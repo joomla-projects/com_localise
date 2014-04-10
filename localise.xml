@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.0" method="upgrade">
+	<name>com_localise</name>
+	<creationDate>August 2011</creationDate>
+	<author>Mohammad Hasani Eghtedar</author>
+	<author>Christophe Demko</author>
+	<author>Jean-Marie Simonet</author>
+	<author>Ifan Evans</author>
+	<copyright>(C) 2005 - 2013 Open Source Matters. All rights reserved.</copyright>
+	<authorEmail>m.h.eghtedar@gmail.com</authorEmail>
+	<authorUrl>http://joomlacode.org/gf/project/com_localise/</authorUrl>
+	<version>3.2.1</version>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>COM_LOCALISE_XML_DESCRIPTION</description>
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+	<media destination="com_localise" folder="media/com_localise">
+		<folder>codemirror</folder>
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>js</folder>
+		<folder>packages</folder>
+		<filename>index.html</filename>
+	</media>
+	<administration>
+		<menu img="class:localise">COM_LOCALISE</menu>
+		<submenu>
+			<menu img="class:languages" view="languages">COM_LOCALISE_LANGUAGES</menu>
+			<menu img="class:translations" view="translations">COM_LOCALISE_TRANSLATIONS</menu>
+			<!-- menu img="class:packages" view="packages">COM_LOCALISE_PACKAGES</menu -->
+		</submenu>
+		<files folder="administrator/components/com_localise">
+			<folder>controllers</folder>
+			<folder>help</folder>
+			<folder>helpers</folder>
+			<folder>language</folder>
+			<folder>models</folder>
+			<folder>sql</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>helper.php</filename>
+			<filename>index.html</filename>
+			<filename>localise.php</filename>
+		</files>
+	</administration>
+	<updateservers>
+		<server type="extension" priority="1" name="Localise Update Site">http://joomlacode.org/gf/project/com_localise/scmsvn/?action=browse&amp;path=%2F*checkout*%2Ftrunk%2Flocalise-update.xml</server>
+	</updateservers>
+</extension>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset
+		name="ftp"
+		label="COM_LOCALISE_FIELDSET_FTP"
+		description="COM_LOCALISE_FIELDSET_FTP_DESC">
+		<field
+			id="username"
+			name="username"
+			type="text"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_FTP_USERNAME"
+			description="COM_LOCALISE_LABEL_FTP_USERNAME_DESC" />
+		<field
+			id="password"
+			name="password"
+			type="password"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_FTP_PASSWORD"
+			description="COM_LOCALISE_LABEL_FTP_PASSWORD_DESC" />
+	</fieldset>
+</form>

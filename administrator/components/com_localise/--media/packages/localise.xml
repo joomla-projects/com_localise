@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package>
+  <title>COM_LOCALISE_PACKAGE_LOCALISE</title>
+  <description>COM_LOCALISE_PACKAGE_LOCALISE_DESC</description>
+  <manifest client="administrator">com_localise</manifest>
+  <icon>/administrator/templates/bluestork/images/menu/icon-16-language.png</icon>
+  <author>Localise Team</author>
+  <maincopyright>Copyright (C) 2012 - today Localise Team. All rights reserved.</maincopyright>
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <administrator>
+    <filename>com_localise</filename>
+    <filename>com_localise.menu</filename>
+    <filename>com_localise.manage</filename>
+  </administrator>
+  <site />
+  <installation />
+</package>
