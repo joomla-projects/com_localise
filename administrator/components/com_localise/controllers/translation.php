@@ -58,14 +58,16 @@ class LocaliseControllerTranslation extends JControllerForm
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id') 
 	{
 		// Get the infos
-		$client   = JRequest::getVar('client'  , '', 'default', 'cmd');
-		$tag      = JRequest::getVar('tag'     , '', 'default', 'cmd');
-		$filename = JRequest::getVar('filename', '', 'default', 'cmd');
-		$storage  = JRequest::getVar('storage' , '', 'default', 'cmd');
+		$input    = JFactory::getApplication()->input;
+		$client   = $input->get('client', '');
+		$tag      = $input->get('tag', '');
+		$filename = $input->get('filename', '');
+		$storage  = $input->get('storage', '');
 
 		// Get the append string
 		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
 		$append.= '&client=' . $client . '&tag=' . $tag . '&filename=' . $filename . '&storage=' . $storage;
+
 		return $append;
 	}
 }
