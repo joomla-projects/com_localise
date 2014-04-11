@@ -25,21 +25,23 @@ class LocaliseControllerPackage extends JControllerForm
 
 		// Initialise variables.
 		$app = JFactory::getApplication();
+		$input = $app->input;
 
 		// Get the id
-		$cid = JRequest::getVar('cid', array(), 'default', 'array');
+		$cid = $input->get('cid', array(), 'array');
 		$cid = count($cid) ? $cid[0] : '';
+
 		if (!empty($cid)) 
 		{
 			// From the packages view
-			$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$cid.xml"; 
 			$name = $cid;
+			$path = JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $name . '.xml'; 
 			$id   = LocaliseHelper::getFileId($path);
 		}
 		else
 		{
 			// From the package view
-			$data = JRequest::getVar('jform', array(), 'default', 'array');
+			$data = $input->get('jform', array(), 'array');
 			$id   = $data['id'];
 			$name = $data['name'];
 		}
@@ -49,13 +51,13 @@ class LocaliseControllerPackage extends JControllerForm
 		$app->setUserState('com_localise.package.name', $name);
 
 		// Set the id and unset the cid
-		if (!empty($id) && JRequest::getVar('task') == 'add') 
+		if (!empty($id) && $input->get('task') == 'add') 
 		{
-			JRequest::setVar('task', 'edit');
+			$input->set('task', 'edit');
 		}
 
-		JRequest::setVar('id', $id);
-		JRequest::setVar('cid', array());
+		$input->set('id', $id);
+		$input->set('cid', array());
 	}
 
 	/**
@@ -106,7 +108,7 @@ class LocaliseControllerPackage extends JControllerForm
 		// Redirect to the export view
 		$app  = JFactory::getApplication();
 		$name = $app->getUserState('com_localise.package.name');
-		$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$name.xml";
+		$path = JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $name . '.xml';
 		$id   = LocaliseHelper::getFileId($path);
 
 		// Check if the package exists
