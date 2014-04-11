@@ -1,17 +1,14 @@
 <?php
-/*------------------------------------------------------------------------
-# com_localise - Localise
-# ------------------------------------------------------------------------
-# author    Mohammad Hasani Eghtedar <m.h.eghtedar@gmail.com>
-# copyright Copyright (C) 2012 http://joomlacode.org/gf/project/com_localise/. All Rights Reserved.
-# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
-# Websites: http://joomlacode.org/gf/project/com_localise/
-# Technical Support:  Forum - http://joomlacode.org/gf/project/com_localise/forum/
--------------------------------------------------------------------------*/
-// no direct access
-defined('_JEXEC') or die;
+/**
+ * @package     Joomla.Administrator
+ * @subpackage  com_localise
+ *
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-jimport('joomla.form.formfield');
+// No direct access
+defined('_JEXEC') or die;
 
 /**
  * Form Field Key class.
@@ -29,23 +26,6 @@ class JFormFieldKey extends JFormField
   protected $type = 'Key';
 
   /**
-   * Method to get the field label.
-   *
-   * @return  string    The field label.
-   */
-
-  /**
-   * Method to get the field label markup.
-   *
-   * @return  string  The field label markup.
-   * @since  1.6
-   */
-  protected function getLabel()
-  {
-    return '<label id="' . $this->id . '-lbl" for="' . $this->id . '">' . $this->element['label'] . '</label>';
-  }
-
-  /**
    * Method to get the field input.
    *
    * @return  string    The field input.
@@ -55,18 +35,6 @@ class JFormFieldKey extends JFormField
     // Set the class for the label.
     $class = !empty($this->descText) ? 'key-label hasTooltip fltrt' : 'key-label fltrt';
 
-    // If a description is specified, use it to build a tooltip.
-    if (!empty($this->descText))
-    {
-      $label = '<label id="' . $this->id . '-lbl" for="' . $this->id . '" class="' . $class . '" title="' . htmlspecialchars(htmlspecialchars('::' . str_replace("\n", "\\n", $this->descText), ENT_QUOTES, 'UTF-8')) . '">';
-    }
-    else
-    {
-      $label = '<label id="' . $this->id . '-lbl" for="' . $this->id . '" class="' . $class . '">';
-    }
-    JText::script('COM_LOCALISE_LABEL_TRANSLATION_GOOGLE_ERROR');
-    $label.= $this->element['label'] . 'br />' . $this->element['description'];
-    $label.= '</label>';
     $status = (string)$this->element['status'];
     if ($status == 'extra')
     {
@@ -99,6 +67,6 @@ class JFormFieldKey extends JFormField
     $onkeyup = "javascript:";
     $onkeyup.= "if (this.get('value')=='') {this.set('class','width-45 untranslated');} else {if (this.get('value')=='" . addslashes(htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8')) . "') this.set('class','width-45 " . $status . "'); " . ($status == 'extra' ? "else this.set('class','width-45 extra');}" : "else this.set('class','width-45 translated');}");
     $input = '<textarea name="' . $this->name . '" id="' . $this->id . '" onfocus="this.select()" class="width-45 ' . ($this->value == '' ? 'untranslated' : ($this->value == $this->element['description'] ? $status : 'translated')) . '" onkeyup="' . $onkeyup . '">' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
-    return $button . $button2 . $input; //.$button.$label;
+    return $button . $button2 . $input; //.$button;
   }
 }
