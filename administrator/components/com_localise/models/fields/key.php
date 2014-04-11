@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_localise
  *
- * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -32,10 +32,8 @@ class JFormFieldKey extends JFormField
    */
   protected function getInput()
   {
-    // Set the class for the label.
-    $class = !empty($this->descText) ? 'key-label hasTooltip fltrt' : 'key-label fltrt';
-
     $status = (string)$this->element['status'];
+
     if ($status == 'extra')
     {
       $onclick = '';
