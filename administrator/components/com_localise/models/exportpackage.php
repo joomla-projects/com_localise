@@ -43,12 +43,12 @@ class LocaliseModelExportPackage extends JModelItem
 		$cookie_path   = $config->get('config.cookie_path', '/');
 
 		// Set the cookies
-		setcookie(JApplication::getHash($this->_context . '.author'   ), $data['author']   , time() + 365 * 86400, $cookie_path, $cookie_domain);
-		setcookie(JApplication::getHash($this->_context . '.copyright'), $data['copyright'], time() + 365 * 86400, $cookie_path, $cookie_domain);
-		setcookie(JApplication::getHash($this->_context . '.email'    ), $data['email']    , time() + 365 * 86400, $cookie_path, $cookie_domain);
-		setcookie(JApplication::getHash($this->_context . '.url'      ), $data['url']      , time() + 365 * 86400, $cookie_path, $cookie_domain);
-		setcookie(JApplication::getHash($this->_context . '.version'  ), $data['version']  , time() + 365 * 86400, $cookie_path, $cookie_domain);
-		setcookie(JApplication::getHash($this->_context . '.license'  ), $data['license']  , time() + 365 * 86400, $cookie_path, $cookie_domain);
+		setcookie(JApplicationHelper::getHash($this->_context . '.author'   ), $data['author']   , time() + 365 * 86400, $cookie_path, $cookie_domain);
+		setcookie(JApplicationHelper::getHash($this->_context . '.copyright'), $data['copyright'], time() + 365 * 86400, $cookie_path, $cookie_domain);
+		setcookie(JApplicationHelper::getHash($this->_context . '.email'    ), $data['email']    , time() + 365 * 86400, $cookie_path, $cookie_domain);
+		setcookie(JApplicationHelper::getHash($this->_context . '.url'      ), $data['url']      , time() + 365 * 86400, $cookie_path, $cookie_domain);
+		setcookie(JApplicationHelper::getHash($this->_context . '.version'  ), $data['version']  , time() + 365 * 86400, $cookie_path, $cookie_domain);
+		setcookie(JApplicationHelper::getHash($this->_context . '.license'  ), $data['license']  , time() + 365 * 86400, $cookie_path, $cookie_domain);
 
 		// Set the state
 		$this->setState('exportpackage.name'     , $data['name']);
