@@ -25,14 +25,15 @@ class LocaliseModelDownloadPackage extends JModelForm
 	protected function populateState() 
 	{
 		// Get the data
-		$name       = JRequest::getVar('name');
-		$standalone = JRequest::getVar('standalone');
-		$author     = JRequest::getString(JApplication::getHash($this->_context . '.author')   , '', 'cookie');
-		$copyright  = JRequest::getString(JApplication::getHash($this->_context . '.copyright'), '', 'cookie');
-		$email      = JRequest::getString(JApplication::getHash($this->_context . '.email')    , '', 'cookie');
-		$url        = JRequest::getString(JApplication::getHash($this->_context . '.url')      , '', 'cookie');
-		$version    = JRequest::getString(JApplication::getHash($this->_context . '.version')  , '', 'cookie');
-		$license    = JRequest::getString(JApplication::getHash($this->_context . '.license')  , '', 'cookie');
+		$input      = JFactory::getApplication()->input;
+		$name       = $input->get('name');
+		$standalone = $input->get('standalone');
+		$author     = $input->cookie->getString(JApplicationHelper::getHash($this->_context . '.author'), '');
+		$copyright  = $input->cookie->getString(JApplicationHelper::getHash($this->_context . '.copyright'), '');
+		$email      = $input->cookie->getString(JApplicationHelper::getHash($this->_context . '.email'), '');
+		$url        = $input->cookie->getString(JApplicationHelper::getHash($this->_context . '.url'), '');
+		$version    = $input->cookie->getString(JApplicationHelper::getHash($this->_context . '.version'), '');
+		$license    = $input->cookie->getString(JApplicationHelper::getHash($this->_context . '.license'), '');
 
 		// Set the state
 		$this->setState('downloadpackage.name', $name);
@@ -84,6 +85,7 @@ class LocaliseModelDownloadPackage extends JModelForm
 	{
 		$item = new JObject();
 		$item->standalone = $this->getState('downloadpackage.standalone');
+
 		return $item;
 	}
 }
