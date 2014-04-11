@@ -71,17 +71,18 @@ class LocaliseControllerLanguage extends JControllerForm
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id') 
 	{
 		// Get the infos
-		$client = JRequest::getVar('client', '', 'default', 'cmd');
+		$input = JFactory::getApplication()->input;
+		$client = $input->get('client', '');
 
 		if (empty($client)) 
 		{
-			$select = JRequest::getVar('filters', array(), 'default', 'array');
+			$select = $input->get('filters', array(), 'array');
 			$client = isset($select['select']['client']) ? $select['select']['client'] : 'site';
 		}
 
 		if (empty($client)) 
 		{
-			$data = JRequest::getVar('jform', array(), 'default', 'array');
+			$data = $input->get('jform', array(), 'array');
 			$client = isset($data['client']) ? $data['client'] : 'site';
 		}
 
@@ -90,7 +91,8 @@ class LocaliseControllerLanguage extends JControllerForm
 			$client = 'site';
 		}
 
-		$tag = JRequest::getVar('tag', '', 'default', 'cmd');
+		$tag = $input->get('tag', '');
+
 		if (empty($tag)) 
 		{
 			$tag = isset($data['tag']) ? $data['tag'] : '';
@@ -108,6 +110,9 @@ class LocaliseControllerLanguage extends JControllerForm
 	 */
 	public function delete()
 	{
+		// Check for request forgeries
+		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+
 		// Get the model.
 		$model = $this->getModel();
 
