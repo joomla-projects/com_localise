@@ -22,29 +22,28 @@ class LocaliseControllerPackages extends JControllerLegacy
 	 */
 	public function getModel($name = 'Packages', $prefix = 'LocaliseModel', $config = array('ignore_request' => true)) 
 	{
-		$model = parent::getModel($name, $prefix, $config);
-		return $model;
+		return parent::getModel($name, $prefix, $config);
 	}
 
 	public function display($cachable = false) 
 	{
-		JRequest::setVar('view', 'packages');
+		JFactory::getApplication()->input->set('view', 'packages');
 		parent::display($cachable);
 	}
 
 	public function delete() 
 	{
 		// Check for request forgeries.
-		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$user = JFactory::getUser();
-		$ids  = JRequest::getVar('cid', array(), '', 'array');
+		$ids = JFactory::getApplication()->input->get('cid', array(), 'array');
 
 		// Access checks.
 		foreach ($ids as $i => $package) 
 		{
-			$id    = LocaliseHelper::getFileId(JPATH_ROOT . "/media/com_localise/packages/$package.xml");
+			$id    = LocaliseHelper::getFileId(JPATH_ROOT . '/media/com_localise/packages/' . $package . '.xml');
 			$model = $this->getModel('Package');
 			$model->setState('package.id', $id);
 			$item  = $model->getItem();
@@ -86,6 +85,7 @@ class LocaliseControllerPackages extends JControllerLegacy
 				$type = 'message';
 			}
 		}
+
 		$this->setRedirect(JRoute::_('index.php?option=com_localise&view=packages', false), $msg, $type);
 	}
 }
