@@ -27,7 +27,7 @@ class LocaliseViewPackages extends JViewLegacy
 	 *
 	 * @return  void
 	 */
-	function display($tpl = null) 
+	function display($tpl = null)
 	{
 		// Get the data
 		$this->items = $this->get('Items');
@@ -38,7 +38,7 @@ class LocaliseViewPackages extends JViewLegacy
 		LocaliseHelper::addSubmenu('packages');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
+		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
@@ -55,34 +55,34 @@ class LocaliseViewPackages extends JViewLegacy
 		parent::display($tpl);
 	}
 
-	protected function prepareDocument() 
+	protected function prepareDocument()
 	{
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::sprintf('COM_LOCALISE_TITLE', JText::_('COM_LOCALISE_TITLE_PACKAGES')));   
+		$document->setTitle(JText::sprintf('COM_LOCALISE_TITLE', JText::_('COM_LOCALISE_TITLE_PACKAGES')));
 	}
- 
-	protected function addToolbar() 
+
+	protected function addToolbar()
 	{
-		$canDo = LocaliseHelper::getActions();
+		$canDo = JHelperContent::getActions('com_localise', 'component');
 
 		JToolBarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', JText::_('COM_LOCALISE_HEADER_PACKAGES')), 'install');
 
-		if ($canDo->get('localise.create')) 
+		if ($canDo->get('localise.create'))
 		{
 			JToolbarHelper::addNew('package.add');
 		}
 
-		if ($canDo->get('localise.edit')) 
+		if ($canDo->get('localise.edit'))
 		{
 			JToolbarHelper::editList('package.edit');
 		}
 
-		if ($canDo->get('localise.create') || $canDo->get('localise.edit')) 
+		if ($canDo->get('localise.create') || $canDo->get('localise.edit'))
 		{
 			JToolbarHelper::divider();
 		}
 
-		if ($canDo->get('localise.delete')) 
+		if ($canDo->get('localise.delete'))
 		{
 			JToolbarHelper::deleteList('COM_LOCALISE_MSG_PACKAGES_VALID_DELETE', 'packages.delete');
 			JToolBarHelper::divider();
@@ -93,13 +93,13 @@ class LocaliseViewPackages extends JViewLegacy
 		JToolBarHelper::custom('package.language', 'archive.png', 'archive.png', 'COM_LOCALISE_TOOLBAR_PACKAGES_LANGUAGE', true);
 		JToolbarHelper::divider();
 
-		if ($canDo->get('package.batch')) 
+		if ($canDo->get('package.batch'))
 		{
 			JToolBarHelper::custom('package.batch', 'refresh.png', 'refresh.png', 'COM_LOCALISE_TOOLBAR_PACKAGES_BATCH', true);
 			JToolbarHelper::divider();
 		}
 
-		if ($canDo->get('core.admin')) 
+		if ($canDo->get('core.admin'))
 		{
 			JToolbarHelper::preferences('com_localise');
 			JToolbarHelper::divider();

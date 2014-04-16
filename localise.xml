@@ -6,10 +6,10 @@
 	<author>Christophe Demko</author>
 	<author>Jean-Marie Simonet</author>
 	<author>Ifan Evans</author>
-	<copyright>(C) 2005 - 2013 Open Source Matters. All rights reserved.</copyright>
-	<authorEmail>m.h.eghtedar@gmail.com</authorEmail>
-	<authorUrl>http://joomlacode.org/gf/project/com_localise/</authorUrl>
-	<version>3.2.1</version>
+	<copyright>(C) 2014 Open Source Matters. All rights reserved.</copyright>
+	<authorEmail>admin@joomla.org</authorEmail>
+	<authorUrl>https://github.com/joomla-projects/com_localise</authorUrl>
+	<version>4.0.0-dev</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>COM_LOCALISE_XML_DESCRIPTION</description>
 	<install>
