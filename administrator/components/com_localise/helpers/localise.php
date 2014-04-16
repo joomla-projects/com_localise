@@ -59,11 +59,11 @@ abstract class LocaliseHelper
 			$vName == 'translations'
 		);
 
-		/*JHtmlSidebar::addEntry(
-		  JText::_('COM_LOCALISE_SUBMENU_PACKAGES'),
-		  'index.php?option=com_localise&view=packages',
-		  $vName == 'packages'
-		);*/
+		JHtmlSidebar::addEntry(
+			JText::_('COM_LOCALISE_SUBMENU_PACKAGES'),
+			'index.php?option=com_localise&view=packages',
+			$vName == 'packages'
+		);
 	}
 
 	/**
@@ -424,7 +424,7 @@ abstract class LocaliseHelper
 			$db = JFactory::getDbo();
 
 			$db->setQuery(
-			   $db->getQuery(true)
+				$db->getQuery(true)
 					->select($db->quoteName(array('id, path')))
 					->from($db->quoteName('#__localise'))
 			);
