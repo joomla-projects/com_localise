@@ -14,6 +14,7 @@ defined('_JEXEC') or die;
  *
  * @package     Extensions.Components
  * @subpackage  Localise
+ * @since       1.0
  */
 class LocaliseControllerLanguage extends JControllerForm
 {
@@ -22,11 +23,11 @@ class LocaliseControllerLanguage extends JControllerForm
 	 *
 	 * Extended classes can override this if necessary.
 	 *
-	 * @param  array  An array of input data.
+	 * @param   array  $data  An array of input data.
 	 *
 	 * @return  boolean
 	 */
-	protected function allowAdd($data = array()) 
+	protected function allowAdd($data = array())
 	{
 		return JFactory::getUser()->authorise('localise.create', $this->option);
 	}
@@ -36,8 +37,8 @@ class LocaliseControllerLanguage extends JControllerForm
 	 *
 	 * Extended classes can override this if necessary.
 	 *
-	 * @param  array  An array of input data.
-	 * @param  string  The name of the key for the primary key.
+	 * @param   array   $data  An array of input data.
+	 * @param   string  $key   The name of the key for the primary key.
 	 *
 	 * @return  boolean
 	 */
@@ -49,13 +50,13 @@ class LocaliseControllerLanguage extends JControllerForm
 	/**
 	 * Method to get a model object, loading it if required.
 	 *
-	 * @param  string  The model name. Optional.
-	 * @param  string  The class prefix. Optional.
-	 * @param  array   Configuration array for model. Optional.
+	 * @param   string  $name    The model name. Optional.
+	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
 	 *
 	 * @return  object  The model.
 	 */
-	public function getModel($name = 'Language', $prefix = 'LocaliseModel', $config = array('ignore_request' => false)) 
+	public function getModel($name = 'Language', $prefix = 'LocaliseModel', $config = array('ignore_request' => false))
 	{
 		return parent::getModel($name, $prefix, $config);
 	}
@@ -68,45 +69,47 @@ class LocaliseControllerLanguage extends JControllerForm
 	 *
 	 * @return  string  The arguments to append to the redirect URL.
 	 */
-	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id') 
+	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
 	{
 		// Get the infos
 		$input = JFactory::getApplication()->input;
 		$client = $input->get('client', '');
 
-		if (empty($client)) 
+		if (empty($client))
 		{
 			$select = $input->get('filters', array(), 'array');
 			$client = isset($select['select']['client']) ? $select['select']['client'] : 'site';
 		}
 
-		if (empty($client)) 
+		if (empty($client))
 		{
 			$data = $input->get('jform', array(), 'array');
 			$client = isset($data['client']) ? $data['client'] : 'site';
 		}
 
-		if (empty($client)) 
+		if (empty($client))
 		{
 			$client = 'site';
 		}
 
 		$tag = $input->get('tag', '');
 
-		if (empty($tag)) 
+		if (empty($tag))
 		{
 			$tag = isset($data['tag']) ? $data['tag'] : '';
 		}
 
 		// Get the append string
 		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
-		$append.= '&client=' . $client . '&tag=' . $tag;
+		$append .= '&client=' . $client . '&tag=' . $tag;
 
 		return $append;
 	}
 
 	/**
 	 * Delete the language
+	 *
+	 * @return void
 	 */
 	public function delete()
 	{
@@ -117,7 +120,7 @@ class LocaliseControllerLanguage extends JControllerForm
 		$model = $this->getModel();
 
 		// Remove the items.
-		if (!$model->delete()) 
+		if (!$model->delete())
 		{
 			$msg = implode("<br />", $model->getErrors());
 			$type = 'error';

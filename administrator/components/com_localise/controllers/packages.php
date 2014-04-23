@@ -14,6 +14,7 @@ defined('_JEXEC') or die;
  *
  * @package     Extensions.Components
  * @subpackage  Localise
+ * @since       1.0
  */
 class LocaliseControllerPackages extends JControllerLegacy
 {
