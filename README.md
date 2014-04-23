@@ -9,6 +9,9 @@ We (the Joomla! Internationalisation Working Group) are forking it for experimen
 
 If you want to join the effort please contact us!
 
+# Travis Status
+Develop: [![Build Status](https://travis-ci.org/joomla-projects/com_localise.png)](https://travis-ci.org/joomla-projects/com_localise)
+
 # Requirements
 Joomla 3.3 or above is needed to run this component
 
