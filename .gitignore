@@ -29,6 +29,18 @@ Desktop.ini
 # Phing build script
 build.properties
 
+# Packages #
+*.zip
+*.tar.*
+
+# Packages directories #
+build/packages
+build/packaging
+build/releases
+
+# Build #
+build/logs
+
 # Test related files
 /tests/system/servers/configdef.php
 /tests/system/webdriver/tests/logs/
