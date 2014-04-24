@@ -23,7 +23,7 @@ class LocaliseModelLanguage extends JModelForm
 {
 	protected $context = 'com_localise.language';
 
-	protected function populateState() 
+	protected function populateState()
 	{
 		$jinput = JFactory::getApplication()->input;
 
@@ -44,7 +44,7 @@ class LocaliseModelLanguage extends JModelForm
 	 * @param  int    The ID of the primary key.
 	 * @return  boolean
 	*/
-	public function checkout($pk = null) 
+	public function checkout($pk = null)
 	{
 		// Initialise variables.
 		$pk = (!empty($pk)) ? $pk : (int)$this->getState('language.id');
@@ -58,7 +58,7 @@ class LocaliseModelLanguage extends JModelForm
 	 *
 	 * @return  boolean
 	 */
-	public function checkin($pk = null) 
+	public function checkin($pk = null)
 	{
 		// Initialise variables.
 		$pk = (!empty($pk)) ? $pk : (int)$this->getState('language.id');
@@ -73,7 +73,7 @@ class LocaliseModelLanguage extends JModelForm
 	 * @param   array    $options   Configuration array for model. Optional.
 	 * @return  JTable              A database object
 	 */
-	public function getTable($type = 'Localise', $prefix = 'LocaliseTable', $config = array()) 
+	public function getTable($type = 'Localise', $prefix = 'LocaliseTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -85,7 +85,7 @@ class LocaliseModelLanguage extends JModelForm
 	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
 	 * @return  mixed               A JForm object on success, false on failure
 	 */
-	public function getForm($data = array(), $loadData = true) 
+	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
 		return $this->loadForm('com_localise.language', 'language', array('control' => 'jform', 'load_data' => $loadData));
@@ -97,18 +97,18 @@ class LocaliseModelLanguage extends JModelForm
 	 * @return  mixed  The data for the form.
 	 * @since  1.6
 	 */
-	protected function loadFormData() 
+	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_localise.edit.language.data', array());
 
 		// Get the language data.
-		if (empty($data)) 
+		if (empty($data))
 		{
 			$data = $this->getItem();
 		}
 
-		if (empty($data)) 
+		if (empty($data))
 		{
 			$data = new JObject();
 			$data->client = $this->getState('language.client');
@@ -132,18 +132,18 @@ class LocaliseModelLanguage extends JModelForm
 	 *
 	 * @return  mixed  A JForm object on success, false on failure or not ftp
 	 */
-	public function getFormFtp() 
+	public function getFormFtp()
 	{
 		// Get the form.
 		$form = $this->loadForm('com_localise.ftp', 'ftp');
 
-		if (empty($form)) 
+		if (empty($form))
 		{
 			return false;
 		}
 
 		// Check for an error.
-		if (JError::isError($form)) 
+		if (JError::isError($form))
 		{
 			$this->setError($form->getMessage());
 			return false;
@@ -155,7 +155,7 @@ class LocaliseModelLanguage extends JModelForm
 	/**
 	 * Method to get the language.
 	 */
-	public function getItem() 
+	public function getItem()
 	{
 		$id     = $this->getState('language.id');
 		$client = $this->getState('language.client');
@@ -168,7 +168,7 @@ class LocaliseModelLanguage extends JModelForm
 		$language->tag         = $tag;
 		$language->checked_out = 0;
 
-		if (!empty($id)) 
+		if (!empty($id))
 		{
 			$table = $this->getTable();
 			$table->load($id);
@@ -185,18 +185,18 @@ class LocaliseModelLanguage extends JModelForm
 			$language->editor   = JText::sprintf('COM_LOCALISE_TEXT_LANGUAGE_EDITOR', $user->name, $user->username);
 			$language->writable = LocaliseHelper::isWritable($language->path);
 
-			if (JFile::exists($language->path)) 
+			if (JFile::exists($language->path))
 			{
-				$xml = JFactory::getXML($language->path);
+				$xml = simplexml_load_file($language->path);
 
-				if ($xml) 
+				if ($xml)
 				{
-					foreach ($xml->children() as $node) 
+					foreach ($xml->children() as $node)
 					{
-						if ($node->name() == 'metadata') 
+						if ($node->name() == 'metadata')
 						{
 							// metadata nodes
-							foreach ($node->children() as $subnode) 
+							foreach ($node->children() as $subnode)
 							{
 								$property = $subnode->name();
 								$language->$property = $subnode;
@@ -207,9 +207,9 @@ class LocaliseModelLanguage extends JModelForm
 							// main nodes
 							$property = $node->name();
 
-							if ($property == 'copyright') 
+							if ($property == 'copyright')
 							{
-								if (isset($language->joomlacopyright)) 
+								if (isset($language->joomlacopyright))
 								{
 									$language->copyright[] = $node;
 								}
@@ -238,7 +238,7 @@ class LocaliseModelLanguage extends JModelForm
 		return $language;
 	}
 
-	public function save($data = array()) 
+	public function save($data = array())
 	{
 		$id     = $this->getState('language.id');
 		$tag    = $data['tag'];
@@ -246,7 +246,7 @@ class LocaliseModelLanguage extends JModelForm
 		$path   = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.xml";
 		$exists = JFile::exists($path);
 
-		if ($exists && !empty($id) || !$exists && empty($id)) 
+		if ($exists && !empty($id) || !$exists && empty($id))
 		{
 			$text = '';
 			$text.= '<?xml version="1.0" encoding="utf-8"?>' . "\n";
@@ -263,7 +263,7 @@ class LocaliseModelLanguage extends JModelForm
 
 			$data['copyright'] = explode("\n", $data['copyright']);
 
-			foreach ($data['copyright'] as $copyright) 
+			foreach ($data['copyright'] as $copyright)
 			{
 				if($copyright)
 				{
@@ -273,12 +273,12 @@ class LocaliseModelLanguage extends JModelForm
 
 			$text.= "\t" . '<license>' . htmlspecialchars($data['license'], ENT_COMPAT, 'UTF-8') . '</license>' . "\n";
 
-			if ($tag == 'en-GB') 
+			if ($tag == 'en-GB')
 			{
 				$text.= "\t" . '<files>' . "\n";
-				$xml  = JFactory::getXML($path);
+				$xml  = simplexml_load_file($path);
 
-				foreach ($xml->files->children() as $file) 
+				foreach ($xml->files->children() as $file)
 				{
 					$text.= "\t\t" . '<filename>' . $file . '</filename>' . "\n";
 				}
@@ -288,9 +288,9 @@ class LocaliseModelLanguage extends JModelForm
 			else
 			{
 				$text.= "\t" . '<files>' . "\n";
-				$xml = JFactory::getXML(constant('LOCALISEPATH_' . strtoupper($client)) . "/language/en-GB/en-GB.xml");
+				$xml = simplexml_load_file(constant('LOCALISEPATH_' . strtoupper($client)) . "/language/en-GB/en-GB.xml");
 
-				foreach ($xml->files->children() as $file) 
+				foreach ($xml->files->children() as $file)
 				{
 					$text.= "\t\t" . '<filename>' . str_replace('en-GB', $tag, $file) . '</filename>' . "\n";
 				}
@@ -313,7 +313,7 @@ class LocaliseModelLanguage extends JModelForm
 			$ftp = JClientHelper::getCredentials('ftp');
 
 			// Try to make the file writeable.
-			if ($exists && !$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, '0644')) 
+			if ($exists && !$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, '0644'))
 			{
 				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_WRITABLE', $path));
 				return false;
@@ -327,12 +327,12 @@ class LocaliseModelLanguage extends JModelForm
 			$fileSavePermission = $params->get('filesavepermission', '0444');
 
 			// Try to make the template file unwriteable.
-			if (!$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, $fileSavePermission)) 
+			if (!$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, $fileSavePermission))
 			{
 				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_UNWRITABLE', $path));
 				return false;
 			}
-			else if (!$return) 
+			else if (!$return)
 			{
 				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_FILESAVE', $path));
 				return false;
@@ -344,21 +344,21 @@ class LocaliseModelLanguage extends JModelForm
 			// Bind the rules.
 			$table = $this->getTable();
 			$table->load($id);
-			if (isset($data['rules'])) 
+			if (isset($data['rules']))
 			{
 				$rules = new JAccessRules($data['rules']);
 				$table->setRules($rules);
 			}
 
 			// Check the data.
-			if (!$table->check()) 
+			if (!$table->check())
 			{
 				$this->setError($table->getError());
 				return false;
 			}
 
 			// Store the data.
-			if (!$table->store()) 
+			if (!$table->store())
 			{
 				$this->setError($table->getError());
 				return false;
@@ -377,7 +377,7 @@ class LocaliseModelLanguage extends JModelForm
 	 *
 	 * @return  boolean  true for success, false for failure
 	 */
-	public function delete() 
+	public function delete()
 	{
 		$params  = JComponentHelper::getParams('com_languages');
 		$id      = $this->getState('language.id');
@@ -386,25 +386,25 @@ class LocaliseModelLanguage extends JModelForm
 		$default = $params->get($client, 'en-GB');
 		$path    = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag";
 
-		if ($tag == $default) 
+		if ($tag == $default)
 		{
 			$this->setError(JText::sprintf('COM_LOCALISE_CANNOT_REMOVE_DEFAULT_LANGUAGE', $folder));
 			return false;
 		}
 
-		if ($tag == 'en-GB') 
+		if ($tag == 'en-GB')
 		{
 			$this->setError(JText::_('COM_LOCALISE_CANNOT_REMOVE_ENGLISH_LANGUAGE'));
 			return false;
 		}
 
-		if (!JFactory::getUser()->authorise('localise.delete', $this->option . '.' . $id)) 
+		if (!JFactory::getUser()->authorise('localise.delete', $this->option . '.' . $id))
 		{
 			$this->setError(JText::_('COM_LOCALISE_CANNOT_REMOVE_LANGUAGE'));
 			return false;
 		}
 
-		if (!JFolder::delete($path)) 
+		if (!JFolder::delete($path))
 		{
 			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGES_REMOVE', "$path/$folder"));
 			return false;
@@ -412,4 +412,4 @@ class LocaliseModelLanguage extends JModelForm
 
 		return true;
 	}
-} 
+}

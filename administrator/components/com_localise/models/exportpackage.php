@@ -102,7 +102,7 @@ class LocaliseModelExportPackage extends JModelItem
 		if (JFile::exists($manifest))
 		{
 			// Get the key name and key description in the manifest
-			$xml = JFactory::getXML($manifest);
+			$xml = simplexml_load_file($manifest);
 			if ($xml)
 			{
 				$keyName        = (string)$xml->name;

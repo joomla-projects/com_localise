@@ -30,7 +30,7 @@ class LocaliseModelPackage extends JModelForm
 	 *
 	 * @return  void
 	 */
-	protected function populateState() 
+	protected function populateState()
 	{
 		// Get the application
 		$app = JFactory::getApplication('administrator');
@@ -49,7 +49,7 @@ class LocaliseModelPackage extends JModelForm
 	 * @param  int    The ID of the primary key.
 	 * @return  boolean
 	 */
-	public function checkout($pk = null) 
+	public function checkout($pk = null)
 	{
 		// Initialise variables.
 		$pk = (!empty($pk)) ? $pk : (int)$this->getState('package.id');
@@ -63,7 +63,7 @@ class LocaliseModelPackage extends JModelForm
 	 *
 	 * @return  boolean
 	 */
-	public function checkin($pk = null) 
+	public function checkin($pk = null)
 	{
 		// Initialise variables.
 		$pk = (!empty($pk)) ? $pk : (int)$this->getState('package.id');
@@ -78,7 +78,7 @@ class LocaliseModelPackage extends JModelForm
 	 * @param  array  $options Configuration array for model. Optional.
 	 * @return  JTable  A database object
 	 */
-	public function getTable($type = 'Localise', $prefix = 'LocaliseTable', $config = array()) 
+	public function getTable($type = 'Localise', $prefix = 'LocaliseTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -91,28 +91,28 @@ class LocaliseModelPackage extends JModelForm
 	 * @return  mixed  A JForm object on success, false on failure
 	 * @since  1.6
 	 */
-	public function getForm($data = array(), $loadData = true) 
+	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
 		$id   = $this->getState('package.id');
 		$name = $this->getState('package.name');
 		$form = $this->loadForm('com_localise.package', 'package', array('control' => 'jform', 'load_data' => $loadData));
 
-		if (empty($form)) 
+		if (empty($form))
 		{
 			return false;
 		}
 
 		$form->setFieldAttribute('translations', 'package', $name, 'translations');
 
-		if (!empty($id)) 
+		if (!empty($id))
 		{
 			$form->setFieldAttribute('name', 'readonly', 'true');
 			$form->setFieldAttribute('name', 'class', 'readonly');
 		}
 
 		// Check for an error.
-		if (JError::isError($form)) 
+		if (JError::isError($form))
 		{
 			$this->setError($form->getMessage());
 			return false;
@@ -127,7 +127,7 @@ class LocaliseModelPackage extends JModelForm
 	 * @return  mixed  The data for the form.
 	 * @since  1.6
 	 */
-	protected function loadFormData() 
+	protected function loadFormData()
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication();
@@ -136,7 +136,7 @@ class LocaliseModelPackage extends JModelForm
 		$data = $app->getUserState('com_localise.edit.package.data', array());
 
 		// Get the package data.
-		if (empty($data)) 
+		if (empty($data))
 		{
 			$data = $this->getItem();
 			$data->title       = JText::_($data->title);
@@ -151,18 +151,18 @@ class LocaliseModelPackage extends JModelForm
 	 *
 	 * @return  mixed  A JForm object on success, false on failure or not ftp
 	 */
-	public function getFormFtp() 
+	public function getFormFtp()
 	{
 		// Get the form.
 		$form = $this->loadForm('com_localise.ftp', 'ftp');
 
-		if (empty($form)) 
+		if (empty($form))
 		{
 			return false;
 		}
 
 		// Check for an error.
-		if (JError::isError($form)) 
+		if (JError::isError($form))
 		{
 			$this->setError($form->getMessage());
 			return false;
@@ -176,9 +176,9 @@ class LocaliseModelPackage extends JModelForm
 	 *
 	 * @return JObject the package
 	 */
-	public function getItem() 
+	public function getItem()
 	{
-		$id = $this->getState('package.id'); 
+		$id = $this->getState('package.id');
 		$package = new JObject();
 		$package->checked_out = 0;
 		$package->standalone  = true;
@@ -186,7 +186,7 @@ class LocaliseModelPackage extends JModelForm
 		$package->title       = null;
 		$package->description = null;
 
-		if (!empty($id)) 
+		if (!empty($id))
 		{
 			// If the package exists get it
 			$table = $this->getTable();
@@ -200,9 +200,9 @@ class LocaliseModelPackage extends JModelForm
 			$package->setProperties($table->getProperties());
 
 			// Get the manifest
-			$xml = JFactory::getXML($table->path);
+			$xml = simplexml_load_file($table->path);
 
-			if ($xml) 
+			if ($xml)
 			{
 				$manifest = (string)$xml->manifest;
 				$client   = (string)$xml->manifest->attributes()->client;
@@ -211,7 +211,7 @@ class LocaliseModelPackage extends JModelForm
 				// Set up basic information
 				$name = basename($table->path);
 				$name = substr($name, 0, strlen($name) - 4);
-	
+
 				$package->id          = $id;
 				$package->name        = $name;
 				$package->manifest    = $manifest;
@@ -229,7 +229,7 @@ class LocaliseModelPackage extends JModelForm
 				$user = JFactory::getUser($table->checked_out);
 				$package->setProperties($table->getProperties());
 
-				if ($package->checked_out == JFactory::getUser()->id) 
+				if ($package->checked_out == JFactory::getUser()->id)
 				{
 					$package->checked_out = 0;
 				}
@@ -240,13 +240,13 @@ class LocaliseModelPackage extends JModelForm
 				$package->translations  = array();
 				$package->administrator = array();
 
-				if ($xml->administrator) 
+				if ($xml->administrator)
 				{
-					foreach ($xml->administrator->children() as $file) 
+					foreach ($xml->administrator->children() as $file)
 					{
 						$data = (string)$file;
 
-						if ($data) 
+						if ($data)
 						{
 							$package->translations[] = "administrator_$data";
 						}
@@ -261,13 +261,13 @@ class LocaliseModelPackage extends JModelForm
 
 				$package->site = array();
 
-				if ($xml->site) 
+				if ($xml->site)
 				{
-					foreach ($xml->site->children() as $file) 
+					foreach ($xml->site->children() as $file)
 					{
 						$data = (string)$file;
 
-						if ($data) 
+						if ($data)
 						{
 							$package->translations[] = "site_$data";
 						}
@@ -282,9 +282,9 @@ class LocaliseModelPackage extends JModelForm
 
 				$package->installation = array();
 
-				if ($xml->installation) 
+				if ($xml->installation)
 				{
-					foreach ($xml->installation->children() as $file) 
+					foreach ($xml->installation->children() as $file)
 					{
 						$data = (string)$file->data();
 
@@ -317,7 +317,7 @@ class LocaliseModelPackage extends JModelForm
 	 * @param  array  the data to save
 	 * @return  boolean  success or failure
 	 */
-	public function save($data) 
+	public function save($data)
 	{
 		// Get the package name
 		$name = $data['name'];
@@ -328,7 +328,7 @@ class LocaliseModelPackage extends JModelForm
 		$manifest = $package->manifest ? $package->manifest : ('fil_localise_package_' . $name);
 		$client   = $package->client ? $package->client : 'site';
 
-		if ($package->standalone) 
+		if ($package->standalone)
 		{
 			$title = $package->title ? $package->title : ('fil_localise_package_' . $name);
 			$description = $package->description ? $package->description : ('fil_localise_package_' . $name . '_desc');
@@ -349,29 +349,29 @@ class LocaliseModelPackage extends JModelForm
 			$site          = array();
 			$installation  = array();
 
-			foreach ($data['translations'] as $translation) 
+			foreach ($data['translations'] as $translation)
 			{
-				if (preg_match('/^site_(.*)$/', $translation, $matches)) 
+				if (preg_match('/^site_(.*)$/', $translation, $matches))
 				{
 					$site[] = $matches[1];
 				}
 
-				if (preg_match('/^administrator_(.*)$/', $translation, $matches)) 
+				if (preg_match('/^administrator_(.*)$/', $translation, $matches))
 				{
 					$administrator[] = $matches[1];
 				}
 
-				if (preg_match('/^installation_(.*)$/', $translation, $matches)) 
+				if (preg_match('/^installation_(.*)$/', $translation, $matches))
 				{
 					$installation[] = $matches[1];
 				}
 			}
 
-			if (count($site)) 
+			if (count($site))
 			{
 				$text.= '<site>' . "\n";
 
-				foreach ($site as $translation) 
+				foreach ($site as $translation)
 				{
 					$text.= '<filename>' . $translation . '.ini</filename>' . "\n";
 				}
@@ -379,11 +379,11 @@ class LocaliseModelPackage extends JModelForm
 				$text.= '</site>' . "\n";
 			}
 
-			if (count($administrator)) 
+			if (count($administrator))
 			{
 				$text.= '<administrator>' . "\n";
 
-				foreach ($administrator as $translation) 
+				foreach ($administrator as $translation)
 				{
 					$text.= '<filename>' . $translation . '.ini</filename>' . "\n";
 				}
@@ -391,11 +391,11 @@ class LocaliseModelPackage extends JModelForm
 				$text.= '</administrator>' . "\n";
 			}
 
-			if (count($installation)) 
+			if (count($installation))
 			{
 				$text.= '<installation>' . "\n";
 
-				foreach ($installation as $translation) 
+				foreach ($installation as $translation)
 				{
 					$text.= '<filename>' . $translation . '.ini</filename>' . "\n";
 				}
@@ -410,7 +410,7 @@ class LocaliseModelPackage extends JModelForm
 			$ftp = JClientHelper::getCredentials('ftp');
 
 			// Try to make the file writeable.
-			if ($exists && !$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, '0644')) 
+			if ($exists && !$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, '0644'))
 			{
 				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_WRITABLE', $path));
 				return false;
@@ -419,12 +419,12 @@ class LocaliseModelPackage extends JModelForm
 			$return = JFile::write($path, $text);
 
 			// Try to make the file unwriteable.
-			if (!$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, '0444')) 
+			if (!$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, '0444'))
 			{
 				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_UNWRITABLE', $path));
 				return false;
 			}
-			else if (!$return) 
+			else if (!$return)
 			{
 				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILESAVE', $path));
 				return false;
@@ -436,7 +436,7 @@ class LocaliseModelPackage extends JModelForm
 		$translation_id    = LocaliseHelper::getFileId($translation_path);
 		$translation_model = JModelLegacy::getInstance('Translation', 'LocaliseModel', array('ignore_request' => true));
 
-		if ($translation_model->checkout($translation_id)) 
+		if ($translation_model->checkout($translation_id))
 		{
 			$translation_model->setState('translation.path', $translation_path);
 			$translation_model->setState('translation.client', $client);
@@ -454,7 +454,7 @@ class LocaliseModelPackage extends JModelForm
 		$languagePath = JPATH_SITE . "/language/$tag/$tag.$manifest.ini";
 
 		// Try to make the file writeable.
-		if ($exists && !$ftp['enabled'] && JPath::isOwner($languagePath) && !JPath::setPermissions($languagePath, '0644')) 
+		if ($exists && !$ftp['enabled'] && JPath::isOwner($languagePath) && !JPath::setPermissions($languagePath, '0644'))
 		{
 			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_WRITABLE', $languagePath));
 			return false;
@@ -463,12 +463,12 @@ class LocaliseModelPackage extends JModelForm
 		$return = JFile::write($languagePath, $text);
 
 		// Try to make the file unwriteable.
-		if (!$ftp['enabled'] && JPath::isOwner($languagePath) && !JPath::setPermissions($languagePath, '0444')) 
+		if (!$ftp['enabled'] && JPath::isOwner($languagePath) && !JPath::setPermissions($languagePath, '0444'))
 		{
 			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_UNWRITABLE', $languagePath));
 			return false;
 		}
-		else if (!$return) 
+		else if (!$return)
 		{
 			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILESAVE', $languagePath));
 			return false;
@@ -481,21 +481,21 @@ class LocaliseModelPackage extends JModelForm
 		$table = $this->getTable();
 		$table->load($id);
 
-		if (isset($data['rules'])) 
+		if (isset($data['rules']))
 		{
 			$rules = new JAccessRules($data['rules']);
 			$table->setRules($rules);
 		}
 
 		// Check the data.
-		if (!$table->check()) 
+		if (!$table->check())
 		{
 			$this->setError($table->getError());
 			return false;
 		}
 
 		// Store the data.
-		if (!$table->store()) 
+		if (!$table->store())
 		{
 			$this->setError($table->getError());
 			return false;
@@ -503,4 +503,4 @@ class LocaliseModelPackage extends JModelForm
 
 		return true;
 	}
-} 
+}
