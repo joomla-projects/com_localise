@@ -507,7 +507,7 @@ class LocaliseModelTranslation extends JModelForm
 			$refpath     = $this->getState('translation.refpath');
 			$sections    = LocaliseHelper::parseSections($path);
 			$refsections = LocaliseHelper::parseSections($refpath);
-			$addform     = new JXMLElement('<form />');
+			$addform     = new SimpleXMLElement('<form />');
 
 			$group = $addform->addChild('fields');
 			$group->addAttribute('name', 'strings');
@@ -544,7 +544,7 @@ class LocaliseModelTranslation extends JModelForm
 						$header = false;
 						$form->load($addform, false);
 						$section = $matches[1];
-						$addform = new JXMLElement('<form />');
+						$addform = new SimpleXMLElement('<form />');
 						$group   = $addform->addChild('fields');
 						$group->addAttribute('name', 'strings');
 						$fieldset = $group->addChild('fieldset');
@@ -604,7 +604,7 @@ class LocaliseModelTranslation extends JModelForm
 								$newstrings = true;
 								$form->load($addform, false);
 								$section  = 'New Strings';
-								$addform  = new JXMLElement('<form />');
+								$addform  = new SimpleXMLElement('<form />');
 								$group    = $addform->addChild('fields');
 								$group->addAttribute('name', 'strings');
 								$fieldset = $group->addChild('fieldset');
