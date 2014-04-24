@@ -75,7 +75,7 @@ class LocaliseControllerPackage extends JControllerForm
 	 *
 	 * @return  boolean
 	 */
-	protected function _allowAdd($data = array()) 
+	protected function _allowAdd($data = array())
 	{
 		// @todo: $data parameter is unused
 		return JFactory::getUser()->authorise('localise.create', $this->_option);
@@ -144,12 +144,12 @@ class LocaliseControllerPackage extends JControllerForm
 				$type = 'message';
 			}
 
-			setcookie(JApplication::getHash($this->_context . '.author'), $package->author, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplication::getHash($this->_context . '.copyright'), $package->copyright, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplication::getHash($this->_context . '.email'), $package->email, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplication::getHash($this->_context . '.url'), $package->url, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplication::getHash($this->_context . '.version'), $package->version, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplication::getHash($this->_context . '.license'), $package->license, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->_context . '.author'), $package->author, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->_context . '.copyright'), $package->copyright, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->_context . '.email'), $package->email, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->_context . '.url'), $package->url, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->_context . '.version'), $package->version, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->_context . '.license'), $package->license, time() + 60 * 60 * 24 * 30);
 
 			$this->setRedirect(JRoute::_('index.php?option=com_localise&tmpl=component&view=downloadpackage&name=' . $name . '&standalone=' . $package->standalone, false), $msg, $type);
 		}
