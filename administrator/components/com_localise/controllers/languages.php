@@ -12,8 +12,9 @@ defined('_JEXEC') or die;
 /**
  * Languages Controller class for the Localise component
  *
- * @package    Extensions.Components
- * @subpackage Localise
+ * @package     Extensions.Components
+ * @subpackage  Localise
+ * @since       1.0
  */
 class LocaliseControllerLanguages extends JControllerLegacy
 {
