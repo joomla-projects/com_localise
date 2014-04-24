@@ -288,7 +288,7 @@ class LocaliseModelPackage extends JModelForm
 					{
 						$data = (string)$file->data();
 
-						if ($data) 
+						if ($data)
 						{
 							$package->translations[] = "installation_$data";
 						}

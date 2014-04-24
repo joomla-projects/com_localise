@@ -261,7 +261,7 @@ class LocaliseModelPackage extends JModelItem
             foreach ($child->children() as $component)
             {
               $attr = & $component->attributes();
-              if (!array_key_exists('client', $attr) || !array_key_exists('name', $attr)) throw new JException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
+              if (!array_key_exists('client', $attr) || !array_key_exists('name', $attr)) throw new RuntimeException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
               if (array_key_exists($attr['name'], $extensions[$type]))
               {
                 switch ($attr['client'])
@@ -289,25 +289,25 @@ class LocaliseModelPackage extends JModelItem
                   }
                 break;
                 default:
-                  throw new JException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
+                  throw new RuntimeException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
                 }
               }
             }
           }
           else
           {
-            throw new JException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
+            throw new RuntimeException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
           }
         }
       }
       else
       {
-        throw new JException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
+        throw new RuntimeException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
       }
     }
     else
     {
-      throw new JException(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILE_DOES_NOT_EXIST'), $path);
+      throw new RuntimeException(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILE_DOES_NOT_EXIST'), $path);
     }
   }
   protected function _scanOtherManifest($path, &$extensions, $where)
@@ -327,7 +327,7 @@ class LocaliseModelPackage extends JModelItem
             foreach ($child->children() as $component)
             {
               $attr = & $component->attributes();
-              if (!array_key_exists('client', $attr) || !array_key_exists('name', $attr)) throw new JException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
+              if (!array_key_exists('client', $attr) || !array_key_exists('name', $attr)) throw new RuntimeException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
               if (array_key_exists($attr['name'], $extensions[$type]))
               {
                 switch ($attr['client'])
@@ -355,25 +355,25 @@ class LocaliseModelPackage extends JModelItem
                   }
                 break;
                 default:
-                  throw new JException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
+                  throw new RuntimeException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
                 }
               }
             }
           }
           else
           {
-            throw new JException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
+            throw new RuntimeException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
           }
         }
       }
       else
       {
-        throw new JException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
+        throw new RuntimeException(JText::sprintf('COM_LOCALISE_ERROR_EDITING_PACKAGE_FILE'), $path);
       }
     }
     else
     {
-      throw new JException(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILE_DOES_NOT_EXIST'), $path);
+      throw new RuntimeException(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_FILE_DOES_NOT_EXIST'), $path);
     }
   }
   protected function &_getAllComponents()
