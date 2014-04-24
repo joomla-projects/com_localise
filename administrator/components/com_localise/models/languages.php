@@ -29,8 +29,8 @@ class LocaliseModelLanguages extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app  = JFactory::getApplication('administrator');
-		$data = JRequest::getVar('filters');
+		$app  = JFactory::getApplication();
+		$data = $app->input->get('filters');
 
 		if (empty($data))
 		{

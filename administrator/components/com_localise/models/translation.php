@@ -28,11 +28,13 @@ class LocaliseModelTranslation extends JModelForm
 
 	protected function populateState()
 	{
+		$input = JFactory::getApplication()->input;
+
 		// Get the infos
-		$client   = JRequest::getVar('client'  , '', 'default', 'cmd');
-		$tag      = JRequest::getVar('tag'     , '', 'default', 'cmd');
-		$filename = JRequest::getVar('filename', '', 'default', 'cmd');
-		$storage  = JRequest::getVar('storage' , '', 'default', 'cmd');
+		$client   = $input->getCmd('client', '');
+		$tag      = $input->getCmd('tag'     , '');
+		$filename = $input->getCmd('filename', '');
+		$storage  = $input->getCmd('storage' , '');
 
 		$this->setState('translation.client'  , !empty($client) ? $client : 'site');
 		$this->setState('translation.tag'     , $tag);
@@ -40,11 +42,11 @@ class LocaliseModelTranslation extends JModelForm
 		$this->setState('translation.storage' , $storage);
 
 		// Get the id
-		$id = JRequest::getVar('id', '0', 'default', 'int');
+		$id = $input->getInt('id', '0');
 		$this->setState('translation.id', $id);
 
 		// Get the layout
-		$layout = JRequest::getVar('layout', 'edit', 'default', 'cmd');
+		$layout = $input->getCmd('layout', 'edit');
 		$this->setState('translation.layout', $layout);
 
 		// Get the parameters
@@ -170,7 +172,7 @@ class LocaliseModelTranslation extends JModelForm
 					$lineNumber = 0;
 
 					$params = JComponentHelper::getParams('com_localise');
-					$isTranslationsView = JRequest::getVar('view') == 'translations';
+					$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
 
 					while (!$stream->eof())
 					{

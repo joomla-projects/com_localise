@@ -32,10 +32,10 @@ class LocaliseModelExportPackage extends JModelItem
 	/**
 	 * Method to auto-populate the model state.
 	 */
-	protected function populateState() 
+	protected function populateState()
 	{
 		// Get the data
-		$data = JRequest::getVar('jform', array(), 'post', 'array');
+		$data = JFactory::getApplication()->input->post->get('jform', array(), 'array');
 
 		// Initialise variables
 		$config        = JFactory::getConfig();
@@ -63,7 +63,7 @@ class LocaliseModelExportPackage extends JModelItem
 	/**
 	 * Get the item
 	 */
-	public function getItem() 
+	public function getItem()
 	{
 		// Get variables
 		$packageName        = $this->getState('exportpackage.name');
@@ -78,7 +78,7 @@ class LocaliseModelExportPackage extends JModelItem
 		$id   = LocaliseHelper::getFileId($path);
 
 		// Check if the package exists
-		if (empty($id)) 
+		if (empty($id))
 		{
 			$this->setError('COM_LOCALISE_ERROR_EXPORT_UNEXISTING', $packageName);
 			return false;
@@ -91,7 +91,7 @@ class LocaliseModelExportPackage extends JModelItem
 		$package = $model->getItem();var_dump($package); //jexit();
 
 		// Check if the package is correct
-		if (count($package->getErrors())) 
+		if (count($package->getErrors()))
 		{
 			$this->setError(implode('<br />', $package->getErrors()));
 			return false;
@@ -99,11 +99,11 @@ class LocaliseModelExportPackage extends JModelItem
 
 		// Check if the manifest exists
 		$manifest = JPATH_MANIFESTS . '/files/' . $package->manifest . '.xml';
-		if (JFile::exists($manifest)) 
+		if (JFile::exists($manifest))
 		{
 			// Get the key name and key description in the manifest
 			$xml = JFactory::getXML($manifest);
-			if ($xml) 
+			if ($xml)
 			{
 				$keyName        = (string)$xml->name;
 				$keyDescription = (string)$xml->description;
@@ -128,11 +128,11 @@ class LocaliseModelExportPackage extends JModelItem
 
 		$files = array();
 
-		foreach ($tags as $i => $tag) 
+		foreach ($tags as $i => $tag)
 		{
 			$langPath = "language/$tag/$tag.$keyName.ini";
 
-			if (JFile::exists(JPATH_SITE . "/$langPath")) 
+			if (JFile::exists(JPATH_SITE . "/$langPath"))
 			{
 				$files[$tag] = array();
 				$files[$tag]['name'] = $langPath;
@@ -181,7 +181,7 @@ class LocaliseModelExportPackage extends JModelItem
 	</fileset>
 	<languages>';
 
-		foreach ($tags as $tag) 
+		foreach ($tags as $tag)
 		{
 			$files['manifest']['data'].= '<language tag="' . $tag . '">language/' . $tag . '/' . $tag . '.' . $keyName . '.ini</language>';
 			$files['manifest']['data'].= '<language tag="' . $tag . '">language/' . $tag . '/' . $tag . '.' . $keyName . '.manage.ini</language> ';
@@ -195,9 +195,9 @@ class LocaliseModelExportPackage extends JModelItem
 		// Delete old files
 		$delete = JFolder::files(JPATH_ROOT . '/tmp/', 'com_localise_', false, true);
 
-		if (!empty($delete)) 
+		if (!empty($delete))
 		{
-			if (!JFile::delete($delete)) 
+			if (!JFile::delete($delete))
 			{
 				// JFile::delete throws an error
 				$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPDELETE'));
@@ -206,12 +206,12 @@ class LocaliseModelExportPackage extends JModelItem
 		}
 
 		// Run the packager
-		if (!$packager = JArchive::getAdapter('zip')) 
+		if (!$packager = JArchive::getAdapter('zip'))
 		{
 			$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
 			return false;
 		}
-		else if (!$packager->create($ziproot, $files)) 
+		else if (!$packager->create($ziproot, $files))
 		{
 			$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
 			return false;
@@ -223,4 +223,4 @@ class LocaliseModelExportPackage extends JModelItem
 		$item->contents = file_get_contents($ziproot);
 		return $item;
 	}
-} 
+}
