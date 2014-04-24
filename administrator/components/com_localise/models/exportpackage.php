@@ -99,7 +99,7 @@ class LocaliseModelExportPackage extends JModelItem
 
 		// Check if the manifest exists
 		$manifest = JPATH_MANIFESTS . '/files/' . $package->manifest . '.xml';
-		if (JFile::exists($manifest))
+		if (is_file($manifest))
 		{
 			// Get the key name and key description in the manifest
 			$xml = simplexml_load_file($manifest);
@@ -132,11 +132,11 @@ class LocaliseModelExportPackage extends JModelItem
 		{
 			$langPath = "language/$tag/$tag.$keyName.ini";
 
-			if (JFile::exists(JPATH_SITE . "/$langPath"))
+			if (is_file(JPATH_SITE . "/$langPath"))
 			{
 				$files[$tag] = array();
 				$files[$tag]['name'] = $langPath;
-				$files[$tag]['data'] = JFile::read(JPATH_SITE . "/$langPath");
+				$files[$tag]['data'] = file_get_contents(JPATH_SITE . "/$langPath");
 				$files[$tag]['time'] = time();
 				$files[$tag . '.manage'] = array();
 				$files[$tag . '.manage']['name'] = "language/$tag/$tag.$keyName.manage.ini";
@@ -158,7 +158,7 @@ class LocaliseModelExportPackage extends JModelItem
 
 		$files['package'] = array();
 		$files['package']['name'] = "packages/$packageName.xml";
-		$files['package']['data'] = JFile::read($path);
+		$files['package']['data'] = file_get_contents($path);
 		$files['package']['time'] = time();
 
 		$files['manifest'] = array();
