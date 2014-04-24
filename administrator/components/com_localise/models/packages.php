@@ -27,12 +27,12 @@ class LocaliseModelPackages extends JModelList
 	/**
 	 * Autopopulate the model
 	 */
-	protected function populateState($ordering = null, $direction = null) 
+	protected function populateState($ordering = null, $direction = null)
 	{
-		$app  = JFactory::getApplication('administrator');
-		$data = JRequest::getVar('filters');
+		$app  = JFactory::getApplication();
+		$data = $app->input->get('filters');
 
-		if (empty($data)) 
+		if (empty($data))
 		{
 			$data = array();
 			$data['search'] = $app->getUserState('com_localise.packages.search');
@@ -49,25 +49,25 @@ class LocaliseModelPackages extends JModelList
 		parent::populateState('title', 'asc');
 	}
 
-	private function _getPackages() 
+	private function _getPackages()
 	{
-		if (!isset($this->packages)) 
+		if (!isset($this->packages))
 		{
 			$search = $this->getState('filter.search');
 			$this->packages = array();
 			$path = JPATH_COMPONENT_ADMINISTRATOR . '/packages';
 
-			if (JFolder::exists($path)) 
+			if (JFolder::exists($path))
 			{
 				$files = JFolder::files($path, '\.xml$');
-				foreach ($files as $file) 
+				foreach ($files as $file)
 				{
 					$model = JModelLegacy::getInstance('Package', 'LocaliseModel', array('ignore_request' => true));
 					$id    = LocaliseHelper::getFileId("$path/$file");
 					$model->setState('package.id', $id);
 					$package = $model->getItem();
 
-					if (empty($search) || preg_match("/$search/i", $package->title)) 
+					if (empty($search) || preg_match("/$search/i", $package->title))
 					{
 						$this->packages[] = $package;
 					}
@@ -81,20 +81,20 @@ class LocaliseModelPackages extends JModelList
 		return $this->packages;
 	}
 
-	public function getItems() 
+	public function getItems()
 	{
-		if (empty($this->items)) 
+		if (empty($this->items))
 		{
 			$packages = $this->_getPackages();
 			$count    = count($packages);
 			$start    = $this->getState('list.start');
 			$limit    = $this->getState('list.limit');
 
-			if ($start > $count) 
+			if ($start > $count)
 			{
 				$start = 0;
 			}
-			if ($limit == 0) 
+			if ($limit == 0)
 			{
 				$start = 0;
 				$limit = null;
@@ -106,7 +106,7 @@ class LocaliseModelPackages extends JModelList
 		return $this->items;
 	}
 
-	public function getTotal() 
+	public function getTotal()
 	{
 		return count($this->_getPackages());
 	}
@@ -116,7 +116,7 @@ class LocaliseModelPackages extends JModelList
 	 *
 	 * @return  mixed  JForm object on success, false on failure.
 	 */
-	public function getForm() 
+	public function getForm()
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication();
@@ -129,7 +129,7 @@ class LocaliseModelPackages extends JModelList
 		$form = JForm::getInstance('com_localise.packages', 'packages', array('control' => 'filters', 'event' => 'onPrepareForm'));
 
 		// Check for an error.
-		if (JError::isError($form)) 
+		if (JError::isError($form))
 		{
 			$this->setError($form->getMessage());
 			return false;
@@ -139,7 +139,7 @@ class LocaliseModelPackages extends JModelList
 		$data = $app->getUserState('com_localise.select', array());
 
 		// Bind the form data if present.
-		if (!empty($data)) 
+		if (!empty($data))
 		{
 			$form->bind(array('select' => $data));
 		}
@@ -148,7 +148,7 @@ class LocaliseModelPackages extends JModelList
 		$data = $app->getUserState('com_localise.packages.search', array());
 
 		// Bind the form data if present.
-		if (!empty($data)) 
+		if (!empty($data))
 		{
 			$form->bind(array('search' => $data));
 		}
@@ -161,12 +161,12 @@ class LocaliseModelPackages extends JModelList
 	 *
 	 * @return  boolean  true for success, false for failure
 	 */
-	public function delete($selected) 
+	public function delete($selected)
 	{
-		foreach ($selected as $package) 
+		foreach ($selected as $package)
 		{
 			$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$package.xml";
-			if (!JFile::delete($path)) 
+			if (!JFile::delete($path))
 			{
 				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGES_REMOVE', $package));
 				return false;
