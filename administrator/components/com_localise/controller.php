@@ -31,7 +31,7 @@ class LocaliseController extends JControllerLegacy
 		}
 		else
 		{
-			JRequest::setVar('view', $vName);
+			$this->input->set('view', $vName);
 		}
 
 		parent::display($cachable, $urlparams);

@@ -12,18 +12,23 @@ defined('_JEXEC') or die;
 /**
  * Languages Controller class for the Localise component
  *
- * @package    Extensions.Components
- * @subpackage Localise
+ * @package     Extensions.Components
+ * @subpackage  Localise
+ * @since       1.0
  */
 class LocaliseControllerLanguages extends JControllerLegacy
 {
 	/**
-	 * Proxy for getModel.
+	 * Method to get a model object, loading it if required.
+	 *
+	 * @param   string  $name    The model name.
+	 * @param   string  $prefix  The class prefix.
+	 * @param   array   $config  Configuration array for model.
+	 *
+	 * @return  object  The model.
 	 */
-
-	public function &getModel($name = 'Languages', $prefix = 'LocaliseModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Languages', $prefix = 'LocaliseModel', $config = array('ignore_request' => true))
 	{
-		$model = parent::getModel($name, $prefix, $config);
-		return $model;
+		return parent::getModel($name, $prefix, $config);
 	}
 }

@@ -30,7 +30,7 @@ class LocaliseViewLanguages extends JViewLegacy
 	 *
 	 * @return  void
 	 */
-	function display($tpl = null) 
+	function display($tpl = null)
 	{
 		// Get the data
 		$this->items      = $this->get('Items');
@@ -41,7 +41,7 @@ class LocaliseViewLanguages extends JViewLegacy
 		LocaliseHelper::addSubmenu('languages');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
+		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
 			return false;
@@ -60,19 +60,19 @@ class LocaliseViewLanguages extends JViewLegacy
 	 *
 	 * @since   1.6
 	 */
-	protected function addToolbar() 
+	protected function addToolbar()
 	{
-		$canDo = LocaliseHelper::getActions();
+		$canDo = JHelperContent::getActions('com_localise', 'component');
 
 		JToolbarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', JText::_('COM_LOCALISE_HEADER_LANGUAGES')), 'comments-2 langmanager');
 
-		if ($canDo->get('localise.create')) 
+		if ($canDo->get('localise.create'))
 		{
 			JToolbarHelper::addNew('language.add');
 			JToolbarHelper::divider();
 		}
 
-		if ($canDo->get('core.admin')) 
+		if ($canDo->get('core.admin'))
 		{
 			JToolbarHelper::preferences('com_localise');
 			JToolbarHelper::divider();

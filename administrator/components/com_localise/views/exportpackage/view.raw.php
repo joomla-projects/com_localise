@@ -22,20 +22,19 @@ class LocaliseViewExportPackage extends JViewLegacy
 	/**
 	 * Display the view
 	 */
-	public function display($tpl = null) 
+	public function display($tpl = null)
 	{
 		$item = $this->get('Item');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
+		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
 			return false;
 		}
 
-		$document = JFactory::getDocument();
-		$document->setMimeEncoding('application/zip');
-		JResponse::setHeader('Content-disposition', 'attachment; filename="' . $item->filename . '.zip"; creation-date="' . JFactory::getDate()->toRFC822() . '"', true);
+		JFactory::getDocument()->setMimeEncoding('application/zip');
+		JFactory::getApplication()->setHeader('Content-disposition', 'attachment; filename="' . $item->filename . '.zip"; creation-date="' . JFactory::getDate()->toRFC822() . '"', true);
 		echo $item->contents;
 	}
 }

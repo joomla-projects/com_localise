@@ -8,11 +8,9 @@
 # Websites: http://joomlacode.org/gf/project/com_localise/
 # Technical Support:  Forum - http://joomlacode.org/gf/project/com_localise/forum/
 -------------------------------------------------------------------------*/
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+// No direct access
+defined('_JEXEC') or die;
 
-// import Joomla table library
-jimport('joomla.database.table');
 
 /**
  * Localise Table class for the Localise Component
@@ -54,7 +52,7 @@ class LocaliseTableLocalise extends JTable
    *
    * @param object Database connector object
    */
-  function LocaliseTableLocalise(&$db) 
+  function __construct(&$db) 
   {
     parent::__construct('#__localise', 'id', $db);
   }

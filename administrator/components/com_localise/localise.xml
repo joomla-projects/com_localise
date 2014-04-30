@@ -6,12 +6,13 @@
 	<author>Christophe Demko</author>
 	<author>Jean-Marie Simonet</author>
 	<author>Ifan Evans</author>
-	<copyright>(C) 2005 - 2013 Open Source Matters. All rights reserved.</copyright>
-	<authorEmail>m.h.eghtedar@gmail.com</authorEmail>
-	<authorUrl>http://joomlacode.org/gf/project/com_localise/</authorUrl>
-	<version>3.2.1</version>
+	<copyright>(C) 2014 Open Source Matters. All rights reserved.</copyright>
+	<authorEmail>admin@joomla.org</authorEmail>
+	<authorUrl>https://github.com/joomla-projects/com_localise</authorUrl>
+	<version>4.0.0-dev</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>COM_LOCALISE_XML_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
 	<install>
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
@@ -27,7 +28,7 @@
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
 		</schemas>
 	</update>
-	<media destination="com_localise" folder="media/com_localise">
+	<media destination="com_localise" folder="media">
 		<folder>codemirror</folder>
 		<folder>css</folder>
 		<folder>images</folder>
@@ -40,9 +41,9 @@
 		<submenu>
 			<menu img="class:languages" view="languages">COM_LOCALISE_LANGUAGES</menu>
 			<menu img="class:translations" view="translations">COM_LOCALISE_TRANSLATIONS</menu>
-			<!-- menu img="class:packages" view="packages">COM_LOCALISE_PACKAGES</menu -->
+			<menu img="class:packages" view="packages">COM_LOCALISE_PACKAGES</menu>
 		</submenu>
-		<files folder="administrator/components/com_localise">
+		<files folder="admin">
 			<folder>controllers</folder>
 			<folder>help</folder>
 			<folder>helpers</folder>

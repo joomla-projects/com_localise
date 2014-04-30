@@ -14,32 +14,40 @@ defined('_JEXEC') or die;
  *
  * @package     Extensions.Components
  * @subpackage  Localise
+ * @since       1.0
  */
 class LocaliseControllerPackage extends JControllerForm
 {
 	protected $_context = 'com_localise.package';
 
-	public function __construct($config = array()) 
+	/**
+	 * Constructor
+	 *
+	 * @param   array  $config  constructor parameters
+	 */
+	public function __construct($config = array())
 	{
 		parent::__construct($config);
 
 		// Initialise variables.
 		$app = JFactory::getApplication();
+		$input = $app->input;
 
 		// Get the id
-		$cid = JRequest::getVar('cid', array(), 'default', 'array');
+		$cid = $input->get('cid', array(), 'array');
 		$cid = count($cid) ? $cid[0] : '';
-		if (!empty($cid)) 
+
+		if (!empty($cid))
 		{
 			// From the packages view
-			$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$cid.xml"; 
 			$name = $cid;
+			$path = JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $name . '.xml';
 			$id   = LocaliseHelper::getFileId($path);
 		}
 		else
 		{
 			// From the package view
-			$data = JRequest::getVar('jform', array(), 'default', 'array');
+			$data = $input->get('jform', array(), 'array');
 			$id   = $data['id'];
 			$name = $data['name'];
 		}
@@ -49,13 +57,13 @@ class LocaliseControllerPackage extends JControllerForm
 		$app->setUserState('com_localise.package.name', $name);
 
 		// Set the id and unset the cid
-		if (!empty($id) && JRequest::getVar('task') == 'add') 
+		if (!empty($id) && $input->get('task') == 'add')
 		{
-			JRequest::setVar('task', 'edit');
+			$input->set('task', 'edit');
 		}
 
-		JRequest::setVar('id', $id);
-		JRequest::setVar('cid', array());
+		$input->set('id', $id);
+		$input->set('cid', array());
 	}
 
 	/**
@@ -63,12 +71,13 @@ class LocaliseControllerPackage extends JControllerForm
 	 *
 	 * Extended classes can override this if necessary.
 	 *
-	 * @param  array  An array of input data.
+	 * @param   array  $data  An array of input data.
 	 *
 	 * @return  boolean
 	 */
-	protected function _allowAdd($data = array()) 
+	protected function _allowAdd($data = array())
 	{
+		// @todo: $data parameter is unused
 		return JFactory::getUser()->authorise('localise.create', $this->_option);
 	}
 
@@ -77,12 +86,12 @@ class LocaliseControllerPackage extends JControllerForm
 	 *
 	 * Extended classes can override this if necessary.
 	 *
-	 * @param  array  An array of input data.
-	 * @param  string  The name of the key for the primary key.
+	 * @param   array   $data  An array of input data.
+	 * @param   string  $key   The name of the key for the primary key.
 	 *
 	 * @return  boolean
 	 */
-	protected function _allowEdit($data = array(), $key = 'id') 
+	protected function _allowEdit($data = array(), $key = 'id')
 	{
 		return JFactory::getUser()->authorise('localise.edit', $this->_option . '.' . $data[$key]);
 	}
@@ -90,52 +99,57 @@ class LocaliseControllerPackage extends JControllerForm
 	/**
 	 * Method to get a model object, loading it if required.
 	 *
-	 * @param  string  The model name. Optional.
-	 * @param  string  The class prefix. Optional.
-	 * @param  array  Configuration array for model. Optional.
+	 * @param   string  $name    The model name. Optional.
+	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
 	 *
 	 * @return  object  The model.
 	 */
-	public function getModel($name = 'Package', $prefix = 'LocaliseModel', $config = array('ignore_request' => false)) 
+	public function getModel($name = 'Package', $prefix = 'LocaliseModel', $config = array('ignore_request' => false))
 	{
 		return parent::getModel($name, $prefix, $config);
 	}
 
-	public function download() 
+	/**
+	 * Todo: description missing
+	 *
+	 * @return void
+	 */
+	public function download()
 	{
 		// Redirect to the export view
 		$app  = JFactory::getApplication();
 		$name = $app->getUserState('com_localise.package.name');
-		$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$name.xml";
+		$path = JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $name . '.xml';
 		$id   = LocaliseHelper::getFileId($path);
 
 		// Check if the package exists
-		if (empty($id)) 
+		if (empty($id))
 		{
 			$this->setRedirect(JRoute::_('index.php?option=' . $this->_option . '&view=packages', false), JText::sprintf('COM_LOCALISE_ERROR_DOWNLOADPACKAGE_UNEXISTING', $name), 'error');
 		}
 		else
 		{
 			$model   = $this->getModel();
-			$package = $model->getItem();  
+			$package = $model->getItem();
 
-			if (!$package->standalone) 
+			if (!$package->standalone)
 			{
 				$msg  = JText::sprintf('COM_LOCALISE_NOTICE_DOWNLOADPACKAGE_NOTSTANDALONE', $name);
 				$type = 'notice';
 			}
 			else
-			{ 
+			{
 				$msg  = '';
 				$type = 'message';
 			}
 
-			setcookie(JApplication::getHash($this->_context . '.author'   ), $package->author   , time()+60*60*24*30);
-			setcookie(JApplication::getHash($this->_context . '.copyright'), $package->copyright, time()+60*60*24*30);
-			setcookie(JApplication::getHash($this->_context . '.email'    ), $package->email    , time()+60*60*24*30);
-			setcookie(JApplication::getHash($this->_context . '.url'      ), $package->url      , time()+60*60*24*30);
-			setcookie(JApplication::getHash($this->_context . '.version'  ), $package->version  , time()+60*60*24*30);
-			setcookie(JApplication::getHash($this->_context . '.license'  ), $package->license  , time()+60*60*24*30);
+			setcookie(JApplicationHelper::getHash($this->_context . '.author'), $package->author, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->_context . '.copyright'), $package->copyright, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->_context . '.email'), $package->email, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->_context . '.url'), $package->url, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->_context . '.version'), $package->version, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->_context . '.license'), $package->license, time() + 60 * 60 * 24 * 30);
 
 			$this->setRedirect(JRoute::_('index.php?option=com_localise&tmpl=component&view=downloadpackage&name=' . $name . '&standalone=' . $package->standalone, false), $msg, $type);
 		}
