@@ -7,7 +7,7 @@ Yoshiki Kozaki, Mohammad Hasani Eghtedar,Christophe Demko, Jean-Marie Simonet an
 
 We (the Joomla! Internationalisation Working Group) are forking it for experimental purposes.
 
-If you want to join the effort please contact us!
+If you want to join the effort please contact us!.
 
 # Travis Status
 Develop: [![Build Status](https://travis-ci.org/joomla-projects/com_localise.png)](https://travis-ci.org/joomla-projects/com_localise)
