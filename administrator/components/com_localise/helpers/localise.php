@@ -425,7 +425,7 @@ abstract class LocaliseHelper
 
 			$db->setQuery(
 				$db->getQuery(true)
-					->select($db->quoteName(array('id, path')))
+					->select($db->quoteName(array('id', 'path')))
 					->from($db->quoteName('#__localise'))
 			);
 
