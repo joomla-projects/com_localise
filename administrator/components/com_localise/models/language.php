@@ -193,19 +193,19 @@ class LocaliseModelLanguage extends JModelForm
 				{
 					foreach ($xml->children() as $node)
 					{
-						if ($node->name() == 'metadata')
+						if ($node->getName() == 'metadata')
 						{
 							// metadata nodes
 							foreach ($node->children() as $subnode)
 							{
-								$property = $subnode->name();
+								$property = $subnode->getName();
 								$language->$property = $subnode;
 							}
 						}
 						else
 						{
 							// main nodes
-							$property = $node->name();
+							$property = $node->getName();
 
 							if ($property == 'copyright')
 							{
