@@ -30,7 +30,7 @@ class LocaliseModelPackages extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app  = JFactory::getApplication();
-		$data = $app->input->get('filters');
+		$data = $app->input->get('filters', array(), 'array');
 
 		if (empty($data))
 		{
