@@ -53,7 +53,7 @@
 			class="ltr"
 			required="true"
 			pattern="[0-7]{4}"
-			default="0444"
+			default="0644"
 			label="COM_LOCALISE_LABEL_SAVE_PERMISSION"
 			description="COM_LOCALISE_LABEL_SAVE_PERMISSION_DESC" />
 		<field
@@ -63,12 +63,12 @@
 			description="COM_LOCALISE_LABEL_INSTALLATION_FOLDER_DESC"
 			hide_default="1"
 			default="installation"
-			exclude="administrator|component|cache|images|includes|language|libraries|logs|media|modules|plugins|templates|test|tmp|bin|cli|layouts" />
+			exclude="administrator|build|component|cache|images|includes|language|libraries|logs|media|modules|plugins|templates|test|tmp|bin|cli|layouts" />
 		<field
 			name="suffixes"
 			type="textarea"
 			class="ltr"
-			default=".sys,.menu"
+			default=".sys"
 			label="COM_LOCALISE_LABEL_SUFFIXES"
 			description="COM_LOCALISE_LABEL_SUFFIXES_DESC" />
 		<field
@@ -127,7 +127,7 @@
 		<field
 			name="rules"
 			type="rules"
-			label="JConfig_Permissions_Label"
+			label="JCONFIG_PERMISSIONS_LABEL"
 			filter="rules"
 			component="com_localise"
 			section="component" />
