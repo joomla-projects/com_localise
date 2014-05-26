@@ -14,18 +14,23 @@ jimport('joomla.filesystem.folder');
 /**
  * Languages Model class for the Localise component
  *
- * @package    Extensions.Components
- * @subpackage Localise
+ * @since  1.0
  */
 class LocaliseModelLanguages extends JModelList
 {
 	protected $filter_fields = array('tag', 'client');
+
 	protected $context = 'com_localise.languages';
+
 	protected $items;
+
 	protected $languages;
 
 	/**
 	 * Autopopulate the model
+	 *
+	 * @param null $ordering
+	 * @param null $direction
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
@@ -34,7 +39,7 @@ class LocaliseModelLanguages extends JModelList
 
 		if (empty($data))
 		{
-			$data = array();
+			$data           = array();
 			$data['select'] = $app->getUserState('com_localise.select');
 			$data['search'] = $app->getUserState('com_localise.languages.search');
 		}
@@ -44,9 +49,11 @@ class LocaliseModelLanguages extends JModelList
 			$app->setUserState('com_localise.languages.search', $data['search']);
 		}
 
-		$this->setState('filter.search', isset($data['search']['expr'])   ? $data['search']['expr']   : '');
+		$this->setState('filter.search', isset($data['search']['expr']) ? $data['search']['expr'] : '');
+
 		$this->setState('filter.client', isset($data['select']['client']) ? $data['select']['client'] : '');
-		$this->setState('filter.tag'   , isset($data['select']['tag'])    ? $data['select']['tag']    : '');
+
+		$this->setState('filter.tag', isset($data['select']['tag']) ? $data['select']['tag'] : '');
 
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_localise');
@@ -70,12 +77,13 @@ class LocaliseModelLanguages extends JModelList
 		jimport('joomla.form.form');
 		JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
 		JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
-		$form = JForm::getInstance('com_localise.languages', 'languages', array('control' => 'filters', 'event' => 'onPrepareForm'));
+		$form = JForm::getInstance('com_localise.languages', 'languages', array('control' => 'filters','event'   => 'onPrepareForm'));
 
 		// Check for an error.
 		if (JError::isError($form))
 		{
 			$this->setError($form->getMessage());
+
 			return false;
 		}
 
@@ -110,9 +118,9 @@ class LocaliseModelLanguages extends JModelList
 		if (!isset($this->items))
 		{
 			$languages = $this->getLanguages();
-			$count = count($languages);
-			$start = $this->getState('list.start');
-			$limit = $this->getState('list.limit');
+			$count     = count($languages);
+			$start     = $this->getState('list.start');
+			$limit     = $this->getState('list.limit');
 
 			if ($start > $count)
 			{
@@ -126,6 +134,7 @@ class LocaliseModelLanguages extends JModelList
 			}
 
 			$this->items = array_slice($languages, $start, $limit);
+
 			foreach ($this->items as $i => $item)
 			{
 				$model = JModelLegacy::getInstance('Translations', 'LocaliseModel', array('ignore_request' => true));
@@ -158,13 +167,14 @@ class LocaliseModelLanguages extends JModelList
 		if (!isset($this->languages))
 		{
 			$this->languages = array();
-			$client = $this->getState('filter.client');
-			$tag    = $this->getState('filter.tag');
-			$search = $this->getState('filter.search');
+			$client          = $this->getState('filter.client');
+			$tag             = $this->getState('filter.tag');
+			$search          = $this->getState('filter.search');
 
 			if (empty($client))
 			{
 				$clients = array('site', 'administrator');
+
 				if (LocaliseHelper::hasInstallation())
 				{
 					$clients[] = 'installation';
@@ -179,20 +189,35 @@ class LocaliseModelLanguages extends JModelList
 			{
 				if (empty($tag))
 				{
-					$folders = JFolder::folders(constant('LOCALISEPATH_' . strtoupper($client)) . '/language', '.', false, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'pdf_fonts', 'overrides'));
+					$folders = JFolder::folders(
+											constant('LOCALISEPATH_' . strtoupper($client)) . '/language',
+												'.',
+												false,
+												false,
+												array('.svn', 'CVS','.DS_Store','__MACOSX','pdf_fonts','overrides')
+					);
 				}
 				else
 				{
-				$folders = JFolder::folders(constant('LOCALISEPATH_' . strtoupper($client)) . '/language', '^' . $tag . '$', false, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'pdf_fonts', 'overrides'));
+					$folders = JFolder::folders(
+						constant('LOCALISEPATH_' . strtoupper($client)) . '/language',
+							'^' . $tag . '$',
+							false,
+							false,
+							array('.svn','CVS','.DS_Store','__MACOSX','pdf_fonts','overrides')
+						);
 				}
 
 				foreach ($folders as $folder)
 				{
-					//move to first
+					// Move to first
 					$id = LocaliseHelper::getFileId(constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$folder/$folder.xml");
 
-					//if it was not found a file.
-					if($id < 1) continue;
+					// If it was not found a file.
+					if ($id < 1)
+					{
+						continue;
+					}
 
 					$model = JModelLegacy::getInstance('Language', 'LocaliseModel', array('ignore_request' => true));
 					$model->setState('language.tag', $folder);
@@ -200,6 +225,7 @@ class LocaliseModelLanguages extends JModelList
 					$model->setState('language.id', $id);
 
 					$language = $model->getItem();
+
 					if (empty($search) || preg_match("/$search/i", $language->name))
 					{
 						$this->languages[] = $language;
@@ -207,8 +233,13 @@ class LocaliseModelLanguages extends JModelList
 				}
 			}
 
-			$ordering = $this->getState('list.ordering') ? $this->getState('list.ordering') : 'name';
-			JArrayHelper::sortObjects($this->languages, $ordering, $this->getState('list.direction') == 'desc' ? -1 : 1);
+			$ordering = $this->getState('list.ordering')
+				? $this->getState('list.ordering')
+				: 'name';
+			JArrayHelper::sortObjects(
+							$this->languages,
+							$ordering, $this->getState('list.direction') == 'desc' ? -1 : 1
+			);
 		}
 
 		return $this->languages;
