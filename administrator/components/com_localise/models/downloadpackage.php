@@ -1,39 +1,40 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_localise
+ * @package     Com_Localise
+ * @subpackage  model
  *
- * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-jimport('joomla.utilities.utility');
+defined('_JEXEC') or die;
 
 /**
  * Download package Model class for the Localise component
  *
- * @package    Extensions.Components
- * @subpackage  Localise
+ * @since  1.0
  */
 class LocaliseModelDownloadPackage extends JModelForm
 {
-	protected $_context = 'com_localise.package';
+	protected $context = 'com_localise.package';
 
 	/**
 	 * Method to auto-populate the model state.
+	 *
+	 * @return void
 	 */
-	protected function populateState() 
+	protected function populateState()
 	{
 		// Get the data
 		$input      = JFactory::getApplication()->input;
 		$name       = $input->get('name');
 		$standalone = $input->get('standalone');
-		$author     = $input->cookie->getString(JApplicationHelper::getHash($this->_context . '.author'), '');
-		$copyright  = $input->cookie->getString(JApplicationHelper::getHash($this->_context . '.copyright'), '');
-		$email      = $input->cookie->getString(JApplicationHelper::getHash($this->_context . '.email'), '');
-		$url        = $input->cookie->getString(JApplicationHelper::getHash($this->_context . '.url'), '');
-		$version    = $input->cookie->getString(JApplicationHelper::getHash($this->_context . '.version'), '');
-		$license    = $input->cookie->getString(JApplicationHelper::getHash($this->_context . '.license'), '');
+		$author     = $input->cookie->getString(JApplicationHelper::getHash($this->context . '.author'), '');
+		$copyright  = $input->cookie->getString(JApplicationHelper::getHash($this->context . '.copyright'), '');
+		$email      = $input->cookie->getString(JApplicationHelper::getHash($this->context . '.email'), '');
+		$url        = $input->cookie->getString(JApplicationHelper::getHash($this->context . '.url'), '');
+		$version    = $input->cookie->getString(JApplicationHelper::getHash($this->context . '.version'), '');
+		$license    = $input->cookie->getString(JApplicationHelper::getHash($this->context . '.license'), '');
 
 		// Set the state
 		$this->setState('downloadpackage.name', $name);
@@ -49,28 +50,35 @@ class LocaliseModelDownloadPackage extends JModelForm
 	/**
 	 * Method to get the record form.
 	 *
+	 * @param   array  $data      Form data
+	 * @param   bool   $loadData  To be filled
+	 *
 	 * @return  mixed  JForm object on success, false on failure.
-	 * @since  1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_localise.downloadpackage', 'downloadpackage', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm(
+			'com_localise.downloadpackage',
+			'downloadpackage',
+			array('control'   => 'jform', 'load_data' => $loadData)
+		);
 
 		// Check for an error.
-		if (JError::isError($form)) 
+		if (JError::isError($form))
 		{
 			$this->setError($form->getMessage());
+
 			return false;
 		}
 
-		$form->setValue('name'     , NULL, $this->getState('downloadpackage.name'));  
-		$form->setValue('author'   , NULL, $this->getState('downloadpackage.author'));
-		$form->setValue('copyright', NULL, $this->getState('downloadpackage.copyright'));
-		$form->setValue('email'    , NULL, $this->getState('downloadpackage.email'));
-		$form->setValue('url'      , NULL, $this->getState('downloadpackage.url'));
-		$form->setValue('version'  , NULL, $this->getState('downloadpackage.version'));
-		$form->setValue('license'  , NULL, $this->getState('downloadpackage.license'));
+		$form->setValue('name', null, $this->getState('downloadpackage.name'));
+		$form->setValue('author', null, $this->getState('downloadpackage.author'));
+		$form->setValue('copyright', null, $this->getState('downloadpackage.copyright'));
+		$form->setValue('email', null, $this->getState('downloadpackage.email'));
+		$form->setValue('url', null, $this->getState('downloadpackage.url'));
+		$form->setValue('version', null, $this->getState('downloadpackage.version'));
+		$form->setValue('license', null, $this->getState('downloadpackage.license'));
 
 		return $form;
 	}
@@ -78,12 +86,11 @@ class LocaliseModelDownloadPackage extends JModelForm
 	/**
 	 * Method to get the Item.
 	 *
-	 * @return  mixed  JForm object on success, false on failure.
-	 * @since  1.6
+	 * @return   mixed  JForm object on success, false on failure.
 	 */
-	public function getItem() 
+	public function getItem()
 	{
-		$item = new JObject();
+		$item             = new JObject;
 		$item->standalone = $this->getState('downloadpackage.standalone');
 
 		return $item;

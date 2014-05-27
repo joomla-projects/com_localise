@@ -1,140 +1,185 @@
 <?php
-/*------------------------------------------------------------------------
-# com_localise - Localise
-# ------------------------------------------------------------------------
-# author  author Yoshiki Kozaki <info@joomler.net>
-# copyright Copyright (C) 2012 http://joomlacode.org/gf/project/com_localise/. All Rights Reserved.
-# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
-# Websites: http://joomlacode.org/gf/project/com_localise/
-# Technical Support:  Forum - http://joomlacode.org/gf/project/com_localise/forum/
--------------------------------------------------------------------------*/
-// no direct access
+/**
+ * @package     Com_Localise
+ * @subpackage  helper
+ *
+ * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
 defined('_JEXEC') or die;
 
-/*
- * Class:HTTPTranslator
- * Please see the following link
- * http://msdn.microsoft.com/en-us/library/hh454950.aspx
+/**
+ * Automatic translation class.
  *
- * Processing the translator request.
+ * @see    http://msdn.microsoft.com/en-us/library/hh454950.aspx
+ * @since  1.0
  */
-Class HTTPTranslator {
+Class HTTPTranslator
+{
+	/**
+	 * @var null
+	 * @Todo: add description to this property
+	 */
+	protected $authheader = null;
 
-  protected $authheader = null;
+	/**
+	 * Create and execute the HTTP CURL request.
+	 *
+	 * @param   string  $url         HTTP Url
+	 * @param   string  $authHeader  Authorisation Header string
+	 * @param   string  $postData    Data to post
+	 *
+	 * @return mixed
+	 *
+	 * @throws Exception
+	 */
+	public function curlRequest($url, $authHeader, $postData = '')
+	{
+		// Initialize the Curl Session.
+		$ch = curl_init();
 
-  /*
-   * Create and execute the HTTP CURL request.
-   *
-   * @param string $url    HTTP Url.
-   * @param string $authHeader Authorization Header string.
-   * @param string $postData   Data to post.
-   *
-   * @return string.
-   *
-   */
-  public function curlRequest($url, $authHeader, $postData=''){
-    //Initialize the Curl Session.
-    $ch = curl_init();
-    //Set the Curl url.
-    curl_setopt ($ch, CURLOPT_URL, $url);
-    //Set the HTTP HEADER Fields.
-    curl_setopt ($ch, CURLOPT_HTTPHEADER, array($authHeader,"Content-Type: text/xml"));
-    //CURLOPT_RETURNTRANSFER- TRUE to return the transfer as a string of the return value of curl_exec().
-    curl_setopt ($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    //CURLOPT_SSL_VERIFYPEER- Set FALSE to stop cURL from verifying the peer's certificate.
-    curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, False);
-    if($postData) {
-      //Set HTTP POST Request.
-      curl_setopt($ch, CURLOPT_POST, TRUE);
-      //Set data to POST in HTTP "POST" Operation.
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-    }
-    //Execute the  cURL session.
-    $curlResponse = curl_exec($ch);
-    //Get the Error Code returned by Curl.
-    $curlErrno = curl_errno($ch);
-    if ($curlErrno) {
-      $curlError = curl_error($ch);
-      throw new Exception($curlError);
-    }
-    //Close a cURL session.
-    curl_close($ch);
-    return $curlResponse;
-  }
+		// Set the Curl url.
+		curl_setopt($ch, CURLOPT_URL, $url);
 
-  protected function getAuthHeader($clientID, $clientSecret)
-  {
-    if(!is_null($this->authheader))
-    {
-    return $this->authheader;
-    }
+		// Set the HTTP HEADER Fields.
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array($authHeader, "Content-Type: text/xml"));
 
-    try {
-      require __DIR__. '/azuretoken.php';
-      //OAuth Url.
-      $authUrl    = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/";
-      //Application Scope Url
-      $scopeUrl   = "http://api.microsofttranslator.com";
-      //Application grant type
-      $grantType  = "client_credentials";
+		// CURLOPT_RETURNTRANSFER- TRUE to return the transfer as a string of the return value of curl_exec().
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-      //Create the AccessTokenAuthentication object.
-      $authObj    = new AccessTokenAuthentication();
-      //Get the Access token.
-      $accessToken  = $authObj->getTokens($grantType, $scopeUrl, $clientID, $clientSecret, $authUrl);
-      //Create the authorization Header string.
-      $this->authHeader = "Authorization: Bearer ". $accessToken;
+		// CURLOPT_SSL_VERIFYPEER- Set FALSE to stop cURL from verifying the peer's certificate.
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-      return $this->authHeader;
-    } catch(Exception $e) {
-    JError::raiseWarning('SOME_ERROR_CODE', $e->getMessage());
-    return false;
-    }
-  }
+		if ($postData)
+		{
+			// Set HTTP POST Request.
+			curl_setopt($ch, CURLOPT_POST, true);
 
-  /**
-   *
-   * @param string $clientID Client ID of the application.
-   * @param string $clientSecret Client Secret key of the application.
-   * @param string $from locale
-   * @param string $to locale
-   * @param string $string target text
-   *
-   * @return string
-   */
-  public function translate($clientID, $clientSecret, $to, $string, $from=null)
-  {
-    $string = trim($string);
-    if(JString::strlen($string) < 1){
-    return '';
-    }
+			// Set data to POST in HTTP "POST" Operation.
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+		}
 
-    try {
-      $authHeader = $this->getAuthHeader($clientID, $clientSecret);
+		// Execute the  cURL session.
+		$curlResponse = curl_exec($ch);
 
-       if(empty($from)){
-      //HTTP Detect Method URL.
-      $detectMethodUrl = "http://api.microsofttranslator.com/V2/Http.svc/Detect?text=".urlencode($string);
-      //Call the curlRequest.
-      $strResponse = $this->curlRequest($detectMethodUrl, $authHeader);
-      //Interprets a string of XML into an object.
-      $xmlObj = simplexml_load_string($strResponse);
-      foreach((array)$xmlObj[0] as $val){
-        $from = $val;
-      }
-      }
+		// Get the Error Code returned by Curl.
+		$curlErrno = curl_errno($ch);
 
-      $getTranslateurl = "http://api.microsofttranslator.com/V2/Http.svc/Translate?From=$from"
-      . "&To=$to&Text=". urlencode($string);
-      $curlResponse = $this->curlRequest($getTranslateurl, $authHeader);
+		if ($curlErrno)
+		{
+			$curlError = curl_error($ch);
+			throw new Exception($curlError);
+		}
 
-      //Interprets a string of XML into an object.
-      $xmlObj = simplexml_load_string($curlResponse);
-      return (string)$xmlObj;
+		// Close a cURL session.
+		curl_close($ch);
 
-    } catch (Exception $e) {
-      JError::raiseWarning('SOME_ERROR_CODE', $e->getMessage());
-      return '';
-    }
-  }
+		return $curlResponse;
+	}
+
+	/**
+	 * Get authentication header
+	 *
+	 * @param   string  $clientID      Client id
+	 * @param   string  $clientSecret  Client pass
+	 *
+	 * @return bool|null|string
+	 */
+	protected function getAuthHeader($clientID, $clientSecret)
+	{
+		if (!is_null($this->authheader))
+		{
+			return $this->authheader;
+		}
+
+		try
+		{
+			require __DIR__ . '/azuretoken.php';
+
+			// OAuth Url.
+			$authUrl = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/";
+
+			// Application Scope Url
+			$scopeUrl = "http://api.microsofttranslator.com";
+
+			// Application grant type
+			$grantType = "client_credentials";
+
+			// Create the AccessTokenAuthentication object.
+			$authObj = new AccessTokenAuthentication;
+
+			// Get the Access token.
+			$accessToken = $authObj->getTokens($grantType, $scopeUrl, $clientID, $clientSecret, $authUrl);
+
+			// Create the authorization Header string.
+			$this->authHeader = "Authorization: Bearer " . $accessToken;
+
+			return $this->authHeader;
+		}
+		catch (Exception $e)
+		{
+			JError::raiseWarning('SOME_ERROR_CODE', $e->getMessage());
+
+			return false;
+		}
+	}
+
+	/**
+	 * Translate a string
+	 *
+	 * @param   string  $clientID      Client ID of the application.
+	 * @param   string  $clientSecret  Client Secret key of the application.
+	 * @param   string  $to            Language into witch the string will be translated
+	 * @param   string  $string        Text to be translated
+	 * @param   string  $from          Original language of the passed string
+	 *
+	 * @return string
+	 */
+	public function translate($clientID, $clientSecret, $to, $string, $from = null)
+	{
+		$string = trim($string);
+
+		if (JString::strlen($string) < 1)
+		{
+			return '';
+		}
+
+		try
+		{
+			$authHeader = $this->getAuthHeader($clientID, $clientSecret);
+
+			if (empty($from))
+			{
+				// HTTP Detect Method URL.
+				$detectMethodUrl = "http://api.microsofttranslator.com/V2/Http.svc/Detect?text=" . urlencode($string);
+
+				// Call the curlRequest.
+				$strResponse = $this->curlRequest($detectMethodUrl, $authHeader);
+
+				// Interprets a string of XML into an object.
+				$xmlObj = simplexml_load_string($strResponse);
+
+				foreach ((array) $xmlObj[0] as $val)
+				{
+					$from = $val;
+				}
+			}
+
+			$getTranslateurl = "http://api.microsofttranslator.com/V2/Http.svc/Translate?From=$from"
+				. "&To=$to&Text=" . urlencode($string);
+			$curlResponse    = $this->curlRequest($getTranslateurl, $authHeader);
+
+			// Interprets a string of XML into an object.
+			$xmlObj = simplexml_load_string($curlResponse);
+
+			return (string) $xmlObj;
+		}
+		catch (Exception $e)
+		{
+			JError::raiseWarning('SOME_ERROR_CODE', $e->getMessage());
+
+			return '';
+		}
+	}
 }

@@ -1,9 +1,9 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_localise
+ * @package     Com_Localise
+ * @subpackage  model
  *
- * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -11,29 +11,33 @@ defined('_JEXEC') or die;
 
 jimport('joomla.filesystem.file');
 jimport('joomla.client.helper');
-jimport('joomla.access.rules' );
+jimport('joomla.access.rules');
 
 /**
  * Language model.
  *
- * @package     Joomla.Administrator
- * @subpackage  com_localise
+ * @since  1.0
  */
 class LocaliseModelLanguage extends JModelForm
 {
 	protected $context = 'com_localise.language';
 
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * @return  void
+	 */
 	protected function populateState()
 	{
 		$jinput = JFactory::getApplication()->input;
 
-		$client = $jinput->get('client', 'site' , 'cmd');
-		$tag    = $jinput->get('tag'   , '' , 'cmd');
-		$id     = $jinput->get('id'    , '0', 'int');
+		$client = $jinput->get('client', 'site', 'cmd');
+		$tag    = $jinput->get('tag', '', 'cmd');
+		$id     = $jinput->get('id', '0', 'int');
 
 		$this->setState('language.client', $client);
-		$this->setState('language.tag'   , $tag);
-		$this->setState('language.id'    , $id);
+		$this->setState('language.tag', $tag);
+		$this->setState('language.id', $id);
 
 		parent::populateState();
 	}
@@ -41,36 +45,44 @@ class LocaliseModelLanguage extends JModelForm
 	/**
 	 * Method to override check-out a row for editing.
 	 *
-	 * @param  int    The ID of the primary key.
+	 * @param   int  $pk  The ID of the primary key.
+	 *
 	 * @return  boolean
-	*/
+	 */
 	public function checkout($pk = null)
 	{
 		// Initialise variables.
-		$pk = (!empty($pk)) ? $pk : (int)$this->getState('language.id');
+		$pk = (!empty($pk))
+			? $pk
+			: (int) $this->getState('language.id');
+
 		return parent::checkout($pk);
 	}
 
 	/**
-	 * Method to checkin a row.
+	 * Method to checking a row.
 	 *
-	 * @param   integer  The ID of the primary key.
+	 * @param   int  $pk  The ID of the primary key.
 	 *
 	 * @return  boolean
 	 */
 	public function checkin($pk = null)
 	{
 		// Initialise variables.
-		$pk = (!empty($pk)) ? $pk : (int)$this->getState('language.id');
+		$pk = (!empty($pk))
+			? $pk
+			: (int) $this->getState('language.id');
+
 		return parent::checkin($pk);
 	}
 
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param   type     $type      The table type to instantiate
-	 * @param   string   $prefix    A prefix for the table class name. Optional.
-	 * @param   array    $options   Configuration array for model. Optional.
+	 * @param   string  $type    The table type to instantiate
+	 * @param   string  $prefix  A prefix for the table class name. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
+	 *
 	 * @return  JTable              A database object
 	 */
 	public function getTable($type = 'Localise', $prefix = 'LocaliseTable', $config = array())
@@ -83,19 +95,21 @@ class LocaliseModelLanguage extends JModelForm
 	 *
 	 * @param   array    $data      Data for the form.
 	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
 	 * @return  mixed               A JForm object on success, false on failure
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		return $this->loadForm('com_localise.language', 'language', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_localise.language', 'language', array('control'   => 'jform', 'load_data' => $loadData));
+
+		return $form;
 	}
 
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return  mixed  The data for the form.
-	 * @since  1.6
+	 * @return   mixed  The data for the form.
 	 */
 	protected function loadFormData()
 	{
@@ -110,19 +124,29 @@ class LocaliseModelLanguage extends JModelForm
 
 		if (empty($data))
 		{
-			$data = new JObject();
+			$data         = new JObject;
 			$data->client = $this->getState('language.client');
 		}
 
 		$data->joomlacopyright = sprintf("Copyright (C) 2005 - %s Open Source Matters. All rights reserved.", JFactory::getDate()->format('Y'));
 
 		// Fill with component params if data not exist
-		$params = JComponentHelper::getParams('com_localise');
-		$data->author      = isset($data->author)      ? $data->author      : $params->get('author');
-		$data->authorEmail = isset($data->authorEmail) ? $data->authorEmail : $params->get('authorEmail');
-		$data->authorUrl   = isset($data->authorUrl)   ? $data->authorUrl   : $params->get('authorUrl');
-		$data->copyright   = isset($data->copyright)   ? $data->copyright   : $params->get('copyright');
-		$data->license     = isset($data->license)     ? $data->license     : $params->get('license');
+		$params            = JComponentHelper::getParams('com_localise');
+		$data->author      = isset($data->author)
+			? $data->author
+			: $params->get('author');
+		$data->authorEmail = isset($data->authorEmail)
+			? $data->authorEmail
+			: $params->get('authorEmail');
+		$data->authorUrl   = isset($data->authorUrl)
+			? $data->authorUrl
+			: $params->get('authorUrl');
+		$data->copyright   = isset($data->copyright)
+			? $data->copyright
+			: $params->get('copyright');
+		$data->license     = isset($data->license)
+			? $data->license
+			: $params->get('license');
 
 		return $data;
 	}
@@ -146,6 +170,7 @@ class LocaliseModelLanguage extends JModelForm
 		if (JError::isError($form))
 		{
 			$this->setError($form->getMessage());
+
 			return false;
 		}
 
@@ -154,6 +179,8 @@ class LocaliseModelLanguage extends JModelForm
 
 	/**
 	 * Method to get the language.
+	 *
+	 * @return JObject
 	 */
 	public function getItem()
 	{
@@ -161,7 +188,7 @@ class LocaliseModelLanguage extends JModelForm
 		$client = $this->getState('language.client');
 		$tag    = $this->getState('language.tag');
 
-		$language = new JObject();
+		$language = new JObject;
 
 		$language->id          = $id;
 		$language->client      = $client;
@@ -195,16 +222,16 @@ class LocaliseModelLanguage extends JModelForm
 					{
 						if ($node->getName() == 'metadata')
 						{
-							// metadata nodes
+							// Metadata nodes
 							foreach ($node->children() as $subnode)
 							{
-								$property = $subnode->getName();
+								$property            = $subnode->getName();
 								$language->$property = $subnode;
 							}
 						}
 						else
 						{
-							// main nodes
+							// Main nodes
 							$property = $node->getName();
 
 							if ($property == 'copyright')
@@ -215,7 +242,7 @@ class LocaliseModelLanguage extends JModelForm
 								}
 								else
 								{
-									$language->copyright = array();
+									$language->copyright       = array();
 									$language->joomlacopyright = $node;
 								}
 							}
@@ -238,6 +265,13 @@ class LocaliseModelLanguage extends JModelForm
 		return $language;
 	}
 
+	/**
+	 * Saves a language
+	 *
+	 * @param   array  $data  Language data
+	 *
+	 * @return bool
+	 */
 	public function save($data = array())
 	{
 		$id     = $this->getState('language.id');
@@ -249,64 +283,64 @@ class LocaliseModelLanguage extends JModelForm
 		if ($exists && !empty($id) || !$exists && empty($id))
 		{
 			$text = '';
-			$text.= '<?xml version="1.0" encoding="utf-8"?>' . "\n";
-			$text.= '<metafile version="3.1" client="' . htmlspecialchars($client, ENT_COMPAT, 'UTF-8') . '">' . "\n";
-			$text.= "\t" . '<tag>' . htmlspecialchars($tag, ENT_COMPAT, 'UTF-8') . '</tag>' . "\n";
-			$text.= "\t" . '<name>' . htmlspecialchars($data['name'], ENT_COMPAT, 'UTF-8') . '</name>' . "\n";
-			$text.= "\t" . '<description>' . htmlspecialchars($data['description'], ENT_COMPAT, 'UTF-8') . '</description>' . "\n";
-			$text.= "\t" . '<version>' . htmlspecialchars($data['version'], ENT_COMPAT, 'UTF-8') . '</version>' . "\n";
-			$text.= "\t" . '<creationDate>' . htmlspecialchars($data['creationDate'], ENT_COMPAT, 'UTF-8') . '</creationDate>' . "\n";
-			$text.= "\t" . '<author>' . htmlspecialchars($data['author'], ENT_COMPAT, 'UTF-8') . '</author>' . "\n";
-			$text.= "\t" . '<authorEmail>' . htmlspecialchars($data['authorEmail'], ENT_COMPAT, 'UTF-8') . '</authorEmail>' . "\n";
-			$text.= "\t" . '<authorUrl>' . htmlspecialchars($data['authorUrl'], ENT_COMPAT, 'UTF-8') . '</authorUrl>' . "\n";
-			$text.= "\t" . '<copyright>' . htmlspecialchars($data['joomlacopyright'], ENT_COMPAT, 'UTF-8') . '</copyright>' . "\n";
+			$text .= '<?xml version="1.0" encoding="utf-8"?>' . "\n";
+			$text .= '<metafile version="3.1" client="' . htmlspecialchars($client, ENT_COMPAT, 'UTF-8') . '">' . "\n";
+			$text .= "\t" . '<tag>' . htmlspecialchars($tag, ENT_COMPAT, 'UTF-8') . '</tag>' . "\n";
+			$text .= "\t" . '<name>' . htmlspecialchars($data['name'], ENT_COMPAT, 'UTF-8') . '</name>' . "\n";
+			$text .= "\t" . '<description>' . htmlspecialchars($data['description'], ENT_COMPAT, 'UTF-8') . '</description>' . "\n";
+			$text .= "\t" . '<version>' . htmlspecialchars($data['version'], ENT_COMPAT, 'UTF-8') . '</version>' . "\n";
+			$text .= "\t" . '<creationDate>' . htmlspecialchars($data['creationDate'], ENT_COMPAT, 'UTF-8') . '</creationDate>' . "\n";
+			$text .= "\t" . '<author>' . htmlspecialchars($data['author'], ENT_COMPAT, 'UTF-8') . '</author>' . "\n";
+			$text .= "\t" . '<authorEmail>' . htmlspecialchars($data['authorEmail'], ENT_COMPAT, 'UTF-8') . '</authorEmail>' . "\n";
+			$text .= "\t" . '<authorUrl>' . htmlspecialchars($data['authorUrl'], ENT_COMPAT, 'UTF-8') . '</authorUrl>' . "\n";
+			$text .= "\t" . '<copyright>' . htmlspecialchars($data['joomlacopyright'], ENT_COMPAT, 'UTF-8') . '</copyright>' . "\n";
 
 			$data['copyright'] = explode("\n", $data['copyright']);
 
 			foreach ($data['copyright'] as $copyright)
 			{
-				if($copyright)
+				if ($copyright)
 				{
-					$text.= "\t" . '<copyright>' . htmlspecialchars($copyright, ENT_COMPAT, 'UTF-8') . '</copyright>' . "\n";
+					$text .= "\t" . '<copyright>' . htmlspecialchars($copyright, ENT_COMPAT, 'UTF-8') . '</copyright>' . "\n";
 				}
 			}
 
-			$text.= "\t" . '<license>' . htmlspecialchars($data['license'], ENT_COMPAT, 'UTF-8') . '</license>' . "\n";
+			$text .= "\t" . '<license>' . htmlspecialchars($data['license'], ENT_COMPAT, 'UTF-8') . '</license>' . "\n";
 
 			if ($tag == 'en-GB')
 			{
-				$text.= "\t" . '<files>' . "\n";
-				$xml  = simplexml_load_file($path);
+				$text .= "\t" . '<files>' . "\n";
+				$xml = simplexml_load_file($path);
 
 				foreach ($xml->files->children() as $file)
 				{
-					$text.= "\t\t" . '<filename>' . $file . '</filename>' . "\n";
+					$text .= "\t\t" . '<filename>' . $file . '</filename>' . "\n";
 				}
 
-				$text.= "\t" . '</files>' . "\n";
+				$text .= "\t" . '</files>' . "\n";
 			}
 			else
 			{
-				$text.= "\t" . '<files>' . "\n";
+				$text .= "\t" . '<files>' . "\n";
 				$xml = simplexml_load_file(constant('LOCALISEPATH_' . strtoupper($client)) . "/language/en-GB/en-GB.xml");
 
 				foreach ($xml->files->children() as $file)
 				{
-					$text.= "\t\t" . '<filename>' . str_replace('en-GB', $tag, $file) . '</filename>' . "\n";
+					$text .= "\t\t" . '<filename>' . str_replace('en-GB', $tag, $file) . '</filename>' . "\n";
 				}
 
-				$text.= "\t" . '</files>' . "\n";
+				$text .= "\t" . '</files>' . "\n";
 			}
 
-			$text.= "\t" . '<metadata>' . "\n";
-			$text.= "\t\t" . '<name>' . htmlspecialchars($data['name'], ENT_COMPAT, 'UTF-8') . '</name>' . "\n";
-			$text.= "\t\t" . '<tag>' . htmlspecialchars($data['tag'], ENT_COMPAT, 'UTF-8') . '</tag>' . "\n";
-			$text.= "\t\t" . '<rtl>' . htmlspecialchars($data['rtl'], ENT_COMPAT, 'UTF-8') . '</rtl>' . "\n";
-			$text.= "\t\t" . '<locale>' . htmlspecialchars($data['locale'], ENT_COMPAT, 'UTF-8') . '</locale>' . "\n";
-			$text.= "\t\t" . '<firstDay>' . htmlspecialchars($data['firstDay'], ENT_COMPAT, 'UTF-8') . '</firstDay>' . "\n";
-    		$text.= "\t" . '</metadata>' . "\n";
-			$text.= "\t" . '<params />' . "\n";
-			$text.= '</metafile>' . "\n";
+			$text .= "\t" . '<metadata>' . "\n";
+			$text .= "\t\t" . '<name>' . htmlspecialchars($data['name'], ENT_COMPAT, 'UTF-8') . '</name>' . "\n";
+			$text .= "\t\t" . '<tag>' . htmlspecialchars($data['tag'], ENT_COMPAT, 'UTF-8') . '</tag>' . "\n";
+			$text .= "\t\t" . '<rtl>' . htmlspecialchars($data['rtl'], ENT_COMPAT, 'UTF-8') . '</rtl>' . "\n";
+			$text .= "\t\t" . '<locale>' . htmlspecialchars($data['locale'], ENT_COMPAT, 'UTF-8') . '</locale>' . "\n";
+			$text .= "\t\t" . '<firstDay>' . htmlspecialchars($data['firstDay'], ENT_COMPAT, 'UTF-8') . '</firstDay>' . "\n";
+			$text .= "\t" . '</metadata>' . "\n";
+			$text .= "\t" . '<params />' . "\n";
+			$text .= '</metafile>' . "\n";
 
 			// Set FTP credentials, if given.
 			JClientHelper::setCredentialsFromRequest('ftp');
@@ -316,8 +350,10 @@ class LocaliseModelLanguage extends JModelForm
 			if ($exists && !$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, '0644'))
 			{
 				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_WRITABLE', $path));
+
 				return false;
 			}
+
 			$return = JFile::write($path, $text);
 
 			// Get the Localise parameters
@@ -330,12 +366,17 @@ class LocaliseModelLanguage extends JModelForm
 			if (!$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, $fileSavePermission))
 			{
 				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_UNWRITABLE', $path));
+
 				return false;
 			}
-			else if (!$return)
+			else
 			{
-				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_FILESAVE', $path));
-				return false;
+				if (!$return)
+				{
+					$this->setError(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_FILESAVE', $path));
+
+					return false;
+				}
 			}
 
 			$id = LocaliseHelper::getFileId($path);
@@ -344,6 +385,7 @@ class LocaliseModelLanguage extends JModelForm
 			// Bind the rules.
 			$table = $this->getTable();
 			$table->load($id);
+
 			if (isset($data['rules']))
 			{
 				$rules = new JAccessRules($data['rules']);
@@ -354,6 +396,7 @@ class LocaliseModelLanguage extends JModelForm
 			if (!$table->check())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -361,13 +404,16 @@ class LocaliseModelLanguage extends JModelForm
 			if (!$table->store())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
+
 			return true;
 		}
 		else
 		{
 			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_FILERESET', $path));
+
 			return false;
 		}
 	}
@@ -388,25 +434,29 @@ class LocaliseModelLanguage extends JModelForm
 
 		if ($tag == $default)
 		{
-			$this->setError(JText::sprintf('COM_LOCALISE_CANNOT_REMOVE_DEFAULT_LANGUAGE', $folder));
+			$this->setError(JText::sprintf('COM_LOCALISE_CANNOT_REMOVE_DEFAULT_LANGUAGE', $path));
+
 			return false;
 		}
 
 		if ($tag == 'en-GB')
 		{
 			$this->setError(JText::_('COM_LOCALISE_CANNOT_REMOVE_ENGLISH_LANGUAGE'));
+
 			return false;
 		}
 
 		if (!JFactory::getUser()->authorise('localise.delete', $this->option . '.' . $id))
 		{
 			$this->setError(JText::_('COM_LOCALISE_CANNOT_REMOVE_LANGUAGE'));
+
 			return false;
 		}
 
 		if (!JFolder::delete($path))
 		{
-			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGES_REMOVE', "$path/$folder"));
+			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGES_REMOVE', "$path"));
+
 			return false;
 		}
 

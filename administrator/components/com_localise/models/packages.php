@@ -1,9 +1,9 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_localise
+ * @package     Com_Localise
+ * @subpackage  model
  *
- * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -21,7 +21,9 @@ jimport('joomla.filesystem.file');
 class LocaliseModelPackages extends JModelList
 {
 	protected $context = 'com_localise.packages';
+
 	protected $items;
+
 	protected $packages;
 
 	/**
@@ -49,6 +51,11 @@ class LocaliseModelPackages extends JModelList
 		parent::populateState('title', 'asc');
 	}
 
+	/**
+	 * Get packages
+	 *
+	 * @return array
+	 */
 	private function _getPackages()
 	{
 		if (!isset($this->packages))
@@ -60,6 +67,7 @@ class LocaliseModelPackages extends JModelList
 			if (JFolder::exists($path))
 			{
 				$files = JFolder::files($path, '\.xml$');
+
 				foreach ($files as $file)
 				{
 					$model = JModelLegacy::getInstance('Package', 'LocaliseModel', array('ignore_request' => true));
@@ -81,6 +89,11 @@ class LocaliseModelPackages extends JModelList
 		return $this->packages;
 	}
 
+	/**
+	 * Get Items
+	 *
+	 * @return array|mixed
+	 */
 	public function getItems()
 	{
 		if (empty($this->items))
@@ -94,6 +107,7 @@ class LocaliseModelPackages extends JModelList
 			{
 				$start = 0;
 			}
+
 			if ($limit == 0)
 			{
 				$start = 0;
@@ -106,6 +120,11 @@ class LocaliseModelPackages extends JModelList
 		return $this->items;
 	}
 
+	/**
+	 * Get Total
+	 *
+	 * @return int
+	 */
 	public function getTotal()
 	{
 		return count($this->_getPackages());
@@ -132,6 +151,7 @@ class LocaliseModelPackages extends JModelList
 		if (JError::isError($form))
 		{
 			$this->setError($form->getMessage());
+
 			return false;
 		}
 
@@ -159,6 +179,8 @@ class LocaliseModelPackages extends JModelList
 	/**
 	 * Remove languages
 	 *
+	 * @param   array  $selected  array of selected packages
+	 *
 	 * @return  boolean  true for success, false for failure
 	 */
 	public function delete($selected)
@@ -166,9 +188,11 @@ class LocaliseModelPackages extends JModelList
 		foreach ($selected as $package)
 		{
 			$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$package.xml";
+
 			if (!JFile::delete($path))
 			{
 				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGES_REMOVE', $package));
+
 				return false;
 			}
 		}

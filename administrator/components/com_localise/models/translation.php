@@ -1,9 +1,9 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_localise
+ * @package     Com_Localise
+ * @subpackage  model
  *
- * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -13,33 +13,36 @@ jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.stream');
 jimport('joomla.client.helper');
-jimport('joomla.access.rules' );
+jimport('joomla.access.rules');
 
 /**
  * Translation Model class for the Localise component
  *
- * @package     Extensions.Components
- * @subpackage  Localise
+ * @since  1.0
  */
 class LocaliseModelTranslation extends JModelForm
 {
 	protected $item;
+
 	protected $contents;
 
+	/**
+	 *
+	 */
 	protected function populateState()
 	{
 		$input = JFactory::getApplication()->input;
 
 		// Get the infos
 		$client   = $input->getCmd('client', '');
-		$tag      = $input->getCmd('tag'     , '');
+		$tag      = $input->getCmd('tag', '');
 		$filename = $input->getCmd('filename', '');
-		$storage  = $input->getCmd('storage' , '');
+		$storage  = $input->getCmd('storage', '');
 
-		$this->setState('translation.client'  , !empty($client) ? $client : 'site');
-		$this->setState('translation.tag'     , $tag);
+		$this->setState('translation.client', !empty($client) ? $client : 'site');
+		$this->setState('translation.tag', $tag);
 		$this->setState('translation.filename', $filename);
-		$this->setState('translation.storage' , $storage);
+		$this->setState('translation.storage', $storage);
 
 		// Get the id
 		$id = $input->getInt('id', '0');
@@ -58,13 +61,14 @@ class LocaliseModelTranslation extends JModelForm
 
 		// Get the paths
 		$path = LocaliseHelper::getTranslationPath($client, $tag, $filename, $storage);
+
 		if ($filename == 'lib_joomla')
 		{
 			$refpath = LocaliseHelper::findTranslationPath('administrator', $ref, $filename);
 
 			if (!JFile::exists($path))
 			{
-				$path2 = LocaliseHelper::getTranslationPath($client=='administrator' ? 'site' : 'administrator', $tag, $filename, $storage);
+				$path2 = LocaliseHelper::getTranslationPath($client == 'administrator' ? 'site' : 'administrator', $tag, $filename, $storage);
 
 				if (JFile::exists($path2))
 				{
@@ -84,9 +88,10 @@ class LocaliseModelTranslation extends JModelForm
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param   type    $type     The table type to instantiate
-	 * @param   string  $prefix   A prefix for the table class name. Optional.
-	 * @param   array   $options  Configuration array for model. Optional.
+	 * @param   type    $type    The table type to instantiate
+	 * @param   string  $prefix  A prefix for the table class name. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
+	 *
 	 * @return  JTable  A database object
 	 */
 	public function getTable($type = 'Localise', $prefix = 'LocaliseTable', $config = array())
@@ -94,6 +99,11 @@ class LocaliseModelTranslation extends JModelForm
 		return JTable::getInstance($type, $prefix, $config);
 	}
 
+	/**
+	 * Get contents
+	 *
+	 * @return string
+	 */
 	public function getContents()
 	{
 		if (!isset($this->contents))
@@ -113,6 +123,11 @@ class LocaliseModelTranslation extends JModelForm
 		return $this->contents;
 	}
 
+	/**
+	 * Get a translation
+	 *
+	 * @return JObject|mixed|null
+	 */
 	public function getItem()
 	{
 		if (!isset($this->item))
@@ -122,8 +137,9 @@ class LocaliseModelTranslation extends JModelForm
 
 			if ($caching)
 			{
-				$keycache = $this->getState('translation.client') . '.' . $this->getState('translation.tag') . '.' . $this->getState('translation.filename') . '.' . 'translation';
-				$cache = JFactory::getCache('com_localise', '');
+				$keycache   = $this->getState('translation.client') . '.' . $this->getState('translation.tag') . '.' .
+					$this->getState('translation.filename') . '.' . 'translation';
+				$cache      = JFactory::getCache('com_localise', '');
 				$this->item = $cache->get($keycache);
 
 				if ($this->item && $this->item->reference != $this->getState('translation.reference'))
@@ -138,40 +154,73 @@ class LocaliseModelTranslation extends JModelForm
 
 			if (!$this->item)
 			{
-				$path = JFile::exists($this->getState('translation.path')) ? $this->getState('translation.path') : $this->getState('translation.refpath');
+				$path = JFile::exists($this->getState('translation.path'))
+					? $this->getState('translation.path')
+					: $this->getState('translation.refpath');
 
-				$this->item = new JObject(array('reference' => $this->getState('translation.reference'), 'bom' => 'UTF-8', 'svn' => '', 'version' => '', 'description' => '', 'creationdate' => '', 'author' => '', 'maincopyright' => '', 'additionalcopyright' => array(), 'license' => '', 'exists' => JFile::exists($this->getState('translation.path')), 'translated' => 0, 'unchanged' => 0, 'extra' => 0, 'total' => 0, 'complete' => false, 'source' => '', 'error' => array()));
+				$this->item = new JObject(
+									array
+										(
+										'reference'           => $this->getState('translation.reference'),
+										'bom'                 => 'UTF-8',
+				 						'svn'                 => '',
+				 						'version'             => '',
+				 						'description'         => '',
+				 						'creationdate'        => '',
+				 						'author'              => '',
+				 						'maincopyright'       => '',
+				 						'additionalcopyright' => array(),
+				 						'license'             => '',
+				 						'exists'              => JFile::exists($this->getState('translation.path')),
+				 						'translated'          => 0,
+				 						'unchanged'           => 0,
+				 						'extra'               => 0,
+				 						'total'               => 0,
+				 						'complete'            => false,
+				 						'source'              => '',
+				 						'error'               => array()
+			                            )
+				);
 
 				if (JFile::exists($path))
 				{
 					$this->item->source = file_get_contents($path);
-					$stream = new JStream();
+					$stream             = new JStream;
 					$stream->open($path);
-					$begin  = $stream->read(4);
-					$bom    = strtolower(bin2hex($begin));
+					$begin = $stream->read(4);
+					$bom   = strtolower(bin2hex($begin));
 
 					if ($bom == '0000feff')
 					{
 						$this->item->bom = 'UTF-32 BE';
 					}
-					else if ($bom == 'feff0000')
+					else
 					{
-						$this->item->bom = 'UTF-32 LE';
-					}
-					else if (substr($bom, 0, 4) == 'feff')
-					{
-						$this->item->bom = 'UTF-16 BE';
-					}
-					else if (substr($bom, 0, 4) == 'fffe')
-					{
-						$this->item->bom = 'UTF-16 LE';
+						if ($bom == 'feff0000')
+						{
+							$this->item->bom = 'UTF-32 LE';
+						}
+						else
+						{
+							if (substr($bom, 0, 4) == 'feff')
+							{
+								$this->item->bom = 'UTF-16 BE';
+							}
+							else
+							{
+								if (substr($bom, 0, 4) == 'fffe')
+								{
+									$this->item->bom = 'UTF-16 LE';
+								}
+							}
+						}
 					}
 
 					$stream->seek(0);
 					$continue   = true;
 					$lineNumber = 0;
 
-					$params = JComponentHelper::getParams('com_localise');
+					$params             = JComponentHelper::getParams('com_localise');
 					$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
 
 					while (!$stream->eof())
@@ -219,9 +268,10 @@ class LocaliseModelTranslation extends JModelForm
 										break;
 									case 'copyright':
 										preg_match('/(#|;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+
 										if (empty($this->item->maincopyright))
 										{
-											if($params->get('copyright') && !$isTranslationsView)
+											if ($params->get('copyright') && !$isTranslationsView)
 											{
 												$this->item->maincopyright = $params->get('copyright');
 											}
@@ -230,9 +280,10 @@ class LocaliseModelTranslation extends JModelForm
 												$this->item->maincopyright = $matches2[3];
 											}
 										}
-										if(empty($this->item->additionalcopyright))
+
+										if (empty($this->item->additionalcopyright))
 										{
-											if($params->get('additionalcopyright') && !$isTranslationsView)
+											if ($params->get('additionalcopyright') && !$isTranslationsView)
 											{
 												$this->item->additionalcopyright[] = $params->get('additionalcopyright');
 											}
@@ -243,7 +294,7 @@ class LocaliseModelTranslation extends JModelForm
 										}
 										break;
 									case 'license':
-										if($params->get('license') && !$isTranslationsView)
+										if ($params->get('license') && !$isTranslationsView)
 										{
 											$this->item->license = $params->get('license');
 										}
@@ -266,7 +317,7 @@ class LocaliseModelTranslation extends JModelForm
 									default:
 										if (empty($this->item->author))
 										{
-											if($params->get('author') && !$isTranslationsView)
+											if ($params->get('author') && !$isTranslationsView)
 											{
 												$this->item->author = $params->get('author');
 											}
@@ -291,17 +342,17 @@ class LocaliseModelTranslation extends JModelForm
 						$this->item->author = $params->get('author');
 					}
 
-					if(empty($this->item->license) && $params->get('license') && !$isTranslationsView)
+					if (empty($this->item->license) && $params->get('license') && !$isTranslationsView)
 					{
 						$this->item->license = $params->get('license');
 					}
 
-					if(empty($this->item->maincopyright) && $params->get('copyright') && !$isTranslationsView)
+					if (empty($this->item->maincopyright) && $params->get('copyright') && !$isTranslationsView)
 					{
 						$this->item->maincopyright = $params->get('copyright');
 					}
 
-					if(empty($this->item->additionalcopyright) && $params->get('additionalcopyright') && !$isTranslationsView)
+					if (empty($this->item->additionalcopyright) && $params->get('additionalcopyright') && !$isTranslationsView)
 					{
 						$this->item->additionalcopyright[] = $params->get('additionalcopyright');
 					}
@@ -332,9 +383,9 @@ class LocaliseModelTranslation extends JModelForm
 						foreach ($refsections['keys'] as $key => $string)
 						{
 							$this->item->total++;
+
 							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']) && $sections['keys'][$key] != '')
 							{
-
 								if ($sections['keys'][$key] != $string || $this->getState('translation.path') == $this->getState('translation.refpath'))
 								{
 									$this->item->translated++;
@@ -358,16 +409,22 @@ class LocaliseModelTranslation extends JModelForm
 						}
 					}
 
-					$this->item->completed = $this->item->total ? intval(100 * $this->item->translated / $this->item->total) + $this->item->unchanged / $this->item->total : 100;
+					$this->item->completed = $this->item->total
+						? intval(100 * $this->item->translated / $this->item->total) + $this->item->unchanged / $this->item->total
+						: 100;
 
-					$this->item->complete = $this->item->complete ? 1 : ($this->item->completed == 100 ? 1 : 0);
+					$this->item->complete = $this->item->complete
+						? 1
+						: ($this->item->completed == 100
+							? 1
+							: 0);
 				}
 
 				if ($this->getState('translation.id'))
 				{
 					$table = $this->getTable();
 					$table->load($this->getState('translation.id'));
-					$user  = JFactory::getUser($table->checked_out);
+					$user = JFactory::getUser($table->checked_out);
 					$this->item->setProperties($table->getProperties());
 
 					if ($this->item->checked_out == JFactory::getUser()->id)
@@ -383,8 +440,6 @@ class LocaliseModelTranslation extends JModelForm
 					$cache->store($this->item, $keycache);
 				}
 			}
-
-			//$this->item->error = $this->getErrors();
 		}
 
 		return $this->item;
@@ -393,15 +448,15 @@ class LocaliseModelTranslation extends JModelForm
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param  array  $data    Data for the form.
-	 * @param  boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
 	 * @return  mixed  A JForm object on success, false on failure
-	 * @since  1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_localise.translation', 'translation', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_localise.translation', 'translation', array('control'   => 'jform', 'load_data' => $loadData));
 
 		$params = JComponentHelper::getParams('com_localise');
 
@@ -433,7 +488,6 @@ class LocaliseModelTranslation extends JModelForm
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return  array  The default data is an empty array.
-	 * @since  1.6
 	 */
 	protected function loadFormData()
 	{
@@ -459,6 +513,7 @@ class LocaliseModelTranslation extends JModelForm
 		if (JError::isError($form))
 		{
 			$this->setError($form->getMessage());
+
 			return false;
 		}
 
@@ -468,11 +523,12 @@ class LocaliseModelTranslation extends JModelForm
 	/**
 	 * Method to allow derived classes to preprocess the form.
 	 *
-	 * @param  object  A form object.
-	 * @param  mixed  The data expected for the form.
-	 * @param  string  The name of the plugin group to import (defaults to "content").
+	 * @param   object  $form   A form object.
+	 * @param   mixed   $item   The data expected for the form.
+	 * @param   string  $group  The name of the plugin group to import (defaults to "content").
+	 *
 	 * @throws  Exception if there is an error in the form event.
-	 * @since  1.6
+	 * @return JForm
 	 */
 	protected function preprocessForm(JForm $form, $item, $group = 'content')
 	{
@@ -495,10 +551,10 @@ class LocaliseModelTranslation extends JModelForm
 
 		if (is_object($item))
 		{
-			$form->setFieldAttribute('legend', 'unchanged'   , $item->unchanged, 'legend');
-			$form->setFieldAttribute('legend', 'translated'  , $item->translated, 'legend');
+			$form->setFieldAttribute('legend', 'unchanged', $item->unchanged, 'legend');
+			$form->setFieldAttribute('legend', 'translated', $item->translated, 'legend');
 			$form->setFieldAttribute('legend', 'untranslated', $item->total - $item->translated - $item->unchanged, 'legend');
-			$form->setFieldAttribute('legend', 'extra'       , $item->extra, 'legend');
+			$form->setFieldAttribute('legend', 'extra', $item->extra, 'legend');
 		}
 
 		if ($this->getState('translation.layout') != 'raw')
@@ -518,9 +574,9 @@ class LocaliseModelTranslation extends JModelForm
 
 			if (JFile::exists($refpath))
 			{
-				$stream = new JStream();
+				$stream = new JStream;
 				$stream->open($refpath);
-				$header = true;
+				$header     = true;
 				$lineNumber = 0;
 
 				while (!$stream->eof())
@@ -532,7 +588,7 @@ class LocaliseModelTranslation extends JModelForm
 					if (preg_match('/^\s*$/', $line))
 					{
 						$header = true;
-						$field = $fieldset->addChild('field');
+						$field  = $fieldset->addChild('field');
 						$field->addAttribute('label', '');
 						$field->addAttribute('type', 'spacer');
 						$field->addAttribute('class', 'text');
@@ -565,19 +621,33 @@ class LocaliseModelTranslation extends JModelForm
 					// Key lines
 					elseif (preg_match('/^([A-Z][A-Z0-9_\-\.]*)\s*=/', $line, $matches))
 					{
-						$header = false;
-						$key = $matches[1];
-						$field = $fieldset->addChild('field');
-						$string = $refsections['keys'][$key];
+						$header     = false;
+						$key        = $matches[1];
+						$field      = $fieldset->addChild('field');
+						$string     = $refsections['keys'][$key];
 						$translated = isset($sections['keys'][$key]);
-						$modified = $translated && $sections['keys'][$key]!=$refsections['keys'][$key];
-						$status = $modified ? 'translated' : ($translated ? 'unchanged' : 'untranslated');
-						$default = $translated ? $sections['keys'][$key] : '';
-						$label = '<b>' . $key . '</b><br />' . htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
+						$modified   = $translated && $sections['keys'][$key] != $refsections['keys'][$key];
+						$status     = $modified
+							? 'translated'
+							: ($translated
+								? 'unchanged'
+								: 'untranslated');
+						$default    = $translated
+							? $sections['keys'][$key]
+							: '';
+						$label      = '<b>' . $key . '</b><br />' . htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
 						$field->addAttribute('status', $status);
 						$field->addAttribute('description', $string);
-						if($default) $field->addAttribute('default', $default);
-						else $field->addAttribute('default', $string);
+
+						if ($default)
+						{
+							$field->addAttribute('default', $default);
+						}
+						else
+						{
+							$field->addAttribute('default', $string);
+						}
+
 						$field->addAttribute('label', $label);
 						$field->addAttribute('name', $key);
 						$field->addAttribute('type', 'key');
@@ -595,7 +665,7 @@ class LocaliseModelTranslation extends JModelForm
 
 				if (!empty($sections['keys']))
 				{
-					foreach ($sections['keys'] as $key=>$string)
+					foreach ($sections['keys'] as $key => $string)
 					{
 						if (!isset($refsections['keys'][$key]))
 						{
@@ -603,9 +673,9 @@ class LocaliseModelTranslation extends JModelForm
 							{
 								$newstrings = true;
 								$form->load($addform, false);
-								$section  = 'New Strings';
-								$addform  = new SimpleXMLElement('<form />');
-								$group    = $addform->addChild('fields');
+								$section = 'New Strings';
+								$addform = new SimpleXMLElement('<form />');
+								$group   = $addform->addChild('fields');
 								$group->addAttribute('name', 'strings');
 								$fieldset = $group->addChild('fieldset');
 								$fieldset->addAttribute('name', $section);
@@ -619,7 +689,7 @@ class LocaliseModelTranslation extends JModelForm
 							$field->addAttribute('status', $status);
 							$field->addAttribute('description', $string);
 
-							if($default)
+							if ($default)
 							{
 								$field->addAttribute('default', $default);
 							}
@@ -638,7 +708,6 @@ class LocaliseModelTranslation extends JModelForm
 			}
 
 			$form->load($addform, false);
-
 		}
 
 		// Check the session for previously entered form data.
@@ -674,7 +743,7 @@ class LocaliseModelTranslation extends JModelForm
 			}
 		}
 
-		if ($form->getValue('description') == '' && array_key_exists($tag,$languages[$client]))
+		if ($form->getValue('description') == '' && array_key_exists($tag, $languages[$client]))
 		{
 			$form->setValue('description', $filename . ' ' . $languages[$client][$tag]['name']);
 		}
@@ -682,6 +751,13 @@ class LocaliseModelTranslation extends JModelForm
 		return $form;
 	}
 
+	/**
+	 * Save a file
+	 *
+	 * @param   array  $data  Array that represents a file
+	 *
+	 * @return bool
+	 */
 	public function saveFile($data)
 	{
 		$path      = $this->getState('translation.path');
@@ -698,6 +774,7 @@ class LocaliseModelTranslation extends JModelForm
 		if ($exists && !$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, '0644'))
 		{
 			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_TRANSLATION_WRITABLE', $path));
+
 			return false;
 		}
 
@@ -707,7 +784,7 @@ class LocaliseModelTranslation extends JModelForm
 		}
 		else
 		{
-			$data['description'] = str_replace(array("\r\n", "\n", "\r"), " ", $data['description']);
+			$data['description']  = str_replace(array("\r\n", "\n", "\r"), " ", $data['description']);
 			$additionalcopyrights = trim($data['additionalcopyright']);
 
 			if (empty($additionalcopyrights))
@@ -723,61 +800,61 @@ class LocaliseModelTranslation extends JModelForm
 
 			if (!empty($data['svn']))
 			{
-				$contents2.= "; " . $data['svn'] . "\n;\n";
+				$contents2 .= "; " . $data['svn'] . "\n;\n";
 			}
 
 			if (!empty($data['package']))
 			{
-				$contents2.= "; @package     " . $data['package'] . "\n";
+				$contents2 .= "; @package     " . $data['package'] . "\n";
 			}
 
 			if (!empty($data['subpackage']))
 			{
-				$contents2.= "; @subpackage  " . $data['subpackage'] . "\n";
+				$contents2 .= "; @subpackage  " . $data['subpackage'] . "\n";
 			}
 
 			if (!empty($data['description']))
 			{
-				$contents2.= "; @description " . $data['description'] . "\n";
+				$contents2 .= "; @description " . $data['description'] . "\n";
 			}
 
 			if (!empty($data['version']))
 			{
-				$contents2.= "; @version     " . $data['version'] . "\n";
+				$contents2 .= "; @version     " . $data['version'] . "\n";
 			}
 
 			if (!empty($data['creationdate']))
 			{
-				$contents2.= "; @date        " . $data['creationdate'] . "\n";
+				$contents2 .= "; @date        " . $data['creationdate'] . "\n";
 			}
 
 			if (!empty($data['author']))
 			{
-				$contents2.= "; @author      " . $data['author'] . "\n";
+				$contents2 .= "; @author      " . $data['author'] . "\n";
 			}
 
 			if (!empty($data['maincopyright']))
 			{
-				$contents2.= "; @copyright   " . $data['maincopyright'] . "\n";
+				$contents2 .= "; @copyright   " . $data['maincopyright'] . "\n";
 			}
 
 			foreach ($additionalcopyrights as $copyright)
 			{
-				$contents2.= "; @copyright   " . $copyright . "\n";
+				$contents2 .= "; @copyright   " . $copyright . "\n";
 			}
 
 			if (!empty($data['license']))
 			{
-				$contents2.= "; @license     " . $data['license'] . "\n";
+				$contents2 .= "; @license     " . $data['license'] . "\n";
 			}
 
 			if (array_key_exists('complete', $data) && ($data['complete'] == '1'))
 			{
-				$contents2.= "; @note        Complete\n";
+				$contents2 .= "; @note        Complete\n";
 			}
 
-			$contents2.= "; @note        Client " . ucfirst($client) . "\n";
-			$contents2.= "; @note        All ini files need to be saved as UTF-8 - No BOM\n\n";
+			$contents2 .= "; @note        Client " . ucfirst($client) . "\n";
+			$contents2 .= "; @note        All ini files need to be saved as UTF-8 - No BOM\n\n";
 
 			$contents = array();
 			$stream   = new JStream();
@@ -793,7 +870,7 @@ class LocaliseModelTranslation extends JModelForm
 					// Comment lines
 					if (preg_match('/^(;.*)$/', $line, $matches))
 					{
-						//$contents[] = $matches[1]."\n";
+						// $contents[] = $matches[1]."\n";
 					}
 					else
 					{
@@ -821,6 +898,7 @@ class LocaliseModelTranslation extends JModelForm
 			else
 			{
 				$stream->open($refpath);
+
 				while (!$stream->eof())
 				{
 					$line = $stream->gets();
@@ -828,7 +906,7 @@ class LocaliseModelTranslation extends JModelForm
 					// Comment lines
 					if (preg_match('/^(;.*)$/', $line, $matches))
 					{
-						$contents[] = $matches[1]."\n";
+						$contents[] = $matches[1] . "\n";
 					}
 					else
 					{
@@ -847,7 +925,7 @@ class LocaliseModelTranslation extends JModelForm
 
 					if (isset($strings[$key]))
 					{
-						$contents[] = $key.'="' . str_replace('"', '"_QQ_"', $strings[$key]) . "\"\n";
+						$contents[] = $key . '="' . str_replace('"', '"_QQ_"', $strings[$key]) . "\"\n";
 						unset($strings[$key]);
 					}
 				}
@@ -863,15 +941,15 @@ class LocaliseModelTranslation extends JModelForm
 			{
 				$contents[] = "\n[New Strings]\n\n";
 
-				foreach($strings as $key=>$string)
+				foreach ($strings as $key => $string)
 				{
-					$contents[] = $key.'="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
+					$contents[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
 				}
 			}
 
 			$stream->close();
 			$contents = implode($contents);
-			$contents = $contents2.$contents;
+			$contents = $contents2 . $contents;
 		}
 
 		$return = JFile::write($path, $contents);
@@ -887,12 +965,17 @@ class LocaliseModelTranslation extends JModelForm
 		if (!$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, $fsper))
 		{
 			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_TRANSLATION_UNWRITABLE', $path));
+
 			return false;
 		}
-		else if (!$return)
+		else
 		{
-			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_TRANSLATION_FILESAVE', $path));
-			return false;
+			if (!$return)
+			{
+				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_TRANSLATION_FILESAVE', $path));
+
+				return false;
+			}
 		}
 
 		// Remove the cache
@@ -902,31 +985,38 @@ class LocaliseModelTranslation extends JModelForm
 		if ($caching)
 		{
 			$keycache = $this->getState('translation.client') . '.' . $this->getState('translation.tag') . '.' . $this->getState('translation.filename') . '.' . 'translation';
-			$cache = JFactory::getCache('com_localise', '');
+			$cache    = JFactory::getCache('com_localise', '');
 			$cache->remove($keycache);
 		}
 	}
 
+	/**
+	 * Saves a translation
+	 *
+	 * @param   array  $data  translation to be saved
+	 *
+	 * @return bool
+	 */
 	public function save($data)
 	{
 		// Fix DOT saving issue
-		$strings_array   = JRequest::get( 'post' );
+		$strings_array   = JRequest::get('post');
 		$strings         = $strings_array['jform']['strings'];
 		$data['strings'] = $strings;
 
 		// Special case for lib_joomla
-		if ($this->getState('translation.filename')=='lib_joomla')
+		if ($this->getState('translation.filename') == 'lib_joomla')
 		{
 			$tag = $this->getState('translation.tag');
 
-			if (JFolder::exists(JPATH_SITE . "/language/$tag" ))
+			if (JFolder::exists(JPATH_SITE . "/language/$tag"))
 			{
 				$this->setState('translation.client', 'site');
 				$this->setState('translation.path', JPATH_SITE . "/language/$tag/$tag.lib_joomla.ini");
 				$this->saveFile($data);
 			}
 
-			if (JFolder::exists(JPATH_ADMINISTRATOR . "/language/$tag" ))
+			if (JFolder::exists(JPATH_ADMINISTRATOR . "/language/$tag"))
 			{
 				$this->setState('translation.client', 'administrator');
 				$this->setState('translation.path', JPATH_ADMINISTRATOR . "/language/$tag/$tag.lib_joomla.ini");
@@ -952,6 +1042,7 @@ class LocaliseModelTranslation extends JModelForm
 		if (!$table->check())
 		{
 			$this->setError($table->getError());
+
 			return false;
 		}
 
@@ -959,6 +1050,7 @@ class LocaliseModelTranslation extends JModelForm
 		if (!$table->store())
 		{
 			$this->setError($table->getError());
+
 			return false;
 		}
 

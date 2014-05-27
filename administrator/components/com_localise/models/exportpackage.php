@@ -1,9 +1,9 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_localise
+ * @package     Com_Localise
+ * @subpackage  model
  *
- * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -17,8 +17,7 @@ jimport('joomla.utilities.utility');
 /**
  * Export Package Model class for the Localise component
  *
- * @package    Extensions.Components
- * @subpackage  Localise
+ * @since  1.0
  */
 class LocaliseModelExportPackage extends JModelItem
 {
@@ -27,10 +26,12 @@ class LocaliseModelExportPackage extends JModelItem
 	 *
 	 * @var    string
 	 */
-	protected $_context = 'com_localise.package';
+	protected $context = 'com_localise.package';
 
 	/**
 	 * Method to auto-populate the model state.
+	 *
+	 * @return void
 	 */
 	protected function populateState()
 	{
@@ -43,21 +44,21 @@ class LocaliseModelExportPackage extends JModelItem
 		$cookie_path   = $config->get('config.cookie_path', '/');
 
 		// Set the cookies
-		setcookie(JApplicationHelper::getHash($this->_context . '.author'   ), $data['author']   , time() + 365 * 86400, $cookie_path, $cookie_domain);
-		setcookie(JApplicationHelper::getHash($this->_context . '.copyright'), $data['copyright'], time() + 365 * 86400, $cookie_path, $cookie_domain);
-		setcookie(JApplicationHelper::getHash($this->_context . '.email'    ), $data['email']    , time() + 365 * 86400, $cookie_path, $cookie_domain);
-		setcookie(JApplicationHelper::getHash($this->_context . '.url'      ), $data['url']      , time() + 365 * 86400, $cookie_path, $cookie_domain);
-		setcookie(JApplicationHelper::getHash($this->_context . '.version'  ), $data['version']  , time() + 365 * 86400, $cookie_path, $cookie_domain);
-		setcookie(JApplicationHelper::getHash($this->_context . '.license'  ), $data['license']  , time() + 365 * 86400, $cookie_path, $cookie_domain);
+		setcookie(JApplicationHelper::getHash($this->context . '.author'), $data['author'], time() + 365 * 86400, $cookie_path, $cookie_domain);
+		setcookie(JApplicationHelper::getHash($this->context . '.copyright'), $data['copyright'], time() + 365 * 86400, $cookie_path, $cookie_domain);
+		setcookie(JApplicationHelper::getHash($this->context . '.email'), $data['email'], time() + 365 * 86400, $cookie_path, $cookie_domain);
+		setcookie(JApplicationHelper::getHash($this->context . '.url'), $data['url'], time() + 365 * 86400, $cookie_path, $cookie_domain);
+		setcookie(JApplicationHelper::getHash($this->context . '.version'), $data['version'], time() + 365 * 86400, $cookie_path, $cookie_domain);
+		setcookie(JApplicationHelper::getHash($this->context . '.license'), $data['license'], time() + 365 * 86400, $cookie_path, $cookie_domain);
 
 		// Set the state
-		$this->setState('exportpackage.name'     , $data['name']);
-		$this->setState('exportpackage.author'   , $data['author']);
+		$this->setState('exportpackage.name', $data['name']);
+		$this->setState('exportpackage.author', $data['author']);
 		$this->setState('exportpackage.copyright', $data['copyright']);
-		$this->setState('exportpackage.email'    , $data['email']);
-		$this->setState('exportpackage.url'      , $data['url']);
-		$this->setState('exportpackage.version'  , $data['version']);
-		$this->setState('exportpackage.license'  , $data['license']);
+		$this->setState('exportpackage.email', $data['email']);
+		$this->setState('exportpackage.url', $data['url']);
+		$this->setState('exportpackage.version', $data['version']);
+		$this->setState('exportpackage.license', $data['license']);
 	}
 
 	/**
@@ -81,6 +82,7 @@ class LocaliseModelExportPackage extends JModelItem
 		if (empty($id))
 		{
 			$this->setError('COM_LOCALISE_ERROR_EXPORT_UNEXISTING', $packageName);
+
 			return false;
 		}
 
@@ -88,30 +90,34 @@ class LocaliseModelExportPackage extends JModelItem
 		$model = JModelLegacy::getInstance('Package', 'LocaliseModel');
 		$model->setState('package.id', $id);
 		$model->setState('package.name', $packageName);
-		$package = $model->getItem();var_dump($package); //jexit();
+		$package = $model->getItem();
 
 		// Check if the package is correct
 		if (count($package->getErrors()))
 		{
 			$this->setError(implode('<br />', $package->getErrors()));
+
 			return false;
 		}
 
 		// Check if the manifest exists
 		$manifest = JPATH_MANIFESTS . '/files/' . $package->manifest . '.xml';
+
 		if (is_file($manifest))
 		{
 			// Get the key name and key description in the manifest
 			$xml = simplexml_load_file($manifest);
+
 			if ($xml)
 			{
-				$keyName        = (string)$xml->name;
-				$keyDescription = (string)$xml->description;
+				$keyName        = (string) $xml->name;
+				$keyDescription = (string) $xml->description;
 				$element        = $package->manifest;
 			}
 			else
 			{
 				$this->setError('COM_LOCALISE_ERROR_EXPORT_MANIFEST', $manifest);
+
 				return false;
 			}
 		}
@@ -124,7 +130,9 @@ class LocaliseModelExportPackage extends JModelItem
 		}
 
 		// Lookup for language files
-		$tags = JFolder::folders(JPATH_SITE . '/language', '.', false, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'pdf_fonts', 'overrides'));
+		$tags = JFolder::folders(
+			JPATH_SITE . '/language', '.', false, false, array('.svn','CVS','.DS_Store','__MACOSX','pdf_fonts', 'overrides')
+		);
 
 		$files = array();
 
@@ -134,19 +142,26 @@ class LocaliseModelExportPackage extends JModelItem
 
 			if (is_file(JPATH_SITE . "/$langPath"))
 			{
-				$files[$tag] = array();
-				$files[$tag]['name'] = $langPath;
-				$files[$tag]['data'] = file_get_contents(JPATH_SITE . "/$langPath");
-				$files[$tag]['time'] = time();
-				$files[$tag . '.manage'] = array();
+				$files[$tag]                     = array();
+				$files[$tag]['name']             = $langPath;
+				$files[$tag]['data']             = file_get_contents(JPATH_SITE . "/$langPath");
+				$files[$tag]['time']             = time();
+				$files[$tag . '.manage']         = array();
 				$files[$tag . '.manage']['name'] = "language/$tag/$tag.$keyName.manage.ini";
 
 				$lang = JLanguage::getInstance($tag);
-				$lang->load('com_localise', JPATH_ADMINISTRATOR, null, false, false) || $lang->load('com_localise', JPATH_ADMINISTRATOR . '/components/com_localise', null, false, false) || $lang->load('com_localise', JPATH_ADMINISTRATOR, $lang->getDefault(), false, false) || $lang->load('com_localise', JPATH_ADMINISTRATOR . '/components/com_localise', $lang->getDefault(), false, false);
+				$lang->load('com_localise', JPATH_ADMINISTRATOR, null, false, false)
+				|| $lang->load('com_localise', JPATH_ADMINISTRATOR . '/components/com_localise', null, false, false)
+				|| $lang->load('com_localise', JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+				|| $lang->load('com_localise', JPATH_ADMINISTRATOR . '/components/com_localise', $lang->getDefault(), false, false);
 
-				$files[$tag . '.manage']['data'] = strtoupper($keyName) . '="' . sprintf($lang->_('COM_LOCALISE_NAME_PACKAGE'), $lang->_($package->title)) . "\"\n";
+				$files[$tag . '.manage']['data'] = strtoupper($keyName)
+					. '="' . sprintf($lang->_('COM_LOCALISE_NAME_PACKAGE'), $lang->_($package->title))
+					. "\"\n";
 
-				$files[$tag . '.manage']['data'].= strtoupper($keyDescription) . '="' . sprintf($lang->_('COM_LOCALISE_DESCRIPTION_PACKAGE'), $lang->_($package->title)) . "\"\n";
+				$files[$tag . '.manage']['data'] .= strtoupper($keyDescription)
+					. '="' . sprintf($lang->_('COM_LOCALISE_DESCRIPTION_PACKAGE'), $lang->_($package->title))
+					. "\"\n";
 
 				$files[$tag . '.manage']['time'] = time();
 			}
@@ -156,13 +171,15 @@ class LocaliseModelExportPackage extends JModelItem
 			}
 		}
 
-		$files['package'] = array();
+		$files['package']         = array();
 		$files['package']['name'] = "packages/$packageName.xml";
 		$files['package']['data'] = file_get_contents($path);
 		$files['package']['time'] = time();
 
-		$files['manifest'] = array();
+		$files['manifest']         = array();
 		$files['manifest']['name'] = $element . '.xml';
+
+		// @Todo: following lines can be moved to a JLayout or to a heredoc or something more nice
 		$files['manifest']['data'] = '<?xml version="1.0" encoding="UTF-8"?>
 <extension type="file" version="3.1" method="upgrade">
 	<name>' . strtoupper($keyName) . '</name>
@@ -183,11 +200,11 @@ class LocaliseModelExportPackage extends JModelItem
 
 		foreach ($tags as $tag)
 		{
-			$files['manifest']['data'].= '<language tag="' . $tag . '">language/' . $tag . '/' . $tag . '.' . $keyName . '.ini</language>';
-			$files['manifest']['data'].= '<language tag="' . $tag . '">language/' . $tag . '/' . $tag . '.' . $keyName . '.manage.ini</language> ';
+			$files['manifest']['data'] .= '<language tag="' . $tag . '">language/' . $tag . '/' . $tag . '.' . $keyName . '.ini</language>';
+			$files['manifest']['data'] .= '<language tag="' . $tag . '">language/' . $tag . '/' . $tag . '.' . $keyName . '.manage.ini</language> ';
 		}
 
-		$files['manifest']['data'].= '</languages></extension>';
+		$files['manifest']['data'] .= '</languages></extension>';
 		$files['manifest']['time'] = time();
 
 		$ziproot = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
@@ -201,6 +218,7 @@ class LocaliseModelExportPackage extends JModelItem
 			{
 				// JFile::delete throws an error
 				$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPDELETE'));
+
 				return false;
 			}
 		}
@@ -209,18 +227,26 @@ class LocaliseModelExportPackage extends JModelItem
 		if (!$packager = JArchive::getAdapter('zip'))
 		{
 			$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
+
 			return false;
 		}
-		else if (!$packager->create($ziproot, $files))
+		else
 		{
-			$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
-			return false;
+			if (!$packager->create($ziproot, $files))
+			{
+				$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
+
+				return false;
+			}
 		}
 
 		// Create item
-		$item = new JObject;
-		$item->filename = "fil_localise_${packageName}_package" . ($packageVersion ? "-$packageVersion" : '');
+		$item           = new JObject;
+		$item->filename = "fil_localise_${packageName}_package" . ($packageVersion
+				? "-$packageVersion"
+				: '');
 		$item->contents = file_get_contents($ziproot);
+
 		return $item;
 	}
 }
