@@ -23,7 +23,11 @@ The following image details the actors and use cases of the application:
 
 ![image](https://raw.githubusercontent.com/joomla-projects/translate-joomla/master/images/structure/actors.png)
 
-
+# Todo's (Tasks)
+* Code Style tasks and refactoring: https://github.com/joomla-projects/com_localise/issues?milestone=1&state=open
+* Fix bugs: https://github.com/joomla-projects/com_localise/issues?milestone=2&state=open
+* System testing tasks: https://github.com/joomla-projects/com_localise/issues?milestone=4&state=open
+* New features tasks: https://github.com/joomla-projects/com_localise/issues?milestone=3&state=open
 
 # Travis Status
 Develop: [![Build Status](https://travis-ci.org/joomla-projects/com_localise.png)](https://travis-ci.org/joomla-projects/com_localise)
