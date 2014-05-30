@@ -9,6 +9,22 @@ We (the Joomla! Internationalisation Working Group) are forking it for experimen
 
 If you want to join the effort please contact us!
 
+# The goal
+With the new com_localise we are trying to solve the following needs:
+
+* the tool should help to automate the releases of language packages and sends them to the download page, language update servers...
+* the tool should help to warn translators (maybe e-mail them) when new strings when the main en-GB files get changed in the blessed repository
+* the tool could be flexible enough that allows translators to work with their preferred translation tool: com_localise, transifex, crowdin...
+* the tool could be Git based, but on it's base, not in it's interface (because translators are not necessarily developers)
+* and maybe, the tool could become something that can be used too by 3rd party extension developers to want to get support from the Joomla community translating their open source solutions. Something like JED, maybe?
+
+# actors
+The following image details the actors and use cases of the application:
+
+![image](https://raw.githubusercontent.com/joomla-projects/translate-joomla/master/images/structure/actors.png)
+
+
+
 # Travis Status
 Develop: [![Build Status](https://travis-ci.org/joomla-projects/com_localise.png)](https://travis-ci.org/joomla-projects/com_localise)
 
