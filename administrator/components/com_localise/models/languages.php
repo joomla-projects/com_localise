@@ -134,14 +134,6 @@ class LocaliseModelLanguages extends JModelList
 			}
 
 			$this->items = array_slice($languages, $start, $limit);
-
-			foreach ($this->items as $i => $item)
-			{
-				$model = JModelLegacy::getInstance('Translations', 'LocaliseModel', array('ignore_request' => true));
-				$model->setState('filter.tag', $item->tag);
-				$model->setState('filter.client', $item->client);
-				$this->items[$i]->nbfiles = $model->getTotalExist();
-			}
 		}
 
 		return $this->items;
