@@ -523,12 +523,12 @@ class LocaliseModelTranslation extends JModelForm
 	/**
 	 * Method to allow derived classes to preprocess the form.
 	 *
-	 * @param   object  $form   A form object.
+	 * @param   JForm   $form   A form object.
 	 * @param   mixed   $item   The data expected for the form.
 	 * @param   string  $group  The name of the plugin group to import (defaults to "content").
 	 *
 	 * @throws  Exception if there is an error in the form event.
-	 * @return JForm
+	 * @return  JForm
 	 */
 	protected function preprocessForm(JForm $form, $item, $group = 'content')
 	{
@@ -1000,7 +1000,8 @@ class LocaliseModelTranslation extends JModelForm
 	public function save($data)
 	{
 		// Fix DOT saving issue
-		$strings_array   = JRequest::get('post');
+		$input = JFactory::getApplication()->input;
+		$strings_array   = $input->post;
 		$strings         = $strings_array['jform']['strings'];
 		$data['strings'] = $strings;
 
