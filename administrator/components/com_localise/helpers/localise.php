@@ -635,7 +635,6 @@ abstract class LocaliseHelper
 				}
 
 				ini_set('track_errors', '1');
-				$version = phpversion();
 
 				$contents = file_get_contents($filename);
 				$contents = str_replace('_QQ_', '"\""', $contents);
