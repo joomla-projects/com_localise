@@ -34,7 +34,7 @@ $user   = JFactory::getUser();
 		</span>
 		<?php else: ?>
 		<i class="icon-warning hasTooltip" title="<?php echo JText::sprintf($canEdit ? 'COM_LOCALISE_TOOLTIP_LANGUAGES_NOTWRITABLE':'COM_LOCALISE_TOOLTIP_LANGUAGES_NOTEDITABLE', substr($item->path, strlen(JPATH_ROOT) + 1)); ?>"></i>
-		<span title="<?php echo JText::sprintf($canEdit ? 'COM_LOCALISE_TOOLTIP_LANGUAGES_NOTWRITABLE':'COM_LOCALISE_TOOLTIP_LANGUAGES_NOTEDITABLE', substr($item->path, strlen(JPATH_ROOT) + 1)); ?>"  class="hasTooltip">
+		<span title="<?php echo JText::sprintf($canEdit ? 'COM_LOCALISE_TOOLTIP_LANGUAGES_NOTWRITABLE':'COM_LOCALISE_TOOLTIP_LANGUAGES_NOTEDITABLE', substr($item->path, strlen(JPATH_ROOT) + 1)); ?>">
 			<?php echo JText::sprintf('COM_LOCALISE_TEXT_LANGUAGES_TITLE', $item->tag, $item->name); ?>
 		</span>
 		<?php endif; ?>
@@ -45,7 +45,7 @@ $user   = JFactory::getUser();
 		<?php endif; ?>
 	</td>
 	<td class="center">
-		<a href="<?php echo JRoute::_('index.php?option=com_localise&view=translations&filters[select][client]=' . $item->client . '&filters[select][tag]=' . $item->tag); ?>" title="<?php echo JText::sprintf('COM_LOCALISE_TOOLTIP_LANGUAGES_NUMBER_OF_FILES', $item->nbfiles); ?>" class="btn btn-micro hasTooltip">
+		<a href="<?php echo JRoute::_('index.php?option=com_localise&view=translations&filters[select][client]=' . $item->client . '&filters[select][tag]=' . $item->tag); ?>" class="btn btn-micro hasTooltip">
 			<i class="icon-16-translations"></i>
 		</a>
 	</td>
