@@ -14,6 +14,7 @@ defined('_JEXEC') or die;
  *
  * @package     Extensions.Components
  * @subpackage  Localise
+ *
  * @since       1.0
  */
 class LocaliseControllerLanguage extends JControllerForm
@@ -42,7 +43,7 @@ class LocaliseControllerLanguage extends JControllerForm
 	 *
 	 * @return  boolean
 	 */
-	protected function allowEdit($data = array(), $key = 'id') 
+	protected function allowEdit($data = array(), $key = 'id')
 	{
 		return JFactory::getUser()->authorise('localise.edit', $this->option . '.' . $data[$key]);
 	}

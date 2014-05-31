@@ -14,6 +14,8 @@ defined('_JEXEC') or die;
  *
  * @package     Joomla.Administrator
  * @subpackage  com_localise
+ *
+ * @since       1.0
  */
 class JFormFieldClient extends JFormField
 {
@@ -29,26 +31,26 @@ class JFormFieldClient extends JFormField
 	 *
 	 * @return  string	The field input markup.
 	 */
-	protected function getInput() 
+	protected function getInput()
 	{
 		$attributes = '';
 
 		// To avoid user's confusion, readonly="true" should imply disabled="true".
-		if ((string) $this->element['readonly'] == 'true' || (string) $this->element['disabled'] == 'true') 
+		if ((string) $this->element['readonly'] == 'true' || (string) $this->element['disabled'] == 'true')
 		{
 			$attributes .= ' disabled="disabled"';
 		}
 
-		if ($v = (string) $this->element['onchange']) 
+		if ($v = (string) $this->element['onchange'])
 		{
 			$attributes .= ' onchange="' . $v . '"';
 		}
 
-		$attributes .= ' class="'.(string) $this->element['class'] . ' iconlist-16-' . $this->value . '"';
+		$attributes .= ' class="' . (string) $this->element['class'] . ' iconlist-16-' . $this->value . '"';
 
 		$options = array();
 
-		foreach ($this->element->children() as $option) 
+		foreach ($this->element->children() as $option)
 		{
 			$options[] = JHtml::_('select.option', $option->attributes('value'), JText::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
 		}
@@ -57,7 +59,7 @@ class JFormFieldClient extends JFormField
 
 		$options[] = JHtml::_('select.option', 'administrator', JText::_('COM_LOCALISE_OPTION_CLIENT_ADMINISTRATOR'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-administrator"'));
 
-		if (LocaliseHelper::hasInstallation()) 
+		if (LocaliseHelper::hasInstallation())
 		{
 			$options[] = JHtml::_('select.option', 'installation', JText::_('COM_LOCALISE_OPTION_CLIENT_INSTALLATION'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-installation"'));
 		}

@@ -15,8 +15,10 @@ jimport('joomla.filesystem.file');
 /**
  * Packages Model class for the Localise component
  *
- * @package    Extensions.Components
+ * @package     Extensions.Components
  * @subpackage  Localise
+ *
+ * @since       1.0
  */
 class LocaliseModelPackages extends JModelList
 {
@@ -27,7 +29,16 @@ class LocaliseModelPackages extends JModelList
 	protected $packages;
 
 	/**
-	 * Autopopulate the model
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{

@@ -18,6 +18,8 @@ JFormHelper::loadFieldClass('groupedlist');
  *
  * @package     Extensions.Components
  * @subpackage  Localise
+ *
+ * @since       1.0
  */
 class JFormFieldTranslations extends JFormFieldGroupedList
 {
@@ -33,7 +35,7 @@ class JFormFieldTranslations extends JFormFieldGroupedList
 	 *
 	 * @return  array    An array of JHtml options.
 	 */
-	protected function getGroups() 
+	protected function getGroups()
 	{
 		// Remove '.ini' from values
 		if (is_array($this->value))
@@ -42,31 +44,30 @@ class JFormFieldTranslations extends JFormFieldGroupedList
 			{
 				$this->value[$key] = substr($val, 0, -4);
 			}
-
 		}
 
-		$package = (string)$this->element['package'];
+		$package = (string) $this->element['package'];
 		$groups  = array('Site' => array(), 'Administrator' => array(), 'Installation' => array());
 
-		foreach (array('Site', 'Administrator', 'Installation') as $client) 
+		foreach (array('Site', 'Administrator', 'Installation') as $client)
 		{
 			$path = constant('LOCALISEPATH_' . strtoupper($client)) . '/language';
 
 			if (JFolder::exists($path))
 			{
 				$tags = JFolder::folders($path, '.', false, false, array('overrides', '.svn', 'CVS', '.DS_Store', '__MACOSX'));
-	
+
 				if ($tags)
 				{
 					foreach ($tags as $tag)
 					{
 						$files = JFolder::files("$path/$tag", ".ini$");
-	
-						foreach ($files as $file) 
+
+						foreach ($files as $file)
 						{
 							$basename = substr($file, strlen($tag) + 1);
-	
-							if ($basename == 'ini') 
+
+							if ($basename == 'ini')
 							{
 								$key      = 'joomla';
 								$value    = JText::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA');
@@ -80,7 +81,7 @@ class JFormFieldTranslations extends JFormFieldGroupedList
 								$origin   = LocaliseHelper::getOrigin($key, strtolower($client));
 								$disabled = $origin != $package && $origin != '_thirdparty';
 							}
-	
+
 							$groups[$client][$key] = JHtml::_('select.option', strtolower($client) . '_' . $key, $value, 'value', 'text', false);
 						}
 					}
@@ -90,7 +91,7 @@ class JFormFieldTranslations extends JFormFieldGroupedList
 
 		$scans = LocaliseHelper::getScans();
 
-		foreach ($scans as $scan) 
+		foreach ($scans as $scan)
 		{
 			$prefix     = $scan['prefix'];
 			$suffix     = $scan['suffix'];
@@ -100,18 +101,18 @@ class JFormFieldTranslations extends JFormFieldGroupedList
 			$folder     = $scan['folder'];
 			$extensions = JFolder::folders($path);
 
-			foreach ($extensions as $extension) 
+			foreach ($extensions as $extension)
 			{
-				if (JFolder::exists("$path$extension$folder/language")) 
+				if (JFolder::exists("$path$extension$folder/language"))
 				{
-					// scan extensions folder
+					// Scan extensions folder
 					$tags = JFolder::folders("$path$extension$folder/language");
 
-					foreach ($tags as $tag) 
+					foreach ($tags as $tag)
 					{
 						$file = "$path$extension$folder/language/$tag/$tag.$prefix$extension$suffix.ini";
 
-						if (JFile::exists($file)) 
+						if (JFile::exists($file))
 						{
 							$origin   = LocaliseHelper::getOrigin("$prefix$extension$suffix", strtolower($client));
 							$disabled = $origin != $package && $origin != '_thirdparty';
@@ -122,7 +123,7 @@ class JFormFieldTranslations extends JFormFieldGroupedList
 			}
 		}
 
-		foreach ($groups as $client => $extensions) 
+		foreach ($groups as $client => $extensions)
 		{
 			JArrayHelper::sortObjects($groups[$client], 'text');
 		}

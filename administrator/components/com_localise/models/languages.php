@@ -27,10 +27,16 @@ class LocaliseModelLanguages extends JModelList
 	protected $languages;
 
 	/**
-	 * Autopopulate the model
+	 * Method to auto-populate the model state.
 	 *
-	 * @param null $ordering
-	 * @param null $direction
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{

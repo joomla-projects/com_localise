@@ -12,8 +12,10 @@ defined('_JEXEC') or die;
 /**
  * Form Field Legend class.
  *
- * @package    Extensions.Components
+ * @package     Extensions.Components
  * @subpackage  Localise
+ *
+ * @since       1.0
  */
 class JFormFieldLegend extends JFormField
 {
@@ -29,14 +31,15 @@ class JFormFieldLegend extends JFormField
 	 *
 	 * @return  string    The field input.
 	 */
-	protected function getInput() 
+	protected function getInput()
 	{
 		$return = '<table class="pull-left">';
-		$return.= '<tr><td><input class="translated" size="30" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_TRANSLATED') . '" readonly="readonly"/></td></tr>';
-		$return.= '<tr><td><input class="unchanged" size="30"  type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNCHANGED') . '" readonly="readonly"/></td></tr>';
-		$return.= '<tr><td><input class="untranslated" size="30"  type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNTRANSLATED') . '" readonly="readonly"/></td></tr>';
-		$return.= '<tr><td><input class="extra" size="30" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_NOTINREFERENCE') . '" readonly="readonly"/></td></tr>';
-		$return.= '</table>';
+		$return .= '<tr><td><input class="translated" size="30" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_TRANSLATED') . '" readonly="readonly"/></td></tr>';
+		$return .= '<tr><td><input class="unchanged" size="30"  type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNCHANGED') . '" readonly="readonly"/></td></tr>';
+		$return .= '<tr><td><input class="untranslated" size="30"  type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNTRANSLATED') . '" readonly="readonly"/></td></tr>';
+		$return .= '<tr><td><input class="extra" size="30" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_NOTINREFERENCE') . '" readonly="readonly"/></td></tr>';
+		$return .= '</table>';
+
 		return $return;
 	}
 }
