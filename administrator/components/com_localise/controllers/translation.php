@@ -19,30 +19,30 @@ defined('_JEXEC') or die;
 class LocaliseControllerTranslation extends JControllerForm
 {
 	/**
-	 * Method to get a model object, loading it if required.
+	 * Proxy for getModel.
 	 *
-	 * @param  string  The model name. Optional.
-	 * @param  string  The class prefix. Optional.
-	 * @param  array   Configuration array for model. Optional.
+	 * @param   string  $name    The name of the model.
+	 * @param   string  $prefix  The prefix for the PHP class name.
+	 * @param   array   $config  The array of possible config values. Optional.
 	 *
 	 * @return  object  The model.
 	 */
-	public function getModel($name = 'Translation', $prefix = 'LocaliseModel', $config = array('ignore_request' => false)) 
+	public function getModel($name = 'Translation', $prefix = 'LocaliseModel', $config = array('ignore_request' => false))
 	{
 		return parent::getModel($name, $prefix, $config);
 	}
 
 	/**
-	 * Method to check if you can add a new record.
+	 * Method to check if you can edit a record.
 	 *
-	 * Extended classes can override this if necessary.
-	 *
-	 * @param  array  An array of input data.
-	 * @param  string  The name of the key for the primary key.
+	 * @param   array   $data  An array of input data.
+	 * @param   string  $key   The name of the key for the primary key.
 	 *
 	 * @return  boolean
+	 *
+	 * @since   1.6
 	 */
-	protected function allowEdit($data = array(), $key = 'id') 
+	protected function allowEdit($data = array(), $key = 'id')
 	{
 		return JFactory::getUser()->authorise('localise.edit', 'com_localise.' . $data[$key]);
 	}
@@ -50,13 +50,14 @@ class LocaliseControllerTranslation extends JControllerForm
 	/**
 	 * Gets the URL arguments to append to an item redirect.
 	 *
-	 * @param  int     $recordId  The primary key id for the item.
-	 * @param  string  $urlVar    The name of the URL variable for the id.
+	 * @param   integer  $recordId  The primary key id for the item.
+	 * @param   string   $urlVar    The name of the URL variable for the id.
 	 *
-	 * @return string  The arguments to append to the redirect URL.
-	 * @since  1.6
+	 * @return  string  The arguments to append to the redirect URL.
+	 *
+	 * @since   1.6
 	 */
-	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id') 
+	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
 	{
 		// Get the infos
 		$input    = JFactory::getApplication()->input;
@@ -67,7 +68,7 @@ class LocaliseControllerTranslation extends JControllerForm
 
 		// Get the append string
 		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
-		$append.= '&client=' . $client . '&tag=' . $tag . '&filename=' . $filename . '&storage=' . $storage;
+		$append .= '&client=' . $client . '&tag=' . $tag . '&filename=' . $filename . '&storage=' . $storage;
 
 		return $append;
 	}
