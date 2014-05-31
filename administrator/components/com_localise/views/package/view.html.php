@@ -22,9 +22,9 @@ class LocaliseViewPackage extends JViewLegacy
 	protected $form;
 
 	/**
- 	 * Display the view
+		* Display the view
 	 */
-	public function display($tpl = null) 
+	public function display($tpl = null)
 	{
 		jimport('joomla.client.helper');
 
@@ -36,7 +36,7 @@ class LocaliseViewPackage extends JViewLegacy
 		$this->ftp     = JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
+		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
 			return false;
@@ -52,7 +52,7 @@ class LocaliseViewPackage extends JViewLegacy
 		parent::display($tpl);
 	}
 
-	protected function addToolbar() 
+	protected function addToolbar()
 	{
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 
@@ -63,18 +63,20 @@ class LocaliseViewPackage extends JViewLegacy
 		JToolbarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', $isNew ? JText::_('COM_LOCALISE_HEADER_PACKAGE_NEW') : JText::_('COM_LOCALISE_HEADER_PACKAGE_EDIT')), 'langmanager.png');
 
 		// If not checked out, can save the item.
-		if (!$checkedOut /*&& $this->item->standalone*/) 
+		if (!$checkedOut /*&& $this->item->standalone*/)
 		{
 			JToolbarHelper::apply('package.apply');
 			JToolbarHelper::save('package.save');
 		}
+
+		JToolbarHelper::custom('package.download', 'out.png', 'out.png', 'COM_LOCALISE_TOOLBAR_PACKAGE_DOWNLOAD', false);
 
 		JToolBarHelper::cancel("package.cancel", $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 		JToolBarHelper::divider();
 		JToolBarHelper::help('screen.package', true);
 	}
 
-	protected function prepareDocument() 
+	protected function prepareDocument()
 	{
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::sprintf('COM_LOCALISE_TITLE', JText::_('COM_LOCALISE_TITLE_PACKAGE')));

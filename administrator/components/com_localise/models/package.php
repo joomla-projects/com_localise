@@ -225,10 +225,18 @@ class LocaliseModelPackage extends JModelForm
 				$package->core        = ((string) $xml->attributes()->core) == 'true';
 				$package->icon        = (string) $xml->icon;
 				$package->title       = (string) $xml->title;
+				$package->version     = (string) $xml->version;
 				$package->description = (string) $xml->description;
 				$package->license     = (string) $xml->license;
 				$package->copyright   = (string) $xml->copyright;
 				$package->author      = (string) $xml->author;
+				$package->authoremail = (string) $xml->authoremail;
+				$package->authorurl   = (string) $xml->authorurl;
+				$package->url      	  = (string) $xml->url;
+				$package->packager    = (string) $xml->packager;
+				$package->packagerurl = (string) $xml->packagerurl;
+				$package->servername  = (string) $xml->servername;
+				$package->serverurl   = (string) $xml->serverurl;
 				$package->writable    = LocaliseHelper::isWritable($package->path);
 
 				$user = JFactory::getUser($table->checked_out);
@@ -343,13 +351,21 @@ class LocaliseModelPackage extends JModelForm
 			$text = '';
 			$text .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 			$text .= '<package>' . "\n";
-			$text .= '<title>' . $title . '</title>' . "\n";
-			$text .= '<description>' . $description . '</description>' . "\n";
-			$text .= '<manifest client="' . $client . '">' . $manifest . '</manifest>' . "\n";
-			$text .= '<icon>' . $data['icon'] . '</icon>' . "\n";
-			$text .= '<author>' . $data['author'] . '</author>' . "\n";
-			$text .= '<copyright>' . $data['copyright'] . '</copyright>' . "\n";
-			$text .= '<license>' . $data['license'] . '</license>' . "\n";
+			$text .= "\t".'<title>' . $title . '</title>' . "\n";
+			$text .= "\t".'<description>' . $description . '</description>' . "\n";
+			$text .= "\t".'<manifest client="' . $client . '">' . $manifest . '</manifest>' . "\n";
+
+			$text .= "\t".'<version>' . $data['version'] . '</version>' . "\n";
+			$text .= "\t".'<icon>' . $data['icon'] . '</icon>' . "\n";
+			$text .= "\t".'<author>' . $data['author'] . '</author>' . "\n";
+			$text .= "\t".'<copyright>' . $data['copyright'] . '</copyright>' . "\n";
+			$text .= "\t".'<license>' . $data['license'] . '</license>' . "\n";
+			$text .= "\t".'<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
+			$text .= "\t".'<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
+			$text .= "\t".'<copyright>' . $data['copyright'] . '</copyright>' . "\n";
+			$text .= "\t".'<url>' . $data['url'] . '</url>' . "\n";
+			$text .= "\t".'<packager>' . $data['packager'] . '</packager>' . "\n";
+			$text .= "\t".'<packagerurl>' . $data['packagerurl'] . '</packagerurl>' . "\n";
 
 			$administrator = array();
 			$site          = array();
@@ -375,38 +391,38 @@ class LocaliseModelPackage extends JModelForm
 
 			if (count($site))
 			{
-				$text .= '<site>' . "\n";
+				$text .= "\t".'<site>' . "\n";
 
 				foreach ($site as $translation)
 				{
-					$text .= '<filename>' . $translation . '.ini</filename>' . "\n";
+					$text .= "\t\t".'<filename>' . $translation . '.ini</filename>' . "\n";
 				}
 
-				$text .= '</site>' . "\n";
+				$text .= "\t".'</site>' . "\n";
 			}
 
 			if (count($administrator))
 			{
-				$text .= '<administrator>' . "\n";
+				$text .= "\t".'<administrator>' . "\n";
 
 				foreach ($administrator as $translation)
 				{
-					$text .= '<filename>' . $translation . '.ini</filename>' . "\n";
+					$text .= "\t\t".'<filename>' . $translation . '.ini</filename>' . "\n";
 				}
 
-				$text .= '</administrator>' . "\n";
+				$text .= "\t".'</administrator>' . "\n";
 			}
 
 			if (count($installation))
 			{
-				$text .= '<installation>' . "\n";
+				$text .= "\t".'<installation>' . "\n";
 
 				foreach ($installation as $translation)
 				{
-					$text .= '<filename>' . $translation . '.ini</filename>' . "\n";
+					$text .= "\t\t".'<filename>' . $translation . '.ini</filename>' . "\n";
 				}
 
-				$text .= '</installation>' . "\n";
+				$text .= "\t".'</installation>' . "\n";
 			}
 
 			$text .= '</package>' . "\n";
@@ -516,5 +532,260 @@ class LocaliseModelPackage extends JModelForm
 		}
 
 		return true;
+	}
+
+	/**
+	 * Method to generate and download a package
+	 *
+	 * @param   array  $data  the data to generate the package
+	 *
+	 * @return  boolean  success or failure
+	 */
+	public function download($data){
+		//the data could potentially be loaded from the file with $this->getItem() instead of using directly the data from the post
+
+
+		$administrator = array();
+		$site          = array();
+		$installation  = array();
+		$main_package_files = array();
+
+		// Delete old files
+		$delete = JFolder::files(JPATH_ROOT . '/tmp/', 'com_localise_', false, true);
+
+		if (!empty($delete))
+		{
+			if (!JFile::delete($delete))
+			{
+				// JFile::delete throws an error
+				$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPDELETE'));
+
+				return false;
+			}
+		}
+
+		foreach ($data['translations'] as $translation)
+		{
+			if (preg_match('/^site_(.*)$/', $translation, $matches))
+			{
+				$site[] = $matches[1];
+			}
+
+			if (preg_match('/^administrator_(.*)$/', $translation, $matches))
+			{
+				$administrator[] = $matches[1];
+			}
+
+			if (preg_match('/^installation_(.*)$/', $translation, $matches))
+			{
+				$installation[] = $matches[1];
+			}
+		}
+
+
+		$parts = explode('.',$data['version']);
+		$small_version = implode('.',array($parts[0],$parts[1]));
+		// Prepare text to save for the xml package description
+		$text = '';
+		$text .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+		$text .= '<extension type="package" version="'.$small_version.'">' . "\n";
+		$text .= "\t".'<name>' . $data['name'] . '</name>' . "\n";
+		$text .= "\t".'<packagename>' . $data['language'] . '</packagename>' . "\n";
+		$text .= "\t".'<version>' . $data['version'] . '</version>' . "\n";
+		$text .= "\t".'<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
+		$text .= "\t".'<author>' . $data['author'] . '</author>' . "\n";
+		$text .= "\t".'<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
+		$text .= "\t".'<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
+		$text .= "\t".'<copyright>' . $data['copyright'] . '</copyright>' . "\n";
+		$text .= "\t".'<license>' . $data['license'] . '</license>' . "\n";
+		$text .= "\t".'<url>' . $data['url'] . '</url>' . "\n";
+		$text .= "\t".'<packager>' . $data['packager'] . '</packager>' . "\n";
+		$text .= "\t".'<packagerurl>' . $data['packagerurl'] . '</packagerurl>' . "\n";
+		$text .= "\t".'<description><![CDATA[' . $data['description'] . ']]></description>' . "\n";
+		$text .= "\t".'<files>'. "\n";
+
+		if (count($site))
+		{
+			$text .= "\t\t".'<file type="language" client="site" id="'.$data['language'].'">site_'.$data['language'].'.zip</file>' . "\n";
+
+			//generate site package
+			$site_package_files = array();
+			$site_package_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
+
+			$site_txt = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+			$site_txt .= '<extension version="'.$small_version.'" client="site" type="language" method="upgrade">' . "\n";
+			$site_txt .= "\t".'<name>' . $data['name'] . '</name>' . "\n";
+			$site_txt .= "\t".'<tag>' . $data['language'] . '</tag>' . "\n";
+			$site_txt .= "\t".'<version>' . $data['version'] . '</version>' . "\n";
+			$site_txt .= "\t".'<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
+			$site_txt .= "\t".'<author>' . $data['author'] . '</author>' . "\n";
+			$site_txt .= "\t".'<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
+			$site_txt .= "\t".'<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
+			$site_txt .= "\t".'<copyright>' . $data['copyright'] . '</copyright>' . "\n";
+			$site_txt .= "\t".'<license>' . $data['license'] . '</license>' . "\n";
+			$site_txt .= "\t".'<description>' . $data['language'] . 'site language</description>' . "\n";
+			$site_txt .= "\t".'<files>'. "\n";
+
+			foreach ($site as $translation)
+			{
+				$file_data = JFile::read(JPATH_ROOT . '/language/'.$data['language'].'/'.$data['language'].'.'.$translation.'.ini');
+				if(!empty($file_data)){
+					$site_txt .= "\t\t".'<filename>' . $data['language'].'.'.$translation . '.ini</filename>' . "\n";
+					$site_package_files[] = array('name'=>$data['language'].'.'.$translation.'.ini','data'=>$file_data);
+				}
+			}
+			$site_txt .= "\t\t".'<filename file="meta">install.xml</filename>' . "\n";
+			$site_txt .= "\t\t".'<filename file="meta">' . $data['language'].'.xml</filename>' . "\n";
+			$site_txt .= "\t".'</files>' . "\n";
+			$site_txt .= "\t".'<params />' . "\n";
+			$site_txt .= "\t".'</extension>' . "\n";
+			$site_package_files[] = array('name'=>'install.xml','data'=>$site_txt);
+			$language_data = JFile::read(JPATH_ROOT . '/language/'.$data['language'].'/'.$data['language'].'.xml');
+			$site_package_files[] = array('name'=>$data['language'].'.xml','data'=>$language_data);
+			$language_data = JFile::read(JPATH_ROOT . '/language/'.$data['language'].'/'.$data['language'].'.localise.php');
+			$site_package_files[] = array('name'=>$data['language'].'.localise.php','data'=>$language_data);
+
+
+			$site_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
+			if (!$packager = JArchive::getAdapter('zip'))
+			{
+				$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
+
+				return false;
+			}
+			else
+			{
+				if (!$packager->create($site_zip_path, $site_package_files))
+				{
+					$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
+
+					return false;
+				}
+			}
+
+			$main_package_files[]= array('name'=>'site_'.$data['language'].'.zip','data'=>JFile::read($site_zip_path));
+
+		}
+
+		if (count($administrator))
+		{
+			$text .= "\t\t".'<file type="language" client="administrator" id="'.$data['language'].'">admin_'.$data['language'].'.zip</file>' . "\n";
+			//generate administrator package
+			$admin_package_files = array();
+			$admin_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
+
+
+			$admin_txt = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+			$admin_txt .= '<extension version="'.$small_version.'" client="administrator" type="language" method="upgrade">' . "\n";
+			$admin_txt .= "\t".'<name>' . $data['name'] . '</name>' . "\n";
+			$admin_txt .= "\t".'<tag>' . $data['language'] . '</tag>' . "\n";
+			$admin_txt .= "\t".'<version>' . $data['version'] . '</version>' . "\n";
+			$admin_txt .= "\t".'<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
+			$admin_txt .= "\t".'<author>' . $data['author'] . '</author>' . "\n";
+			$admin_txt .= "\t".'<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
+			$admin_txt .= "\t".'<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
+			$admin_txt .= "\t".'<copyright>' . $data['copyright'] . '</copyright>' . "\n";
+			$admin_txt .= "\t".'<license>' . $data['license'] . '</license>' . "\n";
+			$admin_txt .= "\t".'<description>' . $data['language'] . 'site language</description>' . "\n";
+			$admin_txt .= "\t".'<files>'. "\n";
+
+			foreach ($site as $translation)
+			{
+				$file_data = JFile::read(JPATH_ROOT . '/administrator/language/'.$data['language'].'/'.$data['language'].'.'.$translation.'.ini');
+				if(!empty($file_data)){
+					$admin_txt .= "\t\t".'<filename>' . $data['language'].'.'.$translation . '.ini</filename>' . "\n";
+					$admin_package_files[] = array('name'=>$data['language'].'.'.$translation.'.ini','data'=>$file_data);
+				}
+			}
+			$admin_txt .= "\t\t".'<filename file="meta">install.xml</filename>' . "\n";
+			$admin_txt .= "\t\t".'<filename file="meta">' . $data['language'].'.xml</filename>' . "\n";
+			$admin_txt .= "\t".'</files>' . "\n";
+			$admin_txt .= "\t".'<params />' . "\n";
+			$admin_txt .= "\t".'</extension>' . "\n";
+			$admin_package_files[] = array('name'=>'install.xml','data'=>$admin_txt);
+			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/'.$data['language'].'/'.$data['language'].'.xml');
+			$admin_package_files[] = array('name'=>$data['language'].'.xml','data'=>$language_data);
+			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/'.$data['language'].'/'.$data['language'].'.localise.php');
+			$admin_package_files[] = array('name'=>$data['language'].'.localise.php','data'=>$language_data);
+
+
+			$admin_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
+			if (!$packager = JArchive::getAdapter('zip'))
+			{
+				$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
+
+				return false;
+			}
+			else
+			{
+				if (!$packager->create($admin_zip_path, $admin_package_files))
+				{
+					$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
+
+					return false;
+				}
+			}
+
+			$main_package_files[]= array('name'=>'admin_'.$data['language'].'.zip','data'=>JFile::read($admin_zip_path));
+		}
+
+		if (count($installation))
+		{
+			/*
+			 * ignore for now as language packages usually don't have language files for the installation area
+			$text .= "\t".'<installation>' . "\n";
+
+			foreach ($installation as $translation)
+			{
+				$text .= "\t\t".'<filename>' . $translation . '.ini</filename>' . "\n";
+			}
+
+			$text .= "\t".'</installation>' . "\n";
+			*/
+		}
+
+
+		$text .= '</files>' . "\n";
+		if(!empty($data['serverurl'])){
+			$text .= '<updateservers>' . "\n";
+			$text .= '<server type="collection" priority="1" name="'.$data['servername'].'">'.$data['serverurl'].'</server>' . "\n";
+			$text .= '</updateservers>' . "\n";
+		}
+		$text .= '</extension>' . "\n";
+
+		$main_package_files[] = array('name'=>'pkg_'.$data['language'].'.xml','data'=>$text);
+
+		$ziproot = JPATH_ROOT . '/tmp/' . uniqid('com_localise_main_') . '.zip';
+
+
+		// Run the packager
+		if (!$packager = JArchive::getAdapter('zip'))
+		{
+			$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
+
+			return false;
+		}
+		else
+		{
+			if (!$packager->create($ziproot, $main_package_files))
+			{
+				$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ZIPCREATE'));
+
+				return false;
+			}
+		}
+
+		ob_clean();
+		$zipdata = JFile::read($ziproot);
+		header("Expires: 0");
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header('Content-Type: application/zip');
+		header('Content-Disposition: attachment; filename="' . $data['language'].'.'.str_replace(' ','_',$data['name']).'.'.$data['version'] . '.zip"');
+		header('Content-Length: '.strlen($zipdata));
+		header("Cache-Control: maxage=1");
+		header("Pragma: public");
+		header("Content-Transfer-Encoding: binary");
+		echo $zipdata;
+		exit;
 	}
 }

@@ -117,6 +117,14 @@ class LocaliseControllerPackage extends JControllerForm
 	 */
 	public function download()
 	{
+		// Initialise variables.
+		$app = JFactory::getApplication();
+		$input = $app->input;
+		$model   = $this->getModel();
+
+		$data = $input->get('jform', array(), 'array');
+		$model->download($data);
+		/*
 		// Redirect to the export view
 		$app  = JFactory::getApplication();
 		$name = $app->getUserState('com_localise.package.name');
@@ -153,5 +161,6 @@ class LocaliseControllerPackage extends JControllerForm
 
 			$this->setRedirect(JRoute::_('index.php?option=com_localise&tmpl=component&view=downloadpackage&name=' . $name . '&standalone=' . $package->standalone, false), $msg, $type);
 		}
+		*/
 	}
 }

@@ -30,17 +30,36 @@
 			label="COM_LOCALISE_LABEL_PACKAGE_DESCRIPTION"
 			description="COM_LOCALISE_LABEL_PACKAGE_DESCRIPTION_DESC" />
 		<field
-			id="icon"
-			name="icon"
-			type="media"
-			label="COM_LOCALISE_LABEL_PACKAGE_ICON"
-			description="COM_LOCALISE_LABEL_PACKAGE_ICON_DESC" />
+			id="language"
+			name="language"
+			type="language"
+			label="COM_LOCALISE_LABEL_PACKAGE_LANGUAGE"
+			description="COM_LOCALISE_LABEL_PACKAGE_LANGUAGE_DESC"
+			required="true" />
+		<field
+			id="version"
+			name="version"
+			type="text"
+			label="COM_LOCALISE_LABEL_PACKAGE_VERSION"
+			description="COM_LOCALISE_LABEL_PACKAGE_VERSION_DESC" />
 		<field
 			id="author"
 			name="author"
 			type="text"
 			label="COM_LOCALISE_LABEL_PACKAGE_AUTHOR"
 			description="COM_LOCALISE_LABEL_PACKAGE_AUTHOR_DESC" />
+		<field
+			id="authoremail"
+			name="authoremail"
+			type="text"
+			label="COM_LOCALISE_LABEL_PACKAGE_AUTHOREMAIL"
+			description="COM_LOCALISE_LABEL_PACKAGE_AUTHOREMAIL_DESC" />
+		<field
+			id="authorurl"
+			name="authorurl"
+			type="text"
+			label="COM_LOCALISE_LABEL_PACKAGE_AUTHORURL"
+			description="COM_LOCALISE_LABEL_PACKAGE_AUTHORURL_DESC" />
 		<field
 			id="copyright"
 			name="copyright"
@@ -55,6 +74,36 @@
 			default="http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL"
 			label="COM_LOCALISE_LABEL_PACKAGE_LICENSE"
 			description="COM_LOCALISE_LABEL_PACKAGE_LICENSE_DESC" />
+		<field
+			id="url"
+			name="url"
+			type="text"
+			label="COM_LOCALISE_LABEL_PACKAGE_URL"
+			description="COM_LOCALISE_LABEL_PACKAGE_URL_DESC" />
+		<field
+			id="packager"
+			name="packager"
+			type="text"
+			label="COM_LOCALISE_LABEL_PACKAGE_PACKAGER"
+			description="COM_LOCALISE_LABEL_PACKAGE_PACKAGER_DESC" />
+		<field
+			id="packagerurl"
+			name="packagerurl"
+			type="text"
+			label="COM_LOCALISE_LABEL_PACKAGE_PACKAGERURL"
+			description="COM_LOCALISE_LABEL_PACKAGE_PACKAGERURL_DESC" />
+		<field
+			id="servername"
+			name="servername"
+			type="text"
+			label="COM_LOCALISE_LABEL_PACKAGE_SERVERNAME"
+			description="COM_LOCALISE_LABEL_PACKAGE_SERVERNAME_DESC" />
+		<field
+			id="serverurl"
+			name="serverurl"
+			type="text"
+			label="COM_LOCALISE_LABEL_PACKAGE_SERVERURL"
+			description="COM_LOCALISE_LABEL_PACKAGE_SERVERURL_DESC" />
 		<field
 			id="id"
 			name="id"
