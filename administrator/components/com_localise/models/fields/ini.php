@@ -1,14 +1,12 @@
 <?php
-/*------------------------------------------------------------------------
-# com_localise - Localise
-# ------------------------------------------------------------------------
-# author    Mohammad Hasani Eghtedar <m.h.eghtedar@gmail.com>
-# copyright Copyright (C) 2012 http://joomlacode.org/gf/project/com_localise/. All Rights Reserved.
-# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
-# Websites: http://joomlacode.org/gf/project/com_localise/
-# Technical Support:  Forum - http://joomlacode.org/gf/project/com_localise/forum/
--------------------------------------------------------------------------*/
-// no direct access
+/**
+* @package     Com_Localise
+* @subpackage  models
+*
+* @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+* @license     GNU General Public License version 2 or later; see LICENSE.txt
+*/
+
 defined('_JEXEC') or die;
 
 jimport('joomla.html.html');
