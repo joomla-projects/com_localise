@@ -14,41 +14,48 @@ jimport('joomla.form.formfield');
 /**
  * Form Field State class.
  *
- * @package    Extensions.Components
+ * @package     Extensions.Components
  * @subpackage  Localise
+ *
+ * @since       1.0
  */
 class JFormFieldState extends JFormField
 {
-  /**
-   * The field type.
-   *
-   * @var    string
-   */
-  protected $type = 'State';
+	/**
+	 * The field type.
+	 *
+	 * @var    string
+	 */
+	protected $type = 'State';
 
-  /**
-   * Method to get the field input.
-   *
-   * @return  string    The field input.
-   */
-  protected function getInput() 
-  {
-    $attributes = '';
-    if ($v = (string)$this->element['onchange']) 
-    {
-      $attributes.= ' onchange="' . $v . '"';
-    }
-    $attributes.= ' class="'.(string) $this->element['class'].' iconlist-16-' . $this->value . ' ' . $this->value . '"';
-    $options = array();
-    foreach ($this->element->children() as $option) 
-    {
-      $options[] = JHtml::_('select.option', $option->attributes('value'), JText::_(trim($option)), array('option.attr' => 'attributes', 'attr' => 'class="localise-icon inlanguage"'));
-    }
-    $options[] = JHtml::_('select.option', 'inlanguage', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_INLANGUAGE'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-inlanguage inlanguage"'));
-    $options[] = JHtml::_('select.option', 'unexisting', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_UNEXISTING'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-unexisting unexisting"'));
-    $options[] = JHtml::_('select.option', 'notinreference', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_NOTINREFERENCE'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-notinreference notinreference"'));
-    $options[] = JHtml::_('select.option', 'error', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_ERROR'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-error error"'));
-    $return = JHtml::_('select.genericlist', $options, $this->name, array('id' => $this->id, 'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes));
-    return $return;
-  }
+	/**
+	 * Method to get the field input.
+	 *
+	 * @return  string    The field input.
+	 */
+	protected function getInput()
+	{
+		$attributes = '';
+
+		if ($v = (string) $this->element['onchange'])
+		{
+			$attributes .= ' onchange="' . $v . '"';
+		}
+
+		$attributes .= ' class="' . (string) $this->element['class'] . ' iconlist-16-' . $this->value . ' ' . $this->value . '"';
+		$options = array();
+
+		foreach ($this->element->children() as $option)
+		{
+			$options[] = JHtml::_('select.option', $option->attributes('value'), JText::_(trim($option)), array('option.attr' => 'attributes', 'attr' => 'class="localise-icon inlanguage"'));
+		}
+
+		$options[] = JHtml::_('select.option', 'inlanguage', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_INLANGUAGE'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-inlanguage inlanguage"'));
+		$options[] = JHtml::_('select.option', 'unexisting', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_UNEXISTING'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-unexisting unexisting"'));
+		$options[] = JHtml::_('select.option', 'notinreference', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_NOTINREFERENCE'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-notinreference notinreference"'));
+		$options[] = JHtml::_('select.option', 'error', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_ERROR'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-error error"'));
+		$return    = JHtml::_('select.genericlist', $options, $this->name, array('id' => $this->id, 'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes));
+
+		return $return;
+	}
 }
