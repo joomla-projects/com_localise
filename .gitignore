@@ -18,6 +18,7 @@ Desktop.ini
 
 # Netbeans (custom)
 .netbeans/*
+/nbproject/*
 
 # Temp files
 *.tmp
