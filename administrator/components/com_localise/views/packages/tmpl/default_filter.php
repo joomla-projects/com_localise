@@ -25,7 +25,7 @@ $sortFields = $this->getSortFields();
 <div id="j-main-container" class="span10">
 	<div id="filter-bar" class="btn-toolbar">
 		<?php foreach($this->form->getFieldset('search') as $field): ?>
-		<?php echo $field->input; ?>
+			<?php echo $field->input; ?>
 		<?php endforeach; ?>
 		<div class="btn-group pull-right hidden-phone">
 			<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
@@ -35,8 +35,12 @@ $sortFields = $this->getSortFields();
 			<label for="directionTable" class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC');?></label>
 			<select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable()">
 				<option value=""><?php echo JText::_('JFIELD_ORDERING_DESC');?></option>
-				<option value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING');?></option>
-				<option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING');?></option>
+				<option value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>>
+					<?php echo JText::_('JGLOBAL_ORDER_ASCENDING');?>
+				</option>
+				<option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>>
+					<?php echo JText::_('JGLOBAL_ORDER_DESCENDING');?>
+				</option>
 			</select>
 		</div>
 		<div class="btn-group pull-right">

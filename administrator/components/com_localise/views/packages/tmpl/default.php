@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.modal');
-JHTML::_('stylesheet','com_localise/localise.css', null, true);
+JHTML::_('stylesheet', 'com_localise/localise.css', null, true);
 JHtml::_('formbehavior.chosen', 'select');
 
 $listOrder  = $this->escape($this->state->get('list.ordering'));

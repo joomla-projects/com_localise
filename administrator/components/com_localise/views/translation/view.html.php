@@ -14,6 +14,8 @@ defined('_JEXEC') or die;
  *
  * @package     Extensions.Components
  * @subpackage  Localise
+ *
+ * @since       1.0
  */
 class LocaliseViewTranslation extends JViewLegacy
 {
@@ -25,8 +27,12 @@ class LocaliseViewTranslation extends JViewLegacy
 
 	/**
 	 * Display the view
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  void
 	 */
-	public function display($tpl = null) 
+	public function display($tpl = null)
 	{
 		jimport('joomla.client.helper');
 
@@ -38,9 +44,10 @@ class LocaliseViewTranslation extends JViewLegacy
 		$this->ftp     = JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
+		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
@@ -51,13 +58,20 @@ class LocaliseViewTranslation extends JViewLegacy
 		parent::display($tpl);
 	}
 
-	protected function addToolbar() 
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 */
+	protected function addToolbar()
 	{
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 
-		if ($this->state->get('translation.filename') == 'joomla') 
+		if ($this->state->get('translation.filename') == 'joomla')
 		{
 			$filename = $this->state->get('translation.tag') . '.ini';
 		}
@@ -68,7 +82,7 @@ class LocaliseViewTranslation extends JViewLegacy
 
 		JToolbarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', JText::sprintf($this->item->exists ? 'COM_LOCALISE_HEADER_TRANSLATION_EDIT' : 'COM_LOCALISE_HEADER_TRANSLATION_NEW', $filename)), 'comments-2 langmanager');
 
-		if (!$checkedOut) 
+		if (!$checkedOut)
 		{
 			JToolbarHelper::apply('translation.apply');
 			JToolbarHelper::save('translation.save');

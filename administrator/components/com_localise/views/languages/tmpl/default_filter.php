@@ -24,8 +24,8 @@ $sortFields = $this->getSortFields();
 			<div class="filter-select hidden-phone">
 				<h4 class="page-header"><?php echo JText::_('JSEARCH_FILTER_LABEL');?></h4>
 				<?php foreach($this->form->getFieldset('select') as $field): ?>
-				<?php echo $field->input; ?>
-				<hr class="hr-condensed" />
+					<?php echo $field->input; ?>
+					<hr class="hr-condensed" />
 				<?php endforeach; ?>
 			</div>
 		</div>
@@ -36,7 +36,7 @@ $sortFields = $this->getSortFields();
 <div id="j-main-container" class="span10">
 	<div id="filter-bar" class="btn-toolbar">
 		<?php foreach($this->form->getFieldset('search') as $field): ?>
-		<?php echo $field->input; ?>
+			<?php echo $field->input; ?>
 		<?php endforeach; ?>
 		<div class="btn-group pull-right hidden-phone">
 			<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>

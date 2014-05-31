@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.formvalidation');
-JHtml::_('stylesheet','com_localise/localise.css', null, true);
+JHtml::_('stylesheet', 'com_localise/localise.css', null, true);
 
 $parts = explode('-', $this->state->get('translation.reference'));
 $src   = $parts[0];
@@ -18,7 +18,6 @@ $parts = explode('-', $this->state->get('translation.tag'));
 $dest  = $parts[0];
 
 $document = JFactory::getDocument();
-//$document->addScript('http://www.google.com/jsapi');
 $document->addScriptDeclaration("
 	if (typeof(Localise) === 'undefined') {
 		Localise = {};
@@ -31,7 +30,7 @@ $fieldSets = $this->form->getFieldsets();
 $sections  = $this->form->getFieldsets('strings');
 $ftpSets   = $this->formftp->getFieldsets();
 
-//Prepare Bing translation
+// Prepare Bing translation
 JText::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 ?>
 <script type="text/javascript">
@@ -90,12 +89,6 @@ JText::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 		AzureTranslator(targets[0], targets, 0, '<?php echo JSession::getFormToken();?>');
 	}
 
-	/* if (typeof(google) !== 'undefined')
-	{
-		google.load('language', '1');
-		google.setOnLoadCallback(null);
-	} */
- 
 	Joomla.submitbutton = function(task)
 	{
 		if (task == 'translation.cancel' || document.formvalidator.isValid(document.id('localise-translation-form')))

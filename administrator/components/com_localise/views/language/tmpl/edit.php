@@ -34,12 +34,15 @@ $ftpSets   = $this->formftp->getFieldsets();
 				<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : 'default')); ?>
 					<?php if ($this->ftp) : ?>
 					<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'ftp', JText::_($ftpSets['ftp']->label, true)); ?>
+
 						<?php if (!empty($ftpSets['ftp']->description)):?>
-						<p class="tip"><?php echo JText::_($ftpSets['ftp']->description); ?></p>
+							<p class="tip"><?php echo JText::_($ftpSets['ftp']->description); ?></p>
 						<?php endif;?>
+
 						<?php if (JError::isError($this->ftp)): ?>
-						<p class="error"><?php echo JText::_($this->ftp->message); ?></p>
+							<p class="error"><?php echo JText::_($this->ftp->message); ?></p>
 						<?php endif; ?>
+
 						<?php foreach($this->formftp->getFieldset('ftp',false) as $field): ?>
 						<div class="control-group">
 							<div class="control-label">
@@ -50,12 +53,17 @@ $ftpSets   = $this->formftp->getFieldsets();
 							</div>
 						</div>
 						<?php endforeach; ?>
+
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
+
 					<?php endif; ?>
+
 					<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'default', JText::_($fieldSets['default']->label, true)); ?>
+
 						<?php if (!empty($fieldSets['default']->description)):?>
-						<p class="tip"><?php echo JText::_($fieldSets['default']->description); ?></p>
+							<p class="tip"><?php echo JText::_($fieldSets['default']->description); ?></p>
 						<?php endif;?>
+
 						<?php foreach($this->form->getFieldset('default') as $field): ?>
 						<div class="control-group">
 							<div class="control-label">
@@ -66,11 +74,15 @@ $ftpSets   = $this->formftp->getFieldsets();
 							</div>
 						</div>
 						<?php endforeach; ?>
+
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
+
 					<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'author', JText::_($fieldSets['author']->label, true)); ?>
+
 						<?php if (!empty($fieldSets['author']->description)):?>
-						<p class="tip"><?php echo JText::_($fieldSets['author']->description); ?></p>
+							<p class="tip"><?php echo JText::_($fieldSets['author']->description); ?></p>
 						<?php endif;?>
+
 						<?php foreach($this->form->getFieldset('author') as $field): ?>
 						<div class="control-group">
 							<div class="control-label">
@@ -81,11 +93,15 @@ $ftpSets   = $this->formftp->getFieldsets();
 							</div>
 						</div>
 						<?php endforeach; ?>
+
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
+
 					<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_($fieldSets['permissions']->label, true)); ?>
+
 						<?php if (!empty($fieldSets['permissions']->description)):?>
-						<p class="tip"><?php echo JText::_($fieldSets['permissions']->description); ?></p>
+							<p class="tip"><?php echo JText::_($fieldSets['permissions']->description); ?></p>
 						<?php endif;?>
+
 						<?php foreach($this->form->getFieldset('permissions') as $field): ?>
 						<div class="control-group form-vertical">
 							<div class="controls">
@@ -93,6 +109,7 @@ $ftpSets   = $this->formftp->getFieldsets();
 							</div>
 						</div>
 						<?php endforeach; ?>
+
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 					<input type="hidden" name="task" value="" />

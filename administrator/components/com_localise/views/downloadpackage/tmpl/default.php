@@ -12,15 +12,13 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.formvalidation');
 ?>
 <script type="text/javascript">
-<!--
-	function submitbutton(task)
+function submitbutton(task)
+{
+	if (task == 'package.cancel' || document.formvalidator.isValid(document.id('localise-downloadpackage-form')))
 	{
-		if (task == 'package.cancel' || document.formvalidator.isValid(document.id('localise-downloadpackage-form')))
-		{
-			submitform(task);
-		}
+		submitform(task);
 	}
-// -->
+}
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_localise&view=exportpackage&format=raw');?>" method="post" name="adminForm" id="localise-downloadpackage-form" class="form-validate">
 	<div class="row-fluid">
@@ -36,7 +34,7 @@ JHtml::_('behavior.formvalidation');
 					</div>
 					<?php endif; ?>
 					<div class="controls">
-					<?php echo $field->input; //for submit button: window.top.setTimeout('window.parent.SqueezeBox.close()', 2000);?>
+					<?php echo $field->input;?>
 					</div>
 				</div>
 				<?php endforeach; ?>
