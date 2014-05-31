@@ -12,8 +12,10 @@ defined('_JEXEC') or die;
 /**
  * Translations View class for the Localise component
  *
- * @package     Joomla.Administrator
- * @subpackage  com_localise
+ * @package     Extensions.Components
+ * @subpackage  Localise
+ *
+ * @since       1.0
  */
 class LocaliseViewTranslations extends JViewLegacy
 {
@@ -27,6 +29,8 @@ class LocaliseViewTranslations extends JViewLegacy
 
 	/**
 	 * Display the view
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  void
 	 */
@@ -45,6 +49,7 @@ class LocaliseViewTranslations extends JViewLegacy
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("<br />", $errors));
+
 			return false;
 		}
 
@@ -58,6 +63,8 @@ class LocaliseViewTranslations extends JViewLegacy
 
 	/**
 	 * Add the page title and toolbar.
+	 *
+	 * @return  void
 	 *
 	 * @since   1.6
 	 */

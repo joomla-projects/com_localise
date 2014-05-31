@@ -12,8 +12,10 @@ defined('_JEXEC') or die;
 /**
  * View to edit a laguage.
  *
- * @package     Joomla.Administrator
- * @subpackage  com_localise
+ * @package     Extensions.Components
+ * @subpackage  Localise
+ *
+ * @since       1.0
  */
 class LocaliseViewLanguage extends JViewLegacy
 {
@@ -25,8 +27,12 @@ class LocaliseViewLanguage extends JViewLegacy
 
 	/**
 	 * Display the view
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  void
 	 */
-	public function display($tpl = null) 
+	public function display($tpl = null)
 	{
 		jimport('joomla.client.helper');
 
@@ -38,9 +44,10 @@ class LocaliseViewLanguage extends JViewLegacy
 		$this->ftp     = JClientHelper::setCredentialsFromRequest('ftp');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
+		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
@@ -51,7 +58,14 @@ class LocaliseViewLanguage extends JViewLegacy
 		parent::display($tpl);
 	}
 
-	protected function addToolbar() 
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 */
+	protected function addToolbar()
 	{
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 
@@ -62,7 +76,7 @@ class LocaliseViewLanguage extends JViewLegacy
 		JToolbarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', $isNew ? JText::_('COM_LOCALISE_HEADER_LANGUAGE_NEW') : JText::_('COM_LOCALISE_HEADER_LANGUAGE_EDIT')), 'icon-comments-2 langmanager');
 
 		// If not checked out, can save the item.
-		if (!$checkedOut) 
+		if (!$checkedOut)
 		{
 			JToolbarHelper::apply('language.apply');
 			JToolbarHelper::save('language.save');
