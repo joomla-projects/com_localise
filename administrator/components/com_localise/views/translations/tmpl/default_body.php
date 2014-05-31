@@ -1,7 +1,7 @@
 <?php
 /**
- * @package     Com_Localise
- * @subpackage  views
+ * @package     Joomla.Administrator
+ * @subpackage  com_localise
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -47,103 +47,82 @@ $lang = JFactory::getLanguage();
 				<span class="text"/>
 			</span>
 		</span>
-			<?php endif; ?>
-			<?php echo JHtml::_('jgrid.action', $i, '', array('tip' => true, 'inactive_title' => JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_STATE_' . $item->state, $item->translated, $item->unchanged, $item->total, $item->extra), 'inactive_class' => '16-' . $item->state, 'enabled' => false, 'translate' => false)); ?>
-			<?php echo JHtml::_('jgrid.action', $i, '', array('tip' => true, 'inactive_title' => JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_TYPE_' . $item->type), 'inactive_class' => '16-' . $item->type, 'enabled' => false, 'translate' => false)); ?>
-			<?php echo JHtml::_('jgrid.action', $i, '', array('tip' => true, 'inactive_title' => JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_CLIENT_' . $item->client), 'inactive_class' => '16-' . $item->client, 'enabled' => false, 'translate' => false)); ?>
-			<?php if ($item->tag == $reference && $item->type != 'override'): ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('tip' => true, 'inactive_title' => JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_REFERENCE'), 'inactive_class' => '16-reference', 'enabled' => false, 'translate' => false)); ?>
-			<?php else: ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('enabled' => false)); ?>
-			<?php endif; ?></td>
-		<td dir="ltr" class="center"><?php echo $item->tag; ?></td>
-		<td dir="ltr">
-			<?php if (!empty($item->checked_out)) : ?>
-				<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time); ?>
-			<?php else: ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('enabled' => false)); ?>
-			<?php endif; ?>
-			<?php if ($item->writable && !$item->error && $canEdit): ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('enabled' => false)); ?>
-				<a class="hasTooltip"
-				   href="<?php echo JRoute::_('index.php?option=com_localise&task=translation.edit&client=' . $item->client . '&tag=' . $item->tag . '&filename=' . $item->filename . '&storage=' . $item->storage . '&id=' . LocaliseHelper::getFileId(LocaliseHelper::getTranslationPath($item->client, $item->tag, $item->filename, $item->storage)) . ($item->filename == 'override' ? '&layout=raw' : '')); ?>"
-				   title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_' . ($item->state == 'unexisting' ? 'NEW' : 'EDIT')); ?>">
-					<?php echo $item->name; ?>
-				</a>
-			<?php elseif (!$canEdit): ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('tip' => true, 'inactive_title' => JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTEDITABLE', substr($item->path, strlen(JPATH_ROOT))), 'inactive_class' => '16-error', 'enabled' => false, 'translate' => false)); ?>
-				<?php echo $item->name; ?>
-			<?php
-			elseif (!$item->writable): ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('tip' => true, 'inactive_title' => JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTWRITABLE', substr($item->path, strlen(JPATH_ROOT))), 'inactive_class' => '16-error', 'enabled' => false, 'translate' => false)); ?>
-				<?php echo $item->name; ?>
-			<?php
-			elseif ($item->filename == 'override'): ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('enabled' => false)); ?>
-				<?php echo $item->name; ?>
-			<?php
-			else: ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('tip' => true, 'inactive_title' => JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_ERROR', substr($item->path, strlen(JPATH_ROOT)), implode(', ', $item->error)), 'inactive_class' => '16-error', 'enabled' => false, 'translate' => false)); ?>
-				<?php echo $item->name; ?>
-			<?php endif; ?>
-		</td>
-		<td dir="ltr">
-			<?php if ($item->writable && $canEdit): ?>
-				<a class="hasTooltip"
-				   href="<?php echo JRoute::_('index.php?option=com_localise&task=translation.edit&client=' . $item->client . '&tag=' . $item->tag . '&filename=' . $item->filename . '&storage=' . $item->storage . '&id=' . LocaliseHelper::getFileId(LocaliseHelper::getTranslationPath($item->client, $item->tag, $item->filename, $item->storage)) . '&layout=raw'); ?>"
-				   title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_' . ($item->state == 'unexisting' ? 'NEWRAW' : 'EDITRAW')); ?>">
-					<?php echo substr($item->path, strlen(JPATH_ROOT)); ?>
-				</a>
-			<?php else: ?>
-				<?php echo substr($item->path, strlen(JPATH_ROOT)); ?>
-			<?php endif; ?>
-		</td>
-		<td width="100" class="center" dir="ltr">
-			<?php if ($item->bom != 'UTF-8'): ?>
-				<a class="jgrid hasTooltip" href="http://en.wikipedia.org/wiki/UTF-8"
-				   title="<?php echo addslashes(htmlspecialchars(JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_UTF8'), ENT_COMPAT, 'UTF-8')); ?>">
-					<span class="state icon-16-error"></span>
-					<span class="text"></span>
-				</a>
-			<?php elseif ($item->state == 'error'): ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('tip' => true, 'inactive_title' => JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_ERROR', substr($item->path, strlen(JPATH_ROOT)), implode(', ', $item->error)), 'inactive_class' => '16-error', 'enabled' => false, 'translate' => false)); ?>
-			<?php
-			elseif ($item->type == 'override'): ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('tip' => true, 'inactive_title' => JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_TYPE_OVERRIDE'), 'inactive_class' => '16-override', 'enabled' => false, 'translate' => false)); ?>
-			<?php
-			elseif ($item->state == 'notinreference'): ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('tip' => true, 'inactive_title' => JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_STATE_NOTINREFERENCE'), 'inactive_class' => '16-notinreference', 'enabled' => false, 'translate' => false)); ?>
-			<?php
-			elseif ($item->state == 'unexisting'): ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('tip' => true, 'inactive_title' => JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_STATE_UNEXISTING', $item->translated, $item->unchanged, $item->total, $item->extra), 'inactive_class' => '16-unexisting', 'enabled' => false, 'translate' => false)); ?>
-			<?php
-			elseif ($item->tag == $reference): ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('tip' => true, 'inactive_title' => JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_REFERENCE'), 'inactive_class' => '16-reference', 'enabled' => false, 'translate' => false)); ?>
-			<?php
-			elseif ($item->translated == $item->total || $item->complete): ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('tip' => true, 'inactive_title' => JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_COMPLETE', $item->translated, $item->unchanged, $item->total, $item->extra), 'inactive_class' => '16-complete', 'enabled' => false, 'translate' => false)); ?>
-			<?php
-			else: ?>
-				<span class="hasTooltip"
-				      title="<?php echo $item->translated + $item->unchanged == 0 ? JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS', $item->translated, $item->unchanged, $item->total, $item->extra); ?>">
-			<?php $translated = $item->total ? intval(100 * $item->translated / $item->total) : 0; ?>
-					<?php $unchanged = ($item->translated + $item->unchanged == $item->total) ? (100 - $translated) : ($item->total ? intval(100 * $item->unchanged / $item->total) : 0); ?>
-					<?php if ($item->unchanged): ?>
-						( <?php echo $translated; ?> %+ <?php echo $unchanged; ?> %)
-					<?php else: ?>
-						<?php echo $translated; ?> %
-					<?php endif; ?>
-					<div style="text-align:left;border:solid silver 1px;width:100px;height:4px;">
-						<div class="pull-left"
-						     style="height:100%; width:<?php echo $translated; ?>% ;background:green;">
-						</div>
-						<div class="pull-left"
-						     style="height:100%; width:<?php echo $unchanged; ?>% ;background:orange;">
-						</div>
-						<div class="pull-left"
-						     style="height:100%; width:<?php echo 100 - $translated - $unchanged; ?>% ;background:red;">
-						</div>
-					</div>
+		<?php endif; ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_STATE_'.$item->state, $item->translated, $item->unchanged, $item->total, $item->extra), 'inactive_class'=>'16-'.$item->state, 'enabled' => false, 'translate'=>false)); ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_TYPE_'.$item->type), 'inactive_class'=>'16-'.$item->type, 'enabled' => false, 'translate'=>false)); ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_CLIENT_'.$item->client), 'inactive_class'=>'16-'.$item->client, 'enabled' => false, 'translate'=>false)); ?>
+		<?php if ($item->tag==$reference && $item->type!='override'): ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_REFERENCE'), 'inactive_class'=>'16-reference', 'enabled' => false, 'translate'=>false));?>
+		<?php else: ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('enabled'=>false)); ?>
+		<?php endif; ?></td>
+	<td dir="ltr" class="center"><?php echo $item->tag; ?></td>
+        <td dir="ltr" class="center"><?php echo $item->client ?></td>
+	<td dir="ltr">
+		<?php if (!empty($item->checked_out)) : ?>
+		<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time); ?>
+		<?php else: ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('enabled'=>false)); ?>
+		<?php endif; ?>
+		<?php if ($item->writable && !$item->error && $canEdit): ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('enabled'=>false)); ?>
+		<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=translation.edit&client='.$item->client.'&tag='.$item->tag.'&filename='.$item->filename.'&storage='.$item->storage.'&id='.LocaliseHelper::getFileId(LocaliseHelper::getTranslationPath($item->client,$item->tag, $item->filename, $item->storage)).($item->filename=='override' ? '&layout=raw' :''));?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_' . ($item->state=='unexisting' ? 'NEW' : 'EDIT')); ?>">
+			<?php echo $item->name; ?>.ini
+		</a>
+		<?php elseif (!$canEdit): ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTEDITABLE', substr($item->path, strlen(JPATH_ROOT))), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
+		<?php echo $item->name;?>.ini
+		<?php elseif (!$item->writable): ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTWRITABLE', substr($item->path, strlen(JPATH_ROOT))), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
+		<?php echo $item->name;?>.ini
+		<?php elseif ($item->filename=='override'): ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('enabled'=>false)); ?>
+		<?php echo $item->name; ?>.ini
+		<?php else: ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_ERROR', substr($item->path, strlen(JPATH_ROOT)) , implode(', ',$item->error)), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
+		<?php echo $item->name; ?>.ini
+                <?php endif;?>
+		<?php if ($item->writable && $canEdit): ?>
+		(<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=translation.edit&client=' . $item->client . '&tag=' . $item->tag . '&filename=' . $item->filename . '&storage=' . $item->storage . '&id=' . LocaliseHelper::getFileId(LocaliseHelper::getTranslationPath($item->client,$item->tag, $item->filename, $item->storage)) . '&layout=raw'); ?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_' . ($item->state=='unexisting' ? 'NEWRAW' : 'EDITRAW')); ?>"><?php echo JText::_('COM_LOCALISE_TEXT_TRANSLATIONS_SOURCE'); ?></a>)
+		<?php else: ?>
+		<?php echo substr($item->path,strlen(JPATH_ROOT)); ?>
+		<?php endif;?>
+	</td>
+	<td width="100" class="center" dir="ltr">
+		<?php if ($item->bom != 'UTF-8'): ?>
+		<a class="jgrid hasTooltip" href="http://en.wikipedia.org/wiki/UTF-8" title="<?php echo addslashes(htmlspecialchars(JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_UTF8'), ENT_COMPAT, 'UTF-8')); ?>">
+			<span class="state icon-16-error"></span>
+			<span class="text"></span>
+		</a>
+		<?php elseif ($item->state == 'error'): ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_ERROR',substr($item->path,strlen(JPATH_ROOT)) , implode(', ',$item->error)), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false));?>
+		<?php elseif ($item->type == 'override'): ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_TYPE_OVERRIDE'), 'inactive_class'=>'16-override', 'enabled' => false, 'translate'=>false));?>
+		<?php elseif ($item->state == 'notinreference'): ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_STATE_NOTINREFERENCE'), 'inactive_class'=>'16-notinreference', 'enabled' => false, 'translate'=>false));?>
+		<?php elseif ($item->state == 'unexisting'): ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_STATE_UNEXISTING', $item->translated, $item->unchanged, $item->total, $item->extra), 'inactive_class'=>'16-unexisting', 'enabled' => false, 'translate'=>false));?>
+		<?php elseif ($item->tag == $reference): ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_REFERENCE'), 'inactive_class'=>'16-reference', 'enabled' => false, 'translate'=>false));?>
+		<?php elseif ($item->translated == $item->total || $item->complete): ?>
+		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_COMPLETE', $item->translated, $item->unchanged, $item->total, $item->extra), 'inactive_class'=>'16-complete', 'enabled' => false, 'translate'=>false));?>
+		<?php else: ?>
+		<span class="hasTooltip" title="<?php echo $item->translated + $item->unchanged == 0 ? JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS', $item->translated, $item->unchanged, $item->total, $item->extra);?>">
+			<?php $translated =  $item->total ? intval(100 * $item->translated / $item->total) : 0;?>
+			<?php $unchanged =  ($item->translated+$item->unchanged==$item->total)?(100-$translated):($item->total ? intval(100 * $item->unchanged / $item->total) : 0);?>
+			<?php if ($item->unchanged):?>
+			( <?php echo $translated;?> %+ <?php echo $unchanged;?> %)
+			<?php else:?>
+			<?php echo $translated;?> %
+			<?php endif;?>
+			<div style="text-align:left;border:solid silver 1px;width:100px;height:4px;">
+				<div class="pull-left" style="height:100%; width:<?php echo $translated;?>% ;background:green;">
+				</div>
+				<div class="pull-left" style="height:100%; width:<?php echo $unchanged;?>% ;background:orange;">
+				</div>
+				<div class="pull-left" style="height:100%; width:<?php echo 100-$translated-$unchanged;?>% ;background:red;">
+				</div>
+			</div>
 			<div class="clr"></div>
 		</span>
 			<?php endif; ?>
