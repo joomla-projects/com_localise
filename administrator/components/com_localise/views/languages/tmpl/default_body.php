@@ -50,7 +50,7 @@ $user   = JFactory::getUser();
 		</a>
 	</td>
 	<td class="center hidden-phone"><?php if (isset($item->version)) echo $item->version; ?></td>
-	<td class="center hidden-phone"><?php if (isset($item->creationDate)) echo JHtml::_('date', $item->creationDate, JText::_('DATE_FORMAT_LC3')); ?></td>
+	<td class="center hidden-phone"><?php if (isset($item->creationDate)) echo $item->creationDate; ?></td>
 	<td class="hidden-phone">
 		<span class="hasTooltip" title="<b><?php echo JText::_('COM_LOCALISE_TOOLTIP_LANGUAGES_AUTHOR_INFORMATION') . '</b><br />' . (isset($item->authorEmail) ? ($item->authorEmail . '<br />') :'') . (isset($item->authorUrl)?$item->authorUrl:''); ?>">
 			<?php if (isset($item->author)) echo $item->author; ?>
