@@ -1,9 +1,9 @@
 <?php
 /**
- * @package     Com_Localise
- * @subpackage  views
+ * @package     Joomla.Administrator
+ * @subpackage  com_localise
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -42,6 +42,7 @@ $lang      = JFactory::getLanguage();
 		<?php echo JHtml::_('jgrid.action', $i, '', array('enabled'=>false)); ?>
 		<?php endif; ?></td>
 	<td dir="ltr" class="center"><?php echo $item->tag; ?></td>
+        <td dir="ltr" class="center"><?php echo $item->client ?></td>
 	<td dir="ltr">
 		<?php if (!empty($item->checked_out)) : ?>
 		<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time); ?>
@@ -51,27 +52,23 @@ $lang      = JFactory::getLanguage();
 		<?php if ($item->writable && !$item->error && $canEdit): ?>
 		<?php echo JHtml::_('jgrid.action', $i, '', array('enabled'=>false)); ?>
 		<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=translation.edit&client='.$item->client.'&tag='.$item->tag.'&filename='.$item->filename.'&storage='.$item->storage.'&id='.LocaliseHelper::getFileId(LocaliseHelper::getTranslationPath($item->client,$item->tag, $item->filename, $item->storage)).($item->filename=='override' ? '&layout=raw' :''));?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_' . ($item->state=='unexisting' ? 'NEW' : 'EDIT')); ?>">
-			<?php echo $item->name; ?>
+			<?php echo $item->name; ?>.ini
 		</a>
 		<?php elseif (!$canEdit): ?>
 		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTEDITABLE', substr($item->path, strlen(JPATH_ROOT))), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
-		<?php echo $item->name;?>
+		<?php echo $item->name;?>.ini
 		<?php elseif (!$item->writable): ?>
 		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTWRITABLE', substr($item->path, strlen(JPATH_ROOT))), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
-		<?php echo $item->name;?>
+		<?php echo $item->name;?>.ini
 		<?php elseif ($item->filename=='override'): ?>
 		<?php echo JHtml::_('jgrid.action', $i, '', array('enabled'=>false)); ?>
-		<?php echo $item->name; ?>
+		<?php echo $item->name; ?>.ini
 		<?php else: ?>
 		<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_ERROR', substr($item->path, strlen(JPATH_ROOT)) , implode(', ',$item->error)), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
-		<?php echo $item->name; ?>
-		<?php endif;?>
-	</td>
-	<td dir="ltr">
+		<?php echo $item->name; ?>.ini
+                <?php endif;?>
 		<?php if ($item->writable && $canEdit): ?>
-		<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=translation.edit&client=' . $item->client . '&tag=' . $item->tag . '&filename=' . $item->filename . '&storage=' . $item->storage . '&id=' . LocaliseHelper::getFileId(LocaliseHelper::getTranslationPath($item->client,$item->tag, $item->filename, $item->storage)) . '&layout=raw'); ?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_' . ($item->state=='unexisting' ? 'NEWRAW' : 'EDITRAW')); ?>">
-			<?php echo substr($item->path,strlen(JPATH_ROOT));?>
-		</a>
+		(<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=translation.edit&client=' . $item->client . '&tag=' . $item->tag . '&filename=' . $item->filename . '&storage=' . $item->storage . '&id=' . LocaliseHelper::getFileId(LocaliseHelper::getTranslationPath($item->client,$item->tag, $item->filename, $item->storage)) . '&layout=raw'); ?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_' . ($item->state=='unexisting' ? 'NEWRAW' : 'EDITRAW')); ?>"><?php echo JText::_('COM_LOCALISE_TEXT_TRANSLATIONS_SOURCE'); ?></a>)
 		<?php else: ?>
 		<?php echo substr($item->path,strlen(JPATH_ROOT)); ?>
 		<?php endif;?>
