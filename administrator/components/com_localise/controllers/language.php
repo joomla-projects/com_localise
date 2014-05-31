@@ -42,7 +42,7 @@ class LocaliseControllerLanguage extends JControllerForm
 	 *
 	 * @return  boolean
 	 */
-	protected function allowEdit($data = array(), $key = 'id') 
+	protected function allowEdit($data = array(), $key = 'id')
 	{
 		return JFactory::getUser()->authorise('localise.edit', $this->option . '.' . $data[$key]);
 	}
