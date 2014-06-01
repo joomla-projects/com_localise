@@ -133,8 +133,4 @@
     <file>mod_wrapper</file>
     <file>tpl_rhuk_milkyway</file>
   </site>
-  <installation>
-    <file></file>
-    <file>ini.old</file>
-  </installation>
 </package>
