@@ -73,22 +73,28 @@ class LocaliseModelPackages extends JModelList
 		{
 			$search = $this->getState('filter.search');
 			$this->packages = array();
-			$path = JPATH_COMPONENT_ADMINISTRATOR . '/packages';
+			$paths = array (
+				JPATH_COMPONENT_ADMINISTRATOR . '/packages',
+				JPATH_SITE . '/media/com_localise/packages',
+			);
 
-			if (JFolder::exists($path))
+			foreach ($paths as $path)
 			{
-				$files = JFolder::files($path, '\.xml$');
-
-				foreach ($files as $file)
+				if (JFolder::exists($path))
 				{
-					$model = JModelLegacy::getInstance('Package', 'LocaliseModel', array('ignore_request' => true));
-					$id    = LocaliseHelper::getFileId("$path/$file");
-					$model->setState('package.id', $id);
-					$package = $model->getItem();
-
-					if (empty($search) || preg_match("/$search/i", $package->title))
+					$files = JFolder::files($path, '\.xml$');
+		
+					foreach ($files as $file)
 					{
-						$this->packages[] = $package;
+						$model = JModelLegacy::getInstance('Package', 'LocaliseModel', array('ignore_request' => true));
+						$id    = LocaliseHelper::getFileId("$path/$file");
+						$model->setState('package.id', $id);
+						$package = $model->getItem();
+		
+						if (empty($search) || preg_match("/$search/i", $package->title))
+						{
+							$this->packages[] = $package;
+						}
 					}
 				}
 			}
