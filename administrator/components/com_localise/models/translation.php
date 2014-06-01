@@ -1010,8 +1010,7 @@ class LocaliseModelTranslation extends JModelForm
 	{
 		// Fix DOT saving issue
 		$input = JFactory::getApplication()->input;
-		$strings_array   = $input->post;
-		$strings         = $strings_array['jform']['strings'];
+		$strings = $input->get->post('jform', 'strings');
 		$data['strings'] = $strings;
 
 		// Special case for lib_joomla
