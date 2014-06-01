@@ -17,7 +17,7 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 	<th width="100" class="center hidden-phone"><?php echo JText::_('COM_LOCALISE_HEADING_TRANSLATIONS_INFORMATION'); ?></th>
 	<th width="50" class="center"><?php echo JHtml::_('grid.sort', 'COM_LOCALISE_TOOLBAR_PACKAGES_LANGUAGE', 'tag', $listDirn, $listOrder); ?></th>
 	<th width="100" class="center hidden-phone"><?php echo JText::_('COM_LOCALISE_HEADING_LANGUAGES_CLIENT'); ?></th>
-        <th width="250" class="title"><?php echo JHtml::_('grid.sort', 'COM_LOCALISE_HEADING_LANGUAGES_FILES', 'filename', $listDirn, $listOrder); ?></th>
+	<th width="250" class="title"><?php echo JHtml::_('grid.sort', 'COM_LOCALISE_HEADING_LANGUAGES_FILES', 'filename', $listDirn, $listOrder); ?></th>
 	<th width="120" class="center"><?php echo JHtml::_('grid.sort', 'COM_LOCALISE_HEADING_TRANSLATIONS_TRANSLATED', 'completed', $listDirn, $listOrder); ?></th>
 	<th width="120" class="center"><?php echo JHtml::_('grid.sort', 'COM_LOCALISE_HEADING_TRANSLATIONS_PHRASES', 'translated', $listDirn, $listOrder); ?></th>
 	<th width="100" class="hidden-phone"><?php echo JText::_('COM_LOCALISE_HEADING_TRANSLATIONS_AUTHOR'); ?></th>
