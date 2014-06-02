@@ -44,9 +44,9 @@ class JFormFieldIni extends JFormField
 		JHtml::_('behavior.framework');
 
 		// Load Codemirror
-		JHtml::_('script', 'media/com_localise/codemirror/codemirror-compressed.js', false, false, false, false);
-		JHtml::_('stylesheet', 'media/com_localise/codemirror/codemirror.css');
-		JHtml::_('stylesheet', 'media/com_localise/codemirror/configuration.css');
+		JHtml::_('script', 'media/editors/codemirror/js/codemirror.js', false, false, false, false);
+		JHtml::_('stylesheet', 'media/editors/codemirror/css/codemirror.css');
+		JHtml::_('stylesheet', 'media/editors/codemirror/css/configuration.css');
 
 		// Load Joomla language ini parser
 		JHtml::_('script', 'media/com_localise/js/parseini.js', false, false, false, false);
