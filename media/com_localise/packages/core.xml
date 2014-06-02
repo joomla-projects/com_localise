@@ -69,7 +69,7 @@
 		<filename>com_weblinks.sys</filename>
 		<filename>com_wrapper</filename>
 		<filename>com_wrapper.sys</filename>
-		<filename>ini</filename>
+		<filename></filename>
 		<filename>lib_joomla</filename>
 		<filename>localise.php</filename>
 		<filename>mod_custom</filename>
@@ -228,7 +228,7 @@
 		<filename>com_wrapper</filename>
 		<filename>files_joomla.sys</filename>
 		<filename>finder_cli</filename>
-		<filename>ini</filename>
+		<filename></filename>
 		<filename>lib_fof.sys</filename>
 		<filename>lib_idna_convert.sys</filename>
 		<filename>lib_joomla</filename>
