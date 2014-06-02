@@ -346,13 +346,10 @@ class LocaliseModelTranslations extends JModelList
 						{
 							$origin = LocaliseHelper::getOrigin("", $client);
 
-							if ($filter_origin == $origin)
-							{
-								$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.ini";
+							$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.ini";
 
-								$translation = new JObject(array('type' => 'joomla', 'tag' => $tag, 'client' => $client, 'storage' => 'global', 'filename' => 'joomla', 'name' => JText::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA'), 'refpath' => $reftranslation->path, 'path' => $path, 'state' => 'unexisting', 'writable' => LocaliseHelper::isWritable($path), 'origin' => $origin));
-								$this->translations["$client|$tag|joomla"] = $translation;
-							}
+							$translation = new JObject(array('type' => 'joomla', 'tag' => $tag, 'client' => $client, 'storage' => 'global', 'filename' => 'joomla', 'name' => JText::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA'), 'refpath' => $reftranslation->path, 'path' => $path, 'state' => 'unexisting', 'writable' => LocaliseHelper::isWritable($path), 'origin' => $origin));
+							$this->translations["$client|$tag|joomla"] = $translation;
 						}
 					}
 				}
