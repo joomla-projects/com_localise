@@ -67,7 +67,11 @@
 	color: #EF8F00;
 }
 .icon-16-core:before {
-	content: "!";
+	content: "\e200";
+	color: #000000;
+}
+.icon-16-other:before {
+	content: "\e239";
 	color: #796D67;
 }
 .icon-16-thirdparty:before,

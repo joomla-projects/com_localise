@@ -3,7 +3,6 @@
 	<title>com_localise_package_core</title>
 	<description>com_localise_package_core_desc</description>
 	<manifest client="administrator">com_localise</manifest>
-	<icon>/images/joomla-black.png</icon>
 	<author>Joomla! Project</author>
 	<maincopyright>Copyright (C) 2005 - 2012 Open Source Matters. All rights reserved.</maincopyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
