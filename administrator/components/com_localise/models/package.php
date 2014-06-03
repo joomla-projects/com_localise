@@ -184,12 +184,12 @@ class LocaliseModelPackage extends JModelForm
 	/**
 	 * Method to get the package.
 	 *
-	 * @return JObject the package
+	 * @return  JRegistry  The package
 	 */
 	public function getItem()
 	{
 		$id = $this->getState('package.id');
-		$package = new JObject;
+		$package = new JRegistry;
 		$package->checked_out = 0;
 		$package->standalone  = true;
 		$package->manifest    = null;
