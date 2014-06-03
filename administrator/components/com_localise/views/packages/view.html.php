@@ -110,8 +110,6 @@ class LocaliseViewPackages extends JViewLegacy
 
 		JToolBarHelper::custom('package.download', 'out.png', 'out.png', 'JTOOLBAR_EXPORT', true);
 		JToolBarHelper::divider();
-		JToolBarHelper::custom('package.language', 'archive.png', 'archive.png', 'COM_LOCALISE_TOOLBAR_PACKAGES_LANGUAGE', true);
-		JToolbarHelper::divider();
 
 		if ($canDo->get('package.batch'))
 		{
