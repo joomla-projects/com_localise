@@ -232,6 +232,7 @@ class LocaliseModelPackage extends JModelForm
 				$package->title       = (string) $xml->title;
 				$package->version     = (string) $xml->version;
 				$package->description = (string) $xml->description;
+				$package->language    = (string) $xml->language;
 				$package->license     = (string) $xml->license;
 				$package->copyright   = (string) $xml->copyright;
 				$package->author      = (string) $xml->author;
@@ -367,6 +368,7 @@ class LocaliseModelPackage extends JModelForm
 			$text .= "\t".'<license>' . $data['license'] . '</license>' . "\n";
 			$text .= "\t".'<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
 			$text .= "\t".'<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
+			$text .= "\t".'<language>' . $data['language'] . '</language>' . "\n";
 			$text .= "\t".'<copyright>' . $data['copyright'] . '</copyright>' . "\n";
 			$text .= "\t".'<url>' . $data['url'] . '</url>' . "\n";
 			$text .= "\t".'<packager>' . $data['packager'] . '</packager>' . "\n";
