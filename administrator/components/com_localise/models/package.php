@@ -428,6 +428,8 @@ class LocaliseModelPackage extends JModelForm
 				$packageSxe->appendChild($installSxe);
 			}
 
+			$dom->appendChild($packageSxe);
+
 			// Set FTP credentials, if given.
 			JClientHelper::setCredentialsFromRequest('ftp');
 			$ftp = JClientHelper::getCredentials('ftp');
@@ -440,8 +442,7 @@ class LocaliseModelPackage extends JModelForm
 				return false;
 			}
 
-			// Make the XML look pretty
-			$dom->appendChild($packageSxe);
+			// Make the XML look pretty and save it
 			$dom->formatOutput = true;
 			$formattedXML = $dom->saveXML();
 
