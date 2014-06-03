@@ -22,11 +22,77 @@ jimport('joomla.filesystem.file');
  */
 class LocaliseModelPackages extends JModelList
 {
+	/**
+	 * The item context.
+	 *
+	 * @var  string
+	 */
 	protected $context = 'com_localise.packages';
 
+	/**
+	 * The list of packages with filtering.
+	 *
+	 * @var  array
+	 */
 	protected $items;
 
+	/**
+	 * The full list of packages.
+	 *
+	 * @var  array
+	 */
 	protected $packages;
+
+	/**
+	 * A list of paths to search for XML files.
+	 *
+	 * @var  array
+	 */
+	protected $paths;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @see     JModelList
+	 * @since   4.0
+	 */
+	public function __construct($config = array())
+	{
+		if (isset($config['paths']))
+		{
+			if (is_array($config['paths']))
+			{
+				foreach ($config['paths'] as $possiblePath)
+				{
+					$this->addPath($possiblePath);
+				}
+			}
+			else
+			{
+				$this->addPath($config['paths']);
+			}
+		}
+
+		$this->addPath(JPATH_COMPONENT_ADMINISTRATOR . '/packages');
+
+		parent::__construct($config);
+	}
+
+	/**
+	 * Method to add a path to a package.
+	 *
+	 * @param   string  $path   An path to a folder containing XML packages.
+	 *
+	 * @return  void
+	 *
+	 * @since   4.0
+	 */
+	public function addPath($path)
+	{
+		$this->paths[] = $path;
+	}
 
 	/**
 	 * Method to auto-populate the model state.
@@ -73,10 +139,7 @@ class LocaliseModelPackages extends JModelList
 		{
 			$search = $this->getState('filter.search');
 			$this->packages = array();
-			$paths = array (
-				JPATH_COMPONENT_ADMINISTRATOR . '/packages',
-				JPATH_SITE . '/media/com_localise/packages',
-			);
+			$paths = $this->paths;
 
 			foreach ($paths as $path)
 			{
