@@ -352,7 +352,6 @@ class LocaliseModelPackage extends JModelForm
 			$titleElement = $dom->createElement('title', $title);
 			$descriptionElement = $dom->createElement('description', $description);
 			$manifestElement = $dom->createElement('manifest', $manifest);
-			$iconElement = $dom->createElement('icon', $data['icon']);
 			$authorElement = $dom->createElement('author', $data['author']);
 			$copyrightElement = $dom->createElement('copyright', $data['copyright']);
 			$licenseElement = $dom->createElement('license', $data['license']);
@@ -366,7 +365,6 @@ class LocaliseModelPackage extends JModelForm
 			$packageXml->appendChild($titleElement);
 			$packageXml->appendChild($descriptionElement);
 			$packageXml->appendChild($manifestElement);
-			$packageXml->appendChild($iconElement);
 			$packageXml->appendChild($authorElement);
 			$packageXml->appendChild($copyrightElement);
 			$packageXml->appendChild($licenseElement);
