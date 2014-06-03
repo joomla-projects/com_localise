@@ -344,17 +344,28 @@ class LocaliseModelPackage extends JModelForm
 			$title = $package->title ? $package->title : ('fil_localise_package_' . $name);
 			$description = $package->description ? $package->description : ('fil_localise_package_' . $name . '_desc');
 
-			// Prepare text to save for the xml package description
-			$text = '';
-			$text .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-			$text .= '<package>' . "\n";
-			$text .= '<title>' . $title . '</title>' . "\n";
-			$text .= '<description>' . $description . '</description>' . "\n";
-			$text .= '<manifest client="' . $client . '">' . $manifest . '</manifest>' . "\n";
-			$text .= '<icon>' . $data['icon'] . '</icon>' . "\n";
-			$text .= '<author>' . $data['author'] . '</author>' . "\n";
-			$text .= '<copyright>' . $data['copyright'] . '</copyright>' . "\n";
-			$text .= '<license>' . $data['license'] . '</license>' . "\n";
+			$dom = new DOMDocument('1.0', 'utf-8');
+			// Create simple XML element and base package tag
+			$packageSxe = $dom->createElement('package');
+
+			// Add main package information
+			$titleElement = $dom->createElement('title', $title);
+			$packageSxe->appendChild($titleElement);
+			$descriptionElement = $dom->createElement('description', $description);
+			$packageSxe->appendChild($descriptionElement);
+			$manifestElement = $dom->createElement('manifest', $manifest);
+			$packageSxe->appendChild($manifestElement);
+			$clientAttribute = $dom->createAttribute('client');
+			$clientAttribute->value = $client;
+			$manifestElement->appendChild($clientAttribute);
+			$iconElement = $dom->createElement('icon', $data['icon']);
+			$packageSxe->appendChild($iconElement);
+			$authorElement = $dom->createElement('author', $data['author']);
+			$packageSxe->appendChild($authorElement);
+			$copyrightElement = $dom->createElement('copyright', $data['copyright']);
+			$packageSxe->appendChild($copyrightElement);
+			$licenseElement = $dom->createElement('license', $data['license']);
+			$packageSxe->appendChild($licenseElement);
 
 			$administrator = array();
 			$site          = array();
@@ -380,41 +391,42 @@ class LocaliseModelPackage extends JModelForm
 
 			if (count($site))
 			{
-				$text .= '<site>' . "\n";
+				$siteSxe = $dom->createElement('site');
 
 				foreach ($site as $translation)
 				{
-					$text .= '<filename>' . $translation . '.ini</filename>' . "\n";
+					$fileElement = $dom->createElement('filename', $translation . '.ini');
+					$siteSxe->appendChild($fileElement);
 				}
 
-				$text .= '</site>' . "\n";
+				$packageSxe->appendChild($siteSxe);
 			}
 
 			if (count($administrator))
 			{
-				$text .= '<administrator>' . "\n";
+				$adminSxe = $dom->createElement('administrator');
 
 				foreach ($administrator as $translation)
 				{
-					$text .= '<filename>' . $translation . '.ini</filename>' . "\n";
+					$fileElement = $dom->createElement('filename', $translation . '.ini');
+					$adminSxe->appendChild($fileElement);
 				}
 
-				$text .= '</administrator>' . "\n";
+				$packageSxe->appendChild($adminSxe);
 			}
 
 			if (count($installation))
 			{
-				$text .= '<installation>' . "\n";
+				$installSxe = $dom->createElement('installation');
 
 				foreach ($installation as $translation)
 				{
-					$text .= '<filename>' . $translation . '.ini</filename>' . "\n";
+					$fileElement = $dom->createElement('filename', $translation . '.ini');
+					$installSxe->appendChild($fileElement);
 				}
 
-				$text .= '</installation>' . "\n";
+				$packageSxe->appendChild($installSxe);
 			}
-
-			$text .= '</package>' . "\n";
 
 			// Set FTP credentials, if given.
 			JClientHelper::setCredentialsFromRequest('ftp');
@@ -428,7 +440,12 @@ class LocaliseModelPackage extends JModelForm
 				return false;
 			}
 
-			$return = JFile::write($path, $text);
+			// Make the XML look pretty
+			$dom->appendChild($packageSxe);
+			$dom->formatOutput = true;
+			$formattedXML = $dom->saveXML();
+
+			$return = JFile::write($path, $formattedXML);
 
 			// Try to make the file unwriteable.
 			if (!$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, '0444'))
