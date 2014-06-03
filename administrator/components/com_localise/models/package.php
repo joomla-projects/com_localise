@@ -357,7 +357,7 @@ class LocaliseModelPackage extends JModelForm
 			$copyrightElement = $dom->createElement('copyright', $data['copyright']);
 			$licenseElement = $dom->createElement('license', $data['license']);
 
-			// Set the client and it's attribute
+			// Set the client attribute on the manifest element
 			$clientAttribute = $dom->createAttribute('client');
 			$clientAttribute->value = $client;
 			$manifestElement->appendChild($clientAttribute);
