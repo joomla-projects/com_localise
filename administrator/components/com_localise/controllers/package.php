@@ -134,7 +134,11 @@ class LocaliseControllerPackage extends JControllerForm
 		// Check if the package exists
 		if (empty($id))
 		{
-			$this->setRedirect(JRoute::_('index.php?option=' . $this->_option . '&view=packages', false), JText::sprintf('COM_LOCALISE_ERROR_DOWNLOADPACKAGE_UNEXISTING', $name), 'error');
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&view=packages', false),
+				JText::sprintf('COM_LOCALISE_ERROR_DOWNLOADPACKAGE_UNEXISTING', $name),
+				'error'
+			);
 		}
 		else
 		{
@@ -159,7 +163,11 @@ class LocaliseControllerPackage extends JControllerForm
 			setcookie(JApplicationHelper::getHash($this->_context . '.version'), $package->version, time() + 60 * 60 * 24 * 30);
 			setcookie(JApplicationHelper::getHash($this->_context . '.license'), $package->license, time() + 60 * 60 * 24 * 30);
 
-			$this->setRedirect(JRoute::_('index.php?option=com_localise&tmpl=component&view=downloadpackage&name=' . $name . '&standalone=' . $package->standalone, false), $msg, $type);
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_localise&tmpl=component&view=downloadpackage&name=' . $name . '&standalone=' . $package->standalone, false),
+				$msg,
+				$type
+			);
 		}
 		*/
 	}

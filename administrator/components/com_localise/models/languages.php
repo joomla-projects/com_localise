@@ -27,10 +27,16 @@ class LocaliseModelLanguages extends JModelList
 	protected $languages;
 
 	/**
-	 * Autopopulate the model
+	 * Method to auto-populate the model state.
 	 *
-	 * @param null $ordering
-	 * @param null $direction
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
@@ -134,14 +140,6 @@ class LocaliseModelLanguages extends JModelList
 			}
 
 			$this->items = array_slice($languages, $start, $limit);
-
-			foreach ($this->items as $i => $item)
-			{
-				$model = JModelLegacy::getInstance('Translations', 'LocaliseModel', array('ignore_request' => true));
-				$model->setState('filter.tag', $item->tag);
-				$model->setState('filter.client', $item->client);
-				$this->items[$i]->nbfiles = $model->getTotalExist();
-			}
 		}
 
 		return $this->items;

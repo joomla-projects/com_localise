@@ -30,7 +30,7 @@ The following image details the actors and use cases of the application:
 * New features tasks: https://github.com/joomla-projects/com_localise/issues?milestone=3&state=open
 
 # Travis Status
-Develop: [![Build Status](https://travis-ci.org/joomla-projects/com_localise.png)](https://travis-ci.org/joomla-projects/com_localise)
+Master: [![Build Status](https://api.travis-ci.org/joomla-projects/com_localise.svg?branch=master)](https://travis-ci.org/joomla-projects/com_localise)
 
 # Requirements
 Joomla 3.3 or above is needed to run this component.

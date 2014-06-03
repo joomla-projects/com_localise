@@ -20,19 +20,37 @@ class LocaliseControllerPackages extends JControllerLegacy
 {
 	/**
 	 * Proxy for getModel.
+	 *
+	 * @param   string  $name    The name of the model.
+	 * @param   string  $prefix  The prefix for the PHP class name.
+	 * @param   array   $config  The array of possible config values. Optional.
+	 *
+	 * @return  object  The model.
 	 */
-	public function getModel($name = 'Packages', $prefix = 'LocaliseModel', $config = array('ignore_request' => true)) 
+	public function getModel($name = 'Packages', $prefix = 'LocaliseModel', $config = array('ignore_request' => true))
 	{
 		return parent::getModel($name, $prefix, $config);
 	}
 
-	public function display($cachable = false) 
+	/**
+	 * Dispaly View
+	 *
+	 * @param   boolean  $cachable  Enable catch or not.
+	 *
+	 * @return  void     Display View
+	 */
+	public function display($cachable = false)
 	{
 		JFactory::getApplication()->input->set('view', 'packages');
 		parent::display($cachable);
 	}
 
-	public function delete() 
+	/**
+	 * Delete Packages
+	 *
+	 * @return  void
+	 */
+	public function delete()
 	{
 		// Check for request forgeries.
 		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
@@ -42,21 +60,21 @@ class LocaliseControllerPackages extends JControllerLegacy
 		$ids = JFactory::getApplication()->input->get('cid', array(), 'array');
 
 		// Access checks.
-		foreach ($ids as $i => $package) 
+		foreach ($ids as $i => $package)
 		{
 			$id    = LocaliseHelper::getFileId(JPATH_ROOT . '/media/com_localise/packages/' . $package . '.xml');
 			$model = $this->getModel('Package');
 			$model->setState('package.id', $id);
 			$item  = $model->getItem();
 
-			if (!$item->standalone) 
+			if (!$item->standalone)
 			{
 				// Prune items that you can't delete.
 				unset($ids[$i]);
 				JError::raiseNotice(403, JText::_('COM_LOCALISE_ERROR_PACKAGES_DELETE'));
 			}
 
-			if (!$user->authorise('core.delete', 'com_localise.' . (int)$id)) 
+			if (!$user->authorise('core.delete', 'com_localise.' . (int) $id))
 			{
 				// Prune items that you can't delete.
 				unset($ids[$i]);
@@ -64,7 +82,7 @@ class LocaliseControllerPackages extends JControllerLegacy
 			}
 		}
 
-		if (empty($ids)) 
+		if (empty($ids))
 		{
 			$msg = JText::_('JERROR_NO_ITEMS_SELECTED');
 			$type = 'error';
@@ -75,7 +93,7 @@ class LocaliseControllerPackages extends JControllerLegacy
 			$model = $this->getModel();
 
 			// Remove the items.
-			if (!$model->delete($ids)) 
+			if (!$model->delete($ids))
 			{
 				$msg = implode("<br />", $model->getErrors());
 				$type = 'error';

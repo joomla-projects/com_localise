@@ -1,11 +1,11 @@
 <?php
 /**
-* @package     Com_Localise
-* @subpackage  models
-*
-* @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
-* @license     GNU General Public License version 2 or later; see LICENSE.txt
-*/
+ * @package     Com_Localise
+ * @subpackage  models
+ *
+ * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
 defined('_JEXEC') or die;
 
@@ -15,8 +15,10 @@ jimport('joomla.form.formfield');
 /**
  * Form Field Ini class.
  *
- * @package    Extensions.Components
+ * @package     Extensions.Components
  * @subpackage  Localise
+ *
+ * @since       1.0
  */
 class JFormFieldIni extends JFormField
 {
@@ -37,14 +39,14 @@ class JFormFieldIni extends JFormField
 	 *
 	 * @return  string    The field input.
 	 */
-	protected function getInput() 
+	protected function getInput()
 	{
 		JHtml::_('behavior.framework');
 
 		// Load Codemirror
-		JHtml::_('script', 'media/com_localise/codemirror/codemirror-compressed.js', false, false, false, false);
-		JHtml::_('stylesheet', 'media/com_localise/codemirror/codemirror.css');
-		JHtml::_('stylesheet', 'media/com_localise/codemirror/configuration.css');
+		JHtml::_('script', 'media/editors/codemirror/js/codemirror.js', false, false, false, false);
+		JHtml::_('stylesheet', 'media/editors/codemirror/css/codemirror.css');
+		JHtml::_('stylesheet', 'media/editors/codemirror/css/configuration.css');
 
 		// Load Joomla language ini parser
 		JHtml::_('script', 'media/com_localise/js/parseini.js', false, false, false, false);
@@ -101,7 +103,7 @@ class JFormFieldIni extends JFormField
 	 *
 	 * @return  string
 	 */
-	public function save() 
+	public function save()
 	{
 		return "document.getElementById('" . $this->id . "').value = Joomla.editors.instances['" . $this->id . "'].getValue();\n";
 	}

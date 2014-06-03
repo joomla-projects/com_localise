@@ -27,9 +27,18 @@ class LocaliseModelTranslation extends JModelForm
 	protected $contents;
 
 	/**
+	 * Method to auto-populate the model state.
 	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
 	 */
-	protected function populateState()
+	protected function populateState($ordering = null, $direction = null)
 	{
 		$input = JFactory::getApplication()->input;
 
@@ -163,23 +172,23 @@ class LocaliseModelTranslation extends JModelForm
 										(
 										'reference'           => $this->getState('translation.reference'),
 										'bom'                 => 'UTF-8',
-				 						'svn'                 => '',
-				 						'version'             => '',
-				 						'description'         => '',
-				 						'creationdate'        => '',
-				 						'author'              => '',
-				 						'maincopyright'       => '',
-				 						'additionalcopyright' => array(),
-				 						'license'             => '',
-				 						'exists'              => JFile::exists($this->getState('translation.path')),
-				 						'translated'          => 0,
-				 						'unchanged'           => 0,
-				 						'extra'               => 0,
-				 						'total'               => 0,
-				 						'complete'            => false,
-				 						'source'              => '',
-				 						'error'               => array()
-			                            )
+										'svn'                 => '',
+										'version'             => '',
+										'description'         => '',
+										'creationdate'        => '',
+										'author'              => '',
+										'maincopyright'       => '',
+										'additionalcopyright' => array(),
+										'license'             => '',
+										'exists'              => JFile::exists($this->getState('translation.path')),
+										'translated'          => 0,
+										'unchanged'           => 0,
+										'extra'               => 0,
+										'total'               => 0,
+										'complete'            => false,
+										'source'              => '',
+										'error'               => array()
+										)
 				);
 
 				if (JFile::exists($path))
@@ -857,7 +866,7 @@ class LocaliseModelTranslation extends JModelForm
 			$contents2 .= "; @note        All ini files need to be saved as UTF-8 - No BOM\n\n";
 
 			$contents = array();
-			$stream   = new JStream();
+			$stream   = new JStream;
 
 			if ($exists)
 			{
@@ -1001,7 +1010,7 @@ class LocaliseModelTranslation extends JModelForm
 	{
 		// Fix DOT saving issue
 		$input = JFactory::getApplication()->input;
-		$strings_array   = $input->post;
+		$strings_array   = $input->post->getArray();
 		$strings         = $strings_array['jform']['strings'];
 		$data['strings'] = $strings;
 

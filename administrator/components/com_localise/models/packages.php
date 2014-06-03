@@ -15,8 +15,10 @@ jimport('joomla.filesystem.file');
 /**
  * Packages Model class for the Localise component
  *
- * @package    Extensions.Components
+ * @package     Extensions.Components
  * @subpackage  Localise
+ *
+ * @since       1.0
  */
 class LocaliseModelPackages extends JModelList
 {
@@ -27,7 +29,16 @@ class LocaliseModelPackages extends JModelList
 	protected $packages;
 
 	/**
-	 * Autopopulate the model
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
@@ -62,22 +73,28 @@ class LocaliseModelPackages extends JModelList
 		{
 			$search = $this->getState('filter.search');
 			$this->packages = array();
-			$path = JPATH_COMPONENT_ADMINISTRATOR . '/packages';
+			$paths = array (
+				JPATH_COMPONENT_ADMINISTRATOR . '/packages',
+				JPATH_SITE . '/media/com_localise/packages',
+			);
 
-			if (JFolder::exists($path))
+			foreach ($paths as $path)
 			{
-				$files = JFolder::files($path, '\.xml$');
-
-				foreach ($files as $file)
+				if (JFolder::exists($path))
 				{
-					$model = JModelLegacy::getInstance('Package', 'LocaliseModel', array('ignore_request' => true));
-					$id    = LocaliseHelper::getFileId("$path/$file");
-					$model->setState('package.id', $id);
-					$package = $model->getItem();
-
-					if (empty($search) || preg_match("/$search/i", $package->title))
+					$files = JFolder::files($path, '\.xml$');
+		
+					foreach ($files as $file)
 					{
-						$this->packages[] = $package;
+						$model = JModelLegacy::getInstance('Package', 'LocaliseModel', array('ignore_request' => true));
+						$id    = LocaliseHelper::getFileId("$path/$file");
+						$model->setState('package.id', $id);
+						$package = $model->getItem();
+		
+						if (empty($search) || preg_match("/$search/i", $package->title))
+						{
+							$this->packages[] = $package;
+						}
 					}
 				}
 			}

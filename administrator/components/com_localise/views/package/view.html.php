@@ -14,15 +14,23 @@ defined('_JEXEC') or die;
  *
  * @package     Extensions.Components
  * @subpackage  Localise
+ *
+ * @since       1.0
  */
 class LocaliseViewPackage extends JViewLegacy
 {
 	protected $state;
+
 	protected $item;
+
 	protected $form;
 
 	/**
-		* Display the view
+	 * Display the view
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  void
 	 */
 	public function display($tpl = null)
 	{
@@ -39,6 +47,7 @@ class LocaliseViewPackage extends JViewLegacy
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
@@ -52,6 +61,13 @@ class LocaliseViewPackage extends JViewLegacy
 		parent::display($tpl);
 	}
 
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 */
 	protected function addToolbar()
 	{
 		JFactory::getApplication()->input->set('hidemainmenu', true);
@@ -63,7 +79,7 @@ class LocaliseViewPackage extends JViewLegacy
 		JToolbarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', $isNew ? JText::_('COM_LOCALISE_HEADER_PACKAGE_NEW') : JText::_('COM_LOCALISE_HEADER_PACKAGE_EDIT')), 'langmanager.png');
 
 		// If not checked out, can save the item.
-		if (!$checkedOut /*&& $this->item->standalone*/)
+		if (!$checkedOut)
 		{
 			JToolbarHelper::apply('package.apply');
 			JToolbarHelper::save('package.save');
@@ -76,6 +92,11 @@ class LocaliseViewPackage extends JViewLegacy
 		JToolBarHelper::help('screen.package', true);
 	}
 
+	/**
+	 * Prepare Document
+	 *
+	 * @return  void
+	 */
 	protected function prepareDocument()
 	{
 		$document = JFactory::getDocument();

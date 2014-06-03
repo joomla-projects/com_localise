@@ -14,16 +14,23 @@ defined('_JEXEC') or die;
  *
  * @package     Extensions.Components
  * @subpackage  Localise
+ *
+ * @since       1.0
  */
 class LocaliseViewPackages extends JViewLegacy
 {
 	protected $items;
+
 	protected $pagination;
+
 	protected $form;
+
 	protected $state;
 
 	/**
 	 * Display the view
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  void
 	 */
@@ -41,6 +48,7 @@ class LocaliseViewPackages extends JViewLegacy
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode('<br />', $errors));
+
 			return false;
 		}
 
@@ -55,12 +63,24 @@ class LocaliseViewPackages extends JViewLegacy
 		parent::display($tpl);
 	}
 
+	/**
+	 * Prepare Document
+	 *
+	 * @return  void
+	 */
 	protected function prepareDocument()
 	{
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::sprintf('COM_LOCALISE_TITLE', JText::_('COM_LOCALISE_TITLE_PACKAGES')));
 	}
 
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 */
 	protected function addToolbar()
 	{
 		$canDo = JHelperContent::getActions('com_localise', 'component');
