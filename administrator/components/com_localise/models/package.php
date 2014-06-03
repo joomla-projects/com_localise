@@ -353,26 +353,46 @@ class LocaliseModelPackage extends JModelForm
 			$title = $package->title ? $package->title : ('fil_localise_package_' . $name);
 			$description = $package->description ? $package->description : ('fil_localise_package_' . $name . '_desc');
 
-			// Prepare text to save for the xml package description
-			$text = '';
-			$text .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-			$text .= '<package>' . "\n";
-			$text .= "\t".'<title>' . $title . '</title>' . "\n";
-			$text .= "\t".'<description>' . $description . '</description>' . "\n";
-			$text .= "\t".'<manifest client="' . $client . '">' . $manifest . '</manifest>' . "\n";
+			$dom = new DOMDocument('1.0', 'utf-8');
+			// Create simple XML element and base package tag
+			$packageXml = $dom->createElement('package');
 
-			$text .= "\t".'<version>' . $data['version'] . '</version>' . "\n";
-			$text .= "\t".'<icon>' . $data['icon'] . '</icon>' . "\n";
-			$text .= "\t".'<author>' . $data['author'] . '</author>' . "\n";
-			$text .= "\t".'<copyright>' . $data['copyright'] . '</copyright>' . "\n";
-			$text .= "\t".'<license>' . $data['license'] . '</license>' . "\n";
-			$text .= "\t".'<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
-			$text .= "\t".'<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
-			$text .= "\t".'<language>' . $data['language'] . '</language>' . "\n";
-			$text .= "\t".'<copyright>' . $data['copyright'] . '</copyright>' . "\n";
-			$text .= "\t".'<url>' . $data['url'] . '</url>' . "\n";
-			$text .= "\t".'<packager>' . $data['packager'] . '</packager>' . "\n";
-			$text .= "\t".'<packagerurl>' . $data['packagerurl'] . '</packagerurl>' . "\n";
+			// Add main package information
+			$titleElement = $dom->createElement('title', $title);
+			$descriptionElement = $dom->createElement('description', $description);
+			$manifestElement = $dom->createElement('manifest', $manifest);
+			$versionElement = $dom->createElement('version', $data['version']);
+			$authorElement = $dom->createElement('author', $data['author']);
+			$copyrightElement = $dom->createElement('copyright', $data['copyright']);
+			$licenseElement = $dom->createElement('license', $data['license']);
+			$authorEmailElement = $dom->createElement('authorEmail', $data['authoremail']);
+			$authorUrlElement = $dom->createElement('authorUrl', $data['authorurl']);
+			$languageElement = $dom->createElement('language', $data['language']);
+			$copyrightElement = $dom->createElement('copyright', $data['copyright']);
+			$urlElement = $dom->createElement('url', $data['url']);
+			$packagerElement = $dom->createElement('packager', $data['packager']);
+			$packagerUrlElement = $dom->createElement('packagerUrl', $data['packagerurl']);
+
+			// Set the client attribute on the manifest element
+			$clientAttribute = $dom->createAttribute('client');
+			$clientAttribute->value = $client;
+			$manifestElement->appendChild($clientAttribute);
+
+			// Add all the elements to the parent <package> tag
+			$packageXml->appendChild($titleElement);
+			$packageXml->appendChild($descriptionElement);
+			$packageXml->appendChild($manifestElement);
+			$packageXml->appendChild($versionElement);
+			$packageXml->appendChild($authorElement);
+			$packageXml->appendChild($copyrightElement);
+			$packageXml->appendChild($licenseElement);
+			$packageXml->appendChild($authorEmailElement);
+			$packageXml->appendChild($authorUrlElement);
+			$packageXml->appendChild($languageElement);
+			$packageXml->appendChild($copyrightElement);
+			$packageXml->appendChild($urlElement);
+			$packageXml->appendChild($packagerElement);
+			$packageXml->appendChild($packagerUrlElement);
 
 			$administrator = array();
 			$site          = array();
@@ -396,43 +416,49 @@ class LocaliseModelPackage extends JModelForm
 				}
 			}
 
+			// Add the site language files
 			if (count($site))
 			{
-				$text .= "\t".'<site>' . "\n";
+				$siteXml = $dom->createElement('site');
 
 				foreach ($site as $translation)
 				{
-					$text .= "\t\t".'<filename>' . $translation . '.ini</filename>' . "\n";
+					$fileElement = $dom->createElement('filename', $translation . '.ini');
+					$siteXml->appendChild($fileElement);
 				}
 
-				$text .= "\t".'</site>' . "\n";
+				$packageXml->appendChild($siteXml);
 			}
 
+			// Add the administrator language files
 			if (count($administrator))
 			{
-				$text .= "\t".'<administrator>' . "\n";
+				$adminXml = $dom->createElement('administrator');
 
 				foreach ($administrator as $translation)
 				{
-					$text .= "\t\t".'<filename>' . $translation . '.ini</filename>' . "\n";
+					$fileElement = $dom->createElement('filename', $translation . '.ini');
+					$adminXml->appendChild($fileElement);
 				}
 
-				$text .= "\t".'</administrator>' . "\n";
+				$packageXml->appendChild($adminXml);
 			}
 
+			// Add the installation language files
 			if (count($installation))
 			{
-				$text .= "\t".'<installation>' . "\n";
+				$installXml = $dom->createElement('installation');
 
 				foreach ($installation as $translation)
 				{
-					$text .= "\t\t".'<filename>' . $translation . '.ini</filename>' . "\n";
+					$fileElement = $dom->createElement('filename', $translation . '.ini');
+					$installXml->appendChild($fileElement);
 				}
 
-				$text .= "\t".'</installation>' . "\n";
+				$packageXml->appendChild($installXml);
 			}
-
-			$text .= '</package>' . "\n";
+			
+			$dom->appendChild($packageXml);
 
 			// Set FTP credentials, if given.
 			JClientHelper::setCredentialsFromRequest('ftp');
@@ -446,7 +472,11 @@ class LocaliseModelPackage extends JModelForm
 				return false;
 			}
 
-			$return = JFile::write($path, $text);
+			// Make the XML look pretty
+			$dom->formatOutput = true;
+			$formattedXML = $dom->saveXML();
+
+			$return = JFile::write($path, $formattedXML);
 
 			// Try to make the file unwriteable.
 			if (!$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, '0444'))
