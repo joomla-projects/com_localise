@@ -44,13 +44,15 @@ defined('_JEXEC') or die;
 					</tr>
 					<?php foreach ($this->packages as $package): ?>
 						<tr class="row<?php echo $i = 1 - $i; ?>">
-							<td align="center">
-								<span class="jgrid hasTip" title="<?php echo JText::_($package->title); ?>">
-									<span class="state"
-									      style="background-image:url(<?php echo JURI::root(true) . $package->icon; ?>);">
-										<span class="text"></span>
-									</span>
-								</span>
+							<?php if ($package->title == 'com_localise_package_core') : ?>
+								<td align="center"><i
+								title="<?php echo JText::_($package->title); ?>"
+								class="btn btn-micro disabled icon-16-core hasTooltip"></i></td>
+							<?php else : ?>
+								<td align="center"><i
+								title="<?php echo JText::_($package->title); ?>"
+								class="btn btn-micro disabled icon-16-other hasTooltip"></i></td>
+							<?php endif; ?>
 							<td><?php echo JText::_($package->description); ?></td>
 							<td><?php echo JText::_('COM_LOCALISE_TEXT_TRANSLATIONS_ORIGIN'); ?></td>
 						</tr>
