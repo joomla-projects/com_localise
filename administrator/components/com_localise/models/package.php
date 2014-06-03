@@ -346,26 +346,30 @@ class LocaliseModelPackage extends JModelForm
 
 			$dom = new DOMDocument('1.0', 'utf-8');
 			// Create simple XML element and base package tag
-			$packageSxe = $dom->createElement('package');
+			$packageXml = $dom->createElement('package');
 
 			// Add main package information
 			$titleElement = $dom->createElement('title', $title);
-			$packageSxe->appendChild($titleElement);
 			$descriptionElement = $dom->createElement('description', $description);
-			$packageSxe->appendChild($descriptionElement);
 			$manifestElement = $dom->createElement('manifest', $manifest);
-			$packageSxe->appendChild($manifestElement);
+			$iconElement = $dom->createElement('icon', $data['icon']);
+			$authorElement = $dom->createElement('author', $data['author']);
+			$copyrightElement = $dom->createElement('copyright', $data['copyright']);
+			$licenseElement = $dom->createElement('license', $data['license']);
+
+			// Set the client and it's attribute
 			$clientAttribute = $dom->createAttribute('client');
 			$clientAttribute->value = $client;
 			$manifestElement->appendChild($clientAttribute);
-			$iconElement = $dom->createElement('icon', $data['icon']);
-			$packageSxe->appendChild($iconElement);
-			$authorElement = $dom->createElement('author', $data['author']);
-			$packageSxe->appendChild($authorElement);
-			$copyrightElement = $dom->createElement('copyright', $data['copyright']);
-			$packageSxe->appendChild($copyrightElement);
-			$licenseElement = $dom->createElement('license', $data['license']);
-			$packageSxe->appendChild($licenseElement);
+
+			// Add all the elements to the parent <package> tag
+			$packageXml->appendChild($titleElement);
+			$packageXml->appendChild($descriptionElement);
+			$packageXml->appendChild($manifestElement);
+			$packageXml->appendChild($iconElement);
+			$packageXml->appendChild($authorElement);
+			$packageXml->appendChild($copyrightElement);
+			$packageXml->appendChild($licenseElement);
 
 			$administrator = array();
 			$site          = array();
@@ -389,46 +393,49 @@ class LocaliseModelPackage extends JModelForm
 				}
 			}
 
+			// Add the site language files
 			if (count($site))
 			{
-				$siteSxe = $dom->createElement('site');
+				$siteXml = $dom->createElement('site');
 
 				foreach ($site as $translation)
 				{
 					$fileElement = $dom->createElement('filename', $translation . '.ini');
-					$siteSxe->appendChild($fileElement);
+					$siteXml->appendChild($fileElement);
 				}
 
-				$packageSxe->appendChild($siteSxe);
+				$packageXml->appendChild($siteXml);
 			}
 
+			// Add the administrator language files
 			if (count($administrator))
 			{
-				$adminSxe = $dom->createElement('administrator');
+				$adminXml = $dom->createElement('administrator');
 
 				foreach ($administrator as $translation)
 				{
 					$fileElement = $dom->createElement('filename', $translation . '.ini');
-					$adminSxe->appendChild($fileElement);
+					$adminXml->appendChild($fileElement);
 				}
 
-				$packageSxe->appendChild($adminSxe);
+				$packageXml->appendChild($adminXml);
 			}
 
+			// Add the installation language files
 			if (count($installation))
 			{
-				$installSxe = $dom->createElement('installation');
+				$installXml = $dom->createElement('installation');
 
 				foreach ($installation as $translation)
 				{
 					$fileElement = $dom->createElement('filename', $translation . '.ini');
-					$installSxe->appendChild($fileElement);
+					$installXml->appendChild($fileElement);
 				}
 
-				$packageSxe->appendChild($installSxe);
+				$packageXml->appendChild($installXml);
 			}
-
-			$dom->appendChild($packageSxe);
+			
+			$dom->appendChild($packageXml);
 
 			// Set FTP credentials, if given.
 			JClientHelper::setCredentialsFromRequest('ftp');
@@ -442,7 +449,7 @@ class LocaliseModelPackage extends JModelForm
 				return false;
 			}
 
-			// Make the XML look pretty and save it
+			// Make the XML look pretty
 			$dom->formatOutput = true;
 			$formattedXML = $dom->saveXML();
 
