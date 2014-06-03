@@ -131,7 +131,13 @@ abstract class LocaliseHelper
 	 */
 	protected static function scanPackages()
 	{
-		$model         = JModelLegacy::getInstance('Packages', 'LocaliseModel', array('ignore_request' => true));
+		// We need to add in the core and localise packages here.
+		$paths = array(
+			JPATH_SITE . '/media/com_localise/packages',
+		);
+
+		// Get the model instance
+		$model         = JModelLegacy::getInstance('Packages', 'LocaliseModel', array('ignore_request' => true, 'paths' => $paths));
 		$model->setState('list.start', 0);
 		$model->setState('list.limit', 0);
 		$packages       = $model->getItems();
