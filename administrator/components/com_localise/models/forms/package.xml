@@ -27,6 +27,7 @@
 			id="description"
 			name="description"
 			type="textarea"
+			filter="safehtml"
 			label="COM_LOCALISE_LABEL_PACKAGE_DESCRIPTION"
 			description="COM_LOCALISE_LABEL_PACKAGE_DESCRIPTION_DESC" />
 		<field
@@ -40,6 +41,7 @@
 			id="version"
 			name="version"
 			type="text"
+			required="true"
 			label="COM_LOCALISE_LABEL_PACKAGE_VERSION"
 			description="COM_LOCALISE_LABEL_PACKAGE_VERSION_DESC" />
 		<field
@@ -57,7 +59,9 @@
 		<field
 			id="authorurl"
 			name="authorurl"
-			type="text"
+			type="url"
+			filter="url"
+			validate="url"
 			label="COM_LOCALISE_LABEL_PACKAGE_AUTHORURL"
 			description="COM_LOCALISE_LABEL_PACKAGE_AUTHORURL_DESC" />
 		<field
@@ -77,7 +81,9 @@
 		<field
 			id="url"
 			name="url"
-			type="text"
+			type="url"
+			filter="url"
+			validate="url"
 			label="COM_LOCALISE_LABEL_PACKAGE_URL"
 			description="COM_LOCALISE_LABEL_PACKAGE_URL_DESC" />
 		<field
@@ -89,7 +95,9 @@
 		<field
 			id="packagerurl"
 			name="packagerurl"
-			type="text"
+			type="url"
+			filter="url"
+			validate="url"
 			label="COM_LOCALISE_LABEL_PACKAGE_PACKAGERURL"
 			description="COM_LOCALISE_LABEL_PACKAGE_PACKAGERURL_DESC" />
 		<field
@@ -101,7 +109,9 @@
 		<field
 			id="serverurl"
 			name="serverurl"
-			type="text"
+			type="url"
+			filter="url"
+			validate="url"
 			label="COM_LOCALISE_LABEL_PACKAGE_SERVERURL"
 			description="COM_LOCALISE_LABEL_PACKAGE_SERVERURL_DESC" />
 		<field
