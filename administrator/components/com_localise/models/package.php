@@ -729,7 +729,7 @@ class LocaliseModelPackage extends JModelForm
 			$admin_txt .= "\t".'<description>' . $data['language'] . 'site language</description>' . "\n";
 			$admin_txt .= "\t".'<files>'. "\n";
 
-			foreach ($site as $translation)
+			foreach ($administrator as $translation)
 			{
 				$file_data = JFile::read(JPATH_ROOT . '/administrator/language/'.$data['language'].'/'.$data['language'].'.'.$translation.'.ini');
 				if(!empty($file_data)){
