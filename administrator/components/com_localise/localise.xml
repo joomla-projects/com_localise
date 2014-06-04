@@ -39,9 +39,9 @@
 	<administration>
 		<menu img="class:localise">COM_LOCALISE</menu>
 		<submenu>
-			<menu img="class:languages" view="languages">COM_LOCALISE_LANGUAGES</menu>
-			<menu img="class:translations" view="translations">COM_LOCALISE_TRANSLATIONS</menu>
-			<menu img="class:packages" view="packages">COM_LOCALISE_PACKAGES</menu>
+			<menu link="option=com_localise&amp;view=languages" img="class:languages" view="languages">COM_LOCALISE_LANGUAGES</menu>
+			<menu link="option=com_localise&amp;view=translations" img="class:translations" view="translations">COM_LOCALISE_TRANSLATIONS</menu>
+			<menu link="option=com_localise&amp;view=packages" img="class:packages" view="packages">COM_LOCALISE_PACKAGES</menu>
 		</submenu>
 		<files folder="admin">
 			<folder>controllers</folder>

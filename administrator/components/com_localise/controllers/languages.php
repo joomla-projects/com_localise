@@ -31,4 +31,18 @@ class LocaliseControllerLanguages extends JControllerLegacy
 	{
 		return parent::getModel($name, $prefix, $config);
 	}
+
+	/**
+	 * Method to purge the localise table.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.3
+	 */
+	public function purge()
+	{
+		$model = $this->getModel('languages');
+		$model->purge();
+		$this->setRedirect(JRoute::_('index.php?option=com_localise&view=languages', false));
+	}
 }

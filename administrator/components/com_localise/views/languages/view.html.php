@@ -69,6 +69,7 @@ class LocaliseViewLanguages extends JViewLegacy
 		if ($canDo->get('localise.create'))
 		{
 			JToolbarHelper::addNew('language.add');
+			JToolbarHelper::custom('languages.purge', 'purge', 'purge', 'COM_LOCALISE_PURGE', false, false);
 			JToolbarHelper::divider();
 		}
 

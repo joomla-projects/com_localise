@@ -242,4 +242,33 @@ class LocaliseModelLanguages extends JModelList
 
 		return $this->languages;
 	}
+
+	/**
+	 * Cleans out _localise table.
+	 *
+	 * @return  bool True on success
+	 *
+	 * @since   3.3
+	 */
+	public function purge()
+	{
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true)
+		->delete('#__localise');
+
+		$db->setQuery($query);
+
+		if ($db->execute())
+		{
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_PURGE_SUCCESS'));
+
+			return true;
+		}
+		else
+		{
+			JFactory::getApplication()->enqueueMessage(JText::_('Failed to purge the localise table'), 'error');
+
+			return false;
+		}
+	}
 }
