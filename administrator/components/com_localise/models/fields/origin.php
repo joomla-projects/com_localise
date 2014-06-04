@@ -66,7 +66,7 @@ class JFormFieldOrigin extends JFormField
 		$packages_options = array();
 
 		/** We took off the packages icons (due to bootstrap implementation)
-		 * This may need review
+		 * @Todo: this may need review
 		foreach ($packages as $package)
 		{
 			$packages_options[] = JHtml::_(
