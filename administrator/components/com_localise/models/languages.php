@@ -188,11 +188,11 @@ class LocaliseModelLanguages extends JModelList
 				if (empty($tag))
 				{
 					$folders = JFolder::folders(
-											constant('LOCALISEPATH_' . strtoupper($client)) . '/language',
-												'.',
-												false,
-												false,
-												array('.svn', 'CVS','.DS_Store','__MACOSX','pdf_fonts','overrides')
+						constant('LOCALISEPATH_' . strtoupper($client)) . '/language',
+							'.',
+							false,
+							false,
+							array('.svn', 'CVS','.DS_Store','__MACOSX','pdf_fonts','overrides')
 					);
 				}
 				else
@@ -235,8 +235,8 @@ class LocaliseModelLanguages extends JModelList
 				? $this->getState('list.ordering')
 				: 'name';
 			JArrayHelper::sortObjects(
-							$this->languages,
-							$ordering, $this->getState('list.direction') == 'desc' ? -1 : 1
+				$this->languages,
+				$ordering, $this->getState('list.direction') == 'desc' ? -1 : 1
 			);
 		}
 
