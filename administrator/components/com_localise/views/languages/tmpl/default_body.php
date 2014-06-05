@@ -31,7 +31,10 @@ JFactory::getDocument()->addScriptDeclaration("
 				form.append('<input type=\"hidden\" name=\"tag\" value=\"' + tag + '\">');
 
 				// Submit the form
-				form.trigger('submit');
+				if (confirm('" . JText::_('COM_LOCALISE_MSG_LANGUAGES_VALID_DELETE') . "'))
+				{
+					form.trigger('submit');
+				}
 
 				// Avoid the standard link action
 				e.preventDefault();
