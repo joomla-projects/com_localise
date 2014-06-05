@@ -65,6 +65,8 @@ class JFormFieldOrigin extends JFormField
 		$packages         = LocaliseHelper::getPackages();
 		$packages_options = array();
 
+		/** We took off the packages icons (due to bootstrap implementation)
+		 * @Todo: this may need review
 		foreach ($packages as $package)
 		{
 			$packages_options[] = JHtml::_(
@@ -82,6 +84,7 @@ class JFormFieldOrigin extends JFormField
 				$attributes .= ' style="background-image: url(' . JURI::root(true) . $package->icon . ');"';
 			}
 		}
+		*/
 
 		$packages_options = JArrayHelper::sortObjects($packages_options, 'text');
 		$thirdparty       = JHtml::_('select.option', '_thirdparty', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_THIRDPARTY'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-thirdparty"'));

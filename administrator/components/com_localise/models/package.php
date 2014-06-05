@@ -228,7 +228,6 @@ class LocaliseModelPackage extends JModelForm
 				$package->client      = $client;
 				$package->standalone  = substr($manifest, 0, 4) == 'fil_';
 				$package->core        = ((string) $xml->attributes()->core) == 'true';
-				$package->icon        = (string) $xml->icon;
 				$package->title       = (string) $xml->title;
 				$package->version     = (string) $xml->version;
 				$package->description = (string) $xml->description;
@@ -346,7 +345,7 @@ class LocaliseModelPackage extends JModelForm
 		$package  = $this->getItem();
 		$path     = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$name.xml";
 		$manifest = $package->manifest ? $package->manifest : ('fil_localise_package_' . $name);
-		$client   = $package->client ? $package->client : 'site';
+		//$client   = $package->client ? $package->client : 'site';
 
 		if ($package->standalone)
 		{
@@ -365,18 +364,20 @@ class LocaliseModelPackage extends JModelForm
 			$authorElement = $dom->createElement('author', $data['author']);
 			$copyrightElement = $dom->createElement('copyright', $data['copyright']);
 			$licenseElement = $dom->createElement('license', $data['license']);
-			$authorEmailElement = $dom->createElement('authorEmail', $data['authoremail']);
-			$authorUrlElement = $dom->createElement('authorUrl', $data['authorurl']);
+			$authorEmailElement = $dom->createElement('authoremail', $data['authoremail']);
+			$authorUrlElement = $dom->createElement('authorurl', $data['authorurl']);
 			$languageElement = $dom->createElement('language', $data['language']);
 			$copyrightElement = $dom->createElement('copyright', $data['copyright']);
 			$urlElement = $dom->createElement('url', $data['url']);
 			$packagerElement = $dom->createElement('packager', $data['packager']);
-			$packagerUrlElement = $dom->createElement('packagerUrl', $data['packagerurl']);
+			$packagerUrlElement = $dom->createElement('packagerurl', $data['packagerurl']);
+			$servernameElement = $dom->createElement('servername', $data['servername']);
+			$serverurlElement = $dom->createElement('serverurl', $data['serverurl']);
 
 			// Set the client attribute on the manifest element
-			$clientAttribute = $dom->createAttribute('client');
-			$clientAttribute->value = $client;
-			$manifestElement->appendChild($clientAttribute);
+			//$clientAttribute = $dom->createAttribute('client');
+			//$clientAttribute->value = $client;
+			//$manifestElement->appendChild($clientAttribute);
 
 			// Add all the elements to the parent <package> tag
 			$packageXml->appendChild($titleElement);
@@ -393,6 +394,8 @@ class LocaliseModelPackage extends JModelForm
 			$packageXml->appendChild($urlElement);
 			$packageXml->appendChild($packagerElement);
 			$packageXml->appendChild($packagerUrlElement);
+			$packageXml->appendChild($servernameElement);
+			$packageXml->appendChild($serverurlElement);
 
 			$administrator = array();
 			$site          = array();
@@ -457,7 +460,7 @@ class LocaliseModelPackage extends JModelForm
 
 				$packageXml->appendChild($installXml);
 			}
-			
+
 			$dom->appendChild($packageXml);
 
 			// Set FTP credentials, if given.
@@ -726,7 +729,7 @@ class LocaliseModelPackage extends JModelForm
 			$admin_txt .= "\t".'<description>' . $data['language'] . 'site language</description>' . "\n";
 			$admin_txt .= "\t".'<files>'. "\n";
 
-			foreach ($site as $translation)
+			foreach ($administrator as $translation)
 			{
 				$file_data = JFile::read(JPATH_ROOT . '/administrator/language/'.$data['language'].'/'.$data['language'].'.'.$translation.'.ini');
 				if(!empty($file_data)){
@@ -782,11 +785,11 @@ class LocaliseModelPackage extends JModelForm
 		}
 
 
-		$text .= '</files>' . "\n";
+		$text .= "\t" . '</files>' . "\n";
 		if(!empty($data['serverurl'])){
-			$text .= '<updateservers>' . "\n";
-			$text .= '<server type="collection" priority="1" name="'.$data['servername'].'">'.$data['serverurl'].'</server>' . "\n";
-			$text .= '</updateservers>' . "\n";
+			$text .= "\t" . '<updateservers>' . "\n";
+			$text .= "\t\t" . '<server type="collection" priority="1" name="'.$data['servername'].'">'.$data['serverurl'].'</server>' . "\n";
+			$text .= "\t" . '</updateservers>' . "\n";
 		}
 		$text .= '</extension>' . "\n";
 
@@ -817,7 +820,7 @@ class LocaliseModelPackage extends JModelForm
 		header("Expires: 0");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header('Content-Type: application/zip');
-		header('Content-Disposition: attachment; filename="' . $data['language'].'.'.str_replace(' ','_',$data['name']).'.'.$data['version'] . '.zip"');
+		header('Content-Disposition: attachment; filename="' . $data['language'] . '_joomla_lang_full_' . substr_replace($data['version'], 'v', 5, -1) . '.zip"');
 		header('Content-Length: '.strlen($zipdata));
 		header("Cache-Control: maxage=1");
 		header("Pragma: public");
