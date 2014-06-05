@@ -266,7 +266,7 @@ class LocaliseModelLanguages extends JModelList
 		}
 		else
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('Failed to purge the localise table'), 'error');
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_PURGE_FAILED'), 'error');
 
 			return false;
 		}
