@@ -2,9 +2,11 @@ language: php
 
 php:
   - 5.3
+  - 5.4
+  - 5.5
 
 before_script:
-  - pear install PHP_CodeSniffer
+  - pear install PHP_CodeSniffer-1.5.3
   - pear channel-discover pear.phing.info
   - pear install phing/phing
   - phpenv rehash
