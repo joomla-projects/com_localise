@@ -19,20 +19,6 @@ defined('_JEXEC') or die;
 class LocaliseControllerLanguages extends JControllerLegacy
 {
 	/**
-	 * Method to get a model object, loading it if required.
-	 *
-	 * @param   string  $name    The model name.
-	 * @param   string  $prefix  The class prefix.
-	 * @param   array   $config  Configuration array for model.
-	 *
-	 * @return  object  The model.
-	 */
-	public function getModel($name = 'Languages', $prefix = 'LocaliseModel', $config = array('ignore_request' => true))
-	{
-		return parent::getModel($name, $prefix, $config);
-	}
-
-	/**
 	 * Method to purge the localise table.
 	 *
 	 * @return  void
