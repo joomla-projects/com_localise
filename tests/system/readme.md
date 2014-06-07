@@ -6,7 +6,7 @@ The purpose of this document is to explain basic steps to run the system tests f
 
 # Background
 
-System tests are run via Selenium Webdriver. They are meant to create and command a browser instance so that we can test basic operations (i.e. install the extension)
+System tests are run via Selenium Webdriver. They are meant to create and command a browser instance so that we can test basic operations (i.e. install the extension). For more info see http://docs.joomla.org/Running_Automated_Tests_for_the_Joomla_CMS
 
 # Environment
 
