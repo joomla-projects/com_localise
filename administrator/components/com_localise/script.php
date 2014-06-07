@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Joomla.Administrator
+ * @package     Com_Localise
  * @subpackage  com_localise.script
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
