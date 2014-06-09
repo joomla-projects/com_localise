@@ -11,6 +11,37 @@ defined('_JEXEC') or die;
 
 $params = JComponentHelper::getParams('com_languages');
 $user   = JFactory::getUser();
+
+JFactory::getDocument()->addScriptDeclaration("
+	(function($){
+		$(document).ready(function () {
+			$('.js-list-delete-item').click(function(e){
+
+				var form   = $('#adminForm');
+				var client = $(this).attr('data-client');
+				var id     = $(this).attr('data-id');
+				var tag    = $(this).attr('data-tag');
+
+				// Assign task
+				form.find('input[name=task]').val('language.delete');
+
+				// New fields for required data
+				form.append('<input type=\"hidden\" name=\"client\" value=\"' + client + '\">');
+				form.append('<input type=\"hidden\" name=\"id\" value=\"' + id + '\">');
+				form.append('<input type=\"hidden\" name=\"tag\" value=\"' + tag + '\">');
+
+				// Submit the form
+				if (confirm('" . JText::_('COM_LOCALISE_MSG_LANGUAGES_VALID_DELETE') . "'))
+				{
+					form.trigger('submit');
+				}
+
+				// Avoid the standard link action
+				e.preventDefault();
+			});
+		});
+	})(jQuery);
+");
 ?>
 <?php foreach($this->items as $i => $item): ?>
 	<?php $canEdit   = $user->authorise('localise.edit', 'com_localise.'.$item->id);?>
@@ -20,7 +51,7 @@ $user   = JFactory::getUser();
 			<?php if ($item->checked_out) : ?>
 				<?php echo JHtml::_('jgrid.checkedout', $item->editor, $item->checked_out_time); ?>
 			<?php elseif ($canDelete): ?>
-				<a href="<?php echo JRoute::_('index.php?option=com_localise&task=language.delete&id='.$item->id.'&client='.$item->client.'&tag='.$item->tag); ?>" class="hasTooltip" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_LANGUAGES_DELETE'); ?>">
+				<a href="#" data-id="<?php echo $item->id; ?>" data-client="<?php echo $item->client; ?>" data-tag="<?php echo $item->tag; ?>" class="hasTooltip js-list-delete-item" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_LANGUAGES_DELETE'); ?>">
 					<i class="icon-16-delete"></i>
 				</a>
 			<?php endif; ?>
