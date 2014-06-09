@@ -439,6 +439,24 @@ class LocaliseModelLanguage extends JModelForm
 			return false;
 		}
 
+		// Check we're not trying to remove an installed langauge pack
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('name'))
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('type') . ' = ' . $db->quote('package'))
+			->where($db->quoteName('state') . ' = 0')
+			->where($db->quoteName('element') . ' = "pkg_' . $tag . '"');
+		$db->setQuery($query);
+		$installedPack = $db->loadResult('name');
+
+		if ($installedPack != null)
+		{
+			$this->setError(JText::sprintf('COM_LOCALISE_CANNOT_REMOVE_INSTALLED_LANGUAGE', $tag));
+
+			return false;
+		}
+
 		if ($tag == 'en-GB')
 		{
 			$this->setError(JText::_('COM_LOCALISE_CANNOT_REMOVE_ENGLISH_LANGUAGE'));
