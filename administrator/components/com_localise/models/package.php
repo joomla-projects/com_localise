@@ -666,10 +666,22 @@ class LocaliseModelPackage extends JModelForm
 			$site_txt .= "\t".'<description>' . $data['language'] . 'site language</description>' . "\n";
 			$site_txt .= "\t".'<files>'. "\n";
 
+			// As this is a core package, the main joomla file xx-XX.ini should be in the package
+			$file_data = JFile::read(JPATH_ROOT . '/language/'.$data['language'].'/'.$data['language'].'.ini');
+
+			if (!empty($file_data))
+			{
+				$site = array_diff($site, array("joomla"));
+				$site_txt .= "\t\t".'<filename>' . $data['language'].'.ini</filename>' . "\n";
+				$site_package_files[] = array('name'=>$data['language'].'.ini','data'=>$file_data);
+			}
+
 			foreach ($site as $translation)
 			{
 				$file_data = JFile::read(JPATH_ROOT . '/language/'.$data['language'].'/'.$data['language'].'.'.$translation.'.ini');
-				if(!empty($file_data)){
+
+				if (!empty($file_data))
+				{
 					$site_txt .= "\t\t".'<filename>' . $data['language'].'.'.$translation . '.ini</filename>' . "\n";
 					$site_package_files[] = array('name'=>$data['language'].'.'.$translation.'.ini','data'=>$file_data);
 				}
@@ -684,7 +696,6 @@ class LocaliseModelPackage extends JModelForm
 			$site_package_files[] = array('name'=>$data['language'].'.xml','data'=>$language_data);
 			$language_data = JFile::read(JPATH_ROOT . '/language/'.$data['language'].'/'.$data['language'].'.localise.php');
 			$site_package_files[] = array('name'=>$data['language'].'.localise.php','data'=>$language_data);
-
 
 			$site_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
 			if (!$packager = JArchive::getAdapter('zip'))
@@ -729,10 +740,22 @@ class LocaliseModelPackage extends JModelForm
 			$admin_txt .= "\t".'<description>' . $data['language'] . 'site language</description>' . "\n";
 			$admin_txt .= "\t".'<files>'. "\n";
 
+			// As this is a core package, the main joomla file xx-XX.ini should be in the package
+			$file_data = JFile::read(JPATH_ROOT . '/administrator/language/'.$data['language'].'/'.$data['language'].'.ini');
+
+			if (!empty($file_data))
+			{
+				$administrator = array_diff($administrator, array("joomla"));
+				$admin_txt .= "\t\t".'<filename>' . $data['language'].'.ini</filename>' . "\n";
+				$admin_package_files[] = array('name'=>$data['language'].'.ini','data'=>$file_data);
+			}
+
 			foreach ($administrator as $translation)
 			{
 				$file_data = JFile::read(JPATH_ROOT . '/administrator/language/'.$data['language'].'/'.$data['language'].'.'.$translation.'.ini');
-				if(!empty($file_data)){
+
+				if(!empty($file_data))
+				{
 					$admin_txt .= "\t\t".'<filename>' . $data['language'].'.'.$translation . '.ini</filename>' . "\n";
 					$admin_package_files[] = array('name'=>$data['language'].'.'.$translation.'.ini','data'=>$file_data);
 				}
