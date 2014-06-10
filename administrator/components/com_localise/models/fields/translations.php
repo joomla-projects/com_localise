@@ -116,7 +116,10 @@ class JFormFieldTranslations extends JFormFieldGroupedList
 						{
 							$origin   = LocaliseHelper::getOrigin("$prefix$extension$suffix", strtolower($client));
 							$disabled = $origin != $package && $origin != '_thirdparty';
-							$groups[$client]["$prefix$extension$suffix"] = JHtml::_('select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', $disabled);
+
+							// @ Todo: $disabled prevents choosing some core files when creating package.
+							//$groups[$client]["$prefix$extension$suffix"] = JHtml::_('select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', $disabled);
+							$groups[$client]["$prefix$extension$suffix"] = JHtml::_('select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', false);
 						}
 					}
 				}

@@ -666,25 +666,36 @@ class LocaliseModelPackage extends JModelForm
 			$site_txt .= "\t".'<description>' . $data['language'] . 'site language</description>' . "\n";
 			$site_txt .= "\t".'<files>'. "\n";
 
+			// As this is a core package, the main joomla file xx-XX.ini should be in the package
+			$file_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.ini');
+
+			if (!empty($file_data))
+			{
+				$site = array_diff($site, array("joomla"));
+				$site_txt .= "\t\t".'<filename>' . $data['language'] . '.ini</filename>' . "\n";
+				$site_package_files[] = array('name'=>$data['language'] . '.ini','data'=>$file_data);
+			}
+
 			foreach ($site as $translation)
 			{
-				$file_data = JFile::read(JPATH_ROOT . '/language/'.$data['language'].'/'.$data['language'].'.'.$translation.'.ini');
-				if(!empty($file_data)){
-					$site_txt .= "\t\t".'<filename>' . $data['language'].'.'.$translation . '.ini</filename>' . "\n";
-					$site_package_files[] = array('name'=>$data['language'].'.'.$translation.'.ini','data'=>$file_data);
+				$file_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini');
+
+				if (!empty($file_data))
+				{
+					$site_txt .= "\t\t".'<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
+					$site_package_files[] = array('name'=>$data['language'] . '.' . $translation . '.ini','data'=>$file_data);
 				}
 			}
 			$site_txt .= "\t\t".'<filename file="meta">install.xml</filename>' . "\n";
-			$site_txt .= "\t\t".'<filename file="meta">' . $data['language'].'.xml</filename>' . "\n";
+			$site_txt .= "\t\t".'<filename file="meta">' . $data['language'] . '.xml</filename>' . "\n";
 			$site_txt .= "\t".'</files>' . "\n";
 			$site_txt .= "\t".'<params />' . "\n";
 			$site_txt .= "\t".'</extension>' . "\n";
 			$site_package_files[] = array('name'=>'install.xml','data'=>$site_txt);
-			$language_data = JFile::read(JPATH_ROOT . '/language/'.$data['language'].'/'.$data['language'].'.xml');
-			$site_package_files[] = array('name'=>$data['language'].'.xml','data'=>$language_data);
-			$language_data = JFile::read(JPATH_ROOT . '/language/'.$data['language'].'/'.$data['language'].'.localise.php');
-			$site_package_files[] = array('name'=>$data['language'].'.localise.php','data'=>$language_data);
-
+			$language_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.xml');
+			$site_package_files[] = array('name' => $data['language'] . '.xml','data'=>$language_data);
+			$language_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
+			$site_package_files[] = array('name' => $data['language'] . '.localise.php','data' => $language_data);
 
 			$site_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
 			if (!$packager = JArchive::getAdapter('zip'))
@@ -703,13 +714,13 @@ class LocaliseModelPackage extends JModelForm
 				}
 			}
 
-			$main_package_files[]= array('name'=>'site_'.$data['language'].'.zip','data'=>JFile::read($site_zip_path));
+			$main_package_files[]= array('name' => 'site_' . $data['language'] . '.zip','data' => JFile::read($site_zip_path));
 
 		}
 
 		if (count($administrator))
 		{
-			$text .= "\t\t".'<file type="language" client="administrator" id="'.$data['language'].'">admin_'.$data['language'].'.zip</file>' . "\n";
+			$text .= "\t\t".'<file type="language" client="administrator" id="' . $data['language'] . '">admin_' . $data['language'] . '.zip</file>' . "\n";
 			//generate administrator package
 			$admin_package_files = array();
 			$admin_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
@@ -729,12 +740,24 @@ class LocaliseModelPackage extends JModelForm
 			$admin_txt .= "\t".'<description>' . $data['language'] . 'site language</description>' . "\n";
 			$admin_txt .= "\t".'<files>'. "\n";
 
+			// As this is a core package, the main joomla file xx-XX.ini should be in the package
+			$file_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.ini');
+
+			if (!empty($file_data))
+			{
+				$administrator = array_diff($administrator, array("joomla"));
+				$admin_txt .= "\t\t".'<filename>' . $data['language'].'.ini</filename>' . "\n";
+				$admin_package_files[] = array('name' => $data['language'].'.ini','data' => $file_data);
+			}
+
 			foreach ($administrator as $translation)
 			{
-				$file_data = JFile::read(JPATH_ROOT . '/administrator/language/'.$data['language'].'/'.$data['language'].'.'.$translation.'.ini');
-				if(!empty($file_data)){
-					$admin_txt .= "\t\t".'<filename>' . $data['language'].'.'.$translation . '.ini</filename>' . "\n";
-					$admin_package_files[] = array('name'=>$data['language'].'.'.$translation.'.ini','data'=>$file_data);
+				$file_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini');
+
+				if(!empty($file_data))
+				{
+					$admin_txt .= "\t\t".'<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
+					$admin_package_files[] = array('name' => $data['language'] . '.' . $translation . '.ini','data' => $file_data);
 				}
 			}
 			$admin_txt .= "\t\t".'<filename file="meta">install.xml</filename>' . "\n";
@@ -743,10 +766,10 @@ class LocaliseModelPackage extends JModelForm
 			$admin_txt .= "\t".'<params />' . "\n";
 			$admin_txt .= "\t".'</extension>' . "\n";
 			$admin_package_files[] = array('name'=>'install.xml','data'=>$admin_txt);
-			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/'.$data['language'].'/'.$data['language'].'.xml');
-			$admin_package_files[] = array('name'=>$data['language'].'.xml','data'=>$language_data);
-			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/'.$data['language'].'/'.$data['language'].'.localise.php');
-			$admin_package_files[] = array('name'=>$data['language'].'.localise.php','data'=>$language_data);
+			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.xml');
+			$admin_package_files[] = array('name'=>$data['language'] . '.xml','data' => $language_data);
+			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
+			$admin_package_files[] = array('name'=>$data['language'] . '.localise.php','data' => $language_data);
 
 
 			$admin_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
@@ -766,7 +789,7 @@ class LocaliseModelPackage extends JModelForm
 				}
 			}
 
-			$main_package_files[]= array('name'=>'admin_'.$data['language'].'.zip','data'=>JFile::read($admin_zip_path));
+			$main_package_files[]= array('name'=>'admin_' . $data['language'] . '.zip','data' => JFile::read($admin_zip_path));
 		}
 
 		if (count($installation))
