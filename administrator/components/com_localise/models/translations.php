@@ -360,6 +360,37 @@ class LocaliseModelTranslations extends JModelList
 				{
 					foreach ($files as $file)
 					{
+						// Coping with Core files not considered as reference
+						if ($file == $reftag . '.com_messages.ini' || $file == $reftag . '.com_mailto.sys.ini'
+							|| $file == $reftag . '.com_wrapper.ini'|| $file == $reftag . '.com_wrapper.sys.ini')
+						{
+							$reftaglength = strlen($reftag);
+
+							$name	= substr($file, 0, -4);
+							$name	= substr($name, $reftaglength + 1);
+
+							$origin	= LocaliseHelper::getOrigin($name, $client);
+
+							foreach ($tags as $tag)
+							{
+								if (array_key_exists("$client|$reftag|$name", $this->translations))
+								{
+									$reftranslation = $this->translations["$client|$reftag|$name"];
+
+									if (array_key_exists("$client|$tag|$name", $this->translations))
+									{
+										$this->translations["$client|$tag|$name"]->setProperties(array('refpath' => $reftranslation->path, 'state' => 'inlanguage'));
+									}
+									else
+									{
+										$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
+										$translation = new JObject(array('type' => 'library', 'tag' => $tag, 'client' => $client, 'storage' => 'global', 'filename' => $name, 'name' => $name, 'refpath' => $reftranslation->path, 'path' => $path, 'state' => 'unexisting', 'writable' => LocaliseHelper::isWritable($path), 'origin' => 'core'));
+										$this->translations["$client|$tag|$name"] = $translation;
+									}
+								}
+							}
+						}
+
 						if (preg_match("/^$reftag\.(lib.*)\.ini$/", $file, $matches))
 						{
 							$name   = $matches[1];
