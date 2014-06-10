@@ -9,6 +9,9 @@ We (the Joomla! Internationalisation Working Group) are forking it for experimen
 
 If you want to join the effort please contact us!
 
+# Travis Status
+Master: [![Build Status](https://api.travis-ci.org/joomla-projects/com_localise.svg?branch=master)](https://travis-ci.org/joomla-projects/com_localise)
+
 # The goal
 With the new com_localise we are trying to solve the following needs:
 
@@ -29,8 +32,8 @@ The following image details the actors and use cases of the application:
 * System testing tasks: https://github.com/joomla-projects/com_localise/issues?milestone=4&state=open
 * New features tasks: https://github.com/joomla-projects/com_localise/issues?milestone=3&state=open
 
-# Travis Status
-Master: [![Build Status](https://api.travis-ci.org/joomla-projects/com_localise.svg?branch=master)](https://travis-ci.org/joomla-projects/com_localise)
+# Tests
+See testing documentation at [test readme](./tests/system/readme.md)
 
 # Requirements
 Joomla 3.3 or above is needed to run this component.
