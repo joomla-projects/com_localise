@@ -32,9 +32,16 @@ $canAdmin = $user->authorise('core.admin', 'com_localise');
 			</span>
 		<?php elseif ($item->writable && $canEdit): ?>
 			<span class="localise-icon">
+				<?php echo (strpos(JText::_($item->title), 'fil_')); ?>
+				<?php  if (strpos(JText::_($item->title), 'fil_') != 0) : ?>
 				<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=package.edit&cid[]=' . $item->name); ?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_PACKAGES_EDIT'); ?>">
 					<?php echo JText::sprintf('COM_LOCALISE_TEXT_PACKAGES_TITLE',JText::_($item->title),$item->name); ?>
 				</a>
+				<?php else: ?>
+					<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=packagefile.edit&cid[]=' . $item->name); ?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_PACKAGES_EDIT'); ?>">
+					<?php echo JText::sprintf('COM_LOCALISE_TEXT_PACKAGES_TITLE',JText::_($item->title),$item->name); ?>
+				</a>
+				<?php endif; ?>
 			</span>
 		<?php else: ?>
 			<span title="<?php echo JText::sprintf($canEdit ? 'COM_LOCALISE_TOOLTIP_PACKAGES_NOTWRITABLE':'COM_LOCALISE_TOOLTIP_PACKAGES_NOTEDITABLE', substr($item->path, strlen(JPATH_ROOT) + 1)); ?>"  class="hasTooltip localise-icon icon-16-warning">

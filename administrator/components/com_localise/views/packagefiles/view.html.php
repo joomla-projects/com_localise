@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
  *
  * @since       1.0
  */
-class LocaliseViewPackages extends JViewLegacy
+class LocaliseViewPackagefiles extends JViewLegacy
 {
 	protected $items;
 
