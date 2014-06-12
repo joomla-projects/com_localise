@@ -13,4 +13,5 @@ defined('_JEXEC') or die;
 	<th width="1%" class="nowrap center hidden-phone">#</th>
 	<th width="1%" class="hidden-phone"> <?php echo JHtml::_('grid.checkall'); ?></th>
 	<th class="title"><?php echo JText::_('COM_LOCALISE_HEADING_PACKAGES_TITLE');?></th>
+	<th width="20%"><?php echo JText::_('COM_LOCALISE_HEADING_PACKAGES_TYPE');?></th>
 </tr>

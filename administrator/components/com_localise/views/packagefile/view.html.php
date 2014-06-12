@@ -76,7 +76,7 @@ class LocaliseViewPackageFile extends JViewLegacy
 		$isNew      = empty($this->item->id);
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 
-		JToolbarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', $isNew ? JText::_('COM_LOCALISE_HEADER_PACKAGE_NEW') : JText::_('COM_LOCALISE_HEADER_PACKAGE_EDIT')), 'langmanager.png');
+		JToolbarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', $isNew ? JText::_('COM_LOCALISE_HEADER_FILEPACKAGE_NEW') : JText::_('COM_LOCALISE_HEADER_FILEPACKAGE_EDIT')), 'langmanager.png');
 
 		// If not checked out, can save the item.
 		if (!$checkedOut)
@@ -85,7 +85,7 @@ class LocaliseViewPackageFile extends JViewLegacy
 			JToolbarHelper::save('packagefile.save');
 		}
 
-		JToolbarHelper::custom('packagefile.download', 'out.png', 'out.png', 'COM_LOCALISE_TOOLBAR_PACKAGE_FILE_DOWNLOAD', false);
+		JToolbarHelper::custom('packagefile.download', 'out.png', 'out.png', 'COM_LOCALISE_TOOLBAR_PACKAGE_DOWNLOAD', false);
 
 		JToolBarHelper::cancel("packagefile.cancel", $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 		JToolBarHelper::divider();

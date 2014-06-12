@@ -48,5 +48,14 @@ $canAdmin = $user->authorise('core.admin', 'com_localise');
 			</span>
 		<?php endif; ?>
 	</td>
+	<td>
+		<?php if ($item->core) : ?>
+			<span class="icon-16-core"></span>
+			<?php echo JText::_('COM_LOCALISE_CORE'); ?>
+		<?php else: ?>
+			<span class="icon-16-file"></span>
+			<?php echo JText::_('COM_LOCALISE_FILE'); ?>
+		<?php endif; ?>
+	</td>
 </tr>
 <?php endforeach; ?>

@@ -125,7 +125,7 @@
 	</fieldset>
 	<fieldset
 		name="translations"
-		label="COM_LOCALISE_FIELDSET_PACKAGE_TRANSLATIONS">
+		label="COM_LOCALISE_FIELDSET_COREPACKAGE_TRANSLATIONS">
 		<field
 			id="translations"
 			name="translations"

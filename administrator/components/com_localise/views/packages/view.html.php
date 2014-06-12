@@ -89,7 +89,7 @@ class LocaliseViewPackages extends JViewLegacy
 
 		if ($canDo->get('localise.create'))
 		{
-			JToolbarHelper::addNew('package.add');
+			JToolbarHelper::addNew('package.add', 'COM_LOCALISE_NEW_CORE_PACKAGE');
 		}
 
 		if ($canDo->get('localise.create'))
