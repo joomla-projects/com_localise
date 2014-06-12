@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 $user     = JFactory::getUser();
 $canAdmin = $user->authorise('core.admin', 'com_localise');
 ?>
-<?php foreach($this->items as $i => $item): ?>
+<?php foreach($this->items as $i => $item) : ?>
 	<?php $canEdit = $user->authorise('localise.edit', 'com_localise.'.$item->id);?>
 <tr class="row<?php echo $i % 2; ?>">
 	<td width="20" class="center hidden-phone"><?php echo $i + 1; ?></td>
@@ -32,8 +32,7 @@ $canAdmin = $user->authorise('core.admin', 'com_localise');
 			</span>
 		<?php elseif ($item->writable && $canEdit): ?>
 			<span class="localise-icon">
-				<?php echo (strpos(JText::_($item->title), 'fil_')); ?>
-				<?php  if (strpos(JText::_($item->title), 'fil_') != 0) : ?>
+				<?php if ($item->core) : ?>
 				<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=package.edit&cid[]=' . $item->name); ?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_PACKAGES_EDIT'); ?>">
 					<?php echo JText::sprintf('COM_LOCALISE_TEXT_PACKAGES_TITLE',JText::_($item->title),$item->name); ?>
 				</a>

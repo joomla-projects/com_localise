@@ -379,6 +379,11 @@ class LocaliseModelPackage extends JModelForm
 			//$clientAttribute->value = $client;
 			//$manifestElement->appendChild($clientAttribute);
 
+			// Set the core attribute as we only make packages for Core
+			$coreAttribute = $dom->createAttribute('core');
+			$coreAttribute->value = "true";
+			$packageXml->appendChild($coreAttribute);
+
 			// Add all the elements to the parent <package> tag
 			$packageXml->appendChild($titleElement);
 			$packageXml->appendChild($descriptionElement);
