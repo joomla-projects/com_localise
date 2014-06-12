@@ -632,7 +632,8 @@ class LocaliseModelPackageFile extends JModelForm
 			/**
 			$main_package_files[]= array('name' => 'site_' . $data['language'] . '.zip','data' => JFile::read($site_zip_path));
 			*/
-
+			$site_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_');
+			$main_package_files[]= array('name'=>'site/fr-FR/','data' => JFile::read($site_path));
 
 		}
 
