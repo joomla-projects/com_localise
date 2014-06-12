@@ -633,7 +633,7 @@ class LocaliseModelPackageFile extends JModelForm
 			$main_package_files[]= array('name' => 'site_' . $data['language'] . '.zip','data' => JFile::read($site_zip_path));
 			*/
 			$site_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_');
-			$main_package_files[]= array('name'=>'site/fr-FR/','data' => JFile::read($site_path));
+			$main_package_files[]= array('name'=>'site/'. $data['language'] . '/','data' => JFile::read($site_path));
 
 		}
 
@@ -641,7 +641,7 @@ class LocaliseModelPackageFile extends JModelForm
 		{
 			$text .= "\t\t". '<files ';
 			$text .= 'folder="admin/' . $data['language'] . '"';
-			$text .= ' target="language/' . $data['language'] . '">' . "\n";
+			$text .= ' target="administrator/language/' . $data['language'] . '">' . "\n";
 
 			$admin_package_files = array();
 			$admin_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_');
@@ -699,8 +699,8 @@ class LocaliseModelPackageFile extends JModelForm
 			/**
 			$main_package_files[]= array('name'=>'admin_' . $data['language'] . '.zip','data' => JFile::read($admin_zip_path));
 			*/
-			$admin_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_');
-			$main_package_files[]= array('name'=>'admin/fr-FR/','data' => JFile::read($admin_path));
+			$admin_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
+			$main_package_files[]= array('name'=>'admin/'. $data['language'] . '/','data' => JFile::read($admin_zip_path));
 		}
 
 		$text .= "\t" . '</fileset>' . "\n";
