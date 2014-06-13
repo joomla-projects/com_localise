@@ -24,7 +24,6 @@ $canAdmin = $user->authorise('core.admin', 'com_localise');
 		<?php endif; ?>
 	</td>
 	<td>
-		<?php LocaliseHelper::loadLanguage($item->manifest, $item->client);?>
 		<span title="<?php echo JText::_($item->title); ?>" class="hasTooltip localise-icon "></span>
 		<?php if (!$canAdmin): ?>
 			<span title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_PACKAGES_READONLY'); ?>"  class="hasTooltip localise-icon icon-16-warning">

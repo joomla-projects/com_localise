@@ -213,8 +213,8 @@ class LocaliseModelPackageFile extends JModelForm
 			if ($xml)
 			{
 				$manifest = (string) $xml->manifest;
-				$client   = (string) $xml->manifest->attributes()->client;
-				LocaliseHelper::loadLanguage($manifest, $client);
+				//$client   = (string) $xml->manifest->attributes()->client;
+				//LocaliseHelper::loadLanguage($manifest, $client);
 
 				// Set up basic information
 				$name = basename($table->path);
@@ -223,8 +223,8 @@ class LocaliseModelPackageFile extends JModelForm
 				$package->id          = $id;
 				$package->name        = $name;
 				$package->manifest    = $manifest;
-				$package->client      = $client;
-				$package->standalone  = substr($manifest, 0, 4) == 'fil_';
+				//$package->client      = $client;
+				//$package->standalone  = substr($manifest, 0, 4) == 'fil_';
 				$package->title       = (string) $xml->title;
 				$package->version     = (string) $xml->version;
 				$package->description = (string) $xml->description;
@@ -315,13 +315,13 @@ class LocaliseModelPackageFile extends JModelForm
 		// Get the package
 		$package  = $this->getItem();
 		$path     = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$name.xml";
-		$manifest = $package->manifest ? $package->manifest : ('fil_localise_package_' . $name);
+		$manifest = $name;
 		//$client   = $package->client ? $package->client : 'site';
 
 		if ($package->standalone)
 		{
-			$title = $package->title ? $package->title : ('fil_localise_package_' . $name);
-			$description = $package->description ? $package->description : ('fil_localise_package_' . $name . '_desc');
+			$title = $name;
+			$description = $data['description'];
 
 			$dom = new DOMDocument('1.0', 'utf-8');
 			// Create simple XML element and base package tag
@@ -438,6 +438,7 @@ class LocaliseModelPackageFile extends JModelForm
 			}
 		}
 
+		/**
 		// Save the title and the description in the language file
 		$translation_path  = LocaliseHelper::findTranslationPath($client, JFactory::getLanguage()->getTag(), $manifest);
 		$translation_id    = LocaliseHelper::getFileId($translation_path);
@@ -484,6 +485,7 @@ class LocaliseModelPackageFile extends JModelForm
 			return false;
 		}
 
+		*/
 		$id = LocaliseHelper::getFileId($path);
 		$this->setState('package.id', $id);
 

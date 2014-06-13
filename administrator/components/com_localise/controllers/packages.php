@@ -33,13 +33,13 @@ class LocaliseControllerPackages extends JControllerLegacy
 	}
 
 	/**
-	 * Dispaly View
+	 * Display View
 	 *
-	 * @param   boolean  $cachable  Enable catch or not.
+	 * @param   boolean  $cachable  Enable cache or not.
 	 *
 	 * @return  void     Display View
 	 */
-	public function display($cachable = false)
+	public function display($cachable = false, $urlparams = array())
 	{
 		JFactory::getApplication()->input->set('view', 'packages');
 		parent::display($cachable);

@@ -48,13 +48,20 @@ class LocaliseControllerPackageFile extends JControllerForm
 		{
 			// From the package view
 			$data = $input->get('jform', array(), 'array');
-			$id   = $data['id'];
-			$name = $data['name'];
+
+			if ($data)
+			{
+				$id   = $data['id'];
+				$name = $data['name'];
+			}
 		}
 
 		// Set the id, and path in the session
-		$app->setUserState('com_localise.edit.package.id', $id);
-		$app->setUserState('com_localise.package.name', $name);
+		if (!empty($id) && !empty($name))
+		{
+			$app->setUserState('com_localise.edit.package.id', $id);
+			$app->setUserState('com_localise.package.name', $name);
+		}
 
 		// Set the id and unset the cid
 		if (!empty($id) && $input->get('task') == 'add')
@@ -62,7 +69,11 @@ class LocaliseControllerPackageFile extends JControllerForm
 			$input->set('task', 'edit');
 		}
 
-		$input->set('id', $id);
+		if (!empty($id))
+		{
+			$input->set('id', $id);
+		}
+
 		$input->set('cid', array());
 	}
 
