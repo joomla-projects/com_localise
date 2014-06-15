@@ -46,7 +46,7 @@ class LocaliseControllerPackage extends JControllerForm
 		}
 		else
 		{
-					// From the package view
+			// From the package view
 			$data = $input->get('jform', array(), 'array');
 
 			if ($data)
