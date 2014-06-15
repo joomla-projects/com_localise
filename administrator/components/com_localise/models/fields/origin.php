@@ -50,6 +50,10 @@ class JFormFieldOrigin extends JFormField
 		{
 			$attributes .= ' class="' . (string) $this->element['class'] . ' iconlist-16-override"';
 		}
+		elseif ($this->value == 'core')
+		{
+			$attributes .= ' class="' . (string) $this->element['class'] . ' iconlist-16-core"';
+		}
 		else
 		{
 			$attributes .= ' class="' . (string) $this->element['class'] . '"';
@@ -89,7 +93,8 @@ class JFormFieldOrigin extends JFormField
 		$packages_options = JArrayHelper::sortObjects($packages_options, 'text');
 		$thirdparty       = JHtml::_('select.option', '_thirdparty', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_THIRDPARTY'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-thirdparty"'));
 		$override         = JHtml::_('select.option', '_override', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_OVERRIDE'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-override"'));
-		$return           = JHtml::_('select.genericlist', array_merge($options, $packages_options, array($thirdparty), array($override)), $this->name, array('id' => $this->id, 'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes, 'group.items' => null));
+		$core             = JHtml::_('select.option', 'core', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_CORE'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-core"'));
+		$return           = JHtml::_('select.genericlist', array_merge($options, $packages_options, array($thirdparty), array($override), array($core)), $this->name, array('id' => $this->id, 'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes, 'group.items' => null));
 
 		return $return;
 	}
