@@ -75,10 +75,6 @@
 			id="id"
 			name="id"
 			type="hidden" />
-		<field
-			id="core"
-			name="core"
-			type="hidden" />
 	</fieldset>
 	<fieldset
 		name="translations"
