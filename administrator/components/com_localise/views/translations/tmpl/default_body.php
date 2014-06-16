@@ -39,7 +39,7 @@ $lang = JFactory::getLanguage();
 			<?php elseif ($item->origin == '_override') : ?>
 				<?php echo JHtml::_('jgrid.action', $i, '', array('tip' => true, 'inactive_title' => JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_ORIGIN_OVERRIDE'), 'inactive_class' => '16-override', 'enabled' => false, 'translate' => false)); ?>
 			<?php else : ?>
-				<?php if ($packages[$item->origin]->title == 'com_localise_package_core') : ?>
+				<?php if ($item->origin == 'core') : ?>
 					<?php $icon = 'core'; ?>
 				<?php else : ?>
 					<?php $icon = 'other'; ?>

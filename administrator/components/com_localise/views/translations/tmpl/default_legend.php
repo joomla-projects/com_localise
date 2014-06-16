@@ -44,7 +44,7 @@ defined('_JEXEC') or die;
 					</tr>
 					<?php foreach ($this->packages as $package): ?>
 						<tr class="row<?php echo $i = 1 - $i; ?>">
-							<?php if ($package->title == 'com_localise_package_core') : ?>
+							<?php if ($package->core == true) : ?>
 								<td align="center"><i
 								title="<?php echo JText::_($package->title); ?>"
 								class="btn btn-micro disabled icon-16-core hasTooltip"></i></td>

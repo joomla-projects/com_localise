@@ -16,9 +16,9 @@ defined('_JEXEC') or die;
  * @subpackage  Localise
  * @since       1.0
  */
-class LocaliseControllerPackage extends JControllerForm
+class LocaliseControllerPackageFile extends JControllerForm
 {
-	protected $_context = 'com_localise.package';
+	protected $_context = 'com_localise.packagefile';
 
 	/**
 	 * Constructor
@@ -116,7 +116,7 @@ class LocaliseControllerPackage extends JControllerForm
 	 *
 	 * @return  object  The model.
 	 */
-	public function getModel($name = 'Package', $prefix = 'LocaliseModel', $config = array('ignore_request' => false))
+	public function getModel($name = 'Packagefile', $prefix = 'LocaliseModel', $config = array('ignore_request' => false))
 	{
 		return parent::getModel($name, $prefix, $config);
 	}

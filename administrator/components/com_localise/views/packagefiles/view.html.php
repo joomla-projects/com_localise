@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
  *
  * @since       1.0
  */
-class LocaliseViewPackages extends JViewLegacy
+class LocaliseViewPackagefiles extends JViewLegacy
 {
 	protected $items;
 
@@ -89,7 +89,7 @@ class LocaliseViewPackages extends JViewLegacy
 
 		if ($canDo->get('localise.create'))
 		{
-			JToolbarHelper::addNew('package.add', 'COM_LOCALISE_NEW_CORE_PACKAGE');
+			JToolbarHelper::addNew('package.add');
 		}
 
 		if ($canDo->get('localise.create'))

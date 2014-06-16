@@ -2,8 +2,8 @@
 <form>
 	<fieldset
 		name="default"
-		label="COM_LOCALISE_FIELDSET_PACKAGE_DETAIL"
-		description="COM_LOCALISE_FIELDSET_PACKAGE_DETAIL_DESC">
+		label="COM_LOCALISE_FIELDSET_PACKAGEFILE_DETAIL"
+		description="COM_LOCALISE_FIELDSET_PACKAGEFILE_DETAIL_DESC">
 		<field
 			name="asset_id"
 			type="hidden"
@@ -16,13 +16,6 @@
 			required="true"
 			label="COM_LOCALISE_LABEL_PACKAGE_NAME"
 			description="COM_LOCALISE_LABEL_PACKAGE_NAME_DESC" />
-		<field
-			id="title"
-			name="title"
-			type="text"
-			required="true"
-			label="COM_LOCALISE_LABEL_PACKAGE_TITLE"
-			description="COM_LOCALISE_LABEL_PACKAGE_TITLE_DESC" />
 		<field
 			id="description"
 			name="description"
@@ -79,53 +72,13 @@
 			label="COM_LOCALISE_LABEL_PACKAGE_LICENSE"
 			description="COM_LOCALISE_LABEL_PACKAGE_LICENSE_DESC" />
 		<field
-			id="url"
-			name="url"
-			type="url"
-			filter="url"
-			validate="url"
-			label="COM_LOCALISE_LABEL_PACKAGE_URL"
-			description="COM_LOCALISE_LABEL_PACKAGE_URL_DESC" />
-		<field
-			id="packager"
-			name="packager"
-			type="text"
-			label="COM_LOCALISE_LABEL_PACKAGE_PACKAGER"
-			description="COM_LOCALISE_LABEL_PACKAGE_PACKAGER_DESC" />
-		<field
-			id="packagerurl"
-			name="packagerurl"
-			type="url"
-			filter="url"
-			validate="url"
-			label="COM_LOCALISE_LABEL_PACKAGE_PACKAGERURL"
-			description="COM_LOCALISE_LABEL_PACKAGE_PACKAGERURL_DESC" />
-		<field
-			id="servername"
-			name="servername"
-			type="text"
-			label="COM_LOCALISE_LABEL_PACKAGE_SERVERNAME"
-			description="COM_LOCALISE_LABEL_PACKAGE_SERVERNAME_DESC" />
-		<field
-			id="serverurl"
-			name="serverurl"
-			type="url"
-			filter="url"
-			validate="url"
-			label="COM_LOCALISE_LABEL_PACKAGE_SERVERURL"
-			description="COM_LOCALISE_LABEL_PACKAGE_SERVERURL_DESC" />
-		<field
 			id="id"
 			name="id"
-			type="hidden" />
-		<field
-			id="core"
-			name="core"
 			type="hidden" />
 	</fieldset>
 	<fieldset
 		name="translations"
-		label="COM_LOCALISE_FIELDSET_COREPACKAGE_TRANSLATIONS">
+		label="COM_LOCALISE_FIELDSET_PACKAGE_TRANSLATIONS">
 		<field
 			id="translations"
 			name="translations"
