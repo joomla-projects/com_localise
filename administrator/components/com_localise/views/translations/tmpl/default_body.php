@@ -81,6 +81,9 @@ $lang = JFactory::getLanguage();
 			<?php else : ?>
 				<?php echo substr($item->path,strlen(JPATH_ROOT)); ?>
 			<?php endif; ?>
+			<div class="small">
+				<?php echo substr($item->path, strlen(JPATH_ROOT)); ?>
+			</div>
 		</td>
 		<td width="100" class="center" dir="ltr">
 			<?php if ($item->bom != 'UTF-8') : ?>
