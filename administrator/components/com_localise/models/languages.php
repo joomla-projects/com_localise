@@ -248,27 +248,49 @@ class LocaliseModelLanguages extends JModelList
 	 *
 	 * @return  bool True on success
 	 *
-	 * @since   3.3
+	 * @throws	Exception
+	 * @since   1.0
 	 */
 	public function purge()
 	{
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true)
-		->delete('#__localise');
+		// Get the localise data
+		$query = $this->_db->getQuery(true);
+		$query->select("l.id");
+		$query->from("#__localise AS l");
+		$query->join('LEFT', '#__assets AS ast ON ast.id = l.asset_id');
+		$query->order('ast.rgt DESC');
+		$this->_db->setQuery($query);
 
-		$db->setQuery($query);
-
-		if ($db->execute())
+		try
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_PURGE_SUCCESS'));
-
-			return true;
+			$data = $this->_db->loadObjectList();
 		}
-		else
+		catch (RuntimeException $e)
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_PURGE_FAILED'), 'error');
-
-			return false;
+			throw new RuntimeException($e->getMessage());
 		}
+
+		foreach ($data as $key => $value)
+		{
+			$id = $value->id;
+
+			// Get the localise table
+			$table = JTable::getInstance('Localise', 'LocaliseTable');
+
+			// Load it before delete.
+			$table->load($id);
+			// Delete
+			try
+			{
+				$table->delete($id);
+			}
+			catch (RuntimeException $e)
+			{
+				throw new RuntimeException($e->getMessage());
+			}
+		}
+
+		JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_PURGE_SUCCESS'));
+		return true;
 	}
 }
