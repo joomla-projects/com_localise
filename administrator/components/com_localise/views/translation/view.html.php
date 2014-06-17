@@ -69,7 +69,8 @@ class LocaliseViewTranslation extends JViewLegacy
 	{
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 
-		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
+		$user		= JFactory::getUser();
+		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 
 		if ($this->state->get('translation.filename') == 'joomla')
 		{
