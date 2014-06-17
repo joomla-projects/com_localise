@@ -49,20 +49,6 @@ class LocaliseControllerLanguage extends JControllerForm
 	}
 
 	/**
-	 * Method to get a model object, loading it if required.
-	 *
-	 * @param   string  $name    The model name. Optional.
-	 * @param   string  $prefix  The class prefix. Optional.
-	 * @param   array   $config  Configuration array for model. Optional.
-	 *
-	 * @return  object  The model.
-	 */
-	public function getModel($name = 'Language', $prefix = 'LocaliseModel', $config = array('ignore_request' => false))
-	{
-		return parent::getModel($name, $prefix, $config);
-	}
-
-	/**
 	 * Gets the URL arguments to append to an item redirect.
 	 *
 	 * @param   int     $recordId  The primary key id for the item.

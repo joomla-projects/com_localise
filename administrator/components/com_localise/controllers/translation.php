@@ -19,20 +19,6 @@ defined('_JEXEC') or die;
 class LocaliseControllerTranslation extends JControllerForm
 {
 	/**
-	 * Proxy for getModel.
-	 *
-	 * @param   string  $name    The name of the model.
-	 * @param   string  $prefix  The prefix for the PHP class name.
-	 * @param   array   $config  The array of possible config values. Optional.
-	 *
-	 * @return  object  The model.
-	 */
-	public function getModel($name = 'Translation', $prefix = 'LocaliseModel', $config = array('ignore_request' => false))
-	{
-		return parent::getModel($name, $prefix, $config);
-	}
-
-	/**
 	 * Method to check if you can edit a record.
 	 *
 	 * @param   array   $data  An array of input data.
