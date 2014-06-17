@@ -86,7 +86,7 @@ class LocaliseControllerPackageFile extends JControllerForm
 	 *
 	 * @return  boolean
 	 */
-	protected function _allowAdd($data = array())
+	protected function allowAdd($data = array())
 	{
 		// @todo: $data parameter is unused
 		return JFactory::getUser()->authorise('localise.create', $this->_option);
@@ -102,7 +102,7 @@ class LocaliseControllerPackageFile extends JControllerForm
 	 *
 	 * @return  boolean
 	 */
-	protected function _allowEdit($data = array(), $key = 'id')
+	protected function allowEdit($data = array(), $key = 'id')
 	{
 		return JFactory::getUser()->authorise('localise.edit', $this->_option . '.' . $data[$key]);
 	}
