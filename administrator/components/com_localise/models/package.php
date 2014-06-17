@@ -692,8 +692,10 @@ class LocaliseModelPackage extends JModelForm
 					$site_package_files[] = array('name'=>$data['language'] . '.' . $translation . '.ini','data'=>$file_data);
 				}
 			}
+			$site_txt .= "\t\t".'<filename>' . $data['language'] . '.localise.php</filename>' . "\n";
 			$site_txt .= "\t\t".'<filename file="meta">install.xml</filename>' . "\n";
 			$site_txt .= "\t\t".'<filename file="meta">' . $data['language'] . '.xml</filename>' . "\n";
+			$site_txt .= "\t\t".'<filename>index.html</filename>' . "\n";
 			$site_txt .= "\t".'</files>' . "\n";
 			$site_txt .= "\t".'<params />' . "\n";
 			$site_txt .= "\t".'</extension>' . "\n";
@@ -702,6 +704,8 @@ class LocaliseModelPackage extends JModelForm
 			$site_package_files[] = array('name' => $data['language'] . '.xml','data'=>$language_data);
 			$language_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
 			$site_package_files[] = array('name' => $data['language'] . '.localise.php','data' => $language_data);
+			$language_data = JFile::read(JPATH_ROOT . '/administrator/components/com_localise/models/index.html');
+			$site_package_files[] = array('name' => 'index.html','data' => $language_data);
 
 			$site_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
 			if (!$packager = JArchive::getAdapter('zip'))
@@ -766,8 +770,10 @@ class LocaliseModelPackage extends JModelForm
 					$admin_package_files[] = array('name' => $data['language'] . '.' . $translation . '.ini','data' => $file_data);
 				}
 			}
+			$admin_txt .= "\t\t".'<filename>' . $data['language'] . '.localise.php</filename>' . "\n";
 			$admin_txt .= "\t\t".'<filename file="meta">install.xml</filename>' . "\n";
 			$admin_txt .= "\t\t".'<filename file="meta">' . $data['language'].'.xml</filename>' . "\n";
+			$admin_txt .= "\t\t".'<filename>index.html</filename>' . "\n";
 			$admin_txt .= "\t".'</files>' . "\n";
 			$admin_txt .= "\t".'<params />' . "\n";
 			$admin_txt .= "\t".'</extension>' . "\n";
@@ -776,6 +782,8 @@ class LocaliseModelPackage extends JModelForm
 			$admin_package_files[] = array('name'=>$data['language'] . '.xml','data' => $language_data);
 			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
 			$admin_package_files[] = array('name'=>$data['language'] . '.localise.php','data' => $language_data);
+			$language_data = JFile::read(JPATH_ROOT . '/administrator/components/com_localise/models/index.html');
+			$admin_package_files[] = array('name' => 'index.html','data' => $language_data);
 
 
 			$admin_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
