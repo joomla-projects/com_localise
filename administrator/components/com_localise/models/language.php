@@ -274,7 +274,7 @@ class LocaliseModelLanguage extends JModelForm
 	 */
 	public function save($data = array())
 	{
-		$id     = $this->getState('language.id');
+		$id     = $data['id'];
 		$tag    = $data['tag'];
 		$client = $data['client'];
 		$path   = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.xml";
