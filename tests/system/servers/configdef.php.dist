@@ -28,6 +28,9 @@ class SeleniumConfig
 	// then $path would be '/joomla_16/'
 	var $path = '/your_joomla_root/';
 
+	// Path to the XML file, so that we can provide this path for using install from Directory option to install the component
+	var $installPath = 'build/packaging/';
+
 	// $baseURI set in contructor to the full path
 	var $baseURI;
 
