@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ==================================================================  -->
+<!-- com_localise packager                                               -->
+<!-- This PHING build file generates the Localise extension package      -->
+<!-- To use in your environment do the following steps:                  -->
+<!--    Clone build.properties.dist into build.properties file           -->
+<!--    and customise the variables if needed.                           -->
+<!--    Finally execute this PHING build file (PHING needs to be         -->
+<!--    available  in your system                                        -->
+<!-- ==================================================================  -->
+<project name="com_localise" default="dist">
+
+	<!-- Name of extension -->
+	<property name="extension" value="${phing.project.name}" override="true"/>
+
+	<!-- Extension folders -->
+	<property name="component.dir" value="${application.startdir}/../component" override="true"/>
+	<property name="media.dir" value="${application.startdir}/../media" override="true"/>
+	<!-- Packaging folders -->
+	<property name="package.dir" value="${application.startdir}/../build/packages" override="true"/>
+	<property name="packaging.dir" value="${application.startdir}/../build/packaging" override="true"/>
+
+	<!-- Load extension version property in XML file -->
+	<xmlproperty
+			file="${application.startdir}/../component/admin/localise.xml"
+			prefix="extensionDetails"
+			keepRoot="false" />
+	<property
+			name="version"
+			value="${extensionDetails.version}"
+			override="true"/>
+
+	<!-- ============================================  -->
+	<!-- Create packages folder                        -->
+	<!-- ============================================  -->
+	<target name="prepare">
+		<!-- Check if the package already exists. If yes, remove it to generate a new one -->
+		<if>
+			<available file="${package.dir}/${extension}-${version}.zip"
+			           type="file"
+			           property="dir.Exist" />
+			<then>
+				<echo msg="Removing old package ${package.dir}/${extension}-${version}.zip" />
+				<delete file="${package.dir}/${extension}-${version}.zip" />
+			</then>
+		</if>
+
+		<!-- remove old packaging folder -->
+		<if>
+			<available file="${packaging.dir}" type="dir" property="dir.Exist" />
+			<then>
+				<echo msg="Cleaning ${packaging.dir}" />
+				<delete dir="${packaging.dir}" />
+				<mkdir dir="${packaging.dir}" />
+			</then>
+		</if>
+	</target>
+
+	<!-- ============================================  -->
+	<!-- Target: build                                 -->
+	<!-- ============================================  -->
+	<!-- Copy the source files to the target folder -->
+
+	<target name="build" depends="prepare">
+
+		<echo msg="Copying INSTALLER files to Packaging directory..."/>
+		<copy todir="${packaging.dir}">
+			<fileset dir="${component.dir}/admin">
+				<include name="localise.xml"/>
+				<include name="script.php"/>
+			</fileset>
+		</copy>
+
+		<echo msg="Copying ADMIN folder to Packaging directory..."/>
+		<copy todir="${packaging.dir}/admin">
+			<fileset dir="${component.dir}/admin">
+				<include name="**"/>
+				<exclude name=".*"/>
+			</fileset>
+		</copy>
+
+		<echo msg="Copying MEDIA folder to Packaging directory..."/>
+		<copy todir="${packaging.dir}/media/com_localise">
+			<fileset dir="${media.dir}/com_localise">
+				<include name="**"/>
+				<exclude name=".*"/>
+			</fileset>
+		</copy>
+
+		<echo msg="Copying LICENSE file to Packaging directory..."/>
+		<copy todir="${packaging.dir}">
+			<fileset dir="${application.startdir}">
+				<include name="license.txt"/>
+			</fileset>
+		</copy>
+
+	<!-- @Todo: cambiar script.php por install.php -->
+	</target>
+
+	<!-- ============================================  -->
+	<!-- (DEFAULT)  Target: dist                       -->
+	<!-- ============================================  -->
+	<target name="dist" depends="build">
+		<echo msg="Creating ZIP archive..."/>
+
+		<zip destfile="${package.dir}/${extension}-${version}.zip">
+			<fileset dir="${packaging.dir}">
+				<include name="**"/>
+				<exclude name=".*"/>
+			</fileset>
+		</zip>
+
+		<echo msg="Files copied and compressed in build directory OK!"/>
+		<echo msg="Package created at: ${package.dir}/${extension}-${version}.zip"/>
+	</target>
+</project>

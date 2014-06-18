@@ -39,6 +39,12 @@ See testing documentation at [test readme](./tests/system/readme.md)
 Joomla 3.3 or above is needed to run this component.
 
 # Extension packager
-There is available a shell script that will package the extension for install into the Joomla CMS. 
+There are two available ways to package the extension a PHING packager xml file (requires PHING) and a *nix shell script:
+
+## Phing packager
+
+A PHING build file can be found at build/build.xml. After executing it you will have an installable .zip file under build/packages.
+
+## Shell script for *nix systems
 
 To package, on a *nix system, navigate to the build folder and run ./build.sh. When complete, you will have an installable .zip file under build/packages.
