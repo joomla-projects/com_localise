@@ -13,7 +13,7 @@
 	<version>4.0.4-dev</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>COM_LOCALISE_XML_DESCRIPTION</description>
-	<scriptfile>script.php</scriptfile>
+	<scriptfile>install.php</scriptfile>
 	<install>
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
@@ -29,9 +29,9 @@
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
 		</schemas>
 	</update>
-	<media destination="com_localise" folder="media">
-		<folder>css</folder>
+	<media destination="com_localise" folder="media/com_localise">
 		<folder>images</folder>
+		<folder>css</folder>
 		<folder>js</folder>
 		<folder>packages</folder>
 		<filename>index.html</filename>
