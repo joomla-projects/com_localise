@@ -255,6 +255,11 @@ class LocaliseModelTranslations extends JModelList
 									$translation->setProperties(array('type' => 'joomla', 'filename' => 'joomla', 'name' => JText::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA')));
 									$this->translations["$client|$tag|joomla"] = $translation;
 								}
+								elseif ($file == "$tag.finder_cli.ini")
+								{
+									$translation->setProperties(array('type' => 'file', 'filename' => $filename, 'name' => $filename));
+									$this->translations["$client|$tag|$filename"] = $translation;
+								}
 								elseif ($prefix == "$tag.com" && preg_match("/$filter_type/", 'component'))
 								{
 									// Scan component ini file
@@ -362,7 +367,7 @@ class LocaliseModelTranslations extends JModelList
 					{
 						// Coping with Core files not considered as reference
 						if ($file == $reftag . '.com_messages.ini' || $file == $reftag . '.com_mailto.sys.ini'
-							|| $file == $reftag . '.com_wrapper.ini'|| $file == $reftag . '.com_wrapper.sys.ini')
+							|| $file == $reftag . '.com_wrapper.ini'|| $file == $reftag . '.com_wrapper.sys.ini' || $file == $reftag . '.finder_cli.ini')
 						{
 							$reftaglength = strlen($reftag);
 
