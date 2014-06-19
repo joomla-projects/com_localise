@@ -465,7 +465,7 @@ abstract class LocaliseHelper
 	 * @param   string  $tag       Language tag to lookup
 	 * @param   string  $filename  Filename to lookup
 	 *
-	 * @return  string  Path to the requrested file
+	 * @return  string  Path to the requested file
 	 *
 	 * @since   4.0
 	 */
@@ -489,7 +489,7 @@ abstract class LocaliseHelper
 	 * @param   string  $filename  Filename to lookup
 	 * @param   string  $storage   Storage location to check
 	 *
-	 * @return  string  Path to the requrested file
+	 * @return  string  Path to the requested file
 	 *
 	 * @since   4.0
 	 */
