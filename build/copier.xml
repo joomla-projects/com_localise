@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ==================================================================    -->
+<!-- Localise copier                                                       -->
+<!-- This PHING build file copies the current extension files form repo    -->
+<!-- to a testing joomla site.                                             -->
+<!-- You can also achieve the same goal by using:                          -->
+<!-- Joomla Installer => install from folder => choose this repo as folder -->
+<!--                                                                       -->
+<!-- INSTRUCTIONS: make sure you have PHING installed in your system to    -->
+<!-- execute this script. Before executing it clone and rename the file    -->
+<!-- "build.properties.dist" into "build.properties" and fill the          -->
+<!-- the variable "joomla.dir" with the path to your Joomla Installation   -->
+<!-- site in your localhost.                                               -->
+<!-- ==================================================================    -->
+<project name="localise" default="copy" basedir=".">
+
+	<target name="init" >
+		<if>
+			<not>
+				<available file="build.properties" />
+			</not>
+			<then>
+				<fail message="The file build.properties does not exists." />
+			</then>
+			<else>
+				<property file="build.properties"  override="true"/>
+				<echo message="build.properties File included successfully." />
+			</else>
+		</if>
+		<property name="src" value="${application.startdir}/.." />
+	</target>
+
+	<target name="prepare" >
+		<property file="build.properties" override="true"/>
+
+		<!-- Clean old files -->
+		<delete dir="${joomla.dir}/administrator/components/com_localise" quiet="yes" includeemptydirs="true"/>
+	</target>
+
+	<target name="copy" description="Copies files to a existing joomla site" depends="init, prepare">
+		<echo message="Copying administrator component..." />
+
+		<copy file="${src}/component/admin/install.php" tofile="${joomla.dir}/administrator/components/com_localise/install.php" overwrite="true"/>
+
+		<!-- Manifest & install script -->
+		<echo message="Copying manifest..." />
+		<copy file="${src}/component/admin/localise.xml" tofile="${joomla.dir}/administrator/components/com_localise/localise.xml" overwrite="true" />
+
+		<!-- Backend component -->
+		<copy todir="${joomla.dir}/administrator/components/com_localise" overwrite="true">
+			<fileset dir="${src}/component/admin">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<!-- Backend languages -->
+		<copy todir="${joomla.dir}/administrator/language" overwrite="true">
+			<fileset dir="${src}/component/admin/language">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<!-- Media -->
+		<echo message="Copying media folder..." />
+		<copy todir="${joomla.dir}/media" overwrite="true">
+			<fileset dir="${src}/media">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+</project>
