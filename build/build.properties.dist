@@ -1,0 +1,5 @@
+# Properties files are configuration files used by PHING scripts containing:
+# key=value
+
+# Testing Joomla site localhost folder used by build.xml
+joomla.dir=/var/www/localise
