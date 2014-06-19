@@ -587,10 +587,19 @@ class LocaliseModelPackage extends JModelForm
 	 *
 	 * @return  boolean  success or failure
 	 */
-	public function download($data){
+	public function download($data)
+	{
 		//the data could potentially be loaded from the file with $this->getItem() instead of using directly the data from the post
 
+		// Necessary variables if xx-XX.localise.php is not present in target language
+		$params			= JComponentHelper::getParams('com_localise');
+		$reftag			= $params->get('reference');
+		$refclassname	= str_replace('-', '_', $reftag);
+		$refclassname	= ucfirst($refclassname);
+		$langclassname	= str_replace('-', '_', $data['language']);
+		$langclassname	= ucfirst($langclassname);
 
+		$app = JFactory::getApplication();
 		$administrator = array();
 		$site          = array();
 		$installation  = array();
@@ -654,6 +663,16 @@ class LocaliseModelPackage extends JModelForm
 		{
 			$text .= "\t\t".'<file type="language" client="site" id="'.$data['language'].'">site_'.$data['language'].'.zip</file>' . "\n";
 
+			$xmldata = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.xml');
+
+			if (empty($xmldata))
+			{
+				$app->enqueueMessage(JText::sprintf('COM_LOCALISE_ERROR_NO_XML', JText::_('JSITE'), $data['language'] . '.xml', 'error'));
+				$app->redirect(JRoute::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
+
+				return false;
+			}
+
 			//generate site package
 			$site_package_files = array();
 			$site_package_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
@@ -681,6 +700,10 @@ class LocaliseModelPackage extends JModelForm
 				$site_txt .= "\t\t".'<filename>' . $data['language'] . '.ini</filename>' . "\n";
 				$site_package_files[] = array('name'=>$data['language'] . '.ini','data'=>$file_data);
 			}
+			else
+			{
+				$msg .= JText::sprintf('COM_LOCALISE_MAINFILE_NOT_TRANSLATED', $data['language'] . '.ini', JText::_('JSITE'));
+			}
 
 			foreach ($site as $translation)
 			{
@@ -691,19 +714,40 @@ class LocaliseModelPackage extends JModelForm
 					$site_txt .= "\t\t".'<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
 					$site_package_files[] = array('name'=>$data['language'] . '.' . $translation . '.ini','data'=>$file_data);
 				}
+				elseif ($translation != 'joomla')
+				{
+					$msg .= JText::sprintf('COM_LOCALISE_FILE_NOT_TRANSLATED', $data['language'] . '.' . $translation . '.ini', JText::_('JSITE'));
+				}
 			}
+
+			$language_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
+
+			// Create a basic xx-XX.localise.php if not present in target language
+			if (empty($language_data))
+			{
+				$language_data = JFile::read(JPATH_ROOT . '/language/' . $reftag . '/' . $reftag . '.localise.php');
+				$language_data = str_replace($reftag, $data['language'], $language_data);
+				$language_data = str_replace($refclassname, $langclassname, $language_data);
+			}
+
 			$site_txt .= "\t\t".'<filename>' . $data['language'] . '.localise.php</filename>' . "\n";
+			$site_package_files[] = array('name' => $data['language'] . '.localise.php','data' => $language_data);
+
+			if ($msg)
+			{
+				$msg .= '<p>...</p>';
+			}
+
 			$site_txt .= "\t\t".'<filename file="meta">install.xml</filename>' . "\n";
 			$site_txt .= "\t\t".'<filename file="meta">' . $data['language'] . '.xml</filename>' . "\n";
 			$site_txt .= "\t\t".'<filename>index.html</filename>' . "\n";
 			$site_txt .= "\t".'</files>' . "\n";
 			$site_txt .= "\t".'<params />' . "\n";
 			$site_txt .= "\t".'</extension>' . "\n";
-			$site_package_files[] = array('name'=>'install.xml','data'=>$site_txt);
+			$site_package_files[] = array('name'=>'install.xml','data' => $site_txt);
 			$language_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.xml');
 			$site_package_files[] = array('name' => $data['language'] . '.xml','data'=>$language_data);
-			$language_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
-			$site_package_files[] = array('name' => $data['language'] . '.localise.php','data' => $language_data);
+
 			$language_data = JFile::read(JPATH_ROOT . '/administrator/components/com_localise/models/index.html');
 			$site_package_files[] = array('name' => 'index.html','data' => $language_data);
 
@@ -731,6 +775,17 @@ class LocaliseModelPackage extends JModelForm
 		if (count($administrator))
 		{
 			$text .= "\t\t".'<file type="language" client="administrator" id="' . $data['language'] . '">admin_' . $data['language'] . '.zip</file>' . "\n";
+
+			$xmldata = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.xml');
+
+			if (empty($xmldata))
+			{
+				$app->enqueueMessage(JText::sprintf('COM_LOCALISE_ERROR_NO_XML', JText::_('JSITE'), $data['language'] . '.xml', 'error'));
+				$app->redirect(JRoute::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
+
+				return false;
+			}
+
 			//generate administrator package
 			$admin_package_files = array();
 			$admin_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
@@ -759,6 +814,10 @@ class LocaliseModelPackage extends JModelForm
 				$admin_txt .= "\t\t".'<filename>' . $data['language'].'.ini</filename>' . "\n";
 				$admin_package_files[] = array('name' => $data['language'].'.ini','data' => $file_data);
 			}
+			else
+			{
+				$msg .= JText::sprintf('COM_LOCALISE_MAINFILE_NOT_TRANSLATED', $data['language'] . '.ini', JText::_('JADMINISTRATOR'));
+			}
 
 			foreach ($administrator as $translation)
 			{
@@ -769,19 +828,44 @@ class LocaliseModelPackage extends JModelForm
 					$admin_txt .= "\t\t".'<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
 					$admin_package_files[] = array('name' => $data['language'] . '.' . $translation . '.ini','data' => $file_data);
 				}
+				elseif ($translation != 'joomla')
+				{
+					$msg .= JText::sprintf('COM_LOCALISE_FILE_NOT_TRANSLATED', $data['language'] . '.' . $translation . '.ini', JText::_('JADMINISTRATOR'));
+				}
 			}
-			$admin_txt .= "\t\t".'<filename>' . $data['language'] . '.localise.php</filename>' . "\n";
+
+			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
+
+			// Create a basic xx-XX.localise.php if not present in target language
+			if (empty($language_data))
+			{
+				$language_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $reftag . '/' . $reftag . '.localise.php');
+				$language_data = str_replace($reftag, $data['language'], $language_data);
+				$language_data = str_replace($refclassname, $langclassname, $language_data);
+			}
+
+			$site_txt .= "\t\t".'<filename>' . $data['language'] . '.localise.php</filename>' . "\n";
+			$site_package_files[] = array('name' => $data['language'] . '.localise.php','data' => $language_data);
+
+			if ($msg)
+			{
+				$msg .= '<p>...</p>';
+				$msg .= JText::_('COM_LOCALISE_UNTRANSLATED');
+				$app->enqueueMessage($msg, 'error');
+				$app->redirect(JRoute::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
+
+				return false;
+			}
+
 			$admin_txt .= "\t\t".'<filename file="meta">install.xml</filename>' . "\n";
 			$admin_txt .= "\t\t".'<filename file="meta">' . $data['language'].'.xml</filename>' . "\n";
 			$admin_txt .= "\t\t".'<filename>index.html</filename>' . "\n";
 			$admin_txt .= "\t".'</files>' . "\n";
 			$admin_txt .= "\t".'<params />' . "\n";
 			$admin_txt .= "\t".'</extension>' . "\n";
-			$admin_package_files[] = array('name'=>'install.xml','data'=>$admin_txt);
+			$admin_package_files[] = array('name'=>'install.xml','data' => $admin_txt);
 			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.xml');
 			$admin_package_files[] = array('name'=>$data['language'] . '.xml','data' => $language_data);
-			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
-			$admin_package_files[] = array('name'=>$data['language'] . '.localise.php','data' => $language_data);
 			$language_data = JFile::read(JPATH_ROOT . '/administrator/components/com_localise/models/index.html');
 			$admin_package_files[] = array('name' => 'index.html','data' => $language_data);
 
