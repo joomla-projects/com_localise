@@ -19,6 +19,20 @@ defined('_JEXEC') or die;
 class LocaliseControllerPackages extends JControllerLegacy
 {
 	/**
+	 * Proxy for getModel.
+	 *
+	 * @param   string  $name    The name of the model.
+	 * @param   string  $prefix  The prefix for the PHP class name.
+	 * @param   array   $config  The array of possible config values. Optional.
+	 *
+	 * @return  object  The model.
+	 */
+	public function getModel($name = 'Packages', $prefix = 'LocaliseModel', $config = array('ignore_request' => true))
+	{
+		return parent::getModel($name, $prefix, $config);
+	}
+
+	/**
 	 * Display View
 	 *
 	 * @param   boolean  $cachable  Enable cache or not.
