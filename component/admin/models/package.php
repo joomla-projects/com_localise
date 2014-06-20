@@ -215,8 +215,9 @@ class LocaliseModelPackage extends JModelForm
 			if ($xml)
 			{
 				$manifest = (string) $xml->manifest;
-				//$client   = (string) $xml->manifest->attributes()->client;
-				//LocaliseHelper::loadLanguage($manifest, $client);
+
+				// $client   = (string) $xml->manifest->attributes()->client;
+				// LocaliseHelper::loadLanguage($manifest, $client);
 
 				// Set up basic information
 				$name = basename($table->path);
@@ -225,8 +226,10 @@ class LocaliseModelPackage extends JModelForm
 				$package->id          = $id;
 				$package->name        = $name;
 				$package->manifest    = $manifest;
-				//$package->client      = $client;
-				//$package->standalone  = substr($manifest, 0, 4) == 'fil_';
+
+				// $package->client      = $client;
+				// $package->standalone  = substr($manifest, 0, 4) == 'fil_';
+
 				$package->core        = ((string) $xml->attributes()->core) == 'true';
 				$package->title       = (string) $xml->title;
 				$package->version     = (string) $xml->version;
