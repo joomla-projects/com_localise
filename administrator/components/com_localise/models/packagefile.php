@@ -528,7 +528,7 @@ class LocaliseModelPackageFile extends JModelForm
 	public function download($data){
 		//the data could potentially be loaded from the file with $this->getItem() instead of using directly the data from the post
 
-
+		$app = JFactory::getApplication();
 		$administrator = array();
 		$site          = array();
 
@@ -598,7 +598,11 @@ class LocaliseModelPackageFile extends JModelForm
 				if (!empty($file_data))
 				{
 					$text .= "\t\t\t".'<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
-					$site_package_files[] = array('name'=>$data['language'] . '.' . $translation . '.ini','data'=>$file_data);
+					$site_package_files[] = array('name'=>$data['language'] . '.' . $translation . '.ini','data' => $file_data);
+				}
+				else
+				{
+					$msg .= JText::sprintf('COM_LOCALISE_FILE_NOT_TRANSLATED', $data['language'] . '.' . $translation . '.ini', JText::_('JSITE'));
 				}
 			}
 			/**
@@ -630,11 +634,16 @@ class LocaliseModelPackageFile extends JModelForm
 				}
 			}
 			*/
-			$text .= "\t".'</files>' . "\n";
+			$text .= "\t\t".'</files>' . "\n";
 
-			foreach($site_package_files as $file)
+			if ($msg)
 			{
-				$main_package_files[]= array('name'=>'site/'. $data['language'] . '/' . $file['name'],'data' => $file['data']);
+				$msg .= '<p>...</p>';
+			}
+
+			foreach ($site_package_files as $file)
+			{
+				$main_package_files[] = array('name'=>'site/' . $data['language'] . '/' . $file['name'], 'data' => $file['data']);
 			}
 
 		}
@@ -656,11 +665,15 @@ class LocaliseModelPackageFile extends JModelForm
 				//{
 				//	$file_data = JFile::read(JPATH_ROOT . '/administrator/EXTENSION-PATH/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini');
 			//	}
-				if(!empty($file_data))
+				if (!empty($file_data))
 				{
 					$text .= "\t\t\t".'<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
 					$admin_package_files[] = array('name' => $data['language'] . '.' . $translation . '.ini','data' => $file_data);
 
+				}
+				else
+				{
+					$msg .= JText::sprintf('COM_LOCALISE_FILE_NOT_TRANSLATED', $data['language'] . '.' . $translation . '.ini', JText::_('JADMINISTRATOR'));
 				}
 			}
 
@@ -698,14 +711,24 @@ class LocaliseModelPackageFile extends JModelForm
 
 			foreach($admin_package_files as $file)
 			{
-				$main_package_files[]= array('name'=>'admin/'. $data['language'] . '/' . $file['name'],'data' => $file['data']);
+				$main_package_files[]= array('name' => 'admin/' . $data['language'] . '/' . $file['name'], 'data' => $file['data']);
 			}
+		}
+
+		if ($msg)
+		{
+			$msg .= '<p>...</p>';
+			$msg .= JText::_('COM_LOCALISE_UNTRANSLATED');
+			$app->enqueueMessage($msg, 'error');
+			$app->redirect(JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('package.id'), false));
+
+			return false;
 		}
 
 		$text .= "\t" . '</fileset>' . "\n";
 		$text .= '</extension>' . "\n";
 
-		$main_package_files[] = array('name'=>$data['name'] . $data['language'].'.xml','data'=>$text);
+		$main_package_files[] = array('name' => $data['name'] . $data['language'] . '.xml', 'data'=>$text);
 
 		$ziproot = JPATH_ROOT . '/tmp/' . uniqid('com_localise_main_') . '.zip';
 
@@ -732,7 +755,7 @@ class LocaliseModelPackageFile extends JModelForm
 		header("Expires: 0");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header('Content-Type: application/zip');
-		header('Content-Disposition: attachment; filename="' .$data['name'] . $data['language'] . $data['version'] .' .zip"');
+		header('Content-Disposition: attachment; filename="' .$data['name'] . '_' . $data['language'] . '_' . $data['version'] . '.zip"');
 		header('Content-Length: '.strlen($zipdata));
 		header("Cache-Control: maxage=1");
 		header("Pragma: public");
