@@ -438,7 +438,7 @@ class LocaliseModelPackageFile extends JModelForm
 			}
 		}
 
-		/**
+		/** @TODO: Check ftp code
 		// Save the title and the description in the language file
 		$translation_path  = LocaliseHelper::findTranslationPath($client, JFactory::getLanguage()->getTag(), $manifest);
 		$translation_id    = LocaliseHelper::getFileId($translation_path);
