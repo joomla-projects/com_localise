@@ -300,8 +300,6 @@ class LocaliseModelPackage extends JModelForm
 						$package->site[] = $data;
 					}
 				}
-
-				$package->installation = array();
 			}
 			else
 			{
