@@ -149,11 +149,6 @@ abstract class LocaliseHelper
 			{
 				static::$origins['site'][$file] = $package->name;
 			}
-
-			foreach ($package->installation as $file)
-			{
-				static::$origins['installation'][$file] = $package->name;
-			}
 		}
 	}
 

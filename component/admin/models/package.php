@@ -300,27 +300,6 @@ class LocaliseModelPackage extends JModelForm
 						$package->site[] = $data;
 					}
 				}
-
-				$package->installation = array();
-
-				if ($xml->installation)
-				{
-					foreach ($xml->installation->children() as $file)
-					{
-						$data = (string) $file->data();
-
-						if ($data)
-						{
-							$package->translations[] = "installation_$data";
-						}
-						else
-						{
-							$package->translations[] = "installation_joomla";
-						}
-
-						$package->installation[] = $data;
-					}
-				}
 			}
 			else
 			{
@@ -420,11 +399,6 @@ class LocaliseModelPackage extends JModelForm
 				{
 					$administrator[] = $matches[1];
 				}
-
-				if (preg_match('/^installation_(.*)$/', $translation, $matches))
-				{
-					$installation[] = $matches[1];
-				}
 			}
 
 			// Add the site language files
@@ -453,20 +427,6 @@ class LocaliseModelPackage extends JModelForm
 				}
 
 				$packageXml->appendChild($adminXml);
-			}
-
-			// Add the installation language files
-			if (count($installation))
-			{
-				$installXml = $dom->createElement('installation');
-
-				foreach ($installation as $translation)
-				{
-					$fileElement = $dom->createElement('filename', $translation . '.ini');
-					$installXml->appendChild($fileElement);
-				}
-
-				$packageXml->appendChild($installXml);
 			}
 
 			$dom->appendChild($packageXml);
@@ -504,7 +464,7 @@ class LocaliseModelPackage extends JModelForm
 			}
 		}
 
-		/*
+		/* @TODO Check ftp part
 		// Save the title and the description in the language file
 		$translation_path  = LocaliseHelper::findTranslationPath($client, JFactory::getLanguage()->getTag(), $manifest);
 		$translation_id    = LocaliseHelper::getFileId($translation_path);
@@ -632,11 +592,6 @@ class LocaliseModelPackage extends JModelForm
 			if (preg_match('/^administrator_(.*)$/', $translation, $matches))
 			{
 				$administrator[] = $matches[1];
-			}
-
-			if (preg_match('/^installation_(.*)$/', $translation, $matches))
-			{
-				$installation[] = $matches[1];
 			}
 		}
 
@@ -892,22 +847,6 @@ class LocaliseModelPackage extends JModelForm
 
 			$main_package_files[]= array('name'=>'admin_' . $data['language'] . '.zip','data' => JFile::read($admin_zip_path));
 		}
-
-		if (count($installation))
-		{
-			/*
-			 * ignore for now as language packages usually don't have language files for the installation area
-			$text .= "\t".'<installation>' . "\n";
-
-			foreach ($installation as $translation)
-			{
-				$text .= "\t\t".'<filename>' . $translation . '.ini</filename>' . "\n";
-			}
-
-			$text .= "\t".'</installation>' . "\n";
-			*/
-		}
-
 
 		$text .= "\t" . '</files>' . "\n";
 		if(!empty($data['serverurl'])){
