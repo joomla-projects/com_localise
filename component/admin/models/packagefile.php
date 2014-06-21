@@ -752,15 +752,15 @@ class LocaliseModelPackageFile extends JModelForm
 
 		ob_clean();
 		$zipdata = JFile::read($ziproot);
-		$app->setHeader('Expires', '0');
-		$app->setHeader('Last-Modified', gmdate("D, d M Y H:i:s") . " GMT");
-		$app->setHeader('Content-Type', 'application/zip');
-		$app->setHeader('Content-Disposition', 'attachment; filename="' .$data['name'] . '_' . $data['language'] . '_' . $data['version'] . '.zip"');
-		$app->setHeader('Content-Length', strlen($zipdata));
-		$app->setHeader('Cache-Control', 'maxage=1');
-		$app->setHeader('Pragma', 'public');
-		$app->setHeader('Content-Transfer-Encoding', 'binary');
+		header("Expires: 0");
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header('Content-Type: application/zip');
+		header('Content-Disposition: attachment; filename="' . $data['name'] . '_' . $data['language'] . '_' . $data['version'] . '.zip"');
+		header('Content-Length: '.strlen($zipdata));
+		header("Cache-Control: maxage=1");
+		header("Pragma: public");
+		header("Content-Transfer-Encoding: binary");
 		echo $zipdata;
-		$app->close();
+		exit;
 	}
 }
