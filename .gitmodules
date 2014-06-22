@@ -1,3 +1,7 @@
 [submodule "tests/system/joomla-cms"]
 	path = tests/system/joomla-cms
 	url = https://github.com/joomla/joomla-cms.git
+[submodule ".travis/coding-standards/Joomla"]
+	path = .travis/coding-standards/Joomla
+	url = https://github.com/joomla/coding-standards.git
+	branch = master
