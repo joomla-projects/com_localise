@@ -435,7 +435,7 @@ class LocaliseModelPackage extends JModelForm
 			$ftp = JClientHelper::getCredentials('ftp');
 
 			// Try to make the file writeable.
-			if (!$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, '0644'))
+			if (JFile::exists($path) && !$ftp['enabled'] && JPath::isOwner($path) && !JPath::setPermissions($path, '0644'))
 			{
 				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_WRITABLE', $path));
 
