@@ -561,7 +561,7 @@ class LocaliseModelPackage extends JModelForm
 		$refclassname	= ucfirst($refclassname);
 		$langclassname	= str_replace('-', '_', $data['language']);
 		$langclassname	= ucfirst($langclassname);
-		$msg = '';
+		$msg = null;
 
 		$app = JFactory::getApplication();
 		$administrator = array();

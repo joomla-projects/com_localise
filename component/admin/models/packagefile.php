@@ -531,7 +531,7 @@ class LocaliseModelPackageFile extends JModelForm
 		$app = JFactory::getApplication();
 		$administrator = array();
 		$site          = array();
-		$msg = '';
+		$msg = null;
 
 		// Delete old files
 		$delete = JFolder::files(JPATH_ROOT . '/tmp/', 'com_localise_', false, true);
