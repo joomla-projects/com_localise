@@ -531,6 +531,7 @@ class LocaliseModelPackageFile extends JModelForm
 		$app = JFactory::getApplication();
 		$administrator = array();
 		$site          = array();
+		$msg = '';
 
 		// Delete old files
 		$delete = JFolder::files(JPATH_ROOT . '/tmp/', 'com_localise_', false, true);
@@ -588,14 +589,18 @@ class LocaliseModelPackageFile extends JModelForm
 
 			foreach ($site as $translation)
 			{
-				$file_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini');
+				$path = JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini';
 
 				// @TODO Search also for ini file in the 3pd extension folder
-				//if (empty($file_data)
-				//{
-				//	$file_data = JFile::read(JPATH_ROOT . '/EXTENSION-PATH/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini');
-			//	}
-				if (!empty($file_data))
+				//
+				//	$path = JPATH_ROOT . '/EXTENSION-PATH/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini');
+				//
+				if (JFile::exists($path))
+				{
+					$file_data = JFile::read($path);
+				}
+
+				if (JFile::exists($path) && !empty($file_data))
 				{
 					$text .= "\t\t\t".'<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
 					$site_package_files[] = array('name'=>$data['language'] . '.' . $translation . '.ini','data' => $file_data);
@@ -658,14 +663,18 @@ class LocaliseModelPackageFile extends JModelForm
 
 			foreach ($administrator as $translation)
 			{
-				$file_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini');
+				$path = JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini';
 
 				// @TODO Search also for ini file in the 3pd extension folder
-				//if (empty($file_data)
-				//{
-				//	$file_data = JFile::read(JPATH_ROOT . '/administrator/EXTENSION-PATH/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini');
-			//	}
-				if (!empty($file_data))
+				//
+				//	$path = JPATH_ROOT . '/EXTENSION-PATH/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini');
+				//
+				if (JFile::exists($path))
+				{
+					$file_data = JFile::read($path);
+				}
+
+				if (JFile::exists($path) && !empty($file_data))
 				{
 					$text .= "\t\t\t".'<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
 					$admin_package_files[] = array('name' => $data['language'] . '.' . $translation . '.ini','data' => $file_data);
