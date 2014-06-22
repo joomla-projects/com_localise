@@ -1,6 +1,3 @@
-[submodule ".travis/coding-standards"]
-	path = .travis/coding-standards
-	url = https://github.com/joomla/coding-standards
 [submodule "tests/system/joomla-cms"]
 	path = tests/system/joomla-cms
 	url = https://github.com/joomla/joomla-cms.git
