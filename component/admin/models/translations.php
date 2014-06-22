@@ -143,7 +143,12 @@ class LocaliseModelTranslations extends JModelList
 		return $form;
 	}
 
-	private function _scanLocalTranslationsFolders()
+	/**
+	 * todo: missing description
+	 *
+	 * @return void
+	 */
+	private function scanLocalTranslationsFolders()
 	{
 		$filter_storage = $this->getState('filter.storage');
 		$filter_origin  = $this->getState('filter.origin') ? $this->getState('filter.origin') : '.';
@@ -181,7 +186,21 @@ class LocaliseModelTranslations extends JModelList
 
 							if (JFile::exists($file) && preg_match("/$filter_origin/", $origin))
 							{
-								$translation = new JObject(array('type' => $type, 'tag' => $tag, 'client' => $client, 'storage' => 'local', 'filename' => "$prefix$extension$suffix", 'name' => "$prefix$extension$suffix", 'refpath' => null, 'path' => $file, 'state' => $tag == $reftag ? 'inlanguage' : 'notinreference', 'writable' => LocaliseHelper::isWritable($file), 'origin' => $origin));
+								$translation = new JObject(
+									array(
+										'type' => $type,
+										'tag' => $tag,
+										'client' => $client,
+										'storage' => 'local',
+										'filename' => "$prefix$extension$suffix",
+										'name' => "$prefix$extension$suffix",
+										'refpath' => null,
+										'path' => $file,
+										'state' => $tag == $reftag ? 'inlanguage' : 'notinreference',
+										'writable' => LocaliseHelper::isWritable($file),
+										'origin' => $origin
+									)
+								);
 								$this->translations["$client|$tag|$prefix$extension$suffix"] = $translation;
 							}
 						}
@@ -191,7 +210,12 @@ class LocaliseModelTranslations extends JModelList
 		}
 	}
 
-	private function _scanGlobalTranslationsFolders()
+	/**
+	 * todo: missing function description
+	 *
+	 * @return void
+	 */
+	private function scanGlobalTranslationsFolders()
 	{
 		$filter_storage = $this->getState('filter.storage');
 		$reftag         = $this->getState('translations.reference');
@@ -247,7 +271,18 @@ class LocaliseModelTranslations extends JModelList
 							{
 								$prefix = substr($file, 0, 4 + strlen($tag));
 
-								$translation = new JObject(array('tag' => $tag, 'client' => $client, 'storage' => 'global', 'refpath' => null, 'path' => "$path/$tag/$file", 'state' => $tag == $reftag ? 'inlanguage' : 'notinreference', 'writable' => LocaliseHelper::isWritable("$path/$tag/$file"), 'origin' => $origin));
+								$translation = new JObject(
+									array(
+										'tag' => $tag,
+										'client' => $client,
+										'storage' => 'global',
+										'refpath' => null,
+										'path' => "$path/$tag/$file",
+										'state' => $tag == $reftag ? 'inlanguage' : 'notinreference',
+										'writable' => LocaliseHelper::isWritable("$path/$tag/$file"),
+										'origin' => $origin
+									)
+								);
 
 								if ($file == "$tag.ini" && preg_match("/$filter_type/", 'joomla'))
 								{
@@ -310,7 +345,12 @@ class LocaliseModelTranslations extends JModelList
 		}
 	}
 
-	private function _scanReference()
+	/**
+	 * todo: missing function description
+	 *
+	 * @return void
+	 */
+	private function scanReference()
 	{
 		$reftag         = $this->getState('translations.reference');
 		$filter_tag     = $this->getState('filter.tag')    ? ("^($reftag|" . $this->getState('filter.tag') . ")$") : '.';
@@ -353,7 +393,21 @@ class LocaliseModelTranslations extends JModelList
 
 							$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.ini";
 
-							$translation = new JObject(array('type' => 'joomla', 'tag' => $tag, 'client' => $client, 'storage' => 'global', 'filename' => 'joomla', 'name' => JText::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA'), 'refpath' => $reftranslation->path, 'path' => $path, 'state' => 'unexisting', 'writable' => LocaliseHelper::isWritable($path), 'origin' => $origin));
+							$translation = new JObject(
+								array(
+									'type' => 'joomla',
+									'tag' => $tag,
+									'client' => $client,
+									'storage' => 'global',
+									'filename' => 'joomla',
+									'name' => JText::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA'),
+									'refpath' => $reftranslation->path,
+									'path' => $path,
+									'state' => 'unexisting',
+									'writable' => LocaliseHelper::isWritable($path),
+									'origin' => $origin
+								)
+							);
 							$this->translations["$client|$tag|joomla"] = $translation;
 						}
 					}
@@ -389,7 +443,21 @@ class LocaliseModelTranslations extends JModelList
 									else
 									{
 										$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-										$translation = new JObject(array('type' => 'library', 'tag' => $tag, 'client' => $client, 'storage' => 'global', 'filename' => $name, 'name' => $name, 'refpath' => $reftranslation->path, 'path' => $path, 'state' => 'unexisting', 'writable' => LocaliseHelper::isWritable($path), 'origin' => 'core'));
+										$translation = new JObject(
+											array(
+												'type' => 'library',
+												'tag' => $tag,
+												'client' => $client,
+												'storage' => 'global',
+												'filename' => $name,
+												'name' => $name,
+												'refpath' => $reftranslation->path,
+												'path' => $path,
+												'state' => 'unexisting',
+												'writable' => LocaliseHelper::isWritable($path),
+												'origin' => 'core'
+											)
+										);
 										$this->translations["$client|$tag|$name"] = $translation;
 									}
 								}
@@ -414,7 +482,21 @@ class LocaliseModelTranslations extends JModelList
 									else
 									{
 										$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-										$translation = new JObject(array('type' => 'library', 'tag' => $tag, 'client' => $client, 'storage' => 'global', 'filename' => $name, 'name' => $name, 'refpath' => $reftranslation->path, 'path' => $path, 'state' => 'unexisting', 'writable' => LocaliseHelper::isWritable($path), 'origin' => '_thirdparty'));
+										$translation = new JObject(
+											array(
+												'type' => 'library',
+												'tag' => $tag,
+												'client' => $client,
+												'storage' => 'global',
+												'filename' => $name,
+												'name' => $name,
+												'refpath' => $reftranslation->path,
+												'path' => $path,
+												'state' => 'unexisting',
+												'writable' => LocaliseHelper::isWritable($path),
+												'origin' => '_thirdparty'
+											)
+										);
 										$this->translations["$client|$tag|$name"] = $translation;
 									}
 								}
@@ -438,7 +520,21 @@ class LocaliseModelTranslations extends JModelList
 									else
 									{
 										$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-										$translation = new JObject(array('type' => 'package', 'tag' => $tag, 'client' => $client, 'storage' => 'global', 'filename' => $name, 'name' => $name, 'refpath' => $reftranslation->path, 'path' => $path, 'state' => 'unexisting', 'writable' => LocaliseHelper::isWritable($path), 'origin' => '_thirdparty'));
+										$translation = new JObject(
+											array(
+												'type' => 'package',
+												'tag' => $tag,
+												'client' => $client,
+												'storage' => 'global',
+												'filename' => $name,
+												'name' => $name,
+												'refpath' => $reftranslation->path,
+												'path' => $path,
+												'state' => 'unexisting',
+												'writable' => LocaliseHelper::isWritable($path),
+												'origin' => '_thirdparty'
+											)
+										);
 										$this->translations["$client|$tag|$name"] = $translation;
 									}
 								}
@@ -462,7 +558,21 @@ class LocaliseModelTranslations extends JModelList
 									else
 									{
 										$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-										$translation = new JObject(array('type' => 'file', 'tag' => $tag, 'client' => $client, 'storage' => 'global', 'filename' => $name, 'name' => $name, 'refpath' => $reftranslation->path, 'path' => $path, 'state' => 'unexisting', 'writable' => LocaliseHelper::isWritable($path), 'origin' => '_thirdparty'));
+										$translation = new JObject(
+											array(
+												'type' => 'file',
+												'tag' => $tag,
+												'client' => $client,
+												'storage' => 'global',
+												'filename' => $name,
+												'name' => $name,
+												'refpath' => $reftranslation->path,
+												'path' => $path,
+												'state' => 'unexisting',
+												'writable' => LocaliseHelper::isWritable($path),
+												'origin' => '_thirdparty'
+											)
+										);
 										$this->translations["$client|$tag|$name"] = $translation;
 									}
 								}
@@ -492,7 +602,13 @@ class LocaliseModelTranslations extends JModelList
 				if (array_key_exists("$client|$reftag|$prefix$extension$suffix", $this->translations))
 				{
 					$reftranslation = $this->translations["$client|$reftag|$prefix$extension$suffix"];
-					$tags = JFolder::folders(constant('LOCALISEPATH_' . strtoupper($client)) . '/language', $filter_tag, false, false, array('overrides', '.svn', 'CVS', '.DS_Store', '__MACOSX'));
+					$tags = JFolder::folders(
+						constant('LOCALISEPATH_' . strtoupper($client)) . '/language',
+						$filter_tag,
+						false,
+						false,
+						array('overrides', '.svn', 'CVS', '.DS_Store', '__MACOSX')
+					);
 
 					foreach ($tags as $tag)
 					{
@@ -500,12 +616,28 @@ class LocaliseModelTranslations extends JModelList
 
 						if (array_key_exists("$client|$tag|$prefix$extension$suffix", $this->translations))
 						{
-							$this->translations["$client|$tag|$prefix$extension$suffix"]->setProperties(array('refpath' => $reftranslation->path, 'state' => 'inlanguage'));
+							$this
+								->translations["$client|$tag|$prefix$extension$suffix"]
+								->setProperties(array('refpath' => $reftranslation->path, 'state' => 'inlanguage'));
 						}
 						elseif ($filter_storage != 'local' && ($filter_origin == '' || $filter_origin == $origin))
 						{
 							$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$prefix$extension$suffix.ini";
-							$translation = new JObject(array('type' => $type, 'tag' => $tag, 'client' => $client, 'storage' => 'global', 'filename' => "$prefix$extension$suffix", 'name' => "$prefix$extension$suffix", 'refpath' => $reftranslation->path, 'path' => $path, 'state' => 'unexisting', 'writable' => LocaliseHelper::isWritable($path), 'origin' => $origin));
+							$translation = new JObject(
+								array(
+									'type' => $type,
+									'tag' => $tag,
+									'client' => $client,
+									'storage' => 'global',
+									'filename' => "$prefix$extension$suffix",
+									'name' => "$prefix$extension$suffix",
+									'refpath' => $reftranslation->path,
+									'path' => $path, 'state' => 'unexisting',
+									'writable' => LocaliseHelper::isWritable($path),
+									'origin' => $origin
+								)
+							);
+
 							$this->translations["$client|$tag|$prefix$extension$suffix"] = $translation;
 						}
 					}
@@ -514,7 +646,12 @@ class LocaliseModelTranslations extends JModelList
 		}
 	}
 
-	private function _scanOverride()
+	/**
+	 * todo: missing function description
+	 *
+	 * @return void
+	 */
+	private function scanOverride()
 	{
 		// Scan overrides ini files
 		$reftag         = $this->getState('translations.reference');
@@ -525,7 +662,10 @@ class LocaliseModelTranslations extends JModelList
 		$filter_origin  = $this->getState('filter.origin') ? $this->getState('filter.origin') : '.';
 		$filter_search  = $this->getState('filter.search') ? $this->getState('filter.search') : '.';
 
-		if ((empty($filter_client) || $filter_client != 'installation') && (empty($filter_storage) || $filter_storage == 'global') && (empty($filter_type) || $filter_type == 'override') && preg_match("/$filter_origin/", '_override') && preg_match("/$filter_search/i", 'override'))
+		if ((empty($filter_client) || $filter_client != 'installation')
+			&& (empty($filter_storage) || $filter_storage == 'global')
+			&& (empty($filter_type) || $filter_type == 'override')
+			&& preg_match("/$filter_origin/", '_override') && preg_match("/$filter_search/i", 'override'))
 		{
 			if (empty($filter_client))
 			{
@@ -538,19 +678,44 @@ class LocaliseModelTranslations extends JModelList
 
 			foreach ($clients as $client)
 			{
-				$tags = JFolder::folders(constant('LOCALISEPATH_' . strtoupper($client)) . '/language', $filter_tag, false, false, array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'pdf_fonts', 'overrides'));
+				$tags = JFolder::folders(
+									constant('LOCALISEPATH_' . strtoupper($client)) . '/language',
+									$filter_tag,
+									false,
+									false,
+									array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'pdf_fonts', 'overrides')
+				);
 
 				foreach ($tags as $tag)
 				{
 					$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/overrides/$tag.override.ini";
-					$translation = new JObject(array('type' => 'override', 'tag' => $tag, 'client' => $client, 'storage' => 'global', 'filename' => 'override', 'name' => JText::_('COM_LOCALISE_LABEL_TRANSLATIONS_OVERRIDE'), 'refpath' => $path, 'path' => $path, 'state' => 'inlanguage', 'writable' => LocaliseHelper::isWritable($path), 'origin' => '_override'));
+					$translation = new JObject(
+						array(
+							'type' => 'override',
+							'tag' => $tag,
+							'client' => $client,
+							'storage' => 'global',
+							'filename' => 'override',
+							'name' => JText::_('COM_LOCALISE_LABEL_TRANSLATIONS_OVERRIDE'),
+							'refpath' => $path,
+							'path' => $path,
+							'state' => 'inlanguage',
+							'writable' => LocaliseHelper::isWritable($path),
+							'origin' => '_override'
+						)
+					);
 					$this->translations["$client|$tag|override"] = $translation;
 				}
 			}
 		}
 	}
 
-	private function _getTranslations()
+	/**
+	 * todo: missing function description
+	 *
+	 * @return array
+	 */
+	private function getTranslations()
 	{
 		if (!isset($this->translations))
 		{
@@ -574,10 +739,10 @@ class LocaliseModelTranslations extends JModelList
 			if (!is_array($this->translations))
 			{
 				$this->translations = array();
-				$this->_scanLocalTranslationsFolders();
-				$this->_scanGlobalTranslationsFolders();
-				$this->_scanReference();
-				$this->_scanOverride();
+				$this->scanLocalTranslationsFolders();
+				$this->scanGlobalTranslationsFolders();
+				$this->scanReference();
+				$this->scanOverride();
 
 				$cache_controller->store($this->translations, $key, 'localise');
 			}
@@ -643,10 +808,17 @@ class LocaliseModelTranslations extends JModelList
 				}
 			}
 
+			$direction = -1;
+
+			if ($this->getState('list.direction'))
+			{
+				$direction = 1;
+			}
+
 			JArrayHelper::sortObjects(
 				$this->translations,
 				$this->getState('list.ordering', 'name'),
-				$this->getState('list.direction') == 'asc' ? 1 : -1
+				$direction
 			);
 
 			$this->translations = array_values($this->translations);
@@ -655,11 +827,16 @@ class LocaliseModelTranslations extends JModelList
 		return $this->translations;
 	}
 
+	/**
+	 * Get translations
+	 *
+	 * @return array|mixed
+	 */
 	public function getItems()
 	{
 		if (!isset($this->items))
 		{
-			$translations = $this->_getTranslations();
+			$translations = $this->getTranslations();
 			$count = count($translations);
 			$start = $this->getState('list.start');
 			$limit = $this->getState('list.limit');
@@ -681,11 +858,21 @@ class LocaliseModelTranslations extends JModelList
 		return $this->items;
 	}
 
+	/**
+	 * Get total number of translations
+	 *
+	 * @return int
+	 */
 	public function getTotal()
 	{
-		return count($this->_getTranslations());
+		return count($this->getTranslations());
 	}
 
+	/**
+	 * todo: missing function description
+	 *
+	 * @return mixed
+	 */
 	public function getTotalExist()
 	{
 		if (!isset($this->_data->total_exist))
@@ -696,7 +883,7 @@ class LocaliseModelTranslations extends JModelList
 			}
 
 			$i = 0;
-			$translations = $this->_getTranslations();
+			$translations = $this->getTranslations();
 
 			foreach ($translations as $translation)
 			{
