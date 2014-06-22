@@ -377,7 +377,6 @@ class LocaliseModelPackage extends JModelForm
 			$packageXml->appendChild($authorEmailElement);
 			$packageXml->appendChild($authorUrlElement);
 			$packageXml->appendChild($languageElement);
-			$packageXml->appendChild($copyrightElement);
 			$packageXml->appendChild($urlElement);
 			$packageXml->appendChild($packagerElement);
 			$packageXml->appendChild($packagerUrlElement);
