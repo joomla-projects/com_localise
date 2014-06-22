@@ -63,6 +63,8 @@ class LocaliseModelExportPackage extends JModelItem
 
 	/**
 	 * Get the item
+	 *
+	 * @return bool|Object
 	 */
 	public function getItem()
 	{
