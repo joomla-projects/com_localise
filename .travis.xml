@@ -11,7 +11,7 @@
 			<arg line="-vv" />
 			<arg value="--report=full"/>
 			<arg value="--extensions=php"/>
-			<arg value="--standard=${basedir}/.travis/coding-standards/ruleset.xml"/>
+			<arg value="--standard=${basedir}/.travis/coding-standards/Joomla/ruleset.xml"/>
 			<arg value="--ignore=${phpcs-ignore}"/>
 			<arg path="${basedir}"/>
 		</exec>
