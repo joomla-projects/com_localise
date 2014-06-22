@@ -327,7 +327,7 @@ class LocaliseModelPackage extends JModelForm
 		$package  = $this->getItem();
 		$path     = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$name.xml";
 		$manifest = $name;
-		//$client   = $package->client ? $package->client : 'site';
+		// $client   = $package->client ? $package->client : 'site';
 
 		if ($package->standalone)
 		{
@@ -335,6 +335,7 @@ class LocaliseModelPackage extends JModelForm
 			$description = $data['description'];
 
 			$dom = new DOMDocument('1.0', 'utf-8');
+
 			// Create simple XML element and base package tag
 			$packageXml = $dom->createElement('package');
 
@@ -344,7 +345,6 @@ class LocaliseModelPackage extends JModelForm
 			$manifestElement = $dom->createElement('manifest', $manifest);
 			$versionElement = $dom->createElement('version', $data['version']);
 			$authorElement = $dom->createElement('author', $data['author']);
-			$copyrightElement = $dom->createElement('copyright', $data['copyright']);
 			$licenseElement = $dom->createElement('license', $data['license']);
 			$authorEmailElement = $dom->createElement('authoremail', $data['authoremail']);
 			$authorUrlElement = $dom->createElement('authorurl', $data['authorurl']);
@@ -357,9 +357,9 @@ class LocaliseModelPackage extends JModelForm
 			$serverurlElement = $dom->createElement('serverurl', $data['serverurl']);
 
 			// Set the client attribute on the manifest element
-			//$clientAttribute = $dom->createAttribute('client');
-			//$clientAttribute->value = $client;
-			//$manifestElement->appendChild($clientAttribute);
+			// $clientAttribute = $dom->createAttribute('client');
+			// $clientAttribute->value = $client;
+			// $manifestElement->appendChild($clientAttribute);
 
 			// Set the core attribute as we only make packages for Core
 			$coreAttribute = $dom->createAttribute('core');
@@ -386,7 +386,6 @@ class LocaliseModelPackage extends JModelForm
 
 			$administrator = array();
 			$site          = array();
-			$installation  = array();
 
 			foreach ($data['translations'] as $translation)
 			{
@@ -552,7 +551,7 @@ class LocaliseModelPackage extends JModelForm
 	 */
 	public function download($data)
 	{
-		//the data could potentially be loaded from the file with $this->getItem() instead of using directly the data from the post
+		// The data could potentially be loaded from the file with $this->getItem() instead of using directly the data from the post
 
 		// Necessary variables if xx-XX.localise.php is not present in target language
 		$params			= JComponentHelper::getParams('com_localise');
@@ -566,7 +565,6 @@ class LocaliseModelPackage extends JModelForm
 		$app = JFactory::getApplication();
 		$administrator = array();
 		$site          = array();
-		$installation  = array();
 		$main_package_files = array();
 
 		// Delete old files
@@ -597,30 +595,31 @@ class LocaliseModelPackage extends JModelForm
 		}
 
 
-		$parts = explode('.',$data['version']);
-		$small_version = implode('.',array($parts[0],$parts[1]));
+		$parts = explode('.', $data['version']);
+		$small_version = implode('.', array($parts[0],$parts[1]));
+
 		// Prepare text to save for the xml package description
 		$text = '';
 		$text .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-		$text .= '<extension type="package" version="'.$small_version.'">' . "\n";
-		$text .= "\t".'<name>' . $data['name'] . '</name>' . "\n";
-		$text .= "\t".'<packagename>' . $data['language'] . '</packagename>' . "\n";
-		$text .= "\t".'<version>' . $data['version'] . '</version>' . "\n";
-		$text .= "\t".'<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
-		$text .= "\t".'<author>' . $data['author'] . '</author>' . "\n";
-		$text .= "\t".'<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
-		$text .= "\t".'<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
-		$text .= "\t".'<copyright>' . $data['copyright'] . '</copyright>' . "\n";
-		$text .= "\t".'<license>' . $data['license'] . '</license>' . "\n";
-		$text .= "\t".'<url>' . $data['url'] . '</url>' . "\n";
-		$text .= "\t".'<packager>' . $data['packager'] . '</packager>' . "\n";
-		$text .= "\t".'<packagerurl>' . $data['packagerurl'] . '</packagerurl>' . "\n";
-		$text .= "\t".'<description><![CDATA[' . $data['description'] . ']]></description>' . "\n";
-		$text .= "\t".'<files>'. "\n";
+		$text .= '<extension type="package" version="' . $small_version . '">' . "\n";
+		$text .= "\t" . '<name>' . $data['name'] . '</name>' . "\n";
+		$text .= "\t" . '<packagename>' . $data['language'] . '</packagename>' . "\n";
+		$text .= "\t" . '<version>' . $data['version'] . '</version>' . "\n";
+		$text .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
+		$text .= "\t" . '<author>' . $data['author'] . '</author>' . "\n";
+		$text .= "\t" . '<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
+		$text .= "\t" . '<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
+		$text .= "\t" . '<copyright>' . $data['copyright'] . '</copyright>' . "\n";
+		$text .= "\t" . '<license>' . $data['license'] . '</license>' . "\n";
+		$text .= "\t" . '<url>' . $data['url'] . '</url>' . "\n";
+		$text .= "\t" . '<packager>' . $data['packager'] . '</packager>' . "\n";
+		$text .= "\t" . '<packagerurl>' . $data['packagerurl'] . '</packagerurl>' . "\n";
+		$text .= "\t" . '<description><![CDATA[' . $data['description'] . ']]></description>' . "\n";
+		$text .= "\t" . '<files>' . "\n";
 
 		if (count($site))
 		{
-			$text .= "\t\t".'<file type="language" client="site" id="'.$data['language'].'">site_'.$data['language'].'.zip</file>' . "\n";
+			$text .= "\t\t" . '<file type="language" client="site" id="' . $data['language'] . '">site_' . $data['language'] . '.zip</file>' . "\n";
 
 			$path = JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.xml';
 
@@ -637,23 +636,22 @@ class LocaliseModelPackage extends JModelForm
 				return false;
 			}
 
-			//generate site package
+			// Generate site package
 			$site_package_files = array();
-			$site_package_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
 
 			$site_txt = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-			$site_txt .= '<extension version="'.$small_version.'" client="site" type="language" method="upgrade">' . "\n";
-			$site_txt .= "\t".'<name>' . $data['name'] . '</name>' . "\n";
-			$site_txt .= "\t".'<tag>' . $data['language'] . '</tag>' . "\n";
-			$site_txt .= "\t".'<version>' . $data['version'] . '</version>' . "\n";
-			$site_txt .= "\t".'<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
-			$site_txt .= "\t".'<author>' . $data['author'] . '</author>' . "\n";
-			$site_txt .= "\t".'<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
-			$site_txt .= "\t".'<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
-			$site_txt .= "\t".'<copyright>' . $data['copyright'] . '</copyright>' . "\n";
-			$site_txt .= "\t".'<license>' . $data['license'] . '</license>' . "\n";
-			$site_txt .= "\t".'<description>' . $data['language'] . 'site language</description>' . "\n";
-			$site_txt .= "\t".'<files>'. "\n";
+			$site_txt .= '<extension version="' . $small_version . '" client="site" type="language" method="upgrade">' . "\n";
+			$site_txt .= "\t" . '<name>' . $data['name'] . '</name>' . "\n";
+			$site_txt .= "\t" . '<tag>' . $data['language'] . '</tag>' . "\n";
+			$site_txt .= "\t" . '<version>' . $data['version'] . '</version>' . "\n";
+			$site_txt .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
+			$site_txt .= "\t" . '<author>' . $data['author'] . '</author>' . "\n";
+			$site_txt .= "\t" . '<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
+			$site_txt .= "\t" . '<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
+			$site_txt .= "\t" . '<copyright>' . $data['copyright'] . '</copyright>' . "\n";
+			$site_txt .= "\t" . '<license>' . $data['license'] . '</license>' . "\n";
+			$site_txt .= "\t" . '<description>' . $data['language'] . 'site language</description>' . "\n";
+			$site_txt .= "\t" . '<files>' . "\n";
 
 			// As this is a core package, the main joomla file xx-XX.ini should be in the package
 			$path = JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.ini';
@@ -666,7 +664,7 @@ class LocaliseModelPackage extends JModelForm
 			if (JFile::exists($path) && !empty($file_data))
 			{
 				$site = array_diff($site, array("joomla"));
-				$site_txt .= "\t\t".'<filename>' . $data['language'] . '.ini</filename>' . "\n";
+				$site_txt .= "\t\t" . '<filename>' . $data['language'] . '.ini</filename>' . "\n";
 				$site_package_files[] = array('name' => $data['language'] . '.ini','data' => $file_data);
 			}
 			else
@@ -685,8 +683,8 @@ class LocaliseModelPackage extends JModelForm
 
 				if (JFile::exists($path) && !empty($file_data))
 				{
-					$site_txt .= "\t\t".'<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
-					$site_package_files[] = array('name'=>$data['language'] . '.' . $translation . '.ini','data'=>$file_data);
+					$site_txt .= "\t\t" . '<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
+					$site_package_files[] = array('name' => $data['language'] . '.' . $translation . '.ini', 'data' => $file_data);
 				}
 				elseif ($translation != 'joomla')
 				{
@@ -748,13 +746,13 @@ class LocaliseModelPackage extends JModelForm
 				}
 			}
 
-			$main_package_files[]= array('name' => 'site_' . $data['language'] . '.zip','data' => JFile::read($site_zip_path));
+			$main_package_files[] = array('name' => 'site_' . $data['language'] . '.zip','data' => JFile::read($site_zip_path));
 
 		}
 
 		if (count($administrator))
 		{
-			$text .= "\t\t".'<file type="language" client="administrator" id="' . $data['language'] . '">admin_' . $data['language'] . '.zip</file>' . "\n";
+			$text .= "\t\t" . '<file type="language" client="administrator" id="' . $data['language'] . '">admin_' . $data['language'] . '.zip</file>' . "\n";
 
 			$path = JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.xml';
 
@@ -771,24 +769,24 @@ class LocaliseModelPackage extends JModelForm
 				return false;
 			}
 
-			//generate administrator package
+			// Generate administrator package
 			$admin_package_files = array();
 			$admin_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
 
 
 			$admin_txt = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-			$admin_txt .= '<extension version="'.$small_version.'" client="administrator" type="language" method="upgrade">' . "\n";
-			$admin_txt .= "\t".'<name>' . $data['name'] . '</name>' . "\n";
-			$admin_txt .= "\t".'<tag>' . $data['language'] . '</tag>' . "\n";
-			$admin_txt .= "\t".'<version>' . $data['version'] . '</version>' . "\n";
-			$admin_txt .= "\t".'<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
-			$admin_txt .= "\t".'<author>' . $data['author'] . '</author>' . "\n";
-			$admin_txt .= "\t".'<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
-			$admin_txt .= "\t".'<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
-			$admin_txt .= "\t".'<copyright>' . $data['copyright'] . '</copyright>' . "\n";
-			$admin_txt .= "\t".'<license>' . $data['license'] . '</license>' . "\n";
-			$admin_txt .= "\t".'<description>' . $data['language'] . 'site language</description>' . "\n";
-			$admin_txt .= "\t".'<files>'. "\n";
+			$admin_txt .= '<extension version="' . $small_version . '" client="administrator" type="language" method="upgrade">' . "\n";
+			$admin_txt .= "\t" . '<name>' . $data['name'] . '</name>' . "\n";
+			$admin_txt .= "\t" . '<tag>' . $data['language'] . '</tag>' . "\n";
+			$admin_txt .= "\t" . '<version>' . $data['version'] . '</version>' . "\n";
+			$admin_txt .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
+			$admin_txt .= "\t" . '<author>' . $data['author'] . '</author>' . "\n";
+			$admin_txt .= "\t" . '<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
+			$admin_txt .= "\t" . '<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
+			$admin_txt .= "\t" . '<copyright>' . $data['copyright'] . '</copyright>' . "\n";
+			$admin_txt .= "\t" . '<license>' . $data['license'] . '</license>' . "\n";
+			$admin_txt .= "\t" . '<description>' . $data['language'] . 'site language</description>' . "\n";
+			$admin_txt .= "\t" . '<files>' . "\n";
 
 			// As this is a core package, the main joomla file xx-XX.ini should be in the package
 			$path = JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.ini';
@@ -801,8 +799,8 @@ class LocaliseModelPackage extends JModelForm
 			if (JFile::exists($path) && !empty($file_data))
 			{
 				$administrator = array_diff($administrator, array("joomla"));
-				$admin_txt .= "\t\t".'<filename>' . $data['language'].'.ini</filename>' . "\n";
-				$admin_package_files[] = array('name' => $data['language'].'.ini','data' => $file_data);
+				$admin_txt .= "\t\t" . '<filename>' . $data['language'] . '.ini</filename>' . "\n";
+				$admin_package_files[] = array('name' => $data['language'] . '.ini','data' => $file_data);
 			}
 			else
 			{
@@ -820,7 +818,7 @@ class LocaliseModelPackage extends JModelForm
 
 				if (JFile::exists($path) && !empty($file_data))
 				{
-					$admin_txt .= "\t\t".'<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
+					$admin_txt .= "\t\t" . '<filename>' . $data['language'] . '.' . $translation . '.ini</filename>' . "\n";
 					$admin_package_files[] = array('name' => $data['language'] . '.' . $translation . '.ini','data' => $file_data);
 				}
 				elseif ($translation != 'joomla')
@@ -844,7 +842,7 @@ class LocaliseModelPackage extends JModelForm
 				$language_data = str_replace($refclassname, $langclassname, $language_data);
 			}
 
-			$site_txt .= "\t\t".'<filename>' . $data['language'] . '.localise.php</filename>' . "\n";
+			$site_txt .= "\t\t" . '<filename>' . $data['language'] . '.localise.php</filename>' . "\n";
 			$site_package_files[] = array('name' => $data['language'] . '.localise.php','data' => $language_data);
 
 			if ($msg)
@@ -857,15 +855,15 @@ class LocaliseModelPackage extends JModelForm
 				return false;
 			}
 
-			$admin_txt .= "\t\t".'<filename file="meta">install.xml</filename>' . "\n";
-			$admin_txt .= "\t\t".'<filename file="meta">' . $data['language'].'.xml</filename>' . "\n";
-			$admin_txt .= "\t\t".'<filename>index.html</filename>' . "\n";
-			$admin_txt .= "\t".'</files>' . "\n";
-			$admin_txt .= "\t".'<params />' . "\n";
-			$admin_txt .= "\t".'</extension>' . "\n";
-			$admin_package_files[] = array('name'=>'install.xml','data' => $admin_txt);
+			$admin_txt .= "\t\t" . '<filename file="meta">install.xml</filename>' . "\n";
+			$admin_txt .= "\t\t" . '<filename file="meta">' . $data['language'] . '.xml</filename>' . "\n";
+			$admin_txt .= "\t\t" . '<filename>index.html</filename>' . "\n";
+			$admin_txt .= "\t" . '</files>' . "\n";
+			$admin_txt .= "\t" . '<params />' . "\n";
+			$admin_txt .= "\t" . '</extension>' . "\n";
+			$admin_package_files[] = array('name' => 'install.xml','data' => $admin_txt);
 			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.xml');
-			$admin_package_files[] = array('name'=>$data['language'] . '.xml','data' => $language_data);
+			$admin_package_files[] = array('name' => $data['language'] . '.xml','data' => $language_data);
 			$language_data = JFile::read(JPATH_ROOT . '/administrator/components/com_localise/models/index.html');
 			$admin_package_files[] = array('name' => 'index.html','data' => $language_data);
 
@@ -888,19 +886,21 @@ class LocaliseModelPackage extends JModelForm
 				}
 			}
 
-			$main_package_files[]= array('name'=>'admin_' . $data['language'] . '.zip','data' => JFile::read($admin_zip_path));
+			$main_package_files[] = array('name' => 'admin_' . $data['language'] . '.zip','data' => JFile::read($admin_zip_path));
 		}
 
 		$text .= "\t" . '</files>' . "\n";
-		if(!empty($data['serverurl']))
+
+		if (!empty($data['serverurl']))
 		{
 			$text .= "\t" . '<updateservers>' . "\n";
-			$text .= "\t\t" . '<server type="collection" priority="1" name="'.$data['servername'].'">'.$data['serverurl'].'</server>' . "\n";
+			$text .= "\t\t" . '<server type="collection" priority="1" name="' . $data['servername'] . '">' . $data['serverurl'] . '</server>' . "\n";
 			$text .= "\t" . '</updateservers>' . "\n";
 		}
+
 		$text .= '</extension>' . "\n";
 
-		$main_package_files[] = array('name'=>'pkg_'.$data['language'].'.xml','data'=>$text);
+		$main_package_files[] = array('name' => 'pkg_' . $data['language'] . '.xml', 'data' => $text);
 
 		$ziproot = JPATH_ROOT . '/tmp/' . uniqid('com_localise_main_') . '.zip';
 
@@ -928,7 +928,7 @@ class LocaliseModelPackage extends JModelForm
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header('Content-Type: application/zip');
 		header('Content-Disposition: attachment; filename="' . $data['language'] . '_joomla_lang_full_' . substr_replace($data['version'], 'v', 5, -1) . '.zip"');
-		header('Content-Length: '.strlen($zipdata));
+		header('Content-Length: ' . strlen($zipdata));
 		header("Cache-Control: maxage=1");
 		header("Pragma: public");
 		header("Content-Transfer-Encoding: binary");
