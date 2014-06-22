@@ -279,6 +279,7 @@ class LocaliseModelLanguages extends JModelList
 
 			// Load it before delete.
 			$table->load($id);
+
 			// Delete
 			try
 			{
@@ -291,6 +292,7 @@ class LocaliseModelLanguages extends JModelList
 		}
 
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_PURGE_SUCCESS'));
+
 		return true;
 	}
 }
