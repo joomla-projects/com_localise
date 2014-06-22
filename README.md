@@ -33,7 +33,21 @@ The following image details the actors and use cases of the application:
 * New features tasks: https://github.com/joomla-projects/com_localise/issues?milestone=3&state=open
 
 # Tests
-See testing documentation at [test readme](./tests/system/readme.md)
+
+## System Tests
+See testing documentation for the system tests at [tests/system/readme.md](./tests/system/readme.md)
+
+## PHP_CodeSniffer
+All PHP files except for layout files (located in a `/tmpl` directory) should be formatted to follow the [Joomla! Coding Standards](http://joomla.github.io/coding-standards/).  These are validated by using PHP_CodeSniffer.  You can run the PHP_CodeSniffer in one of the following manners:
+
+* Using Ant:
+    * From the command line, you can use Ant by running `ant -f .travis.xml` from the repository root
+* Using Phing:
+    * From the command line, you can use Phing by running `phing -f .travis.xml` from the repository root
+* PHP Script:
+    * From the command line, you can run a custom PHP script by running `php .travis/phpcs.php` from the repository root
+    * To use this script, you must have [Composer](https://getcomposer.org/) installed on your system and must run the `composer install` command from the repository root
+    * This is the script utilized by Travis-CI
 
 # Requirements
 Joomla 3.3 or above is needed to run this component.

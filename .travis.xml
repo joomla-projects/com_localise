@@ -5,7 +5,7 @@
 
 	<target name="travis" description="Generate codestyle report using PHP_CodeSniffer for output on Travis-CI">
 		<property name="phpcs-ignore" value="${basedir}/component/admin/views/*/tmpl/*" />
-		<exec executable="phpcs" passthru="true">
+		<exec executable="phpcs">
 			<arg line="-p" />
 			<arg line="-w" />
 			<arg value="--report=full"/>
