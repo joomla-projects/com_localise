@@ -4,16 +4,13 @@
 	<property name="basedir" value="." />
 
 	<target name="travis" description="Generate codestyle report using PHP_CodeSniffer for output on Travis-CI">
-		<property name="phpcs-ignore" value="${basedir}/build,${basedir}/media,${basedir}/components,${basedir}/.travis" />
 		<exec executable="phpcs" passthru="true">
 			<arg line="-p" />
 			<arg line="-w" />
-			<arg line="-vv" />
 			<arg value="--report=full"/>
 			<arg value="--extensions=php"/>
-			<arg value="--standard=${basedir}/.travis/coding-standards/ruleset.xml"/>
-			<arg value="--ignore=${phpcs-ignore}"/>
-			<arg path="${basedir}"/>
+			<arg value="--standard=${basedir}/.travis/coding-standards/Joomla/ruleset.xml"/>
+			<arg path="${basedir}/component"/>
 		</exec>
 	</target>
 </project>
