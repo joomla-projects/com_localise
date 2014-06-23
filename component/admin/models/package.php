@@ -848,8 +848,8 @@ class LocaliseModelPackage extends JModelForm
 				$language_data = str_replace($refclassname, $langclassname, $language_data);
 			}
 
-			$site_txt .= "\t\t" . '<filename>' . $data['language'] . '.localise.php</filename>' . "\n";
-			$site_package_files[] = array('name' => $data['language'] . '.localise.php','data' => $language_data);
+			$admin_txt .= "\t\t" . '<filename>' . $data['language'] . '.localise.php</filename>' . "\n";
+			$admin_package_files[] = array('name' => $data['language'] . '.localise.php','data' => $language_data);
 
 			if ($msg)
 			{
