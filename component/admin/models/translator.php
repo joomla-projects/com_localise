@@ -19,6 +19,11 @@ defined('_JEXEC') or die;
  */
 class LocaliseModelTranslator extends JModelLegacy
 {
+	/**
+	 * todo: add function description
+	 *
+	 * @return string
+	 */
 	public function getText()
 	{
 		$params   = JComponentHelper::getParams('com_localise');
