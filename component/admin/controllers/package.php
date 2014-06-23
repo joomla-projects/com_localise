@@ -18,8 +18,6 @@ defined('_JEXEC') or die;
  */
 class LocaliseControllerPackage extends JControllerForm
 {
-	protected $context = 'com_localise.package';
-
 	/**
 	 * Constructor
 	 *
