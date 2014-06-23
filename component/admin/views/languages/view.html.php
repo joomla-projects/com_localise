@@ -10,10 +10,12 @@
 defined('_JEXEC') or die;
 
 /**
- * HTML Languages View class for the Localise component
+ * Languages View class for the Localise component
  *
- * @package     Joomla.Administrator
- * @subpackage  com_localise
+ * @package     Extensions.Components
+ * @subpackage  Localise
+ *
+ * @since       1.0
  */
 class LocaliseViewLanguages extends JViewLegacy
 {
