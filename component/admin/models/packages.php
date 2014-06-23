@@ -83,14 +83,14 @@ class LocaliseModelPackages extends JModelList
 				if (JFolder::exists($path))
 				{
 					$files = JFolder::files($path, '\.xml$');
-		
+
 					foreach ($files as $file)
 					{
 						$model = JModelLegacy::getInstance('Package', 'LocaliseModel', array('ignore_request' => true));
 						$id    = LocaliseHelper::getFileId("$path/$file");
 						$model->setState('package.id', $id);
 						$package = $model->getItem();
-		
+
 						if (empty($search) || preg_match("/$search/i", $package->title))
 						{
 							$this->packages[] = $package;
