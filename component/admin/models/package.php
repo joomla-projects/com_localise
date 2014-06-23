@@ -327,6 +327,7 @@ class LocaliseModelPackage extends JModelForm
 		$package  = $this->getItem();
 		$path     = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$name.xml";
 		$manifest = $name;
+
 		// $client   = $package->client ? $package->client : 'site';
 
 		if ($package->standalone)
@@ -357,7 +358,9 @@ class LocaliseModelPackage extends JModelForm
 			$serverurlElement = $dom->createElement('serverurl', $data['serverurl']);
 
 			// Set the client attribute on the manifest element
+
 			// $clientAttribute = $dom->createAttribute('client');
+
 			// $clientAttribute->value = $client;
 			// $manifestElement->appendChild($clientAttribute);
 
@@ -463,8 +466,9 @@ class LocaliseModelPackage extends JModelForm
 			}
 		}
 
-		/* @TODO Check ftp part
 		// Save the title and the description in the language file
+
+		/* @TODO Check ftp part
 		$translation_path  = LocaliseHelper::findTranslationPath($client, JFactory::getLanguage()->getTag(), $manifest);
 		$translation_id    = LocaliseHelper::getFileId($translation_path);
 		$translation_model = JModelLegacy::getInstance('Translation', 'LocaliseModel', array('ignore_request' => true));
@@ -485,8 +489,11 @@ class LocaliseModelPackage extends JModelForm
 		$text .= strtoupper($description) . '="' . str_replace('"', '"_QQ_"', $data['description']) . "\"\n";
 		$tag  = JFactory::getLanguage()->getTag();
 		$languagePath = JPATH_SITE . "/language/$tag/$tag.$manifest.ini";
+		 */
 
 		// Try to make the file writeable.
+
+		/*
 		if (!$ftp['enabled'] && JPath::isOwner($languagePath) && !JPath::setPermissions($languagePath, '0644'))
 		{
 			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_WRITABLE', $languagePath));
@@ -495,8 +502,11 @@ class LocaliseModelPackage extends JModelForm
 		}
 
 		$return = JFile::write($languagePath, $text);
+		*/
 
 		// Try to make the file unwriteable.
+
+		/*
 		if (!$ftp['enabled'] && JPath::isOwner($languagePath) && !JPath::setPermissions($languagePath, '0444'))
 		{
 			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_UNWRITABLE', $languagePath));
@@ -593,7 +603,6 @@ class LocaliseModelPackage extends JModelForm
 				$administrator[] = $matches[1];
 			}
 		}
-
 
 		$parts = explode('.', $data['version']);
 		$small_version = implode('.', array($parts[0],$parts[1]));
@@ -707,7 +716,7 @@ class LocaliseModelPackage extends JModelForm
 				$language_data = str_replace($refclassname, $langclassname, $language_data);
 			}
 
-			$site_txt .= "\t\t".'<filename>' . $data['language'] . '.localise.php</filename>' . "\n";
+			$site_txt .= "\t\t" . '<filename>' . $data['language'] . '.localise.php</filename>' . "\n";
 			$site_package_files[] = array('name' => $data['language'] . '.localise.php','data' => $language_data);
 
 			if ($msg)
@@ -715,15 +724,15 @@ class LocaliseModelPackage extends JModelForm
 				$msg .= '<p>...</p>';
 			}
 
-			$site_txt .= "\t\t".'<filename file="meta">install.xml</filename>' . "\n";
-			$site_txt .= "\t\t".'<filename file="meta">' . $data['language'] . '.xml</filename>' . "\n";
-			$site_txt .= "\t\t".'<filename>index.html</filename>' . "\n";
-			$site_txt .= "\t".'</files>' . "\n";
-			$site_txt .= "\t".'<params />' . "\n";
-			$site_txt .= "\t".'</extension>' . "\n";
-			$site_package_files[] = array('name'=>'install.xml','data' => $site_txt);
+			$site_txt .= "\t\t" . '<filename file="meta">install.xml</filename>' . "\n";
+			$site_txt .= "\t\t" . '<filename file="meta">' . $data['language'] . '.xml</filename>' . "\n";
+			$site_txt .= "\t\t" . '<filename>index.html</filename>' . "\n";
+			$site_txt .= "\t" . '</files>' . "\n";
+			$site_txt .= "\t" . '<params />' . "\n";
+			$site_txt .= "\t" . '</extension>' . "\n";
+			$site_package_files[] = array('name' => 'install.xml','data' => $site_txt);
 			$language_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.xml');
-			$site_package_files[] = array('name' => $data['language'] . '.xml','data'=>$language_data);
+			$site_package_files[] = array('name' => $data['language'] . '.xml','data' => $language_data);
 
 			$language_data = JFile::read(JPATH_ROOT . '/administrator/components/com_localise/models/index.html');
 			$site_package_files[] = array('name' => 'index.html','data' => $language_data);
@@ -747,7 +756,6 @@ class LocaliseModelPackage extends JModelForm
 			}
 
 			$main_package_files[] = array('name' => 'site_' . $data['language'] . '.zip','data' => JFile::read($site_zip_path));
-
 		}
 
 		if (count($administrator))
@@ -771,8 +779,6 @@ class LocaliseModelPackage extends JModelForm
 
 			// Generate administrator package
 			$admin_package_files = array();
-			$admin_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
-
 
 			$admin_txt = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 			$admin_txt .= '<extension version="' . $small_version . '" client="administrator" type="language" method="upgrade">' . "\n";
@@ -867,7 +873,6 @@ class LocaliseModelPackage extends JModelForm
 			$language_data = JFile::read(JPATH_ROOT . '/administrator/components/com_localise/models/index.html');
 			$admin_package_files[] = array('name' => 'index.html','data' => $language_data);
 
-
 			$admin_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
 
 			if (!$packager = JArchive::getAdapter('zip'))
@@ -904,7 +909,6 @@ class LocaliseModelPackage extends JModelForm
 
 		$ziproot = JPATH_ROOT . '/tmp/' . uniqid('com_localise_main_') . '.zip';
 
-
 		// Run the packager
 		if (!$packager = JArchive::getAdapter('zip'))
 		{
@@ -927,7 +931,9 @@ class LocaliseModelPackage extends JModelForm
 		header("Expires: 0");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header('Content-Type: application/zip');
-		header('Content-Disposition: attachment; filename="' . $data['language'] . '_joomla_lang_full_' . substr_replace($data['version'], 'v', 5, -1) . '.zip"');
+		header('Content-Disposition: attachment; filename="'
+			. $data['language'] . '_joomla_lang_full_'
+			. substr_replace($data['version'], 'v', 5, -1) . '.zip"');
 		header('Content-Length: ' . strlen($zipdata));
 		header("Cache-Control: maxage=1");
 		header("Pragma: public");

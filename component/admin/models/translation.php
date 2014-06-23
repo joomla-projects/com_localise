@@ -993,7 +993,9 @@ class LocaliseModelTranslation extends JModelForm
 
 		if ($caching)
 		{
-			$keycache = $this->getState('translation.client') . '.' . $this->getState('translation.tag') . '.' . $this->getState('translation.filename') . '.' . 'translation';
+			$keycache = $this->getState('translation.client') . '.'
+				. $this->getState('translation.tag') . '.'
+				. $this->getState('translation.filename') . '.' . 'translation';
 			$cache    = JFactory::getCache('com_localise', '');
 			$cache->remove($keycache);
 		}
