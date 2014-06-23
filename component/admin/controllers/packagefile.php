@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
  */
 class LocaliseControllerPackageFile extends JControllerForm
 {
-	protected $_context = 'com_localise.packagefile';
+	protected $context = 'com_localise.packagefile';
 
 	/**
 	 * Constructor
@@ -121,14 +121,19 @@ class LocaliseControllerPackageFile extends JControllerForm
 
 		$data = $input->get('jform', array(), 'array');
 		$model->download($data);
-		/*
+
 		// Redirect to the export view
+
+		/*
 		$app  = JFactory::getApplication();
 		$name = $app->getUserState('com_localise.package.name');
 		$path = JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $name . '.xml';
 		$id   = LocaliseHelper::getFileId($path);
+		*/
 
 		// Check if the package exists
+
+		/*
 		if (empty($id))
 		{
 			$this->setRedirect(
@@ -153,12 +158,12 @@ class LocaliseControllerPackageFile extends JControllerForm
 				$type = 'message';
 			}
 
-			setcookie(JApplicationHelper::getHash($this->_context . '.author'), $package->author, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplicationHelper::getHash($this->_context . '.copyright'), $package->copyright, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplicationHelper::getHash($this->_context . '.email'), $package->email, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplicationHelper::getHash($this->_context . '.url'), $package->url, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplicationHelper::getHash($this->_context . '.version'), $package->version, time() + 60 * 60 * 24 * 30);
-			setcookie(JApplicationHelper::getHash($this->_context . '.license'), $package->license, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->context . '.author'), $package->author, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->context . '.copyright'), $package->copyright, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->context . '.email'), $package->email, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->context . '.url'), $package->url, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->context . '.version'), $package->version, time() + 60 * 60 * 24 * 30);
+			setcookie(JApplicationHelper::getHash($this->context . '.license'), $package->license, time() + 60 * 60 * 24 * 30);
 
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_localise&tmpl=component&view=downloadpackage&name=' . $name . '&standalone=' . $package->standalone, false),
