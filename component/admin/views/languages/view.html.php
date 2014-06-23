@@ -30,7 +30,7 @@ class LocaliseViewLanguages extends JViewLegacy
 	 *
 	 * @return  void
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		// Get the data
 		$this->items      = $this->get('Items');
