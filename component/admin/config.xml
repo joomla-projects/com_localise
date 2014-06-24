@@ -122,6 +122,7 @@
 		<field
 			name="chunk"
 			type="int"
+			default="25"
 			label="COM_LOCALISE_LABEL_CHUNK"
 			description="COM_LOCALISE_LABEL_CHUNK_DESC" />
 	</fieldset>
