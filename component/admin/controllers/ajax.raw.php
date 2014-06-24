@@ -9,7 +9,7 @@
 defined('_JEXEC') or die;
 
 /**
- * The Com_Localise ajax controller 
+ * The Com_Localise ajax controller
  *
  * @package     Com_Localise
  * @subpackage  com_localise
