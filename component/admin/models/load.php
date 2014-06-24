@@ -24,7 +24,7 @@ JLoader::register('LocaliseStep', JPATH_COMPONENT_ADMINISTRATOR.'/includes/step.
  */
 class LocaliseModelLoad extends JModelList
 {
-	protected $context = 'com_localise.translations';
+	protected $context = 'com_localise.load';
 
 	/**
 	 * Check the steps and his totals
@@ -93,7 +93,7 @@ class LocaliseModelLoad extends JModelList
 	}
 
 	/**
-	 * Check the steps and his totals
+	 * Get the current step
 	 *
 	 * @return  void
 	 *
@@ -110,7 +110,7 @@ class LocaliseModelLoad extends JModelList
 	}
 
 	/**
-	 * Check the steps and his totals
+	 * Run the process
 	 *
 	 * @return  void
 	 *
@@ -133,6 +133,12 @@ class LocaliseModelLoad extends JModelList
 
 			// Get the files list and cut the array with the chunk data
 			$step->items = array_slice(JFolder::files("{$cons_path}/{$step->name}", ".*\.ini$"), $step->start, $chunk);
+
+			// @@ TODO: Process each file to get the needed information
+			foreach ($step->items as $files)
+			{
+				$this->processFile($files);
+			}
 
 			$step->_nextID(count($step->items));
 		}
@@ -171,6 +177,17 @@ class LocaliseModelLoad extends JModelList
 		echo $step->getParameters();
 
 		exit;
+	}
+
+	/**
+	 * @@ TODO: Process each file to get the needed information
+	 *
+	 * @return	none
+	 * @since	1.0
+	 */
+	public function processFile ($data)
+	{
+		return $data;
 	}
 
 	/**
