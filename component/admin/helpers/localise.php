@@ -65,6 +65,12 @@ abstract class LocaliseHelper
 			'index.php?option=com_localise&view=packages',
 			$vName == 'packages'
 		);
+
+		JHtmlSidebar::addEntry(
+			JText::_('COM_LOCALISE_SUBMENU_LOAD'),
+			'index.php?option=com_localise&view=load',
+			$vName == 'load'
+		);
 	}
 
 	/**
