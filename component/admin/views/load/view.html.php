@@ -27,9 +27,6 @@ class LocaliseViewLoad extends JViewLegacy
 	{
 		// Assign the Data
 		$this->state 	= $this->get('State');
-		//$this->form = $this->get('Form');
-		//$this->pagination = $this->get('Pagination');
-		//$this->item = $this->form->getData()->toArray();
 
 		LocaliseHelper::addSubmenu('translations');
 
@@ -54,32 +51,13 @@ class LocaliseViewLoad extends JViewLegacy
 	*/
 	protected function addToolBar() 
 	{
-		JHtml::_('bootstrap.modal', 'collapseModal');
-
-		$bar = JToolBar::getInstance('toolbar');
-
-		// Instantiate a new JLayoutFile instance and render the batch button
-		$layout = new JLayoutFile('joomla.toolbar.batch');
-
 		$input = JFactory::getApplication()->input;
 		$input->set('hidemainmenu', true);
 
 		JToolBarHelper::title(JText::_('COM_LOCALISE_HEADER_LOAD'));
 
-		// Add planning button
-		//JToolbarHelper::addNew('planning.add');
-		//JToolbarHelper::deleteList('planning.delete');
-
-		//JToolbarHelper::apply('patient.apply');
-		//JToolBarHelper::save('patient.save');
-
-		// Add buttons for evaluations
+		// Add buttons
 		JToolBarHelper::custom('process', 'chart', '', JText::_('COM_LOCALISE_BUTTON_LOAD'), false );
-		//JToolBarHelper::custom('modal-add-practical', 'bars', '', JText::_('COM_METS_EVALUATIONS_ADD_PRACTICAL'), false );
-
-		// Cancel button
-		//JToolBarHelper::cancel('patient.cancel', $isNew ? 'JTOOLBAR_CANCEL'
-		//		                                               : 'JTOOLBAR_CLOSE');
 	}
 
 	/**

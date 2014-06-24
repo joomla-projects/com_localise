@@ -62,9 +62,9 @@ class LocaliseStep
 
 	/**
 	 *
-	 * @param   stdClass   $options  Parameters to be passed to the database driver.
+	 * @param   string   $name  The name of the step or null
 	 *
-	 * @return  Localise  A Localise object.
+	 * @return  LocaliseStep  A LocaliseStep object.
 	 *
 	 * @since  1.0
 	 */
@@ -94,7 +94,7 @@ class LocaliseStep
 	 */
 	public function setParameters($data)
 	{
-		// Ensure that only valid OAuth parameters are set if they exist.
+		// Ensure that only valid parameters are set if they exist.
 		if (!empty($data))
 		{
 			foreach ($data as $k => $v)
@@ -167,14 +167,12 @@ class LocaliseStep
 				$this->start = 0;
 				$this->stop = $limit - 1;
 				$this->first = true;
-				$this->debug = "{{{1}}}";
 
 			} else if ($this->cache == 1 && $this->status == 1) {
 
 				$this->start = $this->cid;
 				$this->cache = 0;
 				$this->stop = $this->total - 1;
-				$this->debug = "{{{2}}}";
 				$this->first = false;
 
 			} else if ($this->cache > 0) { 
@@ -182,7 +180,6 @@ class LocaliseStep
 				$this->start = $this->cid;
 				$this->stop = ($this->start - 1) + $limit;
 				$this->cache = $this->cache - 1;
-				$this->debug = "{{{3}}}";
 				$this->first = false;
 
 				if ($this->stop > $this->total) {
@@ -206,7 +203,6 @@ class LocaliseStep
 			}
 			$this->cache = 0;
 			$this->status = 2;
-			$this->debug = "{{{4}}}";
 
 		}else{
 
@@ -215,7 +211,6 @@ class LocaliseStep
 			$this->cache = 0;
 			$this->status = 1;
 			$this->stop = $this->total - 1;
-			$this->debug = "{{{5}}}";
 		}
 
 		// Mark if is the end of the step

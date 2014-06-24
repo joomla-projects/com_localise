@@ -8,7 +8,7 @@
 jQuery(document).ready(function ($){
 
 
-	// Declare Resource Object
+	// Declare loadProcess Object
 	$.extend({ 
 		loadProcess: function () {
 
@@ -41,10 +41,7 @@ jQuery(document).ready(function ($){
 
 						if (row_object.cid == row_object.stop.toInt()+1 || row_object.next == 1 ) {
 							if (row_object.end == 1) {
-								//$('pb4').set('data-progress', '100');
-								//this.cancel();
-								//step.cancel();
-								//self.extensions(e);
+								// @@ TODO: finish js
 							} else if (row_object.next == 1) {
 								getStep();
 							}
@@ -73,7 +70,6 @@ jQuery(document).ready(function ($){
 
 						if (object.middle != true) {
 							if (object.cid == 0) {
-								//$('pb4').pb4.reset();
 								currItem.innerHTML = 1;
 							}else{
 								currItem.innerHTML = object.cid;
@@ -112,9 +108,7 @@ jQuery(document).ready(function ($){
 
 
 	/*
-	 *
-	 *
-	 *
+	 *	Joomla submit
 	 */
 	Joomla.submitbutton = function(task)
 	{
