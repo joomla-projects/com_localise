@@ -1,6 +1,6 @@
 /**
  * @package     Com_Localise
- * @subpackage  model
+ * @subpackage  controller
  *
  * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -26,14 +26,12 @@ jQuery(document).ready(function ($){
 				return $.ajax({
 					type: "GET",
 					url: 'index.php?option=com_localise&format=raw&task=ajax.process',
-					//data: {lang:lang},
 					complete: function(response){
 						console.log(response.responseText);
 
 						var row_object = JSON.decode(response.responseText);
 
 						if (row_object.cid == 0) {
-							//$('pb4').pb4.reset();
 							currItem.innerHTML = 1;
 						}else{
 							currItem.innerHTML = row_object.cid;
