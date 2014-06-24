@@ -7,3 +7,16 @@ CREATE TABLE IF NOT EXISTS `#__localise` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_path` (`path`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__localise_steps` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `client` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `cid` int(11) NOT NULL DEFAULT '0',
+  `status` int(11) NOT NULL,
+  `cache` int(11) NOT NULL,
+  `total` int(11) NOT NULL,
+  `start` int(11) NOT NULL,
+  `stop` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
