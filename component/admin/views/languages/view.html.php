@@ -10,10 +10,12 @@
 defined('_JEXEC') or die;
 
 /**
- * HTML Languages View class for the Localise component
+ * Languages View class for the Localise component
  *
- * @package     Joomla.Administrator
- * @subpackage  com_localise
+ * @package     Extensions.Components
+ * @subpackage  Localise
+ *
+ * @since       1.0
  */
 class LocaliseViewLanguages extends JViewLegacy
 {
@@ -30,7 +32,7 @@ class LocaliseViewLanguages extends JViewLegacy
 	 *
 	 * @return  void
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		// Get the data
 		$this->items      = $this->get('Items');
@@ -57,6 +59,8 @@ class LocaliseViewLanguages extends JViewLegacy
 
 	/**
 	 * Add the page title and toolbar.
+	 *
+	 * @return  void
 	 *
 	 * @since   1.6
 	 */
