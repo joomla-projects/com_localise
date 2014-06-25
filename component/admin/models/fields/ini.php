@@ -32,7 +32,7 @@ class JFormFieldIni extends JFormField
 	/**
 	 * Base path for editor files
 	 */
-	protected $_basePath = 'media/editors/codemirror/';
+	protected $basePath = 'media/editors/codemirror/';
 
 	/**
 	 * Method to get the field input.
@@ -69,7 +69,8 @@ class JFormFieldIni extends JFormField
 		$options->gutters = array('CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'breakpoints');
 
 		$html = array();
-		$html[] = '<textarea' . $class . ' name="' . $this->name . '" id="' . $this->id . '" cols="' . $cols . '" rows="' . $rows . '">' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
+		$html[] = '<textarea' . $class . ' name="' . $this->name . '" id="' . $this->id . '" cols="' . $cols . '" rows="' . $rows . '">'
+				. htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
 		$html[] = '<script type="text/javascript">';
 		$html[] = '(function() {';
 		$html[] = '		var editor = CodeMirror.fromTextArea(document.getElementById("' . $this->id . '"), ' . json_encode($options) . ');';
