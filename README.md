@@ -12,6 +12,8 @@ If you want to join the effort please contact us!
 # Travis Status
 Master: [![Build Status](https://api.travis-ci.org/joomla-projects/com_localise.svg?branch=master)](https://travis-ci.org/joomla-projects/com_localise)
 
+Develop: [![Build Status](https://travis-ci.org/joomla-projects/com_localise.svg?branch=develop)](https://travis-ci.org/joomla-projects/com_localise)
+
 # The goal
 With the new com_localise we are trying to solve the following needs:
 
@@ -25,6 +27,8 @@ With the new com_localise we are trying to solve the following needs:
 The following image details the actors and use cases of the application:
 
 ![image](https://raw.githubusercontent.com/joomla-projects/translate-joomla/master/images/structure/actors.png)
+
+
 
 # Todo's (Tasks)
 * Code Style tasks and refactoring: https://github.com/joomla-projects/com_localise/issues?milestone=1&state=open
