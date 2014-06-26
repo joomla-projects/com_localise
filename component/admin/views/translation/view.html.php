@@ -81,7 +81,8 @@ class LocaliseViewTranslation extends JViewLegacy
 			$filename = $this->state->get('translation.tag') . '.' . $this->state->get('translation.filename') . '.ini';
 		}
 
-		JToolbarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', JText::sprintf($this->item->exists ? 'COM_LOCALISE_HEADER_TRANSLATION_EDIT' : 'COM_LOCALISE_HEADER_TRANSLATION_NEW', $filename)), 'comments-2 langmanager');
+		JToolbarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', JText::sprintf($this->item->exists ? 'COM_LOCALISE_HEADER_TRANSLATION_EDIT' :
+			'COM_LOCALISE_HEADER_TRANSLATION_NEW', $filename)), 'comments-2 langmanager');
 
 		if (!$checkedOut)
 		{
