@@ -25,27 +25,35 @@ class LocaliseTableLocalise extends JTable
 	 *
 	 * @var int
 	 */
-	var $id = null;
+	public $id = null;
 
 	/**
+	 * The title to use for the asset table
+	 * 
 	 * @var string
 	 */
-	var $path = null;
+	public $path = null;
 
 	/**
+	 * Checked out status
+	 * 
 	 * @var int
 	 */
-	var $checked_out = null;
+	public $checked_out = null;
 
 	/**
+	 * Checkout out time
+	 * 
 	 * @var date
 	 */
-	var $checked_out_time = null;
+	public $checked_out_time = null;
 
 	/**
+	 * The asset ID
+	 * 
 	 * @var asset_id
 	 */
-	var $asset_id = null;
+	public $asset_id = null;
 
 	/**
 	 * Constructor
