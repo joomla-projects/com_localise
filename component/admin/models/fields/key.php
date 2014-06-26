@@ -61,7 +61,8 @@ class JFormFieldKey extends JFormField
 		// If a description is specified, use it to build a tooltip.
 		if (!empty($this->descText))
 		{
-			$label = '<label id="' . $this->id . '-lbl" for="' . $this->id . '" class="' . $class . '" title="' . htmlspecialchars(htmlspecialchars('::' . str_replace("\n", "\\n", $this->descText), ENT_QUOTES, 'UTF-8')) . '">';
+			$label = '<label id="' . $this->id . '-lbl" for="' . $this->id . '" class="' . $class . '" title="'
+					. htmlspecialchars(htmlspecialchars('::' . str_replace("\n", "\\n", $this->descText), ENT_QUOTES, 'UTF-8')) . '">';
 		}
 		else
 		{
@@ -76,17 +77,21 @@ class JFormFieldKey extends JFormField
 		if ($status == 'extra')
 		{
 			$onclick = '';
-			$button  = '<span style="width:5%;">' . JHtml::_('image', 'com_localise/icon-16-arrow-gray.png', '', array('class' => 'pointer'), true) . '</span>';
+			$button  = '<span style="width:5%;">' . JHtml::_('image', 'com_localise/icon-16-arrow-gray.png', '',
+						array('class' => 'pointer'), true) . '</span>';
 
 			$onclick2 = '';
-			$button2  = '<span style="width:5%;">' . JHtml::_('image', 'com_localise/icon-16-bing-gray.png', '', array('class' => 'pointer'), true) . '</span>';
+			$button2  = '<span style="width:5%;">' . JHtml::_('image', 'com_localise/icon-16-bing-gray.png', '',
+						array('class' => 'pointer'), true) . '</span>';
 		}
 		else
 		{
-			$onclick = "javascript:document.id('" . $this->id . "').set('value','" . addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8')) . "');if (document.id('" . $this->id . "').get('value')=='') {document.id('" . $this->id . "').set('class','width-45 untranslated');} else {document.id('" . $this->id . "').set('class','width-45 " . ($status == 'untranslated' ? 'unchanged' : $status) . "');}";
+			$onclick = "javascript:document.id('" . $this->id . "').set('value','" . addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8')) . "');
+						if (document.id('" . $this->id . "').get('value')=='') {document.id('" . $this->id . "').set('class','width-45 untranslated');}
+						else {document.id('" . $this->id . "').set('class','width-45 " . ($status == 'untranslated' ? 'unchanged' : $status) . "');}";
 			$button  = '<i class="icon-reset hasTooltip return pointer" title="' . JText::_('COM_LOCALISE_TOOLTIP_TRANSLATION_INSERT') . '" onclick="' . $onclick . '"></i>';
 			/*$onclick2 = "javascript:if (typeof(google) !== 'undefined') {
-		  var translation='" . addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8')) . "';translation=translation.replace('%s','___s');translation=translation.replace('%d','___d');translation=translation.replace(/%([0-9]+)\\\$s/,'___\$1');google.language.translate(translation, Localise.language_src, Localise.language_dest, function(result) {if (result.translation) {
+			var translation='" . addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8')) . "';translation=translation.replace('%s','___s');translation=translation.replace('%d','___d');translation=translation.replace(/%([0-9]+)\\\$s/,'___\$1');google.language.translate(translation, Localise.language_src, Localise.language_dest, function(result) {if (result.translation) {
 			  translation = result.translation;
 			  translation = translation.replace('___s','%s');
 			  translation = translation.replace('___d','%d');
@@ -101,8 +106,12 @@ class JFormFieldKey extends JFormField
 		}
 
 		$onkeyup = "javascript:";
-		$onkeyup .= "if (this.get('value')=='') {this.set('class','width-45 untranslated');} else {if (this.get('value')=='" . addslashes(htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8')) . "') this.set('class','width-45 " . $status . "'); " . ($status == 'extra' ? "else this.set('class','width-45 extra');}" : "else this.set('class','width-45 translated');}");
-		$input = '<textarea name="' . $this->name . '" id="' . $this->id . '" onfocus="this.select()" class="width-45 ' . ($this->value == '' ? 'untranslated' : ($this->value == $this->element['description'] ? $status : 'translated')) . '" onkeyup="' . $onkeyup . '">' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
+		$onkeyup .= "if (this.get('value')=='') {this.set('class','width-45 untranslated');}
+					else {if (this.get('value')=='" . addslashes(htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8')) . "') this.set('class','width-45 " . $status . "');
+					" . ($status == 'extra' ? "else this.set('class','width-45 extra');}" : "else this.set('class','width-45 translated');}");
+		$input = '<textarea name="' . $this->name . '" id="' . $this->id . '" onfocus="this.select()" class="width-45 ' . ($this->value == '' ?
+					'untranslated' : ($this->value == $this->element['description'] ? $status : 'translated')) . '" onkeyup="'
+					. $onkeyup . '">' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
 
 		return $button . $button2 . $input;
 	}

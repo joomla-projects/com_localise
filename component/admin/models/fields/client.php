@@ -55,25 +55,30 @@ class JFormFieldClient extends JFormField
 			$options[] = JHtml::_('select.option', $option->attributes('value'), JText::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
 		}
 
-		$options[] = JHtml::_('select.option', 'site', JText::_('COM_LOCALISE_OPTION_CLIENT_SITE'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-site"'));
+		$options[] = JHtml::_('select.option', 'site', JText::_('COM_LOCALISE_OPTION_CLIENT_SITE'),
+					array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-site"'));
 
-		$options[] = JHtml::_('select.option', 'administrator', JText::_('COM_LOCALISE_OPTION_CLIENT_ADMINISTRATOR'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-administrator"'));
+		$options[] = JHtml::_('select.option', 'administrator', JText::_('COM_LOCALISE_OPTION_CLIENT_ADMINISTRATOR'),
+					array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-administrator"'));
 
 		if (LocaliseHelper::hasInstallation())
 		{
-			$options[] = JHtml::_('select.option', 'installation', JText::_('COM_LOCALISE_OPTION_CLIENT_INSTALLATION'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-installation"'));
+			$options[] = JHtml::_('select.option', 'installation', JText::_('COM_LOCALISE_OPTION_CLIENT_INSTALLATION'),
+						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-installation"'));
 		}
 
 		$return = array();
 
 		if ((string) $this->element['readonly'] == 'true')
 		{
-			$return[] = JHtml::_('select.genericlist', $options, '', array('id' => $this->id, 'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes));
+			$return[] = JHtml::_('select.genericlist', $options, '', array('id' => $this->id,
+						'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes));
 			$return[] = '<input type="hidden" name="' . $this->name . '" value="' . $this->value . '"/>';
 		}
 		else
 		{
-			$return[] = JHtml::_('select.genericlist', $options, $this->name, array('id' => $this->id, 'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes));
+			$return[] = JHtml::_('select.genericlist', $options, $this->name, array('id' => $this->id,
+						'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes));
 		}
 
 		return implode($return);
