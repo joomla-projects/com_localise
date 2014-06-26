@@ -43,7 +43,7 @@
 			type="text"
 			required="true"
 			label="COM_LOCALISE_LABEL_PACKAGE_VERSION"
-			description="COM_LOCALISE_LABEL_PACKAGE_VERSION_DESC" />
+			description="COM_LOCALISE_LABEL_COREPACKAGE_VERSION_DESC" />
 		<field
 			id="author"
 			name="author"
