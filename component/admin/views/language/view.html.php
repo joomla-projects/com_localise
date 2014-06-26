@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 /**
- * View to edit a laguage.
+ * View to edit a language.
  *
  * @package     Extensions.Components
  * @subpackage  Localise
