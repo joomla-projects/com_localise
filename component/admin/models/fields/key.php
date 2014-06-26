@@ -77,12 +77,12 @@ class JFormFieldKey extends JFormField
 		if ($status == 'extra')
 		{
 			$onclick = '';
-			$button  = '<span style="width:5%;">' . JHtml::_('image', 'com_localise/icon-16-arrow-gray.png', '',
-						array('class' => 'pointer'), true) . '</span>';
+			$button  = '<span style="width:5%;">'
+						. JHtml::_('image', 'com_localise/icon-16-arrow-gray.png', '', array('class' => 'pointer'), true) . '</span>';
 
 			$onclick2 = '';
-			$button2  = '<span style="width:5%;">' . JHtml::_('image', 'com_localise/icon-16-bing-gray.png', '',
-						array('class' => 'pointer'), true) . '</span>';
+			$button2  = '<span style="width:5%;">'
+						. JHtml::_('image', 'com_localise/icon-16-bing-gray.png', '', array('class' => 'pointer'), true) . '</span>';
 		}
 		else
 		{

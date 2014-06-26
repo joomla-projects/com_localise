@@ -80,7 +80,8 @@ class JFormFieldCoreLanguage extends JFormField
 		}
 
 		$return	= JHtml::_('select.genericlist', $options, $this->name, array('id' => $this->id,
-				'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes));
+				'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes)
+				);
 
 		return $return;
 	}
