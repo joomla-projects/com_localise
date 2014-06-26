@@ -77,7 +77,8 @@ class LocaliseViewPackage extends JViewLegacy
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 
 		JToolbarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', $isNew ? JText::_('COM_LOCALISE_HEADER_PACKAGE_NEW') :
-			JText::_('COM_LOCALISE_HEADER_PACKAGE_EDIT')), 'langmanager.png');
+			JText::_('COM_LOCALISE_HEADER_PACKAGE_EDIT')), 'langmanager.png'
+			);
 
 		// If not checked out, can save the item.
 		if (!$checkedOut)
