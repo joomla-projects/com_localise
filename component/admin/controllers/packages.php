@@ -77,7 +77,7 @@ class LocaliseControllerPackages extends JControllerLegacy
 		else
 		{
 			// Get the model.
-			$model = $this->getModel();
+			$model = $this->getModel('Packages');
 
 			// Remove the items.
 			if (!$model->delete($ids))
