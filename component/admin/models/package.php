@@ -233,6 +233,7 @@ class LocaliseModelPackage extends JModelForm
 				$package->core        = ((string) $xml->attributes()->core) == 'true';
 				$package->title       = (string) $xml->title;
 				$package->version     = (string) $xml->version;
+				$package->packversion = (string) $xml->packversion;
 				$package->description = (string) $xml->description;
 				$package->language    = (string) $xml->language;
 				$package->license     = (string) $xml->license;
@@ -345,6 +346,7 @@ class LocaliseModelPackage extends JModelForm
 			$descriptionElement = $dom->createElement('description', $description);
 			$manifestElement = $dom->createElement('manifest', $manifest);
 			$versionElement = $dom->createElement('version', $data['version']);
+			$packversionElement = $dom->createElement('packversion', $data['packversion']);
 			$authorElement = $dom->createElement('author', $data['author']);
 			$licenseElement = $dom->createElement('license', $data['license']);
 			$authorEmailElement = $dom->createElement('authoremail', $data['authoremail']);
@@ -374,6 +376,7 @@ class LocaliseModelPackage extends JModelForm
 			$packageXml->appendChild($descriptionElement);
 			$packageXml->appendChild($manifestElement);
 			$packageXml->appendChild($versionElement);
+			$packageXml->appendChild($packversionElement);
 			$packageXml->appendChild($authorElement);
 			$packageXml->appendChild($copyrightElement);
 			$packageXml->appendChild($licenseElement);
@@ -613,7 +616,7 @@ class LocaliseModelPackage extends JModelForm
 		$text .= '<extension type="package" version="' . $small_version . '">' . "\n";
 		$text .= "\t" . '<name>' . $data['name'] . '</name>' . "\n";
 		$text .= "\t" . '<packagename>' . $data['language'] . '</packagename>' . "\n";
-		$text .= "\t" . '<version>' . $data['version'] . '</version>' . "\n";
+		$text .= "\t" . '<version>' . $data['version'] . '.' . $data['packversion'] . '</version>' . "\n";
 		$text .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
 		$text .= "\t" . '<author>' . $data['author'] . '</author>' . "\n";
 		$text .= "\t" . '<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
@@ -652,7 +655,7 @@ class LocaliseModelPackage extends JModelForm
 			$site_txt .= '<extension version="' . $small_version . '" client="site" type="language" method="upgrade">' . "\n";
 			$site_txt .= "\t" . '<name>' . $data['name'] . '</name>' . "\n";
 			$site_txt .= "\t" . '<tag>' . $data['language'] . '</tag>' . "\n";
-			$site_txt .= "\t" . '<version>' . $data['version'] . '</version>' . "\n";
+			$site_txt .= "\t" . '<version>' . $data['version'] . '.' . $data['packversion'] . '</version>' . "\n";
 			$site_txt .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
 			$site_txt .= "\t" . '<author>' . $data['author'] . '</author>' . "\n";
 			$site_txt .= "\t" . '<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
@@ -784,7 +787,7 @@ class LocaliseModelPackage extends JModelForm
 			$admin_txt .= '<extension version="' . $small_version . '" client="administrator" type="language" method="upgrade">' . "\n";
 			$admin_txt .= "\t" . '<name>' . $data['name'] . '</name>' . "\n";
 			$admin_txt .= "\t" . '<tag>' . $data['language'] . '</tag>' . "\n";
-			$admin_txt .= "\t" . '<version>' . $data['version'] . '</version>' . "\n";
+			$admin_txt .= "\t" . '<version>' . $data['version'] . '.' . $data['packversion'] . '</version>' . "\n";
 			$admin_txt .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
 			$admin_txt .= "\t" . '<author>' . $data['author'] . '</author>' . "\n";
 			$admin_txt .= "\t" . '<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
@@ -933,7 +936,7 @@ class LocaliseModelPackage extends JModelForm
 		header('Content-Type: application/zip');
 		header('Content-Disposition: attachment; filename="'
 			. $data['language'] . '_joomla_lang_full_'
-			. substr_replace($data['version'], 'v', 5, -1) . '.zip"');
+			. $data['version'] . 'v' . $data['packversion'] . '.zip"');
 		header('Content-Length: ' . strlen($zipdata));
 		header("Cache-Control: maxage=1");
 		header("Pragma: public");
