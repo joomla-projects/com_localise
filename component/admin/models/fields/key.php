@@ -86,8 +86,12 @@ class JFormFieldKey extends JFormField
 		}
 		else
 		{
-			$onclick = "javascript:document.id('" . $this->id . "').set('value','" . addslashes(htmlspecialchars($this->element['description'],
-						ENT_COMPAT, 'UTF-8')) . "');
+			$onclick = "javascript:document.id(
+						'" . $this->id . "'
+						)
+						.set(
+						'value','" . addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8')) . "'
+						);
 						if (document.id('" . $this->id . "').get('value')=='') {document.id('" . $this->id . "').set('class','width-45 untranslated');}
 						else {document.id('" . $this->id . "').set('class','width-45 " . ($status == 'untranslated' ? 'unchanged' : $status) . "');}";
 			$button  = '<i class="icon-reset hasTooltip return pointer" title="' . JText::_('COM_LOCALISE_TOOLTIP_TRANSLATION_INSERT')
@@ -113,13 +117,16 @@ class JFormFieldKey extends JFormField
 			  */
 			$token    = JSession::getFormToken();
 			$onclick2 = "javascript:AzureTranslator(this, [], 0, '$token');";
-			$button2  = '<input type="hidden" id="' . $this->id . 'text" value=\'' . addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8')) . '\' />';
-			$button2 .= '<i class="icon-translate-bing hasTooltip translate pointer" title="' . JText::_('COM_LOCALISE_TOOLTIP_TRANSLATION_AZURE') . '" onclick="' . $onclick2 . '" rel="' . $this->id . '"></i>';
+			$button2  = '<input type="hidden" id="' . $this->id . 'text" value=\''
+						. addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8')) . '\' />';
+			$button2 .= '<i class="icon-translate-bing hasTooltip translate pointer" title="'
+						. JText::_('COM_LOCALISE_TOOLTIP_TRANSLATION_AZURE') . '" onclick="' . $onclick2 . '" rel="' . $this->id . '"></i>';
 		}
 
 		$onkeyup = "javascript:";
 		$onkeyup .= "if (this.get('value')=='') {this.set('class','width-45 untranslated');}
-					else {if (this.get('value')=='" . addslashes(htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8')) . "') this.set('class','width-45 " . $status . "');
+					else {if (this.get('value')=='" . addslashes(htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'))
+					. "') this.set('class','width-45 " . $status . "');
 					" . ($status == 'extra' ? "else this.set('class','width-45 extra');}" : "else this.set('class','width-45 translated');}");
 		$input = '<textarea name="' . $this->name . '" id="' . $this->id . '" onfocus="this.select()" class="width-45 ' . ($this->value == '' ?
 					'untranslated' : ($this->value == $this->element['description'] ? $status : 'translated')) . '" onkeyup="'
