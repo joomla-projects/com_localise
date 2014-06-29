@@ -29,7 +29,7 @@ class LocaliseControllerPackages extends JControllerLegacy
 	 */
 	public function getModel($name = 'Packages', $prefix = 'LocaliseModel', $config = array('ignore_request' => true))
 	{
-		return parent::getModel($name, $prefix, $config);
+		return parent::getModel($name, $prefix, array('ignore_request' => true));
 	}
 
 	/**
