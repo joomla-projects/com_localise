@@ -33,12 +33,12 @@ class LocaliseControllerPackageFile extends JControllerForm
 
 		// Get the id
 		$cid = $input->get('cid', array(), 'array');
-		$cid = count($cid) ? $cid[0] : '';
+		$id = count($cid) ? $cid[0] : '';
 
-		if (!empty($cid))
+		if (!empty($id))
 		{
 			// From the packages view
-			$name = $cid;
+			$name = $id;
 			$path = JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $name . '.xml';
 			$id   = LocaliseHelper::getFileId($path);
 		}
@@ -55,9 +55,10 @@ class LocaliseControllerPackageFile extends JControllerForm
 		}
 
 		// Set the id, and path in the session
-		if (!empty($id) && !empty($name))
+		$app->setUserState('com_localise.edit.package.id', $id);
+
+		if (!empty($name))
 		{
-			$app->setUserState('com_localise.edit.package.id', $id);
 			$app->setUserState('com_localise.package.name', $name);
 		}
 
@@ -65,11 +66,6 @@ class LocaliseControllerPackageFile extends JControllerForm
 		if (!empty($id) && $input->get('task') == 'add')
 		{
 			$input->set('task', 'edit');
-		}
-
-		if (!empty($id))
-		{
-			$input->set('id', $id);
 		}
 
 		$input->set('cid', array());
