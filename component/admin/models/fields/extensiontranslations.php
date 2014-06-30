@@ -97,8 +97,6 @@ class JFormFieldExtensionTranslations extends JFormFieldGroupedList
 
 		foreach ($scans as $scan)
 		{
-
-
 			$prefix     = $scan['prefix'];
 			$suffix     = $scan['suffix'];
 			$type       = $scan['type'];
@@ -126,9 +124,13 @@ class JFormFieldExtensionTranslations extends JFormFieldGroupedList
 								$origin   = LocaliseHelper::getOrigin("$prefix$extension$suffix", strtolower($client));
 								$disabled = $origin != $package && $origin != '_thirdparty';
 
-								// @ Todo: $disabled prevents choosing some core files when creating package.
-								//$groups[$client]["$prefix$extension$suffix"] = JHtml::_('select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', $disabled);
-								$groups[$client]["$prefix$extension$suffix"] = JHtml::_('select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', false);
+							/* @ Todo: $disabled prevents choosing some core files when creating package.
+							 $groups[$client]["$prefix$extension$suffix"] = JHtml::_(
+							'select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', $disabled);
+							*/
+							$groups[$client]["$prefix$extension$suffix"] = JHtml::_(
+									'select.option', strtolower($client) . '_' . "$prefix$extension$suffix", "$prefix$extension$suffix", 'value', 'text', false
+							);
 							}
 						}
 					}
@@ -150,7 +152,10 @@ class JFormFieldExtensionTranslations extends JFormFieldGroupedList
 	/**
 	 * Method to add a suffix to an array.
 	 *
-	 * @return  array    Array of strings suffixed
+	 * @param   array   $array   An array of core files.
+	 * @param   string  $suffix  The suffix to add to each file.
+	 *
+	 * @return  array   The modified array
 	 */
 	public static function suffix_array_values($array, $suffix = '')
 	{
@@ -167,7 +172,7 @@ class JFormFieldExtensionTranslations extends JFormFieldGroupedList
 				continue;
 			}
 
-			$array[$key] = $value.$suffix;
+			$array[$key] = $value . $suffix;
 		}
 
 		return $array;
