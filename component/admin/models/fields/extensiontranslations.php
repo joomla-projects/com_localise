@@ -49,13 +49,13 @@ class JFormFieldExtensionTranslations extends JFormFieldGroupedList
 		$xml = simplexml_load_file(JPATH_ROOT . '/media/com_localise/packages/core.xml');
 		$coreadminfiles	= (array) $xml->administrator->children();
 		$coresitefiles	= (array) $xml->site->children();
-		
+
 		$coresitefiles	= $coresitefiles['filename'];
 		$coreadminfiles	= $coreadminfiles['filename'];
 
 		$coreadminfiles	= self::suffix_array_values($coreadminfiles, '.ini');
 		$coresitefiles	= self::suffix_array_values($coresitefiles, '.ini');
-		
+
 		$package = (string) $this->element['package'];
 		$groups  = array('Site' => array(), 'Administrator' => array());
 
@@ -85,7 +85,7 @@ class JFormFieldExtensionTranslations extends JFormFieldGroupedList
 							$value    = $key;
 							$origin   = LocaliseHelper::getOrigin($key, strtolower($client));
 							$disabled = $origin != $package && $origin != '_thirdparty';
-							
+
 							$groups[$client][$key] = JHtml::_('select.option', strtolower($client) . '_' . $key, $value, 'value', 'text', false);
 						}
 					}
@@ -97,8 +97,8 @@ class JFormFieldExtensionTranslations extends JFormFieldGroupedList
 
 		foreach ($scans as $scan)
 		{
-			
-			
+
+
 			$prefix     = $scan['prefix'];
 			$suffix     = $scan['suffix'];
 			$type       = $scan['type'];
@@ -146,7 +146,7 @@ class JFormFieldExtensionTranslations extends JFormFieldGroupedList
 
 		return $groups;
 	}
-	
+
 	/**
 	 * Method to add a suffix to an array.
 	 *
@@ -154,22 +154,22 @@ class JFormFieldExtensionTranslations extends JFormFieldGroupedList
 	 */
 	public static function suffix_array_values($array, $suffix = '')
 	{
-    	if (!is_array($array))
-    	{
-       	 return false;
-        }
-     
-    	// suffix the values and respect the keys
-    	foreach ($array as $key => $value)
-    	{
+		if (!is_array($array))
+		{
+			return false;
+		}
+
+		// Suffix the values and respect the keys
+		foreach ($array as $key => $value)
+		{
 			if (!is_string($value))
 			{
-            	continue;
+				continue;
 			}
-             
-        	$array[$key] = $value.$suffix;
-    	}
-    	
-    	return $array;
-    }
+
+			$array[$key] = $value.$suffix;
+		}
+
+		return $array;
+	}
 }
