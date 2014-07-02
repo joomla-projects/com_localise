@@ -190,14 +190,13 @@ class LocaliseControllerPackage extends JControllerForm
 		if ($return = $model->uploadFile($upload))
 		{
 			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_FILE_UPLOAD_SUCCESS', $upload['name']));
-			$url = 'index.php?option=com_localise&view=packages';
-			$this->setRedirect(JRoute::_($url, false));
 		}
 		else
 		{
 			$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_FILE_UPLOAD'), 'error');
-			$url = 'index.php?option=com_localise&view=packages';
-			$this->setRedirect(JRoute::_($url, false));
 		}
+
+		$url = 'index.php?option=com_localise&view=packages';
+		$this->setRedirect(JRoute::_($url, false));
 	}
 }
