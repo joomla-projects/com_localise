@@ -140,7 +140,14 @@ class JFormFieldExtensionTranslations extends JFormFieldGroupedList
 
 		foreach ($groups as $client => $extensions)
 		{
-			JArrayHelper::sortObjects($groups[$client], 'text');
+			if (count($groups[$client]) == 0)
+			{
+				$groups[$client][] = JHtml::_('select.option', '', ' - No translation - ', 'value', 'text', true);
+			}
+			else
+			{
+				JArrayHelper::sortObjects($groups[$client], 'text');
+			}
 		}
 
 		// Merge any additional options in the XML definition.
