@@ -941,4 +941,49 @@ class LocaliseModelPackage extends JModelForm
 		echo $zipdata;
 		exit;
 	}
+
+	/**
+	 * Upload new file.
+	 *
+	 * @param   string  $file  The name of the file.
+	 *
+	 * @return  boolean  True if file uploaded successfully, false otherwise
+	 *
+	 * @since   3.0
+	 */
+	public function uploadFile($file)
+	{
+		jimport('joomla.filesystem.folder');
+
+			$app      = JFactory::getApplication();
+			$path = JPath::clean(JPATH_COMPONENT_ADMINISTRATOR . '/packages/');
+			$fileName = JFile::makeSafe($file['name']);
+
+			/* @TODO: make sure the file is an xml and is safe
+			$err = null;
+			JLoader::register('TemplateHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/template.php');
+
+			if (!TemplateHelper::canUpload($file, $err))
+			{
+
+				return false;
+			}
+			 */
+
+			if (file_exists(JPath::clean(JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $file['name'])))
+			{
+				$app->enqueueMessage(JText::sprintf('COM_LOCALISE_FILE_EXISTS', $file['name']), 'error');
+
+				return false;
+			}
+
+			if (!JFile::upload($file['tmp_name'], JPath::clean(JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $fileName)))
+			{
+				$app->enqueueMessage(JText::sprintf('COM_LOCALISE_FILE_UPLOAD_ERROR', $file['name']), 'error');
+
+				return false;
+			}
+
+			return true;
+	}
 }

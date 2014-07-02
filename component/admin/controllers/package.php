@@ -172,4 +172,32 @@ class LocaliseControllerPackage extends JControllerForm
 		}
 		*/
 	}
+
+	/**
+	 * Method for uploading a file.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2
+	 */
+	public function uploadFile()
+	{
+		$app      = JFactory::getApplication();
+		$model    = $this->getModel();
+		$file     = $app->input->get('file');
+		$upload   = $app->input->files->get('files');
+
+		if ($return = $model->uploadFile($upload))
+		{
+			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_FILE_UPLOAD_SUCCESS', $upload['name']));
+			$url = 'index.php?option=com_localise&view=packages';
+			$this->setRedirect(JRoute::_($url, false));
+		}
+		else
+		{
+			$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_FILE_UPLOAD'), 'error');
+			$url = 'index.php?option=com_localise&view=packages';
+			$this->setRedirect(JRoute::_($url, false));
+		}
+	}
 }

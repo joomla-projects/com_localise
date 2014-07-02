@@ -37,10 +37,12 @@ class LocaliseViewPackages extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Get the data
-		$this->items = $this->get('Items');
-		$this->pagination = $this->get('Pagination');
-		$this->state = $this->get('State');
-		$this->form = $this->get('Form');
+		$app				= JFactory::getApplication();
+		$this->items		= $this->get('Items');
+		$this->pagination	= $this->get('Pagination');
+		$this->state		= $this->get('State');
+		$this->form			= $this->get('Form');
+		$this->file			= $app->input->get('file');
 
 		LocaliseHelper::addSubmenu('packages');
 
@@ -108,8 +110,13 @@ class LocaliseViewPackages extends JViewLegacy
 			JToolBarHelper::divider();
 		}
 
-		JToolBarHelper::custom('package.download', 'out.png', 'out.png', 'JTOOLBAR_EXPORT', true);
-		JToolBarHelper::divider();
+		// JToolBarHelper::custom('package.download', 'out.png', 'out.png', 'JTOOLBAR_EXPORT', true);
+
+		if ($canDo->get('localise.create'))
+		{
+			JToolbarHelper::modal('fileModal', 'icon-upload', 'COM_LOCALISE_BUTTON_IMPORT_XML');
+			JToolBarHelper::divider();
+		}
 
 		if ($canDo->get('package.batch'))
 		{
