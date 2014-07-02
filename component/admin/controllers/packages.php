@@ -108,4 +108,55 @@ class LocaliseControllerPackages extends JControllerLegacy
 
 		$this->setRedirect(JRoute::_('index.php?option=com_localise&view=packages', false), $msg, $type);
 	}
+
+	/**
+	 * Export Packages
+	 *
+	 * @return  void
+	 */
+	public function export()
+	{
+		// Check for request forgeries.
+		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
+
+		// Initialise variables.
+		$user = JFactory::getUser();
+		$ids = JFactory::getApplication()->input->get('cid', array(), 'array');
+
+		// Access checks.
+		foreach ($ids as $i => $package)
+		{
+			$id    = LocaliseHelper::getFileId(JPATH_ROOT . '/media/com_localise/packages/' . $package . '.xml');
+			$model = $this->getModel('Package');
+			$model->setState('package.id', $id);
+			$item  = $model->getItem();
+
+			if (!$user->authorise('core.create', 'com_localise.' . (int) $id))
+			{
+				// Prune items that you can't export.
+				unset($ids[$i]);
+				JError::raiseNotice(403, JText::_('COM_LOCALISE_EXPORT_NOT_PERMITTED'));
+			}
+		}
+
+		if (empty($ids))
+		{
+			$msg = JText::_('JERROR_NO_ITEMS_SELECTED');
+			$type = 'error';
+		}
+		else
+		{
+			// Get the model.
+			$model = $this->getModel();
+
+			// Export the packages.
+			if (!$model->export($ids))
+			{
+				$msg = implode("<br />", $model->getErrors());
+				$type = 'error';
+			}
+		}
+
+		$this->setRedirect(JRoute::_('index.php?option=com_localise&view=packages', false), $msg, $type);
+	}
 }

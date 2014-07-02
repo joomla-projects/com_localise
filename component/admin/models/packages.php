@@ -194,7 +194,7 @@ class LocaliseModelPackages extends JModelList
 	}
 
 	/**
-	 * Remove languages
+	 * Remove packages
 	 *
 	 * @param   array  $selected  array of selected packages
 	 *
@@ -215,5 +215,41 @@ class LocaliseModelPackages extends JModelList
 		}
 
 		return true;
+	}
+
+	/**
+	 * Export packages
+	 *
+	 * @param   array  $selected  array of selected packages
+	 *
+	 * @return  boolean  success or failure
+	 */
+	public function export($selected)
+	{
+		foreach ($selected as $package)
+		{
+			$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$package.xml";
+			$pack = JFile::read($path);
+
+			if (JFile::exists($path))
+			{
+				ob_clean();
+				$pack = JFile::read($path);
+				header("Expires: 0");
+				header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+				header('Content-Type: application/xml');
+				header('Content-Disposition: attachment; filename="' . $package . '.xml"');
+				header('Content-Length: ' . strlen($pack));
+				header("Cache-Control: maxage=1");
+				header("Pragma: public");
+				header("Content-Transfer-Encoding: binary");
+				echo ($pack);
+				exit;
+			}
+			else
+			{
+				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGES_EXPORT', $package));
+			}
+		}
 	}
 }
