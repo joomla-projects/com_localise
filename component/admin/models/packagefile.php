@@ -496,6 +496,7 @@ class LocaliseModelPackageFile extends JModelForm
 		*/
 		$id = LocaliseHelper::getFileId($path);
 		$this->setState('package.id', $id);
+		JFactory::getApplication()->setUserState('com_localise.edit.package.id', $id);
 
 		// Bind the rules.
 		$table = $this->getTable();
