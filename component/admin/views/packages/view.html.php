@@ -114,7 +114,7 @@ class LocaliseViewPackages extends JViewLegacy
 
 		if ($canDo->get('localise.create'))
 		{
-			JToolbarHelper::modal('fileModal', 'icon-file', 'COM_LOCALISE_BUTTON_IMPORT_XML');
+			JToolbarHelper::modal('fileModal', 'icon-upload', 'COM_LOCALISE_BUTTON_IMPORT_XML');
 			JToolBarHelper::divider();
 		}
 
