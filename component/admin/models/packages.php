@@ -243,7 +243,7 @@ class LocaliseModelPackages extends JModelList
 				header("Cache-Control: maxage=1");
 				header("Pragma: public");
 				header("Content-Transfer-Encoding: binary");
-				echo ($pack);
+				echo $pack;
 				exit;
 			}
 			else
