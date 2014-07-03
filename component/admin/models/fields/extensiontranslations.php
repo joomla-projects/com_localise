@@ -142,7 +142,7 @@ class JFormFieldExtensionTranslations extends JFormFieldGroupedList
 		{
 			if (count($groups[$client]) == 0)
 			{
-				$groups[$client][] = JHtml::_('select.option', '', ' - No translation - ', 'value', 'text', true);
+				$groups[$client][] = JHtml::_('select.option', '',  JText::_('COM_LOCALISE_NOTRANSLATION'), 'value', 'text', true);
 			}
 			else
 			{
