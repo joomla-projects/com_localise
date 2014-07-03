@@ -114,12 +114,6 @@ class LocaliseModelPackageFile extends JModelForm
 
 		$form->setFieldAttribute('translations', 'packagefile', $name, 'translations');
 
-		if (!empty($id))
-		{
-			$form->setFieldAttribute('name', 'readonly', 'true');
-			$form->setFieldAttribute('name', 'class', 'readonly');
-		}
-
 		// Check for an error.
 		if (JError::isError($form))
 		{
@@ -148,7 +142,6 @@ class LocaliseModelPackageFile extends JModelForm
 		if (empty($data))
 		{
 			$data = $this->getItem();
-			$data->description = JText::_($data->description);
 		}
 
 		return $data;

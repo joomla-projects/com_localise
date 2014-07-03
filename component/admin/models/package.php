@@ -114,12 +114,6 @@ class LocaliseModelPackage extends JModelForm
 
 		$form->setFieldAttribute('translations', 'package', $name, 'translations');
 
-		if (!empty($id))
-		{
-			$form->setFieldAttribute('name', 'readonly', 'true');
-			$form->setFieldAttribute('name', 'class', 'readonly');
-		}
-
 		// Check for an error.
 		if (JError::isError($form))
 		{
@@ -148,8 +142,6 @@ class LocaliseModelPackage extends JModelForm
 		if (empty($data))
 		{
 			$data = $this->getItem();
-			$data->title       = JText::_($data->title);
-			$data->description = JText::_($data->description);
 		}
 
 		return $data;
