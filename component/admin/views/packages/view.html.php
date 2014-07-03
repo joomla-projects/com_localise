@@ -110,11 +110,11 @@ class LocaliseViewPackages extends JViewLegacy
 			JToolBarHelper::divider();
 		}
 
-		// JToolBarHelper::custom('package.download', 'out.png', 'out.png', 'JTOOLBAR_EXPORT', true);
-
 		if ($canDo->get('localise.create'))
 		{
 			JToolbarHelper::modal('fileModal', 'icon-upload', 'COM_LOCALISE_BUTTON_IMPORT_XML');
+			JToolBarHelper::divider();
+			JToolbarHelper::custom('packages.export',  'out.png', 'out.png', 'COM_LOCALISE_BUTTON_EXPORT_XML', true, false);
 			JToolBarHelper::divider();
 		}
 
