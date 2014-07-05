@@ -951,16 +951,16 @@ class LocaliseModelPackage extends JModelForm
 			$path = JPath::clean(JPATH_COMPONENT_ADMINISTRATOR . '/packages/');
 			$fileName = JFile::makeSafe($file['name']);
 
-			/* @TODO: make sure the file is an xml and is safe
-			$err = null;
-			JLoader::register('TemplateHelper', JPATH_COMPONENT_ADMINISTRATOR . '/helpers/template.php');
-
-			if (!TemplateHelper::canUpload($file, $err))
+			try
 			{
+				$xmltree = new SimpleXMLElement(file_get_contents($file['tmp_name']));
+			}
+			catch (Exception $e)
+			{
+				$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_PACKAGE_XML'), 'error');
 
 				return false;
 			}
-			 */
 
 			if (file_exists(JPath::clean(JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $file['name'])))
 			{
