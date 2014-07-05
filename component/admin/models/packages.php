@@ -265,12 +265,13 @@ class LocaliseModelPackages extends JModelList
 		foreach ($selected as $package)
 		{
 			$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$package.xml";
-			$pack = file_get_contents($path);
-			$newpackage = uniqid($package . '_');
-			$newpath = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$newpackage.xml";
 
 			if (JFile::exists($path))
 			{
+				$pack = file_get_contents($path);
+				$newpackage = uniqid($package . '_');
+				$newpath = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$newpackage.xml";
+
 				JFile::write($newpath, $pack);
 			}
 			else
