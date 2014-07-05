@@ -252,4 +252,42 @@ class LocaliseModelPackages extends JModelList
 			}
 		}
 	}
+
+	/**
+	 * Clone packages
+	 *
+	 * @param   array  $selected  array of selected packages
+	 *
+	 * @return  boolean  success or failure
+	 */
+	public function duplicate($selected)
+	{
+		foreach ($selected as $package)
+		{
+			$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$package.xml";
+			$pack = file_get_contents($path);
+			$newpackage = uniqid($package . '_');
+			$newpath = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$newpackage.xml";
+
+			if (JFile::exists($path))
+			{
+				JFile::write($newpath, $pack);
+			}
+			else
+			{
+				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGES_READ', $package));
+
+				return false;
+			}
+
+			if (!JFile::exists($newpath))
+			{
+				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGES_CLONE', $package));
+
+				return false;
+			}
+		}
+
+		return true;
+	}
 }
