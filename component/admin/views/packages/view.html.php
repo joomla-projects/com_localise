@@ -104,6 +104,11 @@ class LocaliseViewPackages extends JViewLegacy
 			JToolbarHelper::divider();
 		}
 
+		if ($canDo->get('localise.create'))
+		{
+			JToolbarHelper::custom('packages.duplicate', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
+		}
+
 		if ($canDo->get('localise.delete'))
 		{
 			JToolbarHelper::deleteList('COM_LOCALISE_MSG_PACKAGES_VALID_DELETE', 'packages.delete');
