@@ -269,7 +269,7 @@ class LocaliseModelPackages extends JModelList
 			if (JFile::exists($path))
 			{
 				$pack = file_get_contents($path);
-				$newpackage = uniqid($package . '_');
+				$newpackage = $package . '_' . JFactory::getDate()->format("Y-m-d-H-i-s");
 				$newpath = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$newpackage.xml";
 
 				JFile::write($newpath, $pack);
