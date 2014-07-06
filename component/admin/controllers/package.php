@@ -180,7 +180,6 @@ class LocaliseControllerPackage extends JControllerForm
 	{
 		$app      = JFactory::getApplication();
 		$model    = $this->getModel();
-		$file     = $app->input->get('file');
 		$upload   = $app->input->files->get('files');
 
 		if ($return = $model->uploadFile($upload))
