@@ -159,4 +159,60 @@ class LocaliseControllerPackages extends JControllerLegacy
 
 		$this->setRedirect(JRoute::_('index.php?option=com_localise&view=packages', false), $msg, $type);
 	}
+
+	/**
+	 * Clone an existing package.
+	 *
+	 * @return  void
+	 */
+	public function duplicate()
+	{
+		// Check for request forgeries
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Initialise variables.
+		$user = JFactory::getUser();
+		$ids = JFactory::getApplication()->input->get('cid', array(), 'array');
+
+		// Access checks.
+		foreach ($ids as $i => $package)
+		{
+			$id    = LocaliseHelper::getFileId(JPATH_ROOT . '/media/com_localise/packages/' . $package . '.xml');
+			$model = $this->getModel('Package');
+			$model->setState('package.id', $id);
+			$item  = $model->getItem();
+
+			if (!$user->authorise('core.create', 'com_localise.' . (int) $id))
+			{
+				// Prune items that you can't clone.
+				unset($ids[$i]);
+				JError::raiseNotice(403, JText::_('COM_LOCALISE_ERROR_PACKAGES_CLONE_NOT_PERMITTED'));
+			}
+		}
+
+		if (empty($ids))
+		{
+			$msg = JText::_('JERROR_NO_ITEMS_SELECTED');
+			$type = 'error';
+		}
+		else
+		{
+			// Get the model.
+			$model = $this->getModel();
+
+			// Clone the items.
+			if (!$model->duplicate($ids))
+			{
+				$msg = implode("<br />", $model->getErrors());
+				$type = 'error';
+			}
+			else
+			{
+				$msg = JText::plural('COM_LOCALISE_N_PACKAGES_DUPLICATED', count($ids));
+				$type = 'message';
+			}
+		}
+
+		$this->setRedirect(JRoute::_('index.php?option=com_localise&view=packages', false), $msg, $type);
+	}
 }
