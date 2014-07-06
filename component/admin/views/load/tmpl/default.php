@@ -13,7 +13,7 @@ JHtml::_('stylesheet', 'com_localise/localise.css', null, true);
 JHtml::_('formbehavior.chosen', 'select');
 
 $document	= JFactory::getDocument();
-$document->addScript("components/com_localise/js/load.js");
+$document->addScript(JUri::root() . 'media/com_localise/js/load.js');
 
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_localise&view=load');?>" method="post" name="adminForm" id="adminForm">
