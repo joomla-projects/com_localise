@@ -851,6 +851,20 @@ class LocaliseModelPackage extends JModelForm
 			$admin_txt .= "\t\t" . '<filename>' . $data['language'] . '.localise.php</filename>' . "\n";
 			$admin_package_files[] = array('name' => $data['language'] . '.localise.php','data' => $language_data);
 
+			// Add the css file if present
+			$path = JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.css';
+
+			if (JFile::exists($path))
+			{
+				$css_data = JFile::read($path);
+			}
+
+			if (JFile::exists($path) && !empty($css_data))
+			{
+				$admin_txt .= "\t\t" . '<filename>' . $data['language'] . '.css</filename>' . "\n";
+				$admin_package_files[] = array('name' => $data['language'] . '.css','data' => $css_data);
+			}
+
 			if ($msg)
 			{
 				$msg .= '<p>...</p>';
