@@ -11,3 +11,4 @@ before_script:
 script:
   - find ./component -name '*.php' -exec php -l {} \;
   - php .travis/phpcs.php
+  - ./vendor/bin/phpmd component/ text codesize,unusedcode,naming
