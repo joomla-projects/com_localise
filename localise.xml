@@ -43,7 +43,7 @@
 			<menu link="option=com_localise&amp;view=translations" img="class:translations" view="translations">COM_LOCALISE_TRANSLATIONS</menu>
 			<menu link="option=com_localise&amp;view=packages" img="class:packages" view="packages">COM_LOCALISE_PACKAGES</menu>
 		</submenu>
-		<files folder="admin">
+		<files folder="component/admin">
 			<folder>controllers</folder>
 			<folder>help</folder>
 			<folder>helpers</folder>
