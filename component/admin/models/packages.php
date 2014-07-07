@@ -229,12 +229,11 @@ class LocaliseModelPackages extends JModelList
 		foreach ($selected as $package)
 		{
 			$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$package.xml";
-			$pack = JFile::read($path);
 
 			if (JFile::exists($path))
 			{
 				ob_clean();
-				$pack = JFile::read($path);
+				$pack = file_get_contents($path);
 				header("Expires: 0");
 				header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 				header('Content-Type: application/xml');
