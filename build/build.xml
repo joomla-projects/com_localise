@@ -13,16 +13,18 @@
 	<!-- Name of extension -->
 	<property name="extension" value="${phing.project.name}" override="true"/>
 
+	<property name="project.dir" value="${application.startdir}/.." override="true"/>
+
 	<!-- Extension folders -->
-	<property name="component.dir" value="${application.startdir}/../component" override="true"/>
-	<property name="media.dir" value="${application.startdir}/../media" override="true"/>
+	<property name="component.dir" value="${project.dir}/component" override="true"/>
+	<property name="media.dir" value="${project.dir}/media" override="true"/>
 	<!-- Packaging folders -->
-	<property name="package.dir" value="${application.startdir}/../build/packages" override="true"/>
-	<property name="packaging.dir" value="${application.startdir}/../build/packaging" override="true"/>
+	<property name="package.dir" value="${project.dir}/build/packages" override="true"/>
+	<property name="packaging.dir" value="${project.dir}/build/packaging" override="true"/>
 
 	<!-- Load extension version property in XML file -->
 	<xmlproperty
-			file="${application.startdir}/../component/admin/localise.xml"
+			file="${project.dir}/localise.xml"
 			prefix="extensionDetails"
 			keepRoot="false" />
 	<property
@@ -65,14 +67,14 @@
 
 		<echo msg="Copying INSTALLER files to Packaging directory..."/>
 		<copy todir="${packaging.dir}">
-			<fileset dir="${component.dir}/admin">
+			<fileset dir="${project.dir}">
 				<include name="localise.xml"/>
-				<include name="script.php"/>
+				<include name="install.php"/>
 			</fileset>
 		</copy>
 
 		<echo msg="Copying ADMIN folder to Packaging directory..."/>
-		<copy todir="${packaging.dir}/admin">
+		<copy todir="${packaging.dir}/component/admin">
 			<fileset dir="${component.dir}/admin">
 				<include name="**"/>
 				<exclude name=".*"/>

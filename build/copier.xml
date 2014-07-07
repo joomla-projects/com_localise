@@ -40,11 +40,11 @@
 	<target name="copy" description="Copies files to a existing joomla site" depends="init, prepare">
 		<echo message="Copying administrator component..." />
 
-		<copy file="${src}/component/admin/install.php" tofile="${joomla.dir}/administrator/components/com_localise/install.php" overwrite="true"/>
+		<copy file="${src}/install.php" tofile="${joomla.dir}/administrator/components/com_localise/install.php" overwrite="true"/>
 
 		<!-- Manifest & install script -->
 		<echo message="Copying manifest..." />
-		<copy file="${src}/component/admin/localise.xml" tofile="${joomla.dir}/administrator/components/com_localise/localise.xml" overwrite="true" />
+		<copy file="${src}/localise.xml" tofile="${joomla.dir}/administrator/components/com_localise/localise.xml" overwrite="true" />
 
 		<!-- Backend component -->
 		<copy todir="${joomla.dir}/administrator/components/com_localise" overwrite="true">
