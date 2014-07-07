@@ -629,7 +629,7 @@ class LocaliseModelPackage extends JModelForm
 
 			if (JFile::exists($path))
 			{
-				$xmldata = JFile::read($path);
+				$xmldata = file_get_contents($path);
 			}
 
 			if (!JFile::exists($path) || empty($xmldata))
@@ -662,7 +662,7 @@ class LocaliseModelPackage extends JModelForm
 
 			if (JFile::exists($path))
 			{
-				$file_data = JFile::read($path);
+				$file_data = file_get_contents($path);
 			}
 
 			if (JFile::exists($path) && !empty($file_data))
@@ -682,7 +682,7 @@ class LocaliseModelPackage extends JModelForm
 
 				if (JFile::exists($path))
 				{
-					$file_data = JFile::read($path);
+					$file_data = file_get_contents($path);
 				}
 
 				if (JFile::exists($path) && !empty($file_data))
@@ -700,13 +700,13 @@ class LocaliseModelPackage extends JModelForm
 
 			if (JFile::exists($path))
 			{
-				$language_data = JFile::read($path);
+				$language_data = file_get_contents($path);
 			}
 
 			// Create a basic xx-XX.localise.php if not present in target language
 			if (!JFile::exists($path) || empty($languagedata))
 			{
-				$language_data = JFile::read(JPATH_ROOT . '/language/' . $reftag . '/' . $reftag . '.localise.php');
+				$language_data = file_get_contents(JPATH_ROOT . '/language/' . $reftag . '/' . $reftag . '.localise.php');
 				$language_data = str_replace($reftag, $data['language'], $language_data);
 				$language_data = str_replace($refclassname, $langclassname, $language_data);
 			}
@@ -726,10 +726,10 @@ class LocaliseModelPackage extends JModelForm
 			$site_txt .= "\t" . '<params />' . "\n";
 			$site_txt .= "\t" . '</extension>' . "\n";
 			$site_package_files[] = array('name' => 'install.xml','data' => $site_txt);
-			$language_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.xml');
+			$language_data = file_get_contents(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.xml');
 			$site_package_files[] = array('name' => $data['language'] . '.xml','data' => $language_data);
 
-			$language_data = JFile::read(JPATH_ROOT . '/administrator/components/com_localise/models/index.html');
+			$language_data = file_get_contents(JPATH_ROOT . '/administrator/components/com_localise/models/index.html');
 			$site_package_files[] = array('name' => 'index.html','data' => $language_data);
 
 			$site_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
@@ -750,7 +750,7 @@ class LocaliseModelPackage extends JModelForm
 				}
 			}
 
-			$main_package_files[] = array('name' => 'site_' . $data['language'] . '.zip','data' => JFile::read($site_zip_path));
+			$main_package_files[] = array('name' => 'site_' . $data['language'] . '.zip','data' => file_get_contents($site_zip_path));
 		}
 
 		if (count($administrator))
@@ -761,7 +761,7 @@ class LocaliseModelPackage extends JModelForm
 
 			if (JFile::exists($path))
 			{
-				$xmldata = JFile::read($path);
+				$xmldata = file_get_contents($path);
 			}
 
 			if (!JFile::exists($path) || empty($xmldata))
@@ -794,7 +794,7 @@ class LocaliseModelPackage extends JModelForm
 
 			if (JFile::exists($path))
 			{
-				$file_data = JFile::read($path);
+				$file_data = file_get_contents($path);
 			}
 
 			if (JFile::exists($path) && !empty($file_data))
@@ -814,7 +814,7 @@ class LocaliseModelPackage extends JModelForm
 
 				if (JFile::exists($path))
 				{
-					$file_data = JFile::read($path);
+					$file_data = file_get_contents($path);
 				}
 
 				if (JFile::exists($path) && !empty($file_data))
@@ -832,13 +832,13 @@ class LocaliseModelPackage extends JModelForm
 
 			if (JFile::exists($path))
 			{
-				$language_data = JFile::read($path);
+				$language_data = file_get_contents($path);
 			}
 
 			// Create a basic xx-XX.localise.php if not present in target language
 			if (!JFile::exists($path) || empty($languagedata))
 			{
-				$language_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $reftag . '/' . $reftag . '.localise.php');
+				$language_data = file_get_contents(JPATH_ROOT . '/administrator/language/' . $reftag . '/' . $reftag . '.localise.php');
 				$language_data = str_replace($reftag, $data['language'], $language_data);
 				$language_data = str_replace($refclassname, $langclassname, $language_data);
 			}
@@ -851,7 +851,7 @@ class LocaliseModelPackage extends JModelForm
 
 			if (JFile::exists($path))
 			{
-				$css_data = JFile::read($path);
+				$css_data = file_get_contents($path);
 			}
 
 			if (JFile::exists($path) && !empty($css_data))
@@ -877,9 +877,9 @@ class LocaliseModelPackage extends JModelForm
 			$admin_txt .= "\t" . '<params />' . "\n";
 			$admin_txt .= "\t" . '</extension>' . "\n";
 			$admin_package_files[] = array('name' => 'install.xml','data' => $admin_txt);
-			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.xml');
+			$language_data = file_get_contents(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.xml');
 			$admin_package_files[] = array('name' => $data['language'] . '.xml','data' => $language_data);
-			$language_data = JFile::read(JPATH_ROOT . '/administrator/components/com_localise/models/index.html');
+			$language_data = file_get_contents(JPATH_ROOT . '/administrator/components/com_localise/models/index.html');
 			$admin_package_files[] = array('name' => 'index.html','data' => $language_data);
 
 			$admin_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
@@ -900,7 +900,7 @@ class LocaliseModelPackage extends JModelForm
 				}
 			}
 
-			$main_package_files[] = array('name' => 'admin_' . $data['language'] . '.zip','data' => JFile::read($admin_zip_path));
+			$main_package_files[] = array('name' => 'admin_' . $data['language'] . '.zip','data' => file_get_contents($admin_zip_path));
 		}
 
 		$text .= "\t" . '</files>' . "\n";
@@ -936,7 +936,7 @@ class LocaliseModelPackage extends JModelForm
 		}
 
 		ob_clean();
-		$zipdata = JFile::read($ziproot);
+		$zipdata = file_get_contents($ziproot);
 		header("Expires: 0");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header('Content-Type: application/zip');

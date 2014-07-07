@@ -599,7 +599,7 @@ class LocaliseModelPackageFile extends JModelForm
 
 				if (JFile::exists($path))
 				{
-					$file_data = JFile::read($path);
+					$file_data = file_get_contents($path);
 				}
 
 				if (JFile::exists($path) && !empty($file_data))
@@ -620,9 +620,9 @@ class LocaliseModelPackageFile extends JModelForm
 			$site_txt .= "\t".'<params />' . "\n";
 			$site_txt .= "\t".'</extension>' . "\n";
 			$site_package_files[] = array('name'=>'install.xml','data'=>$site_txt);
-			$language_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.xml');
+			$language_data = file_get_contents(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.xml');
 			$site_package_files[] = array('name' => $data['language'] . '.xml','data'=>$language_data);
-			$language_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
+			$language_data = file_get_contents(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
 			$site_package_files[] = array('name' => $data['language'] . '.localise.php','data' => $language_data);
 
 			$site_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
@@ -674,7 +674,7 @@ class LocaliseModelPackageFile extends JModelForm
 
 				if (JFile::exists($path))
 				{
-					$file_data = JFile::read($path);
+					$file_data = file_get_contents($path);
 				}
 
 				if (JFile::exists($path) && !empty($file_data))
@@ -695,9 +695,9 @@ class LocaliseModelPackageFile extends JModelForm
 			$admin_txt .= "\t".'<params />' . "\n";
 			$admin_txt .= "\t".'</extension>' . "\n";
 			$admin_package_files[] = array('name'=>'install.xml','data'=>$admin_txt);
-			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.xml');
+			$language_data = file_get_contents(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.xml');
 			$admin_package_files[] = array('name'=>$data['language'] . '.xml','data' => $language_data);
-			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
+			$language_data = file_get_contents(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
 			$admin_package_files[] = array('name'=>$data['language'] . '.localise.php','data' => $language_data);
 
 
@@ -761,7 +761,7 @@ class LocaliseModelPackageFile extends JModelForm
 		}
 
 		ob_clean();
-		$zipdata = JFile::read($ziproot);
+		$zipdata = file_get_contents($ziproot);
 		header("Expires: 0");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header('Content-Type: application/zip');
