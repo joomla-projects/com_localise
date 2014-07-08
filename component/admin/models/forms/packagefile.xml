@@ -35,8 +35,8 @@
 			name="version"
 			type="text"
 			required="true"
-			label="COM_LOCALISE_LABEL_PACKAGE_JOOMLA_VERSION"
-			description="COM_LOCALISE_LABEL_PACKAGE_JOOMLA_VERSION_DESC" />
+			label="COM_LOCALISE_LABEL_PACKAGE_EXTENSION_VERSION"
+			description="COM_LOCALISE_LABEL_PACKAGE_EXTENSION_VERSION_DESC" />
 		<field
 			id="packversion"
 			name="packversion"
