@@ -224,6 +224,7 @@ class LocaliseModelPackageFile extends JModelForm
 				// $package->standalone  = substr($manifest, 0, 4) == 'fil_';
 				$package->title       = (string) $xml->title;
 				$package->version     = (string) $xml->version;
+				$package->packversion = (string) $xml->packversion;
 				$package->description = (string) $xml->description;
 				$package->language    = (string) $xml->language;
 				$package->license     = (string) $xml->license;
@@ -231,6 +232,10 @@ class LocaliseModelPackageFile extends JModelForm
 				$package->author      = (string) $xml->author;
 				$package->authoremail = (string) $xml->authoremail;
 				$package->authorurl   = (string) $xml->authorurl;
+				$package->packager    = (string) $xml->packager;
+				$package->packagerurl = (string) $xml->packagerurl;
+				$package->servername  = (string) $xml->servername;
+				$package->serverurl   = (string) $xml->serverurl;
 				$package->writable    = LocaliseHelper::isWritable($package->path);
 
 				$user = JFactory::getUser($table->checked_out);
@@ -331,13 +336,17 @@ class LocaliseModelPackageFile extends JModelForm
 			$descriptionElement = $dom->createElement('description', $description);
 			$manifestElement = $dom->createElement('manifest', $manifest);
 			$versionElement = $dom->createElement('version', $data['version']);
+			$packversionElement = $dom->createElement('packversion', $data['packversion']);
 			$authorElement = $dom->createElement('author', $data['author']);
-			$copyrightElement = $dom->createElement('copyright', $data['copyright']);
 			$licenseElement = $dom->createElement('license', $data['license']);
 			$authorEmailElement = $dom->createElement('authoremail', $data['authoremail']);
 			$authorUrlElement = $dom->createElement('authorurl', $data['authorurl']);
 			$languageElement = $dom->createElement('language', $data['language']);
 			$copyrightElement = $dom->createElement('copyright', $data['copyright']);
+			$packagerElement = $dom->createElement('packager', $data['packager']);
+			$packagerUrlElement = $dom->createElement('packagerurl', $data['packagerurl']);
+			$servernameElement = $dom->createElement('servername', $data['servername']);
+			$serverurlElement = $dom->createElement('serverurl', $data['serverurl']);
 
 			// Set the client attribute on the manifest element
 
@@ -352,6 +361,7 @@ class LocaliseModelPackageFile extends JModelForm
 			$packageXml->appendChild($descriptionElement);
 			$packageXml->appendChild($manifestElement);
 			$packageXml->appendChild($versionElement);
+			$packageXml->appendChild($packversionElement);
 			$packageXml->appendChild($authorElement);
 			$packageXml->appendChild($copyrightElement);
 			$packageXml->appendChild($licenseElement);
@@ -359,6 +369,10 @@ class LocaliseModelPackageFile extends JModelForm
 			$packageXml->appendChild($authorUrlElement);
 			$packageXml->appendChild($languageElement);
 			$packageXml->appendChild($copyrightElement);
+			$packageXml->appendChild($packagerElement);
+			$packageXml->appendChild($packagerUrlElement);
+			$packageXml->appendChild($servernameElement);
+			$packageXml->appendChild($serverurlElement);
 
 			$administrator = array();
 			$site          = array();
@@ -570,13 +584,15 @@ class LocaliseModelPackageFile extends JModelForm
 		$text .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 		$text .= '<extension type="file" version="' . $small_version . '" method="upgrade">' . "\n";
 		$text .= "\t" . '<name>' . $data['name'] . $data['language'] . '</name>' . "\n";
-		$text .= "\t" . '<version>' . $data['version'] . '</version>' . "\n";
+		$text .= "\t" . '<version>' . $data['version'] . '.' . $data['packversion'] . '</version>' . "\n";
 		$text .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
 		$text .= "\t" . '<author>' . $data['author'] . '</author>' . "\n";
 		$text .= "\t" . '<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
 		$text .= "\t" . '<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
 		$text .= "\t" . '<copyright>' . $data['copyright'] . '</copyright>' . "\n";
 		$text .= "\t" . '<license>' . $data['license'] . '</license>' . "\n";
+		$text .= "\t" . '<packager>' . $data['packager'] . '</packager>' . "\n";
+		$text .= "\t" . '<packagerurl>' . $data['packagerurl'] . '</packagerurl>' . "\n";
 		$text .= "\t" . '<description><![CDATA[' . $data['description'] . ']]></description>' . "\n";
 		$text .= "\t" . '<fileset>' . "\n";
 
@@ -737,6 +753,14 @@ class LocaliseModelPackageFile extends JModelForm
 		}
 
 		$text .= "\t" . '</fileset>' . "\n";
+
+		if (!empty($data['serverurl']))
+		{
+			$text .= "\t" . '<updateservers>' . "\n";
+			$text .= "\t\t" . '<server type="collection" priority="1" name="' . $data['servername'] . '">' . $data['serverurl'] . '</server>' . "\n";
+			$text .= "\t" . '</updateservers>' . "\n";
+		}
+
 		$text .= '</extension>' . "\n";
 
 		$main_package_files[] = array('name' => $data['name'] . $data['language'] . '.xml', 'data' => $text);
@@ -765,7 +789,8 @@ class LocaliseModelPackageFile extends JModelForm
 		header("Expires: 0");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header('Content-Type: application/zip');
-		header('Content-Disposition: attachment; filename="' . $data['name'] . '_' . $data['language'] . '_' . $data['version'] . '.zip"');
+		header('Content-Disposition: attachment; filename="'
+				. $data['name'] . '_' . $data['language'] . '_' . $data['version'] . 'v' . $data['packversion'] . '.zip"');
 		header('Content-Length: ' . strlen($zipdata));
 		header("Cache-Control: maxage=1");
 		header("Pragma: public");
