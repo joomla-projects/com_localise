@@ -988,12 +988,14 @@ class LocaliseModelPackage extends JModelForm
 				return false;
 			}
 
+			/* @TODO: get this in the js confirmation alert in views/packages/tmpl/defaul.php
 			if (file_exists(JPath::clean(JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $file['name'])))
 			{
 				$app->enqueueMessage(JText::sprintf('COM_LOCALISE_FILE_EXISTS', $file['name']), 'error');
 
 				return false;
 			}
+			*/
 
 			if (!JFile::upload($file['tmp_name'], JPath::clean(JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $fileName)))
 			{
