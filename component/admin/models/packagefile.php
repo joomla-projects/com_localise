@@ -531,6 +531,16 @@ class LocaliseModelPackageFile extends JModelForm
 	{
 		// The data could potentially be loaded from the file with $this->getItem() instead of using directly the data from the post
 		$app = JFactory::getApplication();
+
+		// Prevent generating and downloading Master package
+		if (strpos($data['name'], 'master_') !== false)
+		{
+			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_ERROR_MASTER_PACKAGE_DOWNLOAD_FORBIDDEN', $data['name']), 'warning');
+			$app->redirect(JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('package.id'), false));
+
+			return false;
+		}
+
 		$administrator = array();
 		$site          = array();
 		$msg = null;
