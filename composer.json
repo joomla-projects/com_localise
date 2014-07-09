@@ -6,6 +6,7 @@
 		"php": ">=5.3.10"
 	},
 	"require-dev": {
-		"squizlabs/php_codesniffer": "1.*"
+		"squizlabs/php_codesniffer": "1.*",
+		"phpmd/phpmd": "*"
 	}
 }
