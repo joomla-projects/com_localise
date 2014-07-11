@@ -557,6 +557,16 @@ class LocaliseModelPackage extends JModelForm
 	public function download($data)
 	{
 		// The data could potentially be loaded from the file with $this->getItem() instead of using directly the data from the post
+		$app = JFactory::getApplication();
+
+		// Prevent generating and downloading Master package
+		if (strpos($data['name'], 'master_') !== false)
+		{
+			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_ERROR_MASTER_PACKAGE_DOWNLOAD_FORBIDDEN', $data['name']), 'warning');
+			$app->redirect(JRoute::_('index.php?option=com_localise&view=package&layout=edit&id=' . $this->getState('package.id'), false));
+
+			return false;
+		}
 
 		// Necessary variables if xx-XX.localise.php is not present in target language
 		$params			= JComponentHelper::getParams('com_localise');
@@ -567,7 +577,6 @@ class LocaliseModelPackage extends JModelForm
 		$langclassname	= ucfirst($langclassname);
 		$msg = null;
 
-		$app = JFactory::getApplication();
 		$administrator = array();
 		$site          = array();
 		$main_package_files = array();
@@ -979,12 +988,14 @@ class LocaliseModelPackage extends JModelForm
 				return false;
 			}
 
+			/* @TODO: get this in the js confirmation alert in views/packages/tmpl/defaul.php
 			if (file_exists(JPath::clean(JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $file['name'])))
 			{
 				$app->enqueueMessage(JText::sprintf('COM_LOCALISE_FILE_EXISTS', $file['name']), 'error');
 
 				return false;
 			}
+			*/
 
 			if (!JFile::upload($file['tmp_name'], JPath::clean(JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $fileName)))
 			{
