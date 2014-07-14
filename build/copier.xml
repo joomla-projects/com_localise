@@ -15,19 +15,28 @@
 <project name="localise" default="copy" basedir=".">
 
 	<target name="init" >
+		<property name="src" value="${application.startdir}" />
+		<!-- Check if build is called inside the build folder -->
 		<if>
 			<not>
-				<available file="build.properties" />
+				<available file="${src}/localise.xml" />
+			</not>
+			<then>
+				<property name="src" value="${project.basedir}/.." override="true"/>
+			</then>
+		</if>
+		<if>
+			<not>
+				<available file="${src}/build.properties" />
 			</not>
 			<then>
 				<fail message="The file build.properties does not exists." />
 			</then>
 			<else>
-				<property file="build.properties"  override="true"/>
+				<property file="${src}/build.properties"  override="true"/>
 				<echo message="build.properties File included successfully." />
 			</else>
 		</if>
-		<property name="src" value="${application.startdir}/.." />
 	</target>
 
 	<target name="prepare" >
