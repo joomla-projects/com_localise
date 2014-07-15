@@ -18,6 +18,7 @@ Desktop.ini
 
 # Netbeans (custom) #
 .netbeans/*
+/nbproject/*
 
 # Temp files #
 *.tmp
@@ -34,9 +35,9 @@ build.properties
 *.tar.*
 
 # Packages directories #
-build/packages
-build/packaging
-build/releases
+build/packages/*
+build/packaging/*
+build/releases/*
 
 # Build #
 build/logs
@@ -50,9 +51,14 @@ build/logs
 /tests/system/servers/configdef.php
 /tests/system/webdriver/tests/logs/
 
+# Composer #
+composer.lock
+/vendor
+
 # Never ignore #
+!build/packages/index.html
+!build/packaging/index.html
 !.gitignore
 !index.html
 !index.php
-
 
