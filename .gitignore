@@ -35,9 +35,9 @@ build.properties
 *.tar.*
 
 # Packages directories #
-build/packages
-build/packaging
-build/releases
+build/packages/*
+build/packaging/*
+build/releases/*
 
 # Build #
 build/logs
@@ -51,6 +51,8 @@ composer.lock
 /vendor
 
 # Never ignore
+!build/packages/index.html
+!build/packaging/index.html
 !.gitignore
 !index.html
 !index.php
