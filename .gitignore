@@ -1,33 +1,32 @@
-# OSX
+# OSX #
 .DS_Store
 ._*
 .Spotlight-V100
 .Trashes
 
-# Windows
+# Windows #
 Thumbs.db
 Desktop.ini
 
-# PHPStorm
+# PHPStorm #
 .idea/
 
-# Eclipse
+# Eclipse #
 .buildpath
 .project
 .settings
 
-# Netbeans (custom)
+# Netbeans (custom) #
 .netbeans/*
-/nbproject/*
 
-# Temp files
+# Temp files #
 *.tmp
 *.bak
 *.swp
 *~.nib
 *~
 
-# Phing build script
+# Phing build script #
 build.properties
 
 # Packages #
@@ -42,16 +41,18 @@ build/releases
 # Build #
 build/logs
 
-# Test related files
+# Composer files #
+/composer.phar
+/vendor/
+/composer.lock
+
+# Test related files #
 /tests/system/servers/configdef.php
 /tests/system/webdriver/tests/logs/
 
-# Composer
-composer.lock
-/vendor
-
-# Never ignore
+# Never ignore #
 !.gitignore
 !index.html
 !index.php
+
 
