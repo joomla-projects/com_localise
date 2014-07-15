@@ -315,15 +315,15 @@ class LocaliseModelPackage extends JModelForm
 	{
 		// When editing a package, find the original path
 		$app = JFactory::getApplication('administrator');
-		$this_id = $app->getUserState('com_localise.edit.package.id');
+		$originalId = $app->getUserState('com_localise.edit.package.id');
 
-		if (!empty($this_id))
+		if (!empty($originalId))
 		{
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true)
 				->select($db->quoteName('path'))
 				->from($db->quoteName('#__localise'))
-				->where($db->quoteName('id') . ' = ' . $this_id);
+				->where($db->quoteName('id') . ' = ' . $originalId);
 			$db->setQuery($query);
 
 			$oldpath = $db->loadResult('path');
