@@ -105,6 +105,15 @@
 	<target name="dist" depends="build">
 		<echo msg="Creating ZIP archive..."/>
 
+		<if>
+		    <not>
+		         <available file="${package.dir}" type='dir'/>
+		    </not>
+		    <then>
+		        <mkdir dir="${package.dir}"/>
+		    </then>
+		</if>
+
 		<zip destfile="${package.dir}/${extension}-${version}.zip">
 			<fileset dir="${packaging.dir}">
 				<include name="**"/>
