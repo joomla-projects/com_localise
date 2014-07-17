@@ -313,6 +313,22 @@ class LocaliseModelPackage extends JModelForm
 	 */
 	public function save($data)
 	{
+		// When editing a package, find the original path
+		$app = JFactory::getApplication('administrator');
+		$originalId = $app->getUserState('com_localise.edit.package.id');
+
+		if (!empty($originalId))
+		{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select($db->quoteName('path'))
+				->from($db->quoteName('#__localise'))
+				->where($db->quoteName('id') . ' = ' . $originalId);
+			$db->setQuery($query);
+
+			$oldpath = $db->loadResult('path');
+		}
+
 		// Get the package name
 		$name = $data['name'];
 
@@ -542,6 +558,17 @@ class LocaliseModelPackage extends JModelForm
 			$this->setError($table->getError());
 
 			return false;
+		}
+
+		// Delete the older file
+		if ($path !== $oldpath && file_exists($oldpath))
+		{
+			if (!JFile::delete($oldpath))
+			{
+				$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_OLDFILE_REMOVE'), 'notice');
+			}
+
+			$app->setUserState('com_localise.edit.package.id');
 		}
 
 		return true;
