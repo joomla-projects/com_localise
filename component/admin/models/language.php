@@ -338,6 +338,7 @@ class LocaliseModelLanguage extends JModelForm
 			$text .= "\t\t" . '<rtl>' . htmlspecialchars($data['rtl'], ENT_COMPAT, 'UTF-8') . '</rtl>' . "\n";
 			$text .= "\t\t" . '<locale>' . htmlspecialchars($data['locale'], ENT_COMPAT, 'UTF-8') . '</locale>' . "\n";
 			$text .= "\t\t" . '<firstDay>' . htmlspecialchars($data['firstDay'], ENT_COMPAT, 'UTF-8') . '</firstDay>' . "\n";
+			$text .= "\t\t" . '<weekEnd>' . htmlspecialchars($data['weekEnd'], ENT_COMPAT, 'UTF-8') . '</weekEnd>' . "\n";
 			$text .= "\t" . '</metadata>' . "\n";
 			$text .= "\t" . '<params />' . "\n";
 			$text .= '</metafile>' . "\n";
