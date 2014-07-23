@@ -51,10 +51,6 @@ build/logs
 /tests/system/servers/configdef.php
 /tests/system/webdriver/tests/logs/
 
-# Composer #
-composer.lock
-/vendor
-
 # Never ignore #
 !build/packages/index.html
 !build/packaging/index.html
