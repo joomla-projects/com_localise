@@ -1,0 +1,28 @@
+<?php
+$scenario->group('joomla');
+$I = new AcceptanceTester($scenario);
+$I->wantTo("Install Joomla 3");
+$I->amOnPage(joomlaInstallationConfigurationPage::$URL);
+$I->fillField(joomlaInstallationConfigurationPage::$siteName, "Testing com_localise");
+$I->fillField("#jform_site_metadesc", "Site created for automated testing");
+$I->fillField("#jform_admin_email", "test@test.com");
+$I->fillField("#jform_admin_user", "admin");
+$I->fillField("#jform_admin_password", "admin");
+$I->fillField("#jform_admin_password2", "admin");
+$I->click("Next");
+$I->wait(1);
+$I->fillField("#jform_db_user", "root");
+$I->fillField("#jform_db_name", "localise");
+$I->fillField("#jform_db_prefix", "jos_");
+$I->click("//fieldset[@id='jform_db_old']/label[2]");
+// $I->click("#jform_db_old1");
+$I->click("Next");
+$I->wait(1);
+$I->click("#jform_sample_file3");
+$I->click("Install");
+$I->wait(5);
+$I->click("Administrator");
+$I->fillField("#mod-login-username", "admin");
+$I->fillField("#mod-login-password", "admin");
+$I->click("//form[@id='form-login']/fieldset/div[3]/div/div/button");
+$I->see("Administration");

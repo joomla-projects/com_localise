@@ -58,3 +58,5 @@ build/logs
 !index.html
 !index.php
 
+
+tests/_output/*
