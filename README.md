@@ -66,3 +66,54 @@ A PHING build file can be found at build/build.xml. After executing it you will 
 ## Shell script for *nix systems
 
 To package, on a *nix system, navigate to the build folder and run ./build.sh. When complete, you will have an installable .zip file under build/packages.
+
+# Testing with Codeception
+
+Get composer (more info at https://getcomposer.org/download/):
+
+```
+curl -sS https://getcomposer.org/installer | php
+```
+
+Install dependencies:
+
+```
+php composer.phar install
+```
+
+Get codeception phar:
+
+```
+wget http://codeception.com/codecept.phar .
+```
+
+Rename tests/acceptance.suite.dist.yml to tests/acceptance.suite.yml and change the "url" parameter to your "localhost".
+
+Run Selenium server:
+
+```
+# Download
+curl -O http://selenium-release.storage.googleapis.com/2.41/selenium-server-standalone-2.41.0.jar
+
+# And start the Selenium Server
+java -Xms40m -Xmx256m -jar /Applications/XAMPP/xamppfiles/htdocs/selenium/selenium-server-standalone-2.41.0.jar
+```
+
+
+Execute the tests:
+
+```
+php codecept.phar run
+
+; Or with --steps to see a step-by-step report on the performed actions.
+php codecept.phar run --steps
+
+; Or with --html. This command will run all tests for all suites, displaying the steps, and building HTML and XML reports. Reports will be store in tests/_output/ directory.
+php codecept.phar run --html
+```
+
+## Firefox Addons
+To generate tests really fast you can use these firefox addons:
+
+- Selenium IDE (records your screen)
+- Selenium IDE Codeception Formatter (Export your Selenium IDE test to Codeception language)
