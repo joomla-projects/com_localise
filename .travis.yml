@@ -9,6 +9,6 @@ before_script:
   - composer install
 
 script:
-  - php .travis/phppec.php administrator/
+  - php .travis/phppec.php component/
   - php .travis/phpcs.php
   - php .travis/phpmd.php
