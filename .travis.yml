@@ -1,14 +1,15 @@
 language: php
 
 php:
-  #  - 5.3
   - 5.4
   #  - 5.5
 
 before_script:
+  - wget http://codeception.com/codecept.phar
+  - composer self-update
+  - composer install
   - phpenv config-add .travis.ini
   - phpenv rehash
-  - composer install
 
   # Install Apache
   - sudo apt-get update > /dev/null
@@ -38,6 +39,7 @@ before_script:
   - sleep 20
 
   # Codeception
+  - wget http://codeception.com/codecept.phar .
   - php codecept.phar bootstrap
 
 
