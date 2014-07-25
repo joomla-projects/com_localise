@@ -1,14 +1,51 @@
 language: php
 
 php:
-  - 5.3
+  #  - 5.3
   - 5.4
-  - 5.5
+  #  - 5.5
 
 before_script:
+  - phpenv config-add .travis.ini
+  - phpenv rehash
   - composer install
+
+  # Install Apache
+  - sudo apt-get update > /dev/null
+  - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-curl php5-mysql php5-intl
+  - sudo chmod 777 -R /home/travis/build/redCOMPONENT-COM/redSHOP/
+  - sudo ln -s /home/travis/build/redCOMPONENT-COM/redSHOP/tests/system/joomla-cms/ /var/www/joomla-cms
+  - sudo sed -i -e "s,AllowOverride[ ]None,AllowOverride All,g" /etc/apache2/sites-available/default
+  - sudo /etc/init.d/apache2 restart
+  - composer install --dev --prefer-dist
+
+  # Test apache
+  - "curl http://localhost/"
+  - "curl http://localhost/joomla-cms/installation/index.php"
+
+
+  # XVFB
+  - "export DISPLAY=:99.0"
+  - "Xvfb :99.0 -extension RANDR > /dev/null &"
+
+  # Window manager
+  - "sudo apt-get install fluxbox -y --force-yes"
+  - "fluxbox &"
+
+  # Selenium server
+  - "wget http://selenium.googlecode.com/files/selenium-server-standalone-2.39.0.jar"
+  - "java -jar selenium-server-standalone-2.39.0.jar > /dev/null 2>/dev/null &"
+  - sleep 20
+
+  # Codeception
+  - wget http://codeception.com/codecept.phar .
+  - php codecept.phar bootstrap
+
+
 
 script:
   - find ./component -name '*.php' -exec php -l {} \;
   - php .travis/phpcs.php
   - php .travis/phpmd.php
+  - php codecept.phar run
+
