@@ -9,6 +9,6 @@ before_script:
   - composer install
 
 script:
-  - find ./component -name '*.php' -exec php -l {} \;
+  - php .travis/phppec.php administrator/
   - php .travis/phpcs.php
   - php .travis/phpmd.php
