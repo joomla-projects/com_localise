@@ -39,7 +39,6 @@ before_script:
   - sleep 20
 
   # Codeception
-  - wget http://codeception.com/codecept.phar .
   - php codecept.phar bootstrap
 
 
