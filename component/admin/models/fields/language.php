@@ -81,13 +81,16 @@ class JFormFieldLanguage extends JFormField
 				$language->name,
 				array(
 					'option.attr' => 'attributes',
-					'attr' => 'class="' . ($language->tag == $reference ? 'iconlist-16-reference" title="' . JText::_('COM_LOCALISE_TOOLTIP_FIELD_LANGUAGE_REFERENCE') . '"' : '"'
+					'attr' => 'class="' . ($language->tag == $reference ? 'iconlist-16-reference" title="'
+						. JText::_('COM_LOCALISE_TOOLTIP_FIELD_LANGUAGE_REFERENCE') . '"' : '"'
 					)
 				)
 			);
 		}
 
-		$return = JHtml::_('select.genericlist', $options, $this->name, array('id' => $this->id, 'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes));
+		$return = JHtml::_('select.genericlist', $options, $this->name, array('id' => $this->id, 'list.select' => $this->value,
+					'option.attr' => 'attributes', 'list.attr' => $attributes)
+					);
 
 		return $return;
 	}

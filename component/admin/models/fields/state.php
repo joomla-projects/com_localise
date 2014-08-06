@@ -47,14 +47,26 @@ class JFormFieldState extends JFormField
 
 		foreach ($this->element->children() as $option)
 		{
-			$options[] = JHtml::_('select.option', $option->attributes('value'), JText::_(trim($option)), array('option.attr' => 'attributes', 'attr' => 'class="localise-icon inlanguage"'));
+			$options[] = JHtml::_('select.option', $option->attributes('value'), JText::_(trim($option)),
+						array('option.attr' => 'attributes', 'attr' => 'class="localise-icon inlanguage"')
+						);
 		}
 
-		$options[] = JHtml::_('select.option', 'inlanguage', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_INLANGUAGE'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-inlanguage inlanguage"'));
-		$options[] = JHtml::_('select.option', 'unexisting', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_UNEXISTING'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-unexisting unexisting"'));
-		$options[] = JHtml::_('select.option', 'notinreference', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_NOTINREFERENCE'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-notinreference notinreference"'));
-		$options[] = JHtml::_('select.option', 'error', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_ERROR'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-error error"'));
-		$return    = JHtml::_('select.genericlist', $options, $this->name, array('id' => $this->id, 'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes));
+		$options[] = JHtml::_('select.option', 'inlanguage', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_INLANGUAGE'),
+						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-inlanguage inlanguage"')
+						);
+		$options[] = JHtml::_('select.option', 'unexisting', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_UNEXISTING'),
+						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-unexisting unexisting"')
+						);
+		$options[] = JHtml::_('select.option', 'notinreference', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_NOTINREFERENCE'),
+						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-notinreference notinreference"')
+						);
+		$options[] = JHtml::_('select.option', 'error', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_ERROR'),
+						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-error error"')
+						);
+		$return    = JHtml::_('select.genericlist', $options, $this->name,
+						array('id' => $this->id, 'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes)
+						);
 
 		return $return;
 	}

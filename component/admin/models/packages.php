@@ -194,7 +194,7 @@ class LocaliseModelPackages extends JModelList
 	}
 
 	/**
-	 * Remove languages
+	 * Remove packages
 	 *
 	 * @param   array  $selected  array of selected packages
 	 *
@@ -209,6 +209,80 @@ class LocaliseModelPackages extends JModelList
 			if (!JFile::delete($path))
 			{
 				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGES_REMOVE', $package));
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Export packages
+	 *
+	 * @param   array  $selected  array of selected packages
+	 *
+	 * @return  boolean  success or failure
+	 */
+	public function export($selected)
+	{
+		foreach ($selected as $package)
+		{
+			$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$package.xml";
+
+			if (JFile::exists($path))
+			{
+				ob_clean();
+				$pack = file_get_contents($path);
+				header("Expires: 0");
+				header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+				header('Content-Type: application/xml');
+				header('Content-Disposition: attachment; filename="' . $package . '.xml"');
+				header('Content-Length: ' . strlen($pack));
+				header("Cache-Control: maxage=1");
+				header("Pragma: public");
+				header("Content-Transfer-Encoding: binary");
+				echo $pack;
+				exit;
+			}
+			else
+			{
+				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGES_EXPORT', $package));
+			}
+		}
+	}
+
+	/**
+	 * Clone packages
+	 *
+	 * @param   array  $selected  array of selected packages
+	 *
+	 * @return  boolean  success or failure
+	 */
+	public function duplicate($selected)
+	{
+		foreach ($selected as $package)
+		{
+			$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$package.xml";
+
+			if (JFile::exists($path))
+			{
+				$pack = file_get_contents($path);
+				$newpackage = $package . '_' . JFactory::getDate()->format("Y-m-d-H-i-s");
+				$newpath = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$newpackage.xml";
+
+				JFile::write($newpath, $pack);
+			}
+			else
+			{
+				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGES_READ', $package));
+
+				return false;
+			}
+
+			if (!JFile::exists($newpath))
+			{
+				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGES_CLONE', $package));
 
 				return false;
 			}

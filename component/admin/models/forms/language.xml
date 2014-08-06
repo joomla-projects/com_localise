@@ -17,7 +17,7 @@
 			default="0"
 			required="true"
 			label="COM_LOCALISE_LABEL_LANGUAGE_FIRSTDAY"
-			description="COM_LOCALISE_LABEL_LANGUAGE_FIRSTDAT_DESC">
+			description="COM_LOCALISE_LABEL_LANGUAGE_FIRSTDAY_DESC">
 			<option value="0">SUNDAY</option>
 			<option value="1">MONDAY</option>
 			<option value="2">TUESDAY</option>
@@ -26,6 +26,13 @@
 			<option value="5">FRIDAY</option>
 			<option value="6">SATURDAY</option>
 		</field>
+		<field
+			name="weekEnd"
+			type="text"
+			class="ltr"
+			size="10"
+			label="COM_LOCALISE_LABEL_LANGUAGE_WEEKEND"
+			description="COM_LOCALISE_LABEL_LANGUAGE_WEEKEND_DESC" />
 		<field
 			name="tag"
 			type="text"

@@ -50,9 +50,15 @@ class JFormFieldStorage extends JFormField
 			$options[] = JHtml::_('select.option', $option->attributes('value'), JText::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
 		}
 
-		$options[] = JHtml::_('select.option', 'global', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STORAGE_GLOBAL'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-global"'));
-		$options[] = JHtml::_('select.option', 'local', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STORAGE_LOCAL'), array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-local"'));
-		$return    = JHtml::_('select.genericlist', $options, $this->name, array('id' => $this->id, 'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes));
+		$options[] = JHtml::_('select.option', 'global', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STORAGE_GLOBAL'),
+					array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-global"')
+					);
+		$options[] = JHtml::_('select.option', 'local', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STORAGE_LOCAL'),
+					array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-local"')
+					);
+		$return    = JHtml::_('select.genericlist', $options, $this->name, array('id' => $this->id, 'list.select' => $this->value,
+					'option.attr' => 'attributes', 'list.attr' => $attributes)
+					);
 
 		return $return;
 	}

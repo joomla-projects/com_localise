@@ -33,12 +33,12 @@ class LocaliseControllerPackage extends JControllerForm
 
 		// Get the id
 		$cid = $input->get('cid', array(), 'array');
-		$cid = count($cid) ? $cid[0] : '';
+		$id = count($cid) ? $cid[0] : '';
 
-		if (!empty($cid))
+		if (!empty($id))
 		{
 			// From the packages view
-			$name = $cid;
+			$name = $id;
 			$path = JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $name . '.xml';
 			$id   = LocaliseHelper::getFileId($path);
 		}
@@ -55,9 +55,10 @@ class LocaliseControllerPackage extends JControllerForm
 		}
 
 		// Set the id, and path in the session
-		if (!empty($id) && !empty($name))
+		$app->setUserState('com_localise.edit.package.id', $id);
+
+		if (!empty($name))
 		{
-			$app->setUserState('com_localise.edit.package.id', $id);
 			$app->setUserState('com_localise.package.name', $name);
 		}
 
@@ -65,11 +66,6 @@ class LocaliseControllerPackage extends JControllerForm
 		if (!empty($id) && $input->get('task') == 'add')
 		{
 			$input->set('task', 'edit');
-		}
-
-		if (!empty($id))
-		{
-			$input->set('id', $id);
 		}
 
 		$input->set('cid', array());
@@ -171,5 +167,31 @@ class LocaliseControllerPackage extends JControllerForm
 			);
 		}
 		*/
+	}
+
+	/**
+	 * Method for uploading a file.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2
+	 */
+	public function uploadFile()
+	{
+		$app      = JFactory::getApplication();
+		$model    = $this->getModel();
+		$upload   = $app->input->files->get('files');
+
+		if ($return = $model->uploadFile($upload))
+		{
+			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_FILE_UPLOAD_SUCCESS', $upload['name']));
+		}
+		else
+		{
+			$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_FILE_UPLOAD'), 'error');
+		}
+
+		$url = 'index.php?option=com_localise&view=packages';
+		$this->setRedirect(JRoute::_($url, false));
 	}
 }

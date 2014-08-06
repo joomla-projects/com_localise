@@ -41,7 +41,9 @@ class LocaliseViewExportPackage extends JViewLegacy
 		}
 
 		JFactory::getDocument()->setMimeEncoding('application/zip');
-		JFactory::getApplication()->setHeader('Content-disposition', 'attachment; filename="' . $item->filename . '.zip"; creation-date="' . JFactory::getDate()->toRFC822() . '"', true);
+		JFactory::getApplication()->setHeader('Content-disposition', 'attachment; filename="' . $item->filename . '.zip";
+				creation-date="' . JFactory::getDate()->toRFC822() . '"', true
+				);
 
 		echo $item->contents;
 	}

@@ -28,9 +28,9 @@ class LocaliseControllerLanguage extends JControllerForm
 	 *
 	 * @return  object  The model.
 	 */
-	public function getModel($name = 'Language', $prefix = 'LocaliseModel', $config = array('ignore_request' => false))
+	public function getModel($name = 'Language', $prefix = 'LocaliseModel', $config = array('ignore_request' => true))
 	{
-		return parent::getModel($name, $prefix, $config);
+		return parent::getModel($name, $prefix, array('ignore_request' => false));
 	}
 
 	/**

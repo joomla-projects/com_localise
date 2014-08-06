@@ -114,12 +114,6 @@ class LocaliseModelPackageFile extends JModelForm
 
 		$form->setFieldAttribute('translations', 'packagefile', $name, 'translations');
 
-		if (!empty($id))
-		{
-			$form->setFieldAttribute('name', 'readonly', 'true');
-			$form->setFieldAttribute('name', 'class', 'readonly');
-		}
-
 		// Check for an error.
 		if (JError::isError($form))
 		{
@@ -148,7 +142,6 @@ class LocaliseModelPackageFile extends JModelForm
 		if (empty($data))
 		{
 			$data = $this->getItem();
-			$data->description = JText::_($data->description);
 		}
 
 		return $data;
@@ -231,6 +224,7 @@ class LocaliseModelPackageFile extends JModelForm
 				// $package->standalone  = substr($manifest, 0, 4) == 'fil_';
 				$package->title       = (string) $xml->title;
 				$package->version     = (string) $xml->version;
+				$package->packversion = (string) $xml->packversion;
 				$package->description = (string) $xml->description;
 				$package->language    = (string) $xml->language;
 				$package->license     = (string) $xml->license;
@@ -238,6 +232,10 @@ class LocaliseModelPackageFile extends JModelForm
 				$package->author      = (string) $xml->author;
 				$package->authoremail = (string) $xml->authoremail;
 				$package->authorurl   = (string) $xml->authorurl;
+				$package->packager    = (string) $xml->packager;
+				$package->packagerurl = (string) $xml->packagerurl;
+				$package->servername  = (string) $xml->servername;
+				$package->serverurl   = (string) $xml->serverurl;
 				$package->writable    = LocaliseHelper::isWritable($package->path);
 
 				$user = JFactory::getUser($table->checked_out);
@@ -313,6 +311,22 @@ class LocaliseModelPackageFile extends JModelForm
 	 */
 	public function save($data)
 	{
+		// When editing a package, find the original path
+		$app = JFactory::getApplication('administrator');
+		$originalId = $app->getUserState('com_localise.edit.package.id');
+
+		if (!empty($originalId))
+		{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select($db->quoteName('path'))
+				->from($db->quoteName('#__localise'))
+				->where($db->quoteName('id') . ' = ' . $originalId);
+			$db->setQuery($query);
+
+			$oldpath = $db->loadResult('path');
+		}
+
 		// Get the package name
 		$name = $data['name'];
 
@@ -338,13 +352,17 @@ class LocaliseModelPackageFile extends JModelForm
 			$descriptionElement = $dom->createElement('description', $description);
 			$manifestElement = $dom->createElement('manifest', $manifest);
 			$versionElement = $dom->createElement('version', $data['version']);
+			$packversionElement = $dom->createElement('packversion', $data['packversion']);
 			$authorElement = $dom->createElement('author', $data['author']);
-			$copyrightElement = $dom->createElement('copyright', $data['copyright']);
 			$licenseElement = $dom->createElement('license', $data['license']);
 			$authorEmailElement = $dom->createElement('authoremail', $data['authoremail']);
 			$authorUrlElement = $dom->createElement('authorurl', $data['authorurl']);
 			$languageElement = $dom->createElement('language', $data['language']);
 			$copyrightElement = $dom->createElement('copyright', $data['copyright']);
+			$packagerElement = $dom->createElement('packager', $data['packager']);
+			$packagerUrlElement = $dom->createElement('packagerurl', $data['packagerurl']);
+			$servernameElement = $dom->createElement('servername', $data['servername']);
+			$serverurlElement = $dom->createElement('serverurl', $data['serverurl']);
 
 			// Set the client attribute on the manifest element
 
@@ -359,6 +377,7 @@ class LocaliseModelPackageFile extends JModelForm
 			$packageXml->appendChild($descriptionElement);
 			$packageXml->appendChild($manifestElement);
 			$packageXml->appendChild($versionElement);
+			$packageXml->appendChild($packversionElement);
 			$packageXml->appendChild($authorElement);
 			$packageXml->appendChild($copyrightElement);
 			$packageXml->appendChild($licenseElement);
@@ -366,6 +385,10 @@ class LocaliseModelPackageFile extends JModelForm
 			$packageXml->appendChild($authorUrlElement);
 			$packageXml->appendChild($languageElement);
 			$packageXml->appendChild($copyrightElement);
+			$packageXml->appendChild($packagerElement);
+			$packageXml->appendChild($packagerUrlElement);
+			$packageXml->appendChild($servernameElement);
+			$packageXml->appendChild($serverurlElement);
 
 			$administrator = array();
 			$site          = array();
@@ -496,6 +519,7 @@ class LocaliseModelPackageFile extends JModelForm
 		*/
 		$id = LocaliseHelper::getFileId($path);
 		$this->setState('package.id', $id);
+		JFactory::getApplication()->setUserState('com_localise.edit.package.id', $id);
 
 		// Bind the rules.
 		$table = $this->getTable();
@@ -523,6 +547,17 @@ class LocaliseModelPackageFile extends JModelForm
 			return false;
 		}
 
+		// Delete the older file
+		if ($path !== $oldpath && file_exists($oldpath))
+		{
+			if (!JFile::delete($oldpath))
+			{
+				$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_OLDFILE_REMOVE'), 'notice');
+			}
+
+			$app->setUserState('com_localise.edit.package.id');
+		}
+
 		return true;
 	}
 
@@ -537,6 +572,16 @@ class LocaliseModelPackageFile extends JModelForm
 	{
 		// The data could potentially be loaded from the file with $this->getItem() instead of using directly the data from the post
 		$app = JFactory::getApplication();
+
+		// Prevent generating and downloading Master package
+		if (strpos($data['name'], 'master_') !== false)
+		{
+			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_ERROR_MASTER_PACKAGE_DOWNLOAD_FORBIDDEN', $data['name']), 'warning');
+			$app->redirect(JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('package.id'), false));
+
+			return false;
+		}
+
 		$administrator = array();
 		$site          = array();
 		$msg = null;
@@ -576,13 +621,15 @@ class LocaliseModelPackageFile extends JModelForm
 		$text .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 		$text .= '<extension type="file" version="' . $small_version . '" method="upgrade">' . "\n";
 		$text .= "\t" . '<name>' . $data['name'] . $data['language'] . '</name>' . "\n";
-		$text .= "\t" . '<version>' . $data['version'] . '</version>' . "\n";
+		$text .= "\t" . '<version>' . $data['version'] . '.' . $data['packversion'] . '</version>' . "\n";
 		$text .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
 		$text .= "\t" . '<author>' . $data['author'] . '</author>' . "\n";
 		$text .= "\t" . '<authorEmail>' . $data['authoremail'] . '</authorEmail>' . "\n";
 		$text .= "\t" . '<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
 		$text .= "\t" . '<copyright>' . $data['copyright'] . '</copyright>' . "\n";
 		$text .= "\t" . '<license>' . $data['license'] . '</license>' . "\n";
+		$text .= "\t" . '<packager>' . $data['packager'] . '</packager>' . "\n";
+		$text .= "\t" . '<packagerurl>' . $data['packagerurl'] . '</packagerurl>' . "\n";
 		$text .= "\t" . '<description><![CDATA[' . $data['description'] . ']]></description>' . "\n";
 		$text .= "\t" . '<fileset>' . "\n";
 
@@ -605,7 +652,7 @@ class LocaliseModelPackageFile extends JModelForm
 
 				if (JFile::exists($path))
 				{
-					$file_data = JFile::read($path);
+					$file_data = file_get_contents($path);
 				}
 
 				if (JFile::exists($path) && !empty($file_data))
@@ -626,9 +673,9 @@ class LocaliseModelPackageFile extends JModelForm
 			$site_txt .= "\t".'<params />' . "\n";
 			$site_txt .= "\t".'</extension>' . "\n";
 			$site_package_files[] = array('name'=>'install.xml','data'=>$site_txt);
-			$language_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.xml');
+			$language_data = file_get_contents(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.xml');
 			$site_package_files[] = array('name' => $data['language'] . '.xml','data'=>$language_data);
-			$language_data = JFile::read(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
+			$language_data = file_get_contents(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
 			$site_package_files[] = array('name' => $data['language'] . '.localise.php','data' => $language_data);
 
 			$site_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
@@ -680,7 +727,7 @@ class LocaliseModelPackageFile extends JModelForm
 
 				if (JFile::exists($path))
 				{
-					$file_data = JFile::read($path);
+					$file_data = file_get_contents($path);
 				}
 
 				if (JFile::exists($path) && !empty($file_data))
@@ -701,9 +748,9 @@ class LocaliseModelPackageFile extends JModelForm
 			$admin_txt .= "\t".'<params />' . "\n";
 			$admin_txt .= "\t".'</extension>' . "\n";
 			$admin_package_files[] = array('name'=>'install.xml','data'=>$admin_txt);
-			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.xml');
+			$language_data = file_get_contents(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.xml');
 			$admin_package_files[] = array('name'=>$data['language'] . '.xml','data' => $language_data);
-			$language_data = JFile::read(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
+			$language_data = file_get_contents(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.localise.php');
 			$admin_package_files[] = array('name'=>$data['language'] . '.localise.php','data' => $language_data);
 
 
@@ -743,6 +790,14 @@ class LocaliseModelPackageFile extends JModelForm
 		}
 
 		$text .= "\t" . '</fileset>' . "\n";
+
+		if (!empty($data['serverurl']))
+		{
+			$text .= "\t" . '<updateservers>' . "\n";
+			$text .= "\t\t" . '<server type="collection" priority="1" name="' . $data['servername'] . '">' . $data['serverurl'] . '</server>' . "\n";
+			$text .= "\t" . '</updateservers>' . "\n";
+		}
+
 		$text .= '</extension>' . "\n";
 
 		$main_package_files[] = array('name' => $data['name'] . $data['language'] . '.xml', 'data' => $text);
@@ -767,11 +822,12 @@ class LocaliseModelPackageFile extends JModelForm
 		}
 
 		ob_clean();
-		$zipdata = JFile::read($ziproot);
+		$zipdata = file_get_contents($ziproot);
 		header("Expires: 0");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header('Content-Type: application/zip');
-		header('Content-Disposition: attachment; filename="' . $data['name'] . '_' . $data['language'] . '_' . $data['version'] . '.zip"');
+		header('Content-Disposition: attachment; filename="'
+				. $data['name'] . '_' . $data['language'] . '_' . $data['version'] . 'v' . $data['packversion'] . '.zip"');
 		header('Content-Length: ' . strlen($zipdata));
 		header("Cache-Control: maxage=1");
 		header("Pragma: public");

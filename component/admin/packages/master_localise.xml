@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <title>master_localise</title>
+  <description>com_localise_package_localise_desc</description>
+  <manifest>localise</manifest>
+  <version>3.0</version>
+  <author>Localise Team</author>
+  <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+  <authoremail></authoremail>
+  <authorurl></authorurl>
+  <language>en-GB</language>
+  <copyright>Copyright (C) 2012 - today Localise Team. All rights reserved.</copyright>
+  <administrator>
+    <filename>com_localise.ini</filename>
+    <filename>com_localise.sys.ini</filename>
+  </administrator>
+</package>

@@ -34,13 +34,15 @@ class LocaliseViewPackages extends JViewLegacy
 	 *
 	 * @return  void
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		// Get the data
-		$this->items = $this->get('Items');
-		$this->pagination = $this->get('Pagination');
-		$this->state = $this->get('State');
-		$this->form = $this->get('Form');
+		$app				= JFactory::getApplication();
+		$this->items		= $this->get('Items');
+		$this->pagination	= $this->get('Pagination');
+		$this->state		= $this->get('State');
+		$this->form			= $this->get('Form');
+		$this->file			= $app->input->get('file');
 
 		LocaliseHelper::addSubmenu('packages');
 
@@ -85,7 +87,7 @@ class LocaliseViewPackages extends JViewLegacy
 	{
 		$canDo = JHelperContent::getActions('com_localise', 'component');
 
-		JToolBarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', JText::_('COM_LOCALISE_HEADER_PACKAGES')), 'install');
+		JToolBarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', JText::_('COM_LOCALISE_HEADER_PACKAGES')), 'comments-2 langmanager');
 
 		if ($canDo->get('localise.create'))
 		{
@@ -97,14 +99,14 @@ class LocaliseViewPackages extends JViewLegacy
 			JToolbarHelper::addNew('packagefile.add', 'COM_LOCALISE_NEW_FILE_PACKAGE');
 		}
 
-		if ($canDo->get('localise.edit'))
-		{
-			JToolbarHelper::editList('package.edit');
-		}
-
 		if ($canDo->get('localise.create') || $canDo->get('localise.edit'))
 		{
 			JToolbarHelper::divider();
+		}
+
+		if ($canDo->get('localise.create'))
+		{
+			JToolbarHelper::custom('packages.duplicate', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
 		}
 
 		if ($canDo->get('localise.delete'))
@@ -113,8 +115,13 @@ class LocaliseViewPackages extends JViewLegacy
 			JToolBarHelper::divider();
 		}
 
-		JToolBarHelper::custom('package.download', 'out.png', 'out.png', 'JTOOLBAR_EXPORT', true);
-		JToolBarHelper::divider();
+		if ($canDo->get('localise.create'))
+		{
+			JToolbarHelper::modal('fileModal', 'icon-upload', 'COM_LOCALISE_BUTTON_IMPORT_XML');
+			JToolBarHelper::divider();
+			JToolbarHelper::custom('packages.export',  'out.png', 'out.png', 'COM_LOCALISE_BUTTON_EXPORT_XML', true, false);
+			JToolBarHelper::divider();
+		}
 
 		if ($canDo->get('package.batch'))
 		{

@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 /**
- * View to edit a laguage.
+ * View to edit a language.
  *
  * @package     Extensions.Components
  * @subpackage  Localise
@@ -73,7 +73,13 @@ class LocaliseViewLanguage extends JViewLegacy
 		$isNew      = empty($this->item->id);
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 
-		JToolbarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', $isNew ? JText::_('COM_LOCALISE_HEADER_LANGUAGE_NEW') : JText::_('COM_LOCALISE_HEADER_LANGUAGE_EDIT')), 'icon-comments-2 langmanager');
+		JToolbarHelper::title(
+			JText::sprintf(
+				'COM_LOCALISE_HEADER_MANAGER',
+				$isNew ? JText::_('COM_LOCALISE_HEADER_LANGUAGE_NEW') : JText::_('COM_LOCALISE_HEADER_LANGUAGE_EDIT')
+			),
+			'icon-comments-2 langmanager'
+		);
 
 		// If not checked out, can save the item.
 		if (!$checkedOut)

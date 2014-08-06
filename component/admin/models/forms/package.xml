@@ -42,8 +42,15 @@
 			name="version"
 			type="text"
 			required="true"
-			label="COM_LOCALISE_LABEL_PACKAGE_VERSION"
-			description="COM_LOCALISE_LABEL_PACKAGE_VERSION_DESC" />
+			label="COM_LOCALISE_LABEL_PACKAGE_JOOMLA_VERSION"
+			description="COM_LOCALISE_LABEL_PACKAGE_JOOMLA_VERSION_DESC" />
+		<field
+			id="packversion"
+			name="packversion"
+			type="text"
+			required="true"
+			label="COM_LOCALISE_LABEL_PACKAGE_PACK_VERSION"
+			description="COM_LOCALISE_LABEL_PACKAGE_PACK_VERSION_DESC" />
 		<field
 			id="author"
 			name="author"
