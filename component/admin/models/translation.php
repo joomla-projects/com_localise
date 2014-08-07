@@ -144,8 +144,6 @@ class LocaliseModelTranslation extends JModelForm
 			$conf    = JFactory::getConfig();
 			$caching = $conf->get('caching') >= 1;
 
-			$caching = 0;
-
 			$id = empty($options->id) ? $this->getState('translation.id') : LocaliseHelper::getFileId($options->id);
 			$path = empty($options->path) ? $this->getState('translation.path') : $options->path;
 			$refpath = empty($options->refpath) ? $this->getState('translation.refpath') : $options->refpath;
