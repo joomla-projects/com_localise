@@ -711,6 +711,26 @@ class LocaliseModelTranslations extends JModelList
 	}
 
 	/**
+	* Returns an array with sliced translation list.
+	*
+	* @param int $start The start index.
+	* @param int $limit The limit of the list.
+	*
+	* @return array The translations list
+	*/
+	public function scanTranslations($start, $limit)
+	{
+		$this->scanLocalTranslationsFolders();
+		$this->scanGlobalTranslationsFolders();
+		$this->scanReference();
+		$this->scanOverride();
+
+		$translations = array_slice($this->translations, $start, $limit);
+
+		return $this->translations;
+	}
+
+	/**
 	 * todo: missing function description
 	 *
 	 * @return array
@@ -738,11 +758,7 @@ class LocaliseModelTranslations extends JModelList
 
 			if (!is_array($this->translations))
 			{
-				$this->translations = array();
-				$this->scanLocalTranslationsFolders();
-				$this->scanGlobalTranslationsFolders();
-				$this->scanReference();
-				$this->scanOverride();
+				$this->translations = $this->scanTranslations($this->getState('list.start'), $this->getState('list.limit'));
 
 				$cache_controller->store($this->translations, $key, 'localise');
 			}
@@ -750,15 +766,9 @@ class LocaliseModelTranslations extends JModelList
 			foreach ($this->translations as $key => $translation)
 			{
 				$model = JModelLegacy::getInstance('Translation', 'LocaliseModel', array('ignore_request' => true));
-				$model->setState('translation.id', LocaliseHelper::getFileId($translation->path));
-				$model->setState('translation.path', $translation->path);
-				$model->setState('translation.refpath', $translation->refpath);
-				$model->setState('translation.reference', $this->getState('translations.reference'));
-				$model->setState('translation.client', $translation->client);
-				$model->setState('translation.tag', $translation->tag);
-				$model->setState('translation.filename', $translation->filename);
 
-				$item = $model->getItem();
+				$item = $model->getItem($translation);
+
 				$state = count($item->error) ? 'error' : $translation->state;
 
 				if (preg_match("/$filter_state/", $state) && preg_match("/$filter_tag/", $translation->tag))

@@ -137,21 +137,30 @@ class LocaliseModelTranslation extends JModelForm
 	 *
 	 * @return JObject|mixed|null
 	 */
-	public function getItem()
+	public function getItem($options = array())
 	{
 		if (!isset($this->item))
 		{
 			$conf    = JFactory::getConfig();
 			$caching = $conf->get('caching') >= 1;
 
+			$caching = 0;
+
+			$id = empty($options->id) ? $this->getState('translation.id') : LocaliseHelper::getFileId($options->id);
+			$path = empty($options->path) ? $this->getState('translation.path') : $options->path;
+			$refpath = empty($options->refpath) ? $this->getState('translation.refpath') : $options->refpath;
+			$client = empty($options->client) ? $this->getState('translation.client') : $options->client;
+			$tag = empty($options->tag) ? $this->getState('translation.tag') : $options->tag;
+			$filename = empty($options->filename) ? $this->getState('translation.filename') : $options->filename;
+			$reference = empty($options->reference) ? $this->getState('translation.reference') : $options->reference;
+
 			if ($caching)
 			{
-				$keycache   = $this->getState('translation.client') . '.' . $this->getState('translation.tag') . '.' .
-					$this->getState('translation.filename') . '.' . 'translation';
+				$keycache = $client . '.' . $tag . '.' . $filename . '.' . 'translation';
 				$cache      = JFactory::getCache('com_localise', '');
 				$this->item = $cache->get($keycache);
 
-				if ($this->item && $this->item->reference != $this->getState('translation.reference'))
+				if ($this->item && $this->item->reference != $reference)
 				{
 					$this->item = null;
 				}
@@ -163,14 +172,12 @@ class LocaliseModelTranslation extends JModelForm
 
 			if (!$this->item)
 			{
-				$path = JFile::exists($this->getState('translation.path'))
-					? $this->getState('translation.path')
-					: $this->getState('translation.refpath');
+				$path = JFile::exists($path) ? $path : $refpath;
 
 				$this->item = new JObject(
 									array
 										(
-										'reference'           => $this->getState('translation.reference'),
+										'reference'           => $reference,
 										'bom'                 => 'UTF-8',
 										'svn'                 => '',
 										'version'             => '',
@@ -180,7 +187,7 @@ class LocaliseModelTranslation extends JModelForm
 										'maincopyright'       => '',
 										'additionalcopyright' => array(),
 										'license'             => '',
-										'exists'              => JFile::exists($this->getState('translation.path')),
+										'exists'              => JFile::exists($path),
 										'translated'          => 0,
 										'unchanged'           => 0,
 										'extra'               => 0,
@@ -384,8 +391,8 @@ class LocaliseModelTranslation extends JModelForm
 
 				if ($this->getState('translation.layout') != 'raw' && empty($this->item->error))
 				{
-					$sections    = LocaliseHelper::parseSections($this->getState('translation.path'));
-					$refsections = LocaliseHelper::parseSections($this->getState('translation.refpath'));
+					$sections    = LocaliseHelper::parseSections($path);
+					$refsections = LocaliseHelper::parseSections($refpath);
 
 					if (!empty($refsections['keys']))
 					{
@@ -395,7 +402,7 @@ class LocaliseModelTranslation extends JModelForm
 
 							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']) && $sections['keys'][$key] != '')
 							{
-								if ($sections['keys'][$key] != $string || $this->getState('translation.path') == $this->getState('translation.refpath'))
+								if ($sections['keys'][$key] != $string || $path == $refpath)
 								{
 									$this->item->translated++;
 								}
@@ -429,10 +436,10 @@ class LocaliseModelTranslation extends JModelForm
 							: 0);
 				}
 
-				if ($this->getState('translation.id'))
+				if ($id)
 				{
 					$table = $this->getTable();
-					$table->load($this->getState('translation.id'));
+					$table->load($id);
 					$user = JFactory::getUser($table->checked_out);
 					$this->item->setProperties($table->getProperties());
 
