@@ -119,6 +119,12 @@
 			class="ltr"
 			label="COM_LOCALISE_LABEL_LICENSE"
 			description="COM_LOCALISE_LABEL_LICENSE_DESC" />
+		<field
+			name="chunk"
+			type="int"
+			default="25"
+			label="COM_LOCALISE_LABEL_CHUNK"
+			description="COM_LOCALISE_LABEL_CHUNK_DESC" />
 	</fieldset>
 	<fieldset
 		name="permissions"

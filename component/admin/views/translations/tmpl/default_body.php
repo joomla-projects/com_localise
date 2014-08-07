@@ -57,7 +57,7 @@ $lang = JFactory::getLanguage();
 		<td dir="ltr" class="center"><?php echo $item->tag; ?></td>
 		<td dir="ltr" class="center"><?php echo $item->client ?></td>
 		<td dir="ltr">
-			<?php if ($item->checked_out) : ?>
+			<?php if (!empty($item->checked_out)) : ?>
 				<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $canCheckin); ?>
 			<?php endif; ?>
 			<?php if ($item->writable && !$item->error && $canEdit) : ?>
