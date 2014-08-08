@@ -44,7 +44,7 @@ class LocaliseModelTranslations extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app  = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$data = $app->input->get('filters', array(), 'array');
 
 		if (empty($data))
@@ -61,7 +61,7 @@ class LocaliseModelTranslations extends JModelList
 
 		$this->setState(
 			'filter.search',
-			isset($data['search']['expr'])    ? $data['search']['expr'] : ''
+			isset($data['search']['expr']) ? $data['search']['expr'] : ''
 		);
 		$this->setState(
 			'filter.storage',
@@ -69,26 +69,26 @@ class LocaliseModelTranslations extends JModelList
 		);
 		$this->setState(
 			'filter.origin',
-			isset($data['select']['origin'])  ? $data['select']['origin'] : ''
+			isset($data['select']['origin']) ? $data['select']['origin'] : ''
 		);
 		$this->setState(
 			'filter.state',
-			isset($data['select']['state'])   ? $data['select']['state'] : ''
+			isset($data['select']['state']) ? $data['select']['state'] : ''
 		);
 		$this->setState(
 			'filter.type',
-			isset($data['select']['type'])    ? $data['select']['type'] : ''
+			isset($data['select']['type']) ? $data['select']['type'] : ''
 		);
 		$this->setState(
 			'filter.client',
-			isset($data['select']['client'])  ? $data['select']['client'] : ''
+			isset($data['select']['client']) ? $data['select']['client'] : ''
 		);
 		$this->setState(
 			'filter.tag',
-			isset($data['select']['tag'])     ? $data['select']['tag'] : ''
+			isset($data['select']['tag']) ? $data['select']['tag'] : ''
 		);
 
-		$params    = JComponentHelper::getParams('com_localise');
+		$params = JComponentHelper::getParams('com_localise');
 		$this->setState('params', $params);
 
 		$reference = $params->get('reference', 'en-GB');
@@ -151,23 +151,23 @@ class LocaliseModelTranslations extends JModelList
 	private function scanLocalTranslationsFolders()
 	{
 		$filter_storage = $this->getState('filter.storage');
-		$filter_origin  = $this->getState('filter.origin') ? $this->getState('filter.origin') : '.';
-		$reftag         = $this->getState('translations.reference');
+		$filter_origin = $this->getState('filter.origin') ? $this->getState('filter.origin') : '.';
+		$reftag = $this->getState('translations.reference');
 
 		if ($filter_storage != 'global')
 		{
-			$filter_tag    = $this->getState('filter.tag') ? ("^($reftag|" . $this->getState('filter.tag') . ")$") : '.';
+			$filter_tag = $this->getState('filter.tag') ? ("^($reftag|" . $this->getState('filter.tag') . ")$") : '.';
 			$filter_search = $this->getState('filter.search') ? $this->getState('filter.search') : '.';
-			$scans         = LocaliseHelper::getScans($this->getState('filter.client'), $this->getState('filter.type'));
+			$scans = LocaliseHelper::getScans($this->getState('filter.client'), $this->getState('filter.type'));
 
 			foreach ($scans as $scan)
 			{
 				// For all scans
 				$prefix = $scan['prefix'];
 				$suffix = $scan['suffix'];
-				$type   = $scan['type'];
+				$type = $scan['type'];
 				$client = $scan['client'];
-				$path   = $scan['path'];
+				$path = $scan['path'];
 				$folder = $scan['folder'];
 
 				$extensions = JFolder::folders($path, $filter_search);
@@ -181,7 +181,7 @@ class LocaliseModelTranslations extends JModelList
 
 						foreach ($tags as $tag)
 						{
-							$file   = "$path$extension$folder/language/$tag/$tag.$prefix$extension$suffix.ini";
+							$file = "$path$extension$folder/language/$tag/$tag.$prefix$extension$suffix.ini";
 							$origin = LocaliseHelper::getOrigin("$prefix$extension$suffix", $client);
 
 							if (JFile::exists($file) && preg_match("/$filter_origin/", $origin))
@@ -218,14 +218,14 @@ class LocaliseModelTranslations extends JModelList
 	private function scanGlobalTranslationsFolders()
 	{
 		$filter_storage = $this->getState('filter.storage');
-		$reftag         = $this->getState('translations.reference');
+		$reftag = $this->getState('translations.reference');
 
 		if ($filter_storage != 'local')
 		{
 			// Scan global folder
 			$filter_client = $this->getState('filter.client');
-			$filter_tag    = $this->getState('filter.tag')    ? ("^($reftag|" . $this->getState('filter.tag') . ")$") : '.';
-			$filter_type   = $this->getState('filter.type')   ? $this->getState('filter.type')   : '.';
+			$filter_tag = $this->getState('filter.tag') ? ("^($reftag|" . $this->getState('filter.tag') . ")$") : '.';
+			$filter_type = $this->getState('filter.type') ? $this->getState('filter.type') : '.';
 			$filter_search = $this->getState('filter.search') ? $this->getState('filter.search') : '.';
 			$filter_origin = $this->getState('filter.origin') ? $this->getState('filter.origin') : '.';
 
@@ -352,12 +352,12 @@ class LocaliseModelTranslations extends JModelList
 	 */
 	private function scanReference()
 	{
-		$reftag         = $this->getState('translations.reference');
-		$filter_tag     = $this->getState('filter.tag')    ? ("^($reftag|" . $this->getState('filter.tag') . ")$") : '.';
-		$filter_search  = $this->getState('filter.search') ? $this->getState('filter.search') : '.';
+		$reftag = $this->getState('translations.reference');
+		$filter_tag = $this->getState('filter.tag') ? ("^($reftag|" . $this->getState('filter.tag') . ")$") : '.';
+		$filter_search = $this->getState('filter.search') ? $this->getState('filter.search') : '.';
 		$filter_storage = $this->getState('filter.storage');
-		$filter_origin  = $this->getState('filter.origin');
-		$filter_client  = $this->getState('filter.client');
+		$filter_origin = $this->getState('filter.origin');
+		$filter_client = $this->getState('filter.client');
 
 		if (empty($filter_client))
 		{
@@ -421,14 +421,14 @@ class LocaliseModelTranslations extends JModelList
 					{
 						// Coping with Core files not considered as reference
 						if ($file == $reftag . '.com_messages.ini' || $file == $reftag . '.com_mailto.sys.ini'
-							|| $file == $reftag . '.com_wrapper.ini'|| $file == $reftag . '.com_wrapper.sys.ini' || $file == $reftag . '.finder_cli.ini')
+							|| $file == $reftag . '.com_wrapper.ini' || $file == $reftag . '.com_wrapper.sys.ini' || $file == $reftag . '.finder_cli.ini')
 						{
 							$reftaglength = strlen($reftag);
 
-							$name	= substr($file, 0, -4);
-							$name	= substr($name, $reftaglength + 1);
+							$name = substr($file, 0, -4);
+							$name = substr($name, $reftaglength + 1);
 
-							$origin	= LocaliseHelper::getOrigin($name, $client);
+							$origin = LocaliseHelper::getOrigin($name, $client);
 
 							foreach ($tags as $tag)
 							{
@@ -466,7 +466,7 @@ class LocaliseModelTranslations extends JModelList
 
 						if (preg_match("/^$reftag\.(lib.*)\.ini$/", $file, $matches))
 						{
-							$name   = $matches[1];
+							$name = $matches[1];
 							$origin = LocaliseHelper::getOrigin($name, $client);
 
 							foreach ($tags as $tag)
@@ -504,7 +504,7 @@ class LocaliseModelTranslations extends JModelList
 						}
 						elseif (preg_match("/^$reftag\.(pkg.*)\.ini$/", $file, $matches))
 						{
-							$name   = $matches[1];
+							$name = $matches[1];
 							$origin = LocaliseHelper::getOrigin($name, $client);
 
 							foreach ($tags as $tag)
@@ -542,7 +542,7 @@ class LocaliseModelTranslations extends JModelList
 						}
 						elseif (preg_match("/^$reftag\.(fil.*)\.ini$/", $file, $matches))
 						{
-							$name   = $matches[1];
+							$name = $matches[1];
 							$origin = LocaliseHelper::getOrigin($name, $client);
 
 							foreach ($tags as $tag)
@@ -590,9 +590,9 @@ class LocaliseModelTranslations extends JModelList
 		{
 			$prefix = $scan['prefix'];
 			$suffix = $scan['suffix'];
-			$type   = $scan['type'];
+			$type = $scan['type'];
 			$client = $scan['client'];
-			$path   = $scan['path'];
+			$path = $scan['path'];
 			$folder = $scan['folder'];
 
 			$extensions = JFolder::folders($path, $filter_search);
@@ -654,13 +654,13 @@ class LocaliseModelTranslations extends JModelList
 	private function scanOverride()
 	{
 		// Scan overrides ini files
-		$reftag         = $this->getState('translations.reference');
-		$filter_client  = $this->getState('filter.client');
-		$filter_tag     = $this->getState('filter.tag') ? ("^($reftag|" . $this->getState('filter.tag') . ")$") : '.';
+		$reftag = $this->getState('translations.reference');
+		$filter_client = $this->getState('filter.client');
+		$filter_tag = $this->getState('filter.tag') ? ("^($reftag|" . $this->getState('filter.tag') . ")$") : '.';
 		$filter_storage = $this->getState('filter.storage');
-		$filter_type    = $this->getState('filter.type');
-		$filter_origin  = $this->getState('filter.origin') ? $this->getState('filter.origin') : '.';
-		$filter_search  = $this->getState('filter.search') ? $this->getState('filter.search') : '.';
+		$filter_type = $this->getState('filter.type');
+		$filter_origin = $this->getState('filter.origin') ? $this->getState('filter.origin') : '.';
+		$filter_search = $this->getState('filter.search') ? $this->getState('filter.search') : '.';
 
 		if ((empty($filter_client) || $filter_client != 'installation')
 			&& (empty($filter_storage) || $filter_storage == 'global')
@@ -679,11 +679,11 @@ class LocaliseModelTranslations extends JModelList
 			foreach ($clients as $client)
 			{
 				$tags = JFolder::folders(
-									constant('LOCALISEPATH_' . strtoupper($client)) . '/language',
-									$filter_tag,
-									false,
-									false,
-									array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'pdf_fonts', 'overrides')
+					constant('LOCALISEPATH_' . strtoupper($client)) . '/language',
+					$filter_tag,
+					false,
+					false,
+					array('.svn', 'CVS', '.DS_Store', '__MACOSX', 'pdf_fonts', 'overrides')
 				);
 
 				foreach ($tags as $tag)
@@ -711,13 +711,13 @@ class LocaliseModelTranslations extends JModelList
 	}
 
 	/**
-	* Returns an array with sliced translation list.
-	*
-	* @param int $start The start index.
-	* @param int $limit The limit of the list.
-	*
-	* @return array The translations list
-	*/
+	 * Returns an array with sliced translation list.
+	 *
+	 * @param   int  $start  The start index.
+	 * @param   int  $limit  The limit of the list.
+	 *
+	 * @return array The translations list
+	 */
 	public function scanTranslations($start, $limit)
 	{
 		$this->scanLocalTranslationsFolders();
@@ -740,17 +740,17 @@ class LocaliseModelTranslations extends JModelList
 		if (!isset($this->translations))
 		{
 			$filter_state = $this->getState('filter.state') ? $this->getState('filter.state') : '.';
-			$filter_tag   = $this->getState('filter.tag')   ? ("^" . $this->getState('filter.tag') . "$") : '.';
+			$filter_tag = $this->getState('filter.tag') ? ("^" . $this->getState('filter.tag') . "$") : '.';
 
 			$cache_controller = JCacheController::getInstance();
 
 			$key = 'translation-'
-				. ($this->getState('filter.client')  ? $this->getState('filter.client') . '-' : '')
+				. ($this->getState('filter.client') ? $this->getState('filter.client') . '-' : '')
 				. ($this->getState('filter.storage') ? $this->getState('filter.storage') . '-' : '')
-				. ($this->getState('filter.tag')     ? ("^(" . $this->getState('translations.reference') . "|" . $this->getState('filter.tag') . ")$") . '-' : '')
-				. ($this->getState('filter.type')    ? $this->getState('filter.type') . '-' : '')
-				. ($this->getState('filter.search')  ? $this->getState('filter.search') . '-' : '')
-				. ($this->getState('filter.origin')  ? $this->getState('filter.origin') . '-' : '');
+				. ($this->getState('filter.tag') ? ("^(" . $this->getState('translations.reference') . "|" . $this->getState('filter.tag') . ")$") . '-' : '')
+				. ($this->getState('filter.type') ? $this->getState('filter.type') . '-' : '')
+				. ($this->getState('filter.search') ? $this->getState('filter.search') . '-' : '')
+				. ($this->getState('filter.origin') ? $this->getState('filter.origin') . '-' : '');
 
 			$key = substr($key, 0, strlen($key) - 1);
 
@@ -775,23 +775,23 @@ class LocaliseModelTranslations extends JModelList
 				{
 					if (count($item->error))
 					{
-						$item->state     = 'error';
+						$item->state = 'error';
 						$item->completed = - count($item->error) - 1000;
 					}
 					elseif ($item->bom != 'UTF-8')
 					{
 						if ($translation->state == 'notinreference')
 						{
-							$item->completed = - 500;
+							$item->completed = -500;
 						}
 						else
 						{
-							$item->completed = - 400;
+							$item->completed = -400;
 						}
 					}
 					elseif ($translation->state == 'notinreference')
 					{
-						$item->completed = - 600;
+						$item->completed = -600;
 					}
 					elseif ($translation->type == 'override')
 					{
