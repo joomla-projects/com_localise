@@ -108,7 +108,7 @@ class JFormFieldExtensionTranslations extends JFormFieldGroupedList
 			foreach ($extensions as $extension)
 			{
 				// Take off core extensions containing a language folder
-				if ($extension != 'mod_version' && $extension != 'mod_multilangstatus' && $extension != 'beez' && $extension != 'protostar'
+				if ($extension != 'mod_version' && $extension != 'mod_multilangstatus' && $extension != 'protostar'
 					&& $extension != 'hathor' && $extension != 'isis' && $extension != 'beez3')
 				{
 					if (JFolder::exists("$path$extension$folder/language"))
