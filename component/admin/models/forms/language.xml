@@ -60,7 +60,7 @@
 		<field
 			name="rtl"
 			type="radio"
-			class="btn-group"
+			class="btn-group btn-group-yesno"
 			default="0"
 			required="true"
 			label="COM_LOCALISE_LABEL_LANGUAGE_RTL"
