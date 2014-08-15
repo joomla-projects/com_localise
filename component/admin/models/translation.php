@@ -822,7 +822,7 @@ class LocaliseModelTranslation extends JModelForm
 				$contents2 .= "; @subpackage  " . $data['subpackage'] . "\n";
 			}
 
-			if (!empty($data['description']))
+			if (!empty($data['description']) && $data['description'] != '[Description] [Name of language]([Country code])')
 			{
 				$contents2 .= "; @description " . $data['description'] . "\n";
 			}
