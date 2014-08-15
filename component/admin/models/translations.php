@@ -81,17 +81,19 @@ class LocaliseModelTranslations extends JModelList
 		);
 		$this->setState(
 			'filter.client',
-			isset($data['select']['client'])  ? $data['select']['client'] : ''
-		);
-		$this->setState(
-			'filter.tag',
-			isset($data['select']['tag'])     ? $data['select']['tag'] : ''
+			isset($data['select']['client'])  ? $data['select']['client'] : 'site'
 		);
 
 		$params    = JComponentHelper::getParams('com_localise');
 		$this->setState('params', $params);
 
 		$reference = $params->get('reference', 'en-GB');
+
+		$this->setState(
+			'filter.tag',
+			isset($data['select']['tag'])     ? $data['select']['tag'] : $reference
+		);
+
 		$this->setState('translations.reference', $reference);
 
 		// Call auto-populate parent method
