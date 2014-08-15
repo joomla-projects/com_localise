@@ -50,12 +50,12 @@ class LocaliseModelTranslations extends JModelList
 		if (empty($data))
 		{
 			$data = array();
-			$data['select'] = $app->getUserState('com_localise.select');
+			$data['select'] = $app->getUserState('com_localise.translations.select');
 			$data['search'] = $app->getUserState('com_localise.translations.search');
 		}
 		else
 		{
-			$app->setUserState('com_localise.select', $data['select']);
+			$app->setUserState('com_localise.translations.select', $data['select']);
 			$app->setUserState('com_localise.translations.search', isset($data['search']) ? $data['search'] : '');
 		}
 
