@@ -23,13 +23,9 @@ $sortFields = $this->getSortFields();
 			<hr/>
 			<div class="filter-select hidden-phone">
 				<h4 class="page-header"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></h4>
-				<?php foreach ($this->form->getFieldset('select') as $field) : ?>
-					<?php if ($field->type != "Spacer") : ?>
-						<?php echo $field->input; ?>
-						<hr class="hr-condensed"/>
-					<?php else : ?>
-						<?php echo $field->label; ?>
-					<?php endif; ?>
+				<?php foreach ($this->form->getFieldset('select') as $field): ?>
+					<?php echo $field->input; ?>
+					<hr class="hr-condensed"/>
 				<?php endforeach; ?>
 			</div>
 		</div>
