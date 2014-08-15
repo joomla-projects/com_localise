@@ -291,26 +291,17 @@ class LocaliseModelLanguage extends JModelForm
 			$text .= "\t" . '<version>' . htmlspecialchars($data['version'], ENT_COMPAT, 'UTF-8') . '</version>' . "\n";
 			$text .= "\t" . '<creationDate>' . htmlspecialchars($data['creationDate'], ENT_COMPAT, 'UTF-8') . '</creationDate>' . "\n";
 			$text .= "\t" . '<author>' . htmlspecialchars($data['author'], ENT_COMPAT, 'UTF-8') . '</author>' . "\n";
-
-			// AuthorEmail, authorURL are not used in the installation
-			if ($client != "installation")
-			{
-				$text .= "\t" . '<authorEmail>' . htmlspecialchars($data['authorEmail'], ENT_COMPAT, 'UTF-8') . '</authorEmail>' . "\n";
-				$text .= "\t" . '<authorUrl>' . htmlspecialchars($data['authorUrl'], ENT_COMPAT, 'UTF-8') . '</authorUrl>' . "\n";
-			}
+			$text .= "\t" . '<authorEmail>' . htmlspecialchars($data['authorEmail'], ENT_COMPAT, 'UTF-8') . '</authorEmail>' . "\n";
+			$text .= "\t" . '<authorUrl>' . htmlspecialchars($data['authorUrl'], ENT_COMPAT, 'UTF-8') . '</authorUrl>' . "\n";
 			$text .= "\t" . '<copyright>' . htmlspecialchars($data['joomlacopyright'], ENT_COMPAT, 'UTF-8') . '</copyright>' . "\n";
 
-			// Author copyright is not used in installation. It is present in CREDITS file
-			if ($client != "installation")
-			{
-				$data['copyright'] = explode("\n", $data['copyright']);
+			$data['copyright'] = explode("\n", $data['copyright']);
 
-				foreach ($data['copyright'] as $copyright)
+			foreach ($data['copyright'] as $copyright)
+			{
+				if ($copyright)
 				{
-					if ($copyright)
-					{
-						$text .= "\t" . '<copyright>' . htmlspecialchars($copyright, ENT_COMPAT, 'UTF-8') . '</copyright>' . "\n";
-					}
+					$text .= "\t" . '<copyright>' . htmlspecialchars($copyright, ENT_COMPAT, 'UTF-8') . '</copyright>' . "\n";
 				}
 			}
 
@@ -345,15 +336,9 @@ class LocaliseModelLanguage extends JModelForm
 			$text .= "\t\t" . '<name>' . htmlspecialchars($data['name'], ENT_COMPAT, 'UTF-8') . '</name>' . "\n";
 			$text .= "\t\t" . '<tag>' . htmlspecialchars($data['tag'], ENT_COMPAT, 'UTF-8') . '</tag>' . "\n";
 			$text .= "\t\t" . '<rtl>' . htmlspecialchars($data['rtl'], ENT_COMPAT, 'UTF-8') . '</rtl>' . "\n";
-
-			// Locale, firstDay and weekEnd are not used in the installation
-			if ($client != "installation")
-			{
-				$text .= "\t\t" . '<locale>' . htmlspecialchars($data['locale'], ENT_COMPAT, 'UTF-8') . '</locale>' . "\n";
-				$text .= "\t\t" . '<firstDay>' . htmlspecialchars($data['firstDay'], ENT_COMPAT, 'UTF-8') . '</firstDay>' . "\n";
-				$text .= "\t\t" . '<weekEnd>' . htmlspecialchars($data['weekEnd'], ENT_COMPAT, 'UTF-8') . '</weekEnd>' . "\n";
-			}
-
+			$text .= "\t\t" . '<locale>' . htmlspecialchars($data['locale'], ENT_COMPAT, 'UTF-8') . '</locale>' . "\n";
+			$text .= "\t\t" . '<firstDay>' . htmlspecialchars($data['firstDay'], ENT_COMPAT, 'UTF-8') . '</firstDay>' . "\n";
+			$text .= "\t\t" . '<weekEnd>' . htmlspecialchars($data['weekEnd'], ENT_COMPAT, 'UTF-8') . '</weekEnd>' . "\n";
 			$text .= "\t" . '</metadata>' . "\n";
 			$text .= "\t" . '<params />' . "\n";
 			$text .= '</metafile>' . "\n";
