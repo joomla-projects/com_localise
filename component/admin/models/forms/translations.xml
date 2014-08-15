@@ -48,6 +48,9 @@
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_SELECT</option>
 			</field>
+			<field name="spacer_client" type="spacer" class="text"
+				label="COM_LOCALISE_OPTION_CLIENT_SELECT"
+			/>
 			<field
 				id="client"
 				name="client"
@@ -55,8 +58,10 @@
 				class="span12 small"
 				hidden="true"
 				onchange="this.form.submit()">
-				<option value="">COM_LOCALISE_OPTION_CLIENT_SELECT</option>
 			</field>
+			<field name="spacer_lang" type="spacer" class="text"
+				label="COM_LOCALISE_OPTION_LANGUAGE_SELECT"
+			/>
 			<field
 				id="tag"
 				name="tag"
@@ -65,7 +70,6 @@
 				client="site"
 				hidden="true"
 				onchange="this.form.submit()">
-				<option value="">COM_LOCALISE_OPTION_LANGUAGE_SELECT</option>
 			</field>
 		</fieldset>
 	</fields>
