@@ -91,8 +91,8 @@ class LocaliseModelTranslations extends JModelList
 			isset($data['select']['client'])  ? $data['select']['client'] : ''
 		);
 		$this->setState(
-				'filter.tag',
-				isset($data['select']['tag'])     ? $data['select']['tag'] :''
+			'filter.tag',
+			isset($data['select']['tag'])     ? $data['select']['tag'] :''
 		);
 
 		$params    = JComponentHelper::getParams('com_localise');
