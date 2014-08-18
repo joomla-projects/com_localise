@@ -50,13 +50,20 @@ class LocaliseModelTranslations extends JModelList
 		if (empty($data))
 		{
 			$data = array();
-			$data['select'] = $app->getUserState('com_localise.translations.select');
+			$data['select'] = $app->getUserState('com_localise.select');
 			$data['search'] = $app->getUserState('com_localise.translations.search');
 		}
 		else
 		{
-			$app->setUserState('com_localise.translations.select', $data['select']);
+			$app->setUserState('com_localise.select', $data['select']);
 			$app->setUserState('com_localise.translations.search', isset($data['search']) ? $data['search'] : '');
+		}
+
+		// Prevent displaying translations view if filters not set for client and language
+		if (empty($data['select']['tag']) || empty($data['select']['client']))
+		{
+			$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_CHOOSE_LANG_CLIENT'), 'error');
+			$app->redirect(JRoute::_('index.php?option=com_localise&view=languages', false));
 		}
 
 		$this->setState(
@@ -81,18 +88,17 @@ class LocaliseModelTranslations extends JModelList
 		);
 		$this->setState(
 			'filter.client',
-			isset($data['select']['client'])  ? $data['select']['client'] : 'site'
+			isset($data['select']['client'])  ? $data['select']['client'] : ''
+		);
+		$this->setState(
+				'filter.tag',
+				isset($data['select']['tag'])     ? $data['select']['tag'] :''
 		);
 
 		$params    = JComponentHelper::getParams('com_localise');
 		$this->setState('params', $params);
 
 		$reference = $params->get('reference', 'en-GB');
-
-		$this->setState(
-			'filter.tag',
-			isset($data['select']['tag'])     ? $data['select']['tag'] : $reference
-		);
 
 		$this->setState('translations.reference', $reference);
 
