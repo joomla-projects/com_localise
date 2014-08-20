@@ -759,8 +759,57 @@ class LocaliseModelPackage extends JModelForm
 			$site_txt .= "\t\t" . '<filename file="meta">' . $data['language'] . '.xml</filename>' . "\n";
 			$site_txt .= "\t\t" . '<filename>index.html</filename>' . "\n";
 			$site_txt .= "\t" . '</files>' . "\n";
+
+			// Check if language has a custom calendar. The folder xx-XX should be present in the media folder
+			if (JFolder::exists(JPATH_ROOT . '/media/' . $data['language']))
+			{
+				$site_txt .= "\n";
+				$site_txt .= "\t" . '<media destination="' . $data['language'] . '">' . "\n";
+				$site_txt .= "\t\t" . '<filename>index.html</filename>' . "\n";
+				$path = JPATH_ROOT . '/media/' . $data['language'] . '/js/calendar-setup.js';
+
+				if (JFile::exists($path))
+				{
+					$file_data = file_get_contents($path);
+				}
+
+				if (JFile::exists($path) && !empty($file_data))
+				{
+					$site_package_files[] = array('name' => 'js/calendar-setup.js','data' => $file_data);
+					$site_txt .= "\t\t" . '<filename>js/calendar-setup.js</filename>' . "\n";
+				}
+
+				$path = JPATH_ROOT . '/media/' . $data['language'] . '/js/index.html';
+
+				if (JFile::exists($path))
+				{
+					$file_data = file_get_contents($path);
+				}
+
+				if (JFile::exists($path) && !empty($file_data))
+				{
+					$site_package_files[] = array('name' => 'js/index.html','data' => $file_data);
+					$site_txt .= "\t\t" . '<filename>js/index.html</filename>' . "\n";
+				}
+
+				$path = JPATH_ROOT . '/media/' . $data['language'] . '/js/calendar.js';
+
+				if (JFile::exists($path))
+				{
+					$file_data = file_get_contents($path);
+				}
+
+				if (JFile::exists($path) && !empty($file_data))
+				{
+					$site_package_files[] = array('name' => 'js/calendar.js','data' => $file_data);
+					$site_txt .= "\t\t" . '<filename>js/calendar.js</filename>' . "\n";
+				}
+
+				$site_txt .= "\t" . '</media>' . "\n";
+			}
+
 			$site_txt .= "\t" . '<params />' . "\n";
-			$site_txt .= "\t" . '</extension>' . "\n";
+			$site_txt .= '</extension>' . "\n";
 			$site_package_files[] = array('name' => 'install.xml','data' => $site_txt);
 			$language_data = file_get_contents(JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.xml');
 			$site_package_files[] = array('name' => $data['language'] . '.xml','data' => $language_data);
@@ -911,7 +960,7 @@ class LocaliseModelPackage extends JModelForm
 			$admin_txt .= "\t\t" . '<filename>index.html</filename>' . "\n";
 			$admin_txt .= "\t" . '</files>' . "\n";
 			$admin_txt .= "\t" . '<params />' . "\n";
-			$admin_txt .= "\t" . '</extension>' . "\n";
+			$admin_txt .= '</extension>' . "\n";
 			$admin_package_files[] = array('name' => 'install.xml','data' => $admin_txt);
 			$language_data = file_get_contents(JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.xml');
 			$admin_package_files[] = array('name' => $data['language'] . '.xml','data' => $language_data);
