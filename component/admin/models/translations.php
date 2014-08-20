@@ -738,8 +738,11 @@ class LocaliseModelTranslations extends JModelList
 	{
 		if (!isset($this->translations))
 		{
+			$filter_client = $this->getState('filter.client');
+			$filter_tag   = $this->getState('filter.tag');
+
 			// Don't try to find translations if filters not set for client and language.
-			if (empty($this->getState('filter.client')) || empty($this->getState('filter.tag')))
+			if (empty($filter_client) || empty($filter_tag))
 			{
 				JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_ERROR_CHOOSE_LANG_CLIENT'), 'notice');
 				$this->translations = array();
@@ -748,7 +751,7 @@ class LocaliseModelTranslations extends JModelList
 			}
 
 			$filter_state = $this->getState('filter.state') ? $this->getState('filter.state') : '.';
-			$filter_tag   = $this->getState('filter.tag')   ? ("^" . $this->getState('filter.tag') . "$") : '.';
+			$filter_tag   = $filter_tag   ? ("^" . $filter_tag . "$") : '.';
 
 			$cache_controller = JCacheController::getInstance();
 
