@@ -59,13 +59,6 @@ class LocaliseModelTranslations extends JModelList
 			$app->setUserState('com_localise.translations.search', isset($data['search']) ? $data['search'] : '');
 		}
 
-		// Prevent displaying translations view if filters not set for client and language
-		if (empty($data['select']['tag']) || empty($data['select']['client']))
-		{
-			$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_CHOOSE_LANG_CLIENT'), 'error');
-			$app->redirect(JRoute::_('index.php?option=com_localise&view=languages', false));
-		}
-
 		$this->setState(
 			'filter.search',
 			isset($data['search']['expr'])    ? $data['search']['expr'] : ''
@@ -390,7 +383,6 @@ class LocaliseModelTranslations extends JModelList
 
 				foreach ($tags as $tag)
 				{
-
 					if (JFile::exists($client_folder . '/' . $tag . '/' . $tag . '.xml'))
 					{
 						if (array_key_exists("$client|$reftag|joomla", $this->translations))
@@ -746,8 +738,20 @@ class LocaliseModelTranslations extends JModelList
 	{
 		if (!isset($this->translations))
 		{
+			$filter_client = $this->getState('filter.client');
+			$filter_tag   = $this->getState('filter.tag');
+
+			// Don't try to find translations if filters not set for client and language.
+			if (empty($filter_client) || empty($filter_tag))
+			{
+				JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_ERROR_CHOOSE_LANG_CLIENT'), 'notice');
+				$this->translations = array();
+
+				return $this->translations;
+			}
+
 			$filter_state = $this->getState('filter.state') ? $this->getState('filter.state') : '.';
-			$filter_tag   = $this->getState('filter.tag')   ? ("^" . $this->getState('filter.tag') . "$") : '.';
+			$filter_tag   = $filter_tag   ? ("^" . $filter_tag . "$") : '.';
 
 			$cache_controller = JCacheController::getInstance();
 

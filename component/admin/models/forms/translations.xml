@@ -14,6 +14,25 @@
 	<fields name="select">
 		<fieldset name="select">
 			<field
+				id="client"
+				name="client"
+				type="client"
+				class="span12 small"
+				hidden="true"
+				onchange="this.form.submit()">
+				<option value="">COM_LOCALISE_OPTION_CLIENT_SELECT</option>
+			</field>
+			<field
+				id="tag"
+				name="tag"
+				type="language"
+				class="span12 small"
+				client="site"
+				hidden="true"
+				onchange="this.form.submit()">
+				<option value="">COM_LOCALISE_OPTION_LANGUAGE_SELECT</option>
+			</field>
+			<field
 				id="storage"
 				name="storage"
 				type="storage"
@@ -47,29 +66,6 @@
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_SELECT</option>
-			</field>
-			<field name="spacer_client" type="spacer" class="text"
-				label="COM_LOCALISE_OPTION_CLIENT_SELECT"
-			/>
-			<field
-				id="client"
-				name="client"
-				type="client"
-				class="span12 small"
-				hidden="true"
-				onchange="this.form.submit()">
-			</field>
-			<field name="spacer_lang" type="spacer" class="text"
-				label="COM_LOCALISE_OPTION_LANGUAGE_SELECT"
-			/>
-			<field
-				id="tag"
-				name="tag"
-				type="language"
-				class="span12 small"
-				client="site"
-				hidden="true"
-				onchange="this.form.submit()">
 			</field>
 		</fieldset>
 	</fields>
