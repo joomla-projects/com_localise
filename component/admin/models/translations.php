@@ -747,7 +747,7 @@ class LocaliseModelTranslations extends JModelList
 				JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_ERROR_CHOOSE_LANG_CLIENT'), 'notice');
 				$this->translations = array();
 
-				return;
+				return $this->translations;
 			}
 
 			$filter_state = $this->getState('filter.state') ? $this->getState('filter.state') : '.';
