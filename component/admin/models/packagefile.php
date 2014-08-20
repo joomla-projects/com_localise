@@ -555,7 +555,7 @@ class LocaliseModelPackageFile extends JModelForm
 				$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_OLDFILE_REMOVE'), 'notice');
 			}
 
-			$app->setUserState('com_localise.edit.package.id');
+			$app->setUserState('com_localise.edit.package.id', $id);
 		}
 
 		return true;
