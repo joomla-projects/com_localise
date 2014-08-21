@@ -298,6 +298,7 @@ class LocaliseModelLanguage extends JModelForm
 				$text .= "\t" . '<authorEmail>' . htmlspecialchars($data['authorEmail'], ENT_COMPAT, 'UTF-8') . '</authorEmail>' . "\n";
 				$text .= "\t" . '<authorUrl>' . htmlspecialchars($data['authorUrl'], ENT_COMPAT, 'UTF-8') . '</authorUrl>' . "\n";
 			}
+
 			$text .= "\t" . '<copyright>' . htmlspecialchars($data['joomlacopyright'], ENT_COMPAT, 'UTF-8') . '</copyright>' . "\n";
 
 			// Author copyright is not used in installation. It is present in CREDITS file
@@ -492,6 +493,16 @@ class LocaliseModelLanguage extends JModelForm
 			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGES_REMOVE', "$path"));
 
 			return false;
+		}
+
+		// Clear UserState for select.tag if the language deleted is selected in the filter.
+		$app = JFactory::getApplication();
+		$data = $app->getUserState('com_localise.select');
+
+		if ($data['tag'] == $tag)
+		{
+			$data['tag'] = '';
+			$app->setUserState('com_localise.select', $data);
 		}
 
 		return true;
