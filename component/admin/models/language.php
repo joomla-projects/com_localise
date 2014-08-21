@@ -287,7 +287,6 @@ class LocaliseModelLanguage extends JModelForm
 			$text .= '<metafile version="3.1" client="' . htmlspecialchars($client, ENT_COMPAT, 'UTF-8') . '">' . "\n";
 			$text .= "\t" . '<tag>' . htmlspecialchars($tag, ENT_COMPAT, 'UTF-8') . '</tag>' . "\n";
 			$text .= "\t" . '<name>' . htmlspecialchars($data['name'], ENT_COMPAT, 'UTF-8') . '</name>' . "\n";
-			$text .= "\t" . '<description>' . htmlspecialchars($data['description'], ENT_COMPAT, 'UTF-8') . '</description>' . "\n";
 			$text .= "\t" . '<version>' . htmlspecialchars($data['version'], ENT_COMPAT, 'UTF-8') . '</version>' . "\n";
 			$text .= "\t" . '<creationDate>' . htmlspecialchars($data['creationDate'], ENT_COMPAT, 'UTF-8') . '</creationDate>' . "\n";
 			$text .= "\t" . '<author>' . htmlspecialchars($data['author'], ENT_COMPAT, 'UTF-8') . '</author>' . "\n";
@@ -315,32 +314,7 @@ class LocaliseModelLanguage extends JModelForm
 			}
 
 			$text .= "\t" . '<license>' . htmlspecialchars($data['license'], ENT_COMPAT, 'UTF-8') . '</license>' . "\n";
-
-			if ($tag == 'en-GB')
-			{
-				$text .= "\t" . '<files>' . "\n";
-				$xml = simplexml_load_file($path);
-
-				foreach ($xml->files->children() as $file)
-				{
-					$text .= "\t\t" . '<filename>' . $file . '</filename>' . "\n";
-				}
-
-				$text .= "\t" . '</files>' . "\n";
-			}
-			else
-			{
-				$text .= "\t" . '<files>' . "\n";
-				$xml = simplexml_load_file(constant('LOCALISEPATH_' . strtoupper($client)) . "/language/en-GB/en-GB.xml");
-
-				foreach ($xml->files->children() as $file)
-				{
-					$text .= "\t\t" . '<filename>' . str_replace('en-GB', $tag, $file) . '</filename>' . "\n";
-				}
-
-				$text .= "\t" . '</files>' . "\n";
-			}
-
+			$text .= "\t" . '<description>' . htmlspecialchars($data['description'], ENT_COMPAT, 'UTF-8') . '</description>' . "\n";
 			$text .= "\t" . '<metadata>' . "\n";
 			$text .= "\t\t" . '<name>' . htmlspecialchars($data['name'], ENT_COMPAT, 'UTF-8') . '</name>' . "\n";
 			$text .= "\t\t" . '<tag>' . htmlspecialchars($data['tag'], ENT_COMPAT, 'UTF-8') . '</tag>' . "\n";
