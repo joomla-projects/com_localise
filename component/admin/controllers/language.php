@@ -74,6 +74,7 @@ class LocaliseControllerLanguage extends JControllerForm
 	{
 		// Get the infos
 		$input = JFactory::getApplication()->input;
+		$client = $input->get('client', '');
 
 		if (empty($client))
 		{
