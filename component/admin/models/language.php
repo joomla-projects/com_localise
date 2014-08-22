@@ -103,6 +103,12 @@ class LocaliseModelLanguage extends JModelForm
 		// Get the form.
 		$form = $this->loadForm('com_localise.language', 'language', array('control'   => 'jform', 'load_data' => $loadData));
 
+		// Make Client field readonly when the file exists
+		if ($this->getState('language.id'))
+		{
+			$form->setFieldAttribute('client', 'readonly', 'true');
+		}
+
 		return $form;
 	}
 
@@ -371,6 +377,10 @@ class LocaliseModelLanguage extends JModelForm
 			}
 
 			$id = LocaliseHelper::getFileId($path);
+
+			// Dummy call to populate state
+			$this->getState('language.id');
+
 			$this->setState('language.id', $id);
 
 			// Bind the rules.
