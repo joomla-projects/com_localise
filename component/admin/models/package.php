@@ -740,7 +740,7 @@ class LocaliseModelPackage extends JModelForm
 			}
 
 			// Create a basic xx-XX.localise.php if not present in target language
-			if (!JFile::exists($path) || empty($languagedata))
+			elseif (!JFile::exists($path) || empty($languagedata))
 			{
 				$language_data = file_get_contents(JPATH_ROOT . '/language/' . $reftag . '/' . $reftag . '.localise.php');
 				$language_data = str_replace($reftag, $data['language'], $language_data);
@@ -921,7 +921,7 @@ class LocaliseModelPackage extends JModelForm
 			}
 
 			// Create a basic xx-XX.localise.php if not present in target language
-			if (!JFile::exists($path) || empty($languagedata))
+			elseif (!JFile::exists($path) || empty($languagedata))
 			{
 				$language_data = file_get_contents(JPATH_ROOT . '/administrator/language/' . $reftag . '/' . $reftag . '.localise.php');
 				$language_data = str_replace($reftag, $data['language'], $language_data);
