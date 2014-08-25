@@ -10,9 +10,33 @@
 defined('_JEXEC') or die;
 
 JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.modal');
+JHtml::_('jquery.framework');
 
 $fieldSets = $this->form->getFieldsets();
 $ftpSets   = $this->formftp->getFieldsets();
+JFactory::getDocument()->addScriptDeclaration("
+	(function($){
+		$(document).ready(function () {
+			$('.fileupload').click(function(e){
+
+				var form   = $('#filemodalForm');
+
+				// Assign task
+				form.find('input[name=task]').val('package.uploadOtherFile');
+
+				// Submit the form
+				if (confirm('" . JText::_('COM_LOCALISE_MSG_FILES_VALID_IMPORT') . "'))
+				{
+					form.trigger('submit');
+				}
+
+				// Avoid the standard link action
+				e.preventDefault();
+			});
+		});
+	})(jQuery);
+");
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
@@ -105,3 +129,34 @@ $ftpSets   = $this->formftp->getFieldsets();
 		<!-- End Localise Package -->
 	</div>
 </form>
+
+<div id="fileModal" class="modal hide fade">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3><?php echo JText::_('COM_LOCALISE_IMPORT_NEW_FILE_HEADER'); ?></h3>
+		<p><?php echo JText::_('COM_LOCALISE_IMPORT_NEW_FILE_DESC'); ?></p>
+	</div>
+	<div class="modal-body">
+		<div class="column">
+			<form method="post" action="<?php echo JRoute::_('index.php?option=com_localise&task=package.uploadOtherFile&file=' . $this->file); ?>"
+				class="well" enctype="multipart/form-data" name="filemodalForm" id="filemodalForm">
+				<fieldset>
+					<label><?php echo JText::_('COM_LOCALISE_TEXT_CLIENT'); ?></label>
+					<select name="location" type="location" required >
+						<option value="admin"><?php echo JText::_('JADMINISTRATOR'); ?></option>
+						<option value="site"><?php echo JText::_('JSITE'); ?></option>
+					</select>
+					<label></label>
+					<input type="file" name="files" required />
+					<a href="#" class="hasTooltip btn btn-primary fileupload">
+						<?php echo JText::_('COM_LOCALISE_BUTTON_IMPORT'); ?>
+					</a>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn" data-dismiss="modal"><?php echo JText::_('COM_LOCALISE_MODAL_CLOSE'); ?></a>
+	</div>
+</div>
+

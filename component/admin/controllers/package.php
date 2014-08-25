@@ -194,4 +194,41 @@ class LocaliseControllerPackage extends JControllerForm
 		$url = 'index.php?option=com_localise&view=packages';
 		$this->setRedirect(JRoute::_($url, false));
 	}
+
+	/**
+	 * Method for uploading a css or a php file in the language xx-XX folder.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.2
+	 */
+	public function uploadOtherFile()
+	{
+		$app		= JFactory::getApplication();
+		$name		= $app->getUserState('com_localise.package.name');
+		$model		= $this->getModel();
+		$upload		= $app->input->files->get('files');
+		$location	= $app->input->get('location');
+
+		if ($location == "admin")
+		{
+			$location = LOCALISEPATH_ADMINISTRATOR;
+		}
+		elseif ($location == "site")
+		{
+			$location = LOCALISEPATH_SITE;
+		}
+
+		if ($return = $model->uploadOtherFile($upload, $location))
+		{
+			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_OTHER_FILE_UPLOAD_SUCCESS', $upload['name']));
+		}
+		else
+		{
+			$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_OTHER_FILE_UPLOAD'), 'error');
+		}
+
+		$url = 'index.php?option=com_localise&task=package.edit&cid[]=' . $name;
+		$this->setRedirect(JRoute::_($url, false));
+	}
 }

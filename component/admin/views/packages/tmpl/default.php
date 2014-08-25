@@ -94,7 +94,6 @@ JFactory::getDocument()->addScriptDeclaration("
 			<form method="post" action="<?php echo JRoute::_('index.php?option=com_localise&task=package.uploadFile&file=' . $this->file); ?>"
 				class="well" enctype="multipart/form-data" name="filemodalForm" id="filemodalForm">
 				<fieldset>
-					<input type="hidden" class="address" name="address" />
 					<input type="file" name="files" required />
 					<a href="#" class="hasTooltip btn btn-primary fileupload">
 						<?php echo JText::_('COM_LOCALISE_BUTTON_IMPORT'); ?>
