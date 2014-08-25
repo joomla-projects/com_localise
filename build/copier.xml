@@ -26,18 +26,35 @@
 			</then>
 		</if>
 		<if>
+			<!-- Not available in build directory -->
 			<not>
 				<available file="${src}/build/build.properties" />
 			</not>
+			<!-- Then Try to find in root directory -->
 			<then>
-				<fail message="The file build.properties does not exists." />
+				<if>
+					<not>
+						<available file="${src}/build.properties" />
+					</not>
+					<then>
+						<fail message="The file build.properties does not exists." />
+					</then>
+					<!-- If available in root directory then include file -->
+					<else>
+						<property file="${src}/build.properties" override="true"/>
+						<echo message="build.properties File included successfully." />
+					</else>
+				</if>
 			</then>
+			<!-- If available in build directory then include file -->
+			<else>
+				<property file="${src}/build/build.properties" override="true"/>
+				<echo message="build.properties File included successfully." />
+			</else>
 		</if>
 	</target>
 
 	<target name="prepare" >
-		<property file="${src}/build/build.properties" override="true"/>
-
 		<!-- Clean old files -->
 		<delete dir="${joomla.dir}/administrator/components/com_localise" quiet="yes" includeemptydirs="true"/>
 	</target>
