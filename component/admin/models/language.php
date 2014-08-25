@@ -20,11 +20,6 @@ jimport('joomla.access.rules');
  */
 class LocaliseModelLanguage extends JModelForm
 {
-	/**
-	 * Model context string.
-	 *
-	 * @var		string
-	 */
 	protected $context = 'com_localise.language';
 
 	/**
@@ -34,11 +29,11 @@ class LocaliseModelLanguage extends JModelForm
 	 */
 	protected function populateState()
 	{
-		$app    = JFactory::getApplication();
+		$jinput = JFactory::getApplication()->input;
 
-		$client = $app->getUserStateFromRequest($this->context . '.client', 'client');
-		$tag    = $app->getUserStateFromRequest($this->context . '.tag', 'tag');
-		$id     = $app->getUserStateFromRequest($this->context . '.id', 'id');
+		$client = $jinput->get('client', 'site', 'cmd');
+		$tag    = $jinput->get('tag', '', 'cmd');
+		$id     = $jinput->get('id', '0', 'int');
 
 		$this->setState('language.client', $client);
 		$this->setState('language.tag', $tag);
