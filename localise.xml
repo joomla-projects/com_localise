@@ -16,18 +16,21 @@
 	<scriptfile>install.php</scriptfile>
 	<install>
 		<sql>
-			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
-		</sql>
+            <file driver="mysql" charset="utf8">sql/install/mysql/install.sql</file>
+            <file driver="mysqli" charset="utf8">sql/install/mysql/install.sql</file>
+        </sql>
 	</install>
 	<uninstall>
 		<sql>
-			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
-		</sql>
+            <file driver="mysql" charset="utf8">sql/install/mysql/uninstall.sql</file>
+            <file driver="mysqli" charset="utf8">sql/install/mysql/uninstall.sql</file>
+        </sql>
 	</uninstall>
 	<update>
 		<schemas>
-			<schemapath type="mysql">sql/updates/mysql</schemapath>
-		</schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+            <schemapath type="mysqli">sql/updates/mysql</schemapath>
+        </schemas>
 	</update>
 	<media destination="com_localise" folder="media/com_localise">
 		<folder>images</folder>
