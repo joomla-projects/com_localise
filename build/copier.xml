@@ -13,9 +13,9 @@
 <!-- site in your localhost.                                               -->
 <!-- ==================================================================    -->
 <project name="localise" default="copy" basedir=".">
-
 	<target name="init" >
 		<property name="src" value="${application.startdir}" />
+
 		<!-- Check if build is called inside the build folder -->
 		<if>
 			<not>
@@ -27,20 +27,16 @@
 		</if>
 		<if>
 			<not>
-				<available file="${src}/build.properties" />
+				<available file="${src}/build/build.properties" />
 			</not>
 			<then>
 				<fail message="The file build.properties does not exists." />
 			</then>
-			<else>
-				<property file="${src}/build.properties"  override="true"/>
-				<echo message="build.properties File included successfully." />
-			</else>
 		</if>
 	</target>
 
 	<target name="prepare" >
-		<property file="build.properties" override="true"/>
+		<property file="${src}/build/build.properties" override="true"/>
 
 		<!-- Clean old files -->
 		<delete dir="${joomla.dir}/administrator/components/com_localise" quiet="yes" includeemptydirs="true"/>
