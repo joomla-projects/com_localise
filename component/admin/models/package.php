@@ -1050,7 +1050,6 @@ class LocaliseModelPackage extends JModelForm
 		jimport('joomla.filesystem.folder');
 
 			$app      = JFactory::getApplication();
-			$path = JPath::clean(JPATH_COMPONENT_ADMINISTRATOR . '/packages/');
 			$fileName = JFile::makeSafe($file['name']);
 
 			try
@@ -1081,5 +1080,73 @@ class LocaliseModelPackage extends JModelForm
 			}
 
 			return true;
+	}
+
+	/**
+	 * Upload new css or php file in the language folders.
+	 *
+	 * @param   string  $file      The name of the file.
+	 * @param   string  $location  The location for the file.
+	 *
+	 * @return  boolean  True if file uploaded successfully, false otherwise
+	 *
+	 * @since   3.0
+	 */
+	public function uploadOtherFile($file, $location)
+	{
+		jimport('joomla.filesystem.folder');
+
+		$app		= JFactory::getApplication();
+		$name		= $app->getUserState('com_localise.package.name');
+		$packPath	= JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $name . '.xml';
+		$xml		= simplexml_load_file($packPath);
+
+		if ($xml)
+		{
+			$tag = $xml->language;
+		}
+
+		if ($tag == '')
+		{
+			$app->enqueueMessage(JText::_('COM_LOCALISE_FILE_TAG_ERROR'), 'error');
+
+			return false;
+		}
+
+		$fileName = JFile::makeSafe($file['name']);
+		$ext = JFile::getExt($fileName);
+
+		// Prevent uploading some file types
+		if (!($ext == "ini" || $fileName == $tag . '.css' || $fileName == $tag . '.localise.php'))
+		{
+			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_FILE_TYPE_ERROR', $fileName), 'error');
+
+			return false;
+		}
+
+		if ($fileName == $tag . '.css' && $location == LOCALISEPATH_SITE)
+		{
+			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_FILE_CSS_ERROR', $fileName), 'error');
+
+			return false;
+		}
+
+		/* @TODO: get this in the js confirmation alert in views/package/tmpl/edit.php
+		 if (file_exists(JPath::clean($location . '/language/' . $tag . '/' . $file['name'])))
+		 {
+		$app->enqueueMessage(JText::sprintf('COM_LOCALISE_FILE_EXISTS', $file['name']), 'error');
+
+		return false;
+		}
+		*/
+
+		if (!JFile::upload($file['tmp_name'], JPath::clean($location . '/language/' . $tag . '/' . $fileName)))
+		{
+			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_FILE_UPLOAD_ERROR', $file['name']), 'error');
+
+			return false;
+		}
+
+		return true;
 	}
 }

@@ -37,11 +37,15 @@ class LocaliseViewPackage extends JViewLegacy
 		jimport('joomla.client.helper');
 
 		// Get the data
+		$app           = JFactory::getApplication();
 		$this->state   = $this->get('State');
 		$this->item    = $this->get('Item');
 		$this->form    = $this->get('Form');
 		$this->formftp = $this->get('FormFtp');
 		$this->ftp     = JClientHelper::setCredentialsFromRequest('ftp');
+		$this->file    = $app->input->get('file');
+		$this->fileName = base64_decode($this->file);
+		$this->location	= $app->input->get('location');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -72,9 +76,10 @@ class LocaliseViewPackage extends JViewLegacy
 	{
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 
-		$user       = JFactory::getUser();
-		$isNew      = empty($this->item->id);
-		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
+		$user		= JFactory::getUser();
+		$canDo		= JHelperContent::getActions('com_localise', 'component');
+		$isNew		= empty($this->item->id);
+		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 
 		JToolbarHelper::title(
 			JText::sprintf(
@@ -91,8 +96,15 @@ class LocaliseViewPackage extends JViewLegacy
 			JToolbarHelper::save('package.save');
 		}
 
-		JToolbarHelper::custom('package.download', 'out.png', 'out.png', 'COM_LOCALISE_TOOLBAR_PACKAGE_DOWNLOAD', false);
+		if (!$isNew && $canDo->get('localise.create'))
+		{
+			JToolBarHelper::divider();
+			JToolbarHelper::modal('fileModal', 'icon-upload', 'COM_LOCALISE_BUTTON_IMPORT_FILE');
+			JToolBarHelper::divider();
+		}
 
+		JToolbarHelper::custom('package.download', 'out.png', 'out.png', 'COM_LOCALISE_TOOLBAR_PACKAGE_DOWNLOAD', false);
+		JToolBarHelper::divider();
 		JToolBarHelper::cancel("package.cancel", $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 		JToolBarHelper::divider();
 		JToolBarHelper::help('screen.package', true);
