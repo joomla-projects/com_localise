@@ -96,7 +96,7 @@ class LocaliseViewPackage extends JViewLegacy
 			JToolbarHelper::save('package.save');
 		}
 
-		if ($canDo->get('localise.create'))
+		if (!$isNew && $canDo->get('localise.create'))
 		{
 			JToolBarHelper::divider();
 			JToolbarHelper::modal('fileModal', 'icon-upload', 'COM_LOCALISE_BUTTON_IMPORT_FILE');

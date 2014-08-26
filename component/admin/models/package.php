@@ -1117,6 +1117,13 @@ class LocaliseModelPackage extends JModelForm
 			return false;
 		}
 
+		if ($fileName == $tag . '.css' && $location == LOCALISEPATH_SITE)
+		{
+			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_FILE_CSS_ERROR', $fileName), 'error');
+
+			return false;
+		}
+
 		/* @TODO: get this in the js confirmation alert in views/package/tmpl/edit.php
 		 if (file_exists(JPath::clean($location . '/language/' . $tag . '/' . $file['name'])))
 		 {
