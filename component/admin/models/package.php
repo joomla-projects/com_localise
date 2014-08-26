@@ -1106,6 +1106,13 @@ class LocaliseModelPackage extends JModelForm
 			$tag = $xml->language;
 		}
 
+		if ($tag == '')
+		{
+			$app->enqueueMessage(JText::_('COM_LOCALISE_FILE_TAG_ERROR'), 'error');
+
+			return false;
+		}
+
 		$fileName = JFile::makeSafe($file['name']);
 		$ext = JFile::getExt($fileName);
 
