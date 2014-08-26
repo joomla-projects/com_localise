@@ -1110,7 +1110,7 @@ class LocaliseModelPackage extends JModelForm
 		$ext = JFile::getExt($fileName);
 
 		// Prevent uploading some file types
-		if (!($ext == "ini" || $fileName == $tag . 'css' || $fileName == $tag . '.localise.php'))
+		if (!($ext == "ini" || $fileName == $tag . '.css' || $fileName == $tag . '.localise.php'))
 		{
 			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_FILE_TYPE_ERROR', $fileName), 'error');
 
