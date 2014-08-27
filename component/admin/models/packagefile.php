@@ -314,6 +314,7 @@ class LocaliseModelPackageFile extends JModelForm
 		// When editing a package, find the original path
 		$app = JFactory::getApplication('administrator');
 		$originalId = $app->getUserState('com_localise.edit.package.id');
+		$oldpath = null;
 
 		if (!empty($originalId))
 		{

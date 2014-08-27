@@ -10,7 +10,6 @@
 defined('_JEXEC') or die;
 
 $user     = JFactory::getUser();
-$canAdmin = $user->authorise('core.admin', 'com_localise');
 ?>
 <?php foreach($this->items as $i => $item) : ?>
 	<?php if ($item->name !== 'core') : ?>
@@ -26,10 +25,9 @@ $canAdmin = $user->authorise('core.admin', 'com_localise');
 			</td>
 			<td>
 				<span title="<?php echo JText::_($item->title); ?>" class="hasTooltip localise-icon "></span>
-				<?php if (!$canAdmin) : ?>
-					<span title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_PACKAGES_READONLY'); ?>"  class="hasTooltip localise-icon icon-16-warning">
+				<?php if (!$canEdit) : ?>
+					<span title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_PACKAGES_READONLY'); ?>"  class="hasTooltip localise-icon icon-warning"></span>
 					<?php echo JText::sprintf('COM_LOCALISE_TEXT_PACKAGES_TITLE', JText::_($item->title), $item->name); ?>
-					</span>
 				<?php elseif ($item->writable && $canEdit) : ?>
 					<span class="localise-icon">
 					<?php if ($item->core) : ?>
