@@ -79,7 +79,11 @@ class LocaliseControllerLanguage extends JControllerForm
 		if (empty($client))
 		{
 			$data = $input->get('jform', array(), 'array');
-			$client = $data['client'];
+
+			if ($data)
+			{
+				$client = $data['client'];
+			}
 		}
 
 		if (empty($client))
