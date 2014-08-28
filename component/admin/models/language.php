@@ -115,7 +115,7 @@ class LocaliseModelLanguage extends JModelForm
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return   mixed  The data for the form.
+	 * @return   JObject  The data for the form.
 	 */
 	protected function loadFormData()
 	{
@@ -123,18 +123,9 @@ class LocaliseModelLanguage extends JModelForm
 		$data = JFactory::getApplication()->getUserState('com_localise.edit.language.data', array());
 
 		// Get the language data.
-		if (empty($data))
-		{
-			$data = $this->getItem();
-			$data->joomlacopyright = sprintf("Copyright (C) 2005 - %s Open Source Matters. All rights reserved.", JFactory::getDate()->format('Y'));
-		}
+		$data = empty($data) ? $this->getItem() : new JObject($data);
 
-		if (empty($data))
-		{
-			$data = new JObject;
-			$data->client = $this->getState('language.client');
-			$data->joomlacopyright = sprintf("Copyright (C) 2005 - %s Open Source Matters. All rights reserved.", JFactory::getDate()->format('Y'));
-		}
+		$data->joomlacopyright = sprintf("Copyright (C) 2005 - %s Open Source Matters. All rights reserved.", JFactory::getDate()->format('Y'));
 
 		return $data;
 	}
