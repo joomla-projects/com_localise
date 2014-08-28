@@ -126,33 +126,15 @@ class LocaliseModelLanguage extends JModelForm
 		if (empty($data))
 		{
 			$data = $this->getItem();
+			$data->joomlacopyright = sprintf("Copyright (C) 2005 - %s Open Source Matters. All rights reserved.", JFactory::getDate()->format('Y'));
 		}
 
 		if (empty($data))
 		{
-			$data         = new JObject;
+			$data = new JObject;
 			$data->client = $this->getState('language.client');
+			$data->joomlacopyright = sprintf("Copyright (C) 2005 - %s Open Source Matters. All rights reserved.", JFactory::getDate()->format('Y'));
 		}
-
-		$data->joomlacopyright = sprintf("Copyright (C) 2005 - %s Open Source Matters. All rights reserved.", JFactory::getDate()->format('Y'));
-
-		// Fill with component params if data not exist
-		$params            = JComponentHelper::getParams('com_localise');
-		$data->author      = isset($data->author)
-			? $data->author
-			: $params->get('author');
-		$data->authorEmail = isset($data->authorEmail)
-			? $data->authorEmail
-			: $params->get('authorEmail');
-		$data->authorUrl   = isset($data->authorUrl)
-			? $data->authorUrl
-			: $params->get('authorUrl');
-		$data->copyright   = isset($data->copyright)
-			? $data->copyright
-			: $params->get('copyright');
-		$data->license     = isset($data->license)
-			? $data->license
-			: $params->get('license');
 
 		return $data;
 	}
@@ -200,6 +182,23 @@ class LocaliseModelLanguage extends JModelForm
 		$language->client      = $client;
 		$language->tag         = $tag;
 		$language->checked_out = 0;
+
+		$params = JComponentHelper::getParams('com_localise');
+		$language->author      = isset($language->author)
+			? $language->author
+			: $params->get('author');
+		$language->authorEmail = isset($language->authorEmail)
+			? $language->authorEmail
+			: $params->get('authorEmail');
+		$language->authorUrl   = isset($language->authorUrl)
+			? $language->authorUrl
+			: $params->get('authorUrl');
+		$language->copyright   = isset($language->copyright)
+			? $language->copyright
+			: $params->get('copyright');
+		$language->license     = isset($language->license)
+			? $language->license
+			: $params->get('license');
 
 		if (!empty($id))
 		{
