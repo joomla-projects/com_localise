@@ -26,7 +26,7 @@ $ftpSets   = $this->formftp->getFieldsets();
 	}
 </script>
 
-<form action="" method="post" name="adminForm" id="localise-language-form" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_localise&view=language&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="localise-language-form" class="form-validate">
 	<div class="row-fluid">
 		<!-- Begin Localise Language -->
 		<div class="span12 form-horizontal">

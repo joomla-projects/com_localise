@@ -186,6 +186,7 @@ class LocaliseModelPackageFile extends JModelForm
 		$package->standalone  = true;
 		$package->manifest    = null;
 		$package->description = null;
+		$package->id          = $id;
 
 		if (!empty($id))
 		{
