@@ -57,8 +57,9 @@ class LocaliseModelPackage extends JModelForm
 	 */
 	public function checkout($pk = null)
 	{
+		$app = JFactory::getApplication('administrator');
 		// Initialise variables.
-		$pk = (!empty($pk)) ? $pk : (int) $this->getState('package.id');
+		$pk = (!empty($pk)) ? $pk : (int) $app->getUserState('com_localise.edit.package.id');
 
 		return parent::checkout($pk);
 	}
@@ -72,11 +73,13 @@ class LocaliseModelPackage extends JModelForm
 	 */
 	public function checkin($pk = null)
 	{
+		$app = JFactory::getApplication('administrator');
 		// Initialise variables.
-		$pk = (!empty($pk)) ? $pk : (int) $this->getState('package.id');
+		$pk = (!empty($pk)) ? $pk : (int) $app->getUserState('com_localise.edit.package.id');
 
 		return parent::checkin($pk);
 	}
+
 
 	/**
 	 * Returns a Table object, always creating it.

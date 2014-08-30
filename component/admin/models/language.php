@@ -51,16 +51,15 @@ class LocaliseModelLanguage extends JModelForm
 	 */
 	public function checkout($pk = null)
 	{
+		$app = JFactory::getApplication('administrator');
 		// Initialise variables.
-		$pk = (!empty($pk))
-			? $pk
-			: (int) $this->getState('language.id');
+		$pk = (!empty($pk)) ? $pk : (int) $app->getUserState('com_localise.edit.language.id');
 
 		return parent::checkout($pk);
 	}
 
 	/**
-	 * Method to checking a row.
+	 * Method to checkin a row.
 	 *
 	 * @param   int  $pk  The ID of the primary key.
 	 *
@@ -68,13 +67,13 @@ class LocaliseModelLanguage extends JModelForm
 	 */
 	public function checkin($pk = null)
 	{
+		$app = JFactory::getApplication('administrator');
 		// Initialise variables.
-		$pk = (!empty($pk))
-			? $pk
-			: (int) $this->getState('language.id');
+		$pk = (!empty($pk)) ? $pk : (int) $app->getUserState('com_localise.edit.language.id');
 
 		return parent::checkin($pk);
 	}
+
 
 	/**
 	 * Returns a Table object, always creating it.

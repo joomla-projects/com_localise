@@ -44,12 +44,13 @@ JFactory::getDocument()->addScriptDeclaration("
 ");
 ?>
 <?php foreach($this->items as $i => $item): ?>
-	<?php $canEdit   = $user->authorise('localise.edit', 'com_localise.'.$item->id);?>
-	<?php $canDelete = $user->authorise('localise.delete', 'com_localise.'.$item->id);?>
+	<?php $canEdit   = $user->authorise('localise.edit', 'com_localise.'.$item->id); ?>
+	<?php $canDelete = $user->authorise('localise.delete', 'com_localise.'.$item->id); ?>
+	<?php $canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0; ?>
 	<tr class="row<?php echo $i % 2; ?>">
 		<td width="20" class="center hidden-phone">
 			<?php if ($item->checked_out) : ?>
-				<?php echo JHtml::_('jgrid.checkedout', $item->editor, $item->checked_out_time); ?>
+				<?php echo JHtml::_('jgrid.checkedout', $item->editor, $item->checked_out_time, '', $canCheckin); ?>
 			<?php elseif ($canDelete): ?>
 				<a href="#" data-id="<?php echo $item->id; ?>" data-client="<?php echo $item->client; ?>" data-tag="<?php echo $item->tag; ?>" class="hasTooltip js-list-delete-item" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_LANGUAGES_DELETE'); ?>">
 					<i class="icon-16-delete"></i>
