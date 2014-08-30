@@ -50,7 +50,7 @@ JFactory::getDocument()->addScriptDeclaration("
 	<tr class="row<?php echo $i % 2; ?>">
 		<td width="20" class="center hidden-phone">
 			<?php if ($item->checked_out) : ?>
-				<?php echo JHtml::_('jgrid.checkedout', $item->editor, $item->checked_out_time, '', $canCheckin); ?>
+				<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'languages.', $canCheckin); ?>
 			<?php elseif ($canDelete): ?>
 				<a href="#" data-id="<?php echo $item->id; ?>" data-client="<?php echo $item->client; ?>" data-tag="<?php echo $item->tag; ?>" class="hasTooltip js-list-delete-item" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_LANGUAGES_DELETE'); ?>">
 					<i class="icon-16-delete"></i>
