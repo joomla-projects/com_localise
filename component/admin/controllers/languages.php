@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  * @subpackage  Localise
  * @since       1.0
  */
-class LocaliseControllerLanguages extends JControllerLegacy
+class LocaliseControllerLanguages extends JControllerAdmin
 {
 	/**
 	 * Method to purge the localise table.
