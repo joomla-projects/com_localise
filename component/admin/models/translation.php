@@ -95,6 +95,108 @@ class LocaliseModelTranslation extends JModelForm
 	}
 
 	/**
+	 * Method to checkin a row.
+	 *
+	 * @param   integer  $pk  The numeric id of the primary key.
+	 *
+	 * @return  boolean  False on failure or error, true otherwise.
+	 *
+	 * @since   12.2
+	 */
+	public function checkin($pk = null)
+	{
+		$app = JFactory::getApplication('administrator');
+		// Initialise variables.
+		$pk = (!empty($pk)) ? $pk : (int) $app->getUserState('com_localise.edit.translation.id');
+
+		// Only attempt to check the row in if it exists.
+		if ($pk)
+		{
+			$user = JFactory::getUser();
+
+			// Get an instance of the row to checkin.
+			$table = $this->getTable();
+
+			if (!$table->load($pk))
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+
+			// Check if this is the user having previously checked out the row.
+			if ($table->checked_out > 0 && $table->checked_out != $user->get('id') && !$user->authorise('core.manage', 'com_checkin'))
+			{
+				$app->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_CHECKIN_USER_MISMATCH'), 'error');
+				$app->redirect(JRoute::_('index.php?option=com_localise&view=translations', false));
+
+				return false;
+			}
+
+			// Attempt to check the row in.
+			if (!$table->checkin($pk))
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to check-out a row for editing.
+	 *
+	 * @param   integer  $pk  The numeric id of the primary key.
+	 *
+	 * @return  boolean  False on failure or error, true otherwise.
+	 *
+	 * @since   12.2
+	 */
+	public function checkout($pk = null)
+	{
+		$app = JFactory::getApplication('administrator');
+		// Initialise variables.
+		$pk = (!empty($pk)) ? $pk : (int) $app->getUserState('com_localise.edit.translation.id');
+
+		// Only attempt to check the row in if it exists.
+		if ($pk)
+		{
+			// Get an instance of the row to checkout.
+			$table = $this->getTable();
+
+			if (!$table->load($pk))
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+
+			$user = JFactory::getUser();
+
+			// Check if this is the user having previously checked out the row.
+			if ($table->checked_out > 0 && $table->checked_out != $user->get('id') && !$user->authorise('core.manage', 'com_checkin'))
+			{
+				$app->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_CHECKIN_USER_MISMATCH'), 'error');
+				$app->redirect(JRoute::_('index.php?option=com_localise&view=translations', false));
+
+				return false;
+			}
+
+			// Attempt to check the row out.
+			if (!$table->checkout($user->get('id'), $pk))
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Returns a Table object, always creating it.
 	 *
 	 * @param   type    $type    The table type to instantiate
