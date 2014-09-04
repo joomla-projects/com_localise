@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  * @subpackage  Localise
  * @since       1.0
  */
-class LocaliseControllerPackages extends JControllerLegacy
+class LocaliseControllerPackages extends JControllerAdmin
 {
 	/**
 	 * Proxy for getModel.
