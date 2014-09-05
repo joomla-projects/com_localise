@@ -14,7 +14,7 @@ $params = JComponentHelper::getParams('com_localise');
 $reference = $params->get('reference', 'en-GB');
 $packages = LocaliseHelper::getPackages();
 $user = JFactory::getUser();
-$canCheckin = $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
+$userId = $user->get('id');
 $lang = JFactory::getLanguage();
 ?>
 <?php foreach ($this->items as $i => $item) : ?>
@@ -58,7 +58,9 @@ $lang = JFactory::getLanguage();
 		<td dir="ltr" class="center"><?php echo $item->client ?></td>
 		<td dir="ltr">
 			<?php if ($item->checked_out) : ?>
-				<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $canCheckin); ?>
+				<?php $canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0; ?>
+				<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'translations.', $canCheckin); ?>
+				<input type="checkbox" id="cb<?php echo $i;?>" class="hidden" name="cid[]" value="<?php echo $item->id;?>">
 			<?php endif; ?>
 			<?php if ($item->writable && !$item->error && $canEdit) : ?>
 				<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=translation.edit&client='.$item->client.'&tag='.$item->tag.'&filename='.$item->filename.'&storage='.$item->storage.'&id='.LocaliseHelper::getFileId(LocaliseHelper::getTranslationPath($item->client,$item->tag, $item->filename, $item->storage)).($item->filename=='override' ? '&layout=raw' :'')); ?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_' . ($item->state=='unexisting' ? 'NEW' : 'EDIT')); ?>">
