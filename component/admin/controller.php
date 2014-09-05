@@ -31,14 +31,27 @@ class LocaliseController extends JControllerLegacy
 	public function display($cachable = false, $urlparams = false)
 	{
 		require_once JPATH_COMPONENT . '/helpers/localise.php';
+		$app = JFactory::getApplication('administrator');
 
 		$vName = $this->input->get('view', 'languages');
+		$layout = $this->input->get('layout', 'default');
+		$id     = $this->input->getInt('id');
 
 		if ($vName == 'translations')
 		{
 			$view     = $this->getView('translations', 'html');
 			$packages = $this->getModel('Packages', 'LocaliseModel', array('ignore_request' => true));
 			$view->setModel($packages);
+		}
+		// Check for edit form.
+		elseif ($vName == 'language' && $layout == 'edit' && !$this->checkEditId('com_localise.edit.language', $id))
+		{
+			// Somehow the person just went to the form - we don't allow that.
+			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setMessage($this->getError(), 'error');
+			$this->setRedirect(JRoute::_('index.php?option=com_localise&view=languages', false));
+
+			return false;
 		}
 		else
 		{
