@@ -454,6 +454,25 @@ abstract class LocaliseHelper
 	}
 
 	/**
+	 * Determine if a package at given path is core or not.
+	 *
+	 * @param   string  $path  Path to lookup
+	 *
+	 * @return  mixed  null if file is invalid | True if core else false.
+	 *
+	 * @since   4.0
+	 */
+	public static function isCorePackage($path)
+	{
+		if (is_file($path) || preg_match('/.ini$/', $path))
+		{
+			$xml = simplexml_load_file($path);
+
+			return ((string) $xml->attributes()->core) == 'true';
+		}
+	}
+
+	/**
 	 * Find a translation file
 	 *
 	 * @param   string  $client    Client to lookup

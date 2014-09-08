@@ -64,8 +64,10 @@ class LocaliseControllerPackages extends JControllerLegacy
 		foreach ($ids as $i => $package)
 		{
 			$id    = LocaliseHelper::getFileId(JPATH_ROOT . '/media/com_localise/packages/' . $package . '.xml');
-			$model = $this->getModel('Package');
-			$model->setState('package.id', $id);
+			$context = LocaliseHelper::isCorePackage("$path/$file") ?
+						'package' : 'packagefile';
+			$model = JModelLegacy::getInstance($context, 'LocaliseModel', array('ignore_request' => true));
+			$model->setState("$context.id", $id);
 			$item  = $model->getItem();
 
 			if (!$item->standalone)
@@ -127,8 +129,10 @@ class LocaliseControllerPackages extends JControllerLegacy
 		foreach ($ids as $i => $package)
 		{
 			$id    = LocaliseHelper::getFileId(JPATH_ROOT . '/media/com_localise/packages/' . $package . '.xml');
-			$model = $this->getModel('Package');
-			$model->setState('package.id', $id);
+			$context = LocaliseHelper::isCorePackage("$path/$file") ?
+						'package' : 'packagefile';
+			$model = JModelLegacy::getInstance($context, 'LocaliseModel', array('ignore_request' => true));
+			$model->setState("$context.id", $id);
 			$item  = $model->getItem();
 
 			if (!$user->authorise('core.create', 'com_localise.' . (int) $id))
@@ -178,8 +182,10 @@ class LocaliseControllerPackages extends JControllerLegacy
 		foreach ($ids as $i => $package)
 		{
 			$id    = LocaliseHelper::getFileId(JPATH_ROOT . '/media/com_localise/packages/' . $package . '.xml');
-			$model = $this->getModel('Package');
-			$model->setState('package.id', $id);
+			$context = LocaliseHelper::isCorePackage("$path/$file") ?
+						'package' : 'packagefile';
+			$model = JModelLegacy::getInstance($context, 'LocaliseModel', array('ignore_request' => true));
+			$model->setState("$context.id", $id);
 			$item  = $model->getItem();
 
 			if (!$user->authorise('core.create', 'com_localise.' . (int) $id))

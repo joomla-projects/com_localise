@@ -25,7 +25,8 @@ class LocaliseControllerPackageFile extends JControllerForm
 	 */
 	public function __construct($config = array())
 	{
-		parent::__construct($config);
+		$this->view_list = 'packages';
+		return parent::__construct($config);
 
 		// Initialise variables.
 		$app = JFactory::getApplication();
@@ -55,11 +56,11 @@ class LocaliseControllerPackageFile extends JControllerForm
 		}
 
 		// Set the id, and path in the session
-		$app->setUserState('com_localise.edit.package.id', $id);
+		$app->setUserState('com_localise.edit.packagefile.id', $id);
 
 		if (!empty($name))
 		{
-			$app->setUserState('com_localise.package.name', $name);
+			$app->setUserState('com_localise.packagefile.name', $name);
 		}
 
 		// Set the id and unset the cid

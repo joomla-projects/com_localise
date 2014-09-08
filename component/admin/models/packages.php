@@ -86,9 +86,11 @@ class LocaliseModelPackages extends JModelList
 
 					foreach ($files as $file)
 					{
-						$model = JModelLegacy::getInstance('Package', 'LocaliseModel', array('ignore_request' => true));
 						$id    = LocaliseHelper::getFileId("$path/$file");
-						$model->setState('package.id', $id);
+						$context = LocaliseHelper::isCorePackage("$path/$file") ?
+									'package' : 'packagefile';
+						$model = JModelLegacy::getInstance($context, 'LocaliseModel', array('ignore_request' => true));
+						$model->setState("$context.id", $id);
 						$package = $model->getItem();
 
 						if (empty($search) || preg_match("/$search/i", $package->title))

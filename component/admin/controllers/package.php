@@ -25,7 +25,7 @@ class LocaliseControllerPackage extends JControllerForm
 	 */
 	public function __construct($config = array())
 	{
-		parent::__construct($config);
+		return parent::__construct($config);
 
 		// Initialise variables.
 		$app = JFactory::getApplication();

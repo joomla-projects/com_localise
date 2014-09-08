@@ -319,6 +319,9 @@ class LocaliseModelPackage extends JModelForm
 		$originalId = $app->getUserState('com_localise.edit.package.id');
 		$oldpath = null;
 
+		$originalId = is_array($originalId) && count($originalId) > 0 ?
+						$originalId[0] : $originalId;
+
 		if (!empty($originalId))
 		{
 			$db = JFactory::getDbo();
@@ -570,7 +573,10 @@ class LocaliseModelPackage extends JModelForm
 				$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_OLDFILE_REMOVE'), 'notice');
 			}
 
+			// Don't just set the user state, first check if the old is present then replace it with new one.
 			$app->setUserState('com_localise.edit.package.id', $id);
+
+			// @todo : Delete the old row from table.
 		}
 
 		return true;
