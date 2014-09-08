@@ -51,6 +51,6 @@ class LocaliseControllerLanguages extends JControllerAdmin
 	 */
 	public function getModel($name = 'Language', $prefix = 'LocaliseModel', $config = array('ignore_request' => true))
 	{
-		return parent::getModel($name, $prefix, array('ignore_request' => false));
+		return parent::getModel($name, $prefix, $config);
 	}
 }
