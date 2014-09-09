@@ -16,6 +16,27 @@ defined('_JEXEC') or die;
  * @subpackage  Localise
  * @since       1.0
  */
-class LocaliseControllerTranslations extends JControllerLegacy
+class LocaliseControllerTranslations extends JControllerAdmin
 {
+	/**
+	 * The prefix to use with controller messages.
+	 *
+	 * @var    string
+	 * @since  12.2
+	 */
+	protected $text_prefix  = 'COM_LOCALISE_TRANSLATIONS';
+
+	/**
+	 * Method to get a model object, loading it if required.
+	 *
+	 * @param   string  $name    The model name. Optional.
+	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
+	 *
+	 * @return  object  The model.
+	 */
+	public function getModel($name = 'Translation', $prefix = 'LocaliseModel', $config = array('ignore_request' => true))
+	{
+		return parent::getModel($name, $prefix, $config);
+	}
 }

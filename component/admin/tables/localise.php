@@ -29,28 +29,28 @@ class LocaliseTableLocalise extends JTable
 
 	/**
 	 * The title to use for the asset table
-	 * 
+	 *
 	 * @var string
 	 */
 	public $path = null;
 
 	/**
 	 * Checked out status
-	 * 
+	 *
 	 * @var int
 	 */
 	public $checked_out = null;
 
 	/**
 	 * Checkout out time
-	 * 
+	 *
 	 * @var date
 	 */
 	public $checked_out_time = null;
 
 	/**
 	 * The asset ID
-	 * 
+	 *
 	 * @var asset_id
 	 */
 	public $asset_id = null;
@@ -94,15 +94,10 @@ class LocaliseTableLocalise extends JTable
 	/**
 	 * Get the parent asset id for the record
 	 *
-	 * @return  int
-	 */
-	/**
-	 * Get the parent asset id for the record
-	 *
 	 * @param   JTable   $table  JTable Table object
 	 * @param   Integer  $id     Primart key of table
 	 *
-	 * @return  [type]          [description]
+	 * @return  Integer          Parent asset id for the record
 	 */
 	protected function _getAssetParentId(JTable $table = null, $id = null)
 	{
@@ -188,52 +183,5 @@ class LocaliseTableLocalise extends JTable
 		}
 
 		return $asset->id;
-	}
-
-	/**
-	 * Method to load a row from the database by primary key and bind the fields
-	 * to the JTable instance properties.
-	 *
-	 * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match.  If not
-	 *                          	set the instance property value is used.
-	 * @param   boolean  $reset  True to reset the default values before loading the new row.
-	 *
-	 * @return  boolean  True if successful. False if row not found or on error (internal error state set in that case).
-	 *
-	 * @since  1.0
-	 *
-	 * @link   http://docs.joomla.org/JTable/load
-	 */
-	public function load($keys = null, $reset = true)
-	{
-		if (!is_array($keys))
-		{
-			// Load by primary key.
-			static $instances;
-
-			if (!isset($instances))
-			{
-				$db    = $this->getDBO();
-				$query = $db->getQuery(true);
-				$query->select('*');
-				$query->from('#__localise');
-				$db->setQuery($query);
-				$instances = $db->loadAssocList('id');
-			}
-
-			if (empty($keys))
-			{
-				// If empty, use the value of the current key
-				$keyName = $this->getKeyName();
-				$keys    = array($keyName => $this->$keyName);
-			}
-
-			if (array_key_exists($keys, $instances))
-			{
-				return $this->bind($instances[$keys]);
-			}
-		}
-
-		return parent::load($keys, $reset);
 	}
 }

@@ -18,7 +18,7 @@ jimport('joomla.access.rules');
  *
  * @since  1.0
  */
-class LocaliseModelLanguage extends JModelForm
+class LocaliseModelLanguage extends JModelAdmin
 {
 	protected $context = 'com_localise.language';
 
@@ -40,40 +40,6 @@ class LocaliseModelLanguage extends JModelForm
 		$this->setState('language.id', $id);
 
 		parent::populateState();
-	}
-
-	/**
-	 * Method to override check-out a row for editing.
-	 *
-	 * @param   int  $pk  The ID of the primary key.
-	 *
-	 * @return  boolean
-	 */
-	public function checkout($pk = null)
-	{
-		// Initialise variables.
-		$pk = (!empty($pk))
-			? $pk
-			: (int) $this->getState('language.id');
-
-		return parent::checkout($pk);
-	}
-
-	/**
-	 * Method to checking a row.
-	 *
-	 * @param   int  $pk  The ID of the primary key.
-	 *
-	 * @return  boolean
-	 */
-	public function checkin($pk = null)
-	{
-		// Initialise variables.
-		$pk = (!empty($pk))
-			? $pk
-			: (int) $this->getState('language.id');
-
-		return parent::checkin($pk);
 	}
 
 	/**
@@ -161,7 +127,7 @@ class LocaliseModelLanguage extends JModelForm
 	 *
 	 * @return JObject
 	 */
-	public function getItem()
+	public function getItem($pk = null)
 	{
 		$id     = $this->getState('language.id');
 		$client = $this->getState('language.client');
@@ -414,7 +380,7 @@ class LocaliseModelLanguage extends JModelForm
 	 *
 	 * @return  boolean  true for success, false for failure
 	 */
-	public function delete()
+	public function delete(&$pks = null)
 	{
 		$params  = JComponentHelper::getParams('com_languages');
 		$id      = $this->getState('language.id');
