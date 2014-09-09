@@ -204,9 +204,10 @@ class LocaliseModelPackages extends JModelList
 	 */
 	public function delete($selected)
 	{
-		foreach ($selected as $package)
+		foreach ($selected as $packageId)
 		{
-			$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$package.xml";
+			$path = LocaliseHelper::getFilePath($packageId);
+			$package = JFile::stripExt(basename($path));
 
 			if (!JFile::delete($path))
 			{
@@ -228,9 +229,10 @@ class LocaliseModelPackages extends JModelList
 	 */
 	public function export($selected)
 	{
-		foreach ($selected as $package)
+		foreach ($selected as $packageId)
 		{
-			$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$package.xml";
+			$path = LocaliseHelper::getFilePath($packageId);
+			$package = JFile::stripExt(basename($path));
 
 			if (JFile::exists($path))
 			{
@@ -263,9 +265,10 @@ class LocaliseModelPackages extends JModelList
 	 */
 	public function duplicate($selected)
 	{
-		foreach ($selected as $package)
+		foreach ($selected as $packageId)
 		{
-			$path = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$package.xml";
+			$path = LocaliseHelper::getFilePath($packageId);
+			$package = JFile::stripExt(basename($path));
 
 			if (JFile::exists($path))
 			{

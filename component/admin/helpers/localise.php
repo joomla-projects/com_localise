@@ -454,6 +454,36 @@ abstract class LocaliseHelper
 	}
 
 	/**
+	 * Get file path in the database for the given file id
+	 *
+	 * @param   integer  $id  Id to lookup
+	 *
+	 * @return  string   File Path
+	 *
+	 * @since   4.0
+	 */
+	public static function getFilePath($id)
+	{
+		static $filePaths = null;
+
+		if (!isset($filePaths))
+		{
+			$db = JFactory::getDbo();
+
+			$db->setQuery(
+				$db->getQuery(true)
+					->select($db->quoteName(array('id', 'path')))
+					->from($db->quoteName('#__localise'))
+			);
+
+			$filePaths = $db->loadObjectList('id');
+		}
+
+		return array_key_exists("$id", $filePaths) ?
+                $filePaths["$id"]->path : '';
+	}
+
+	/**
 	 * Determine if a package at given path is core or not.
 	 *
 	 * @param   string  $path  Path to lookup

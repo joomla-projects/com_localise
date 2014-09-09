@@ -18,7 +18,7 @@ $user     = JFactory::getUser();
 			<td width="20" class="center hidden-phone"><?php echo $i + 1; ?></td>
 			<td width="20" class="center hidden-phone">
 				<?php if (empty($item->checked_out)) : ?>
-					<?php echo JHtml::_('grid.id', $i, $item->name); ?>
+					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				<?php else:?>
 					<?php echo JHtml::_('jgrid.checkedout', $item->editor, $item->checked_out_time); ?>
 				<?php endif; ?>
