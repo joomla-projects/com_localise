@@ -17,10 +17,12 @@ $user     = JFactory::getUser();
 		<tr class="row<?php echo $i % 2; ?>">
 			<td width="20" class="center hidden-phone"><?php echo $i + 1; ?></td>
 			<td width="20" class="center hidden-phone">
-				<?php if (empty($item->checked_out)) : ?>
-					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+				<?php if ($item->checked_out) : ?>
+					<?php $canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0; ?>
+					<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'packages.', $canCheckin); ?>
+					<input type="checkbox" id="cb<?php echo $i;?>" class="hidden" name="cid[]" value="<?php echo $item->id;?>">
 				<?php else:?>
-					<?php echo JHtml::_('jgrid.checkedout', $item->editor, $item->checked_out_time); ?>
+					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				<?php endif; ?>
 			</td>
 			<td>
