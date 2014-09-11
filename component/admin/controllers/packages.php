@@ -16,8 +16,16 @@ defined('_JEXEC') or die;
  * @subpackage  Localise
  * @since       1.0
  */
-class LocaliseControllerPackages extends JControllerLegacy
+class LocaliseControllerPackages extends JControllerAdmin
 {
+	/**
+	 * The prefix to use with controller messages.
+	 *
+	 * @var    string
+	 * @since  12.2
+	 */
+	protected $text_prefix  = 'COM_LOCALISE_PACKAGES';
+
 	/**
 	 * Proxy for getModel.
 	 *
@@ -61,11 +69,13 @@ class LocaliseControllerPackages extends JControllerLegacy
 		$ids = JFactory::getApplication()->input->get('cid', array(), 'array');
 
 		// Access checks.
-		foreach ($ids as $i => $package)
+		foreach ($ids as $i => $id)
 		{
-			$id    = LocaliseHelper::getFileId(JPATH_ROOT . '/media/com_localise/packages/' . $package . '.xml');
-			$model = $this->getModel('Package');
-			$model->setState('package.id', $id);
+			$path    = LocaliseHelper::getFilePath($id);
+			$context = LocaliseHelper::isCorePackage($path) ?
+						'package' : 'packagefile';
+			$model = JModelLegacy::getInstance($context, 'LocaliseModel', array('ignore_request' => true));
+			$model->setState("$context.id", $id);
 			$item  = $model->getItem();
 
 			if (!$item->standalone)
@@ -124,13 +134,8 @@ class LocaliseControllerPackages extends JControllerLegacy
 		$ids = JFactory::getApplication()->input->get('cid', array(), 'array');
 
 		// Access checks.
-		foreach ($ids as $i => $package)
+		foreach ($ids as $i => $id)
 		{
-			$id    = LocaliseHelper::getFileId(JPATH_ROOT . '/media/com_localise/packages/' . $package . '.xml');
-			$model = $this->getModel('Package');
-			$model->setState('package.id', $id);
-			$item  = $model->getItem();
-
 			if (!$user->authorise('core.create', 'com_localise.' . (int) $id))
 			{
 				// Prune items that you can't export.
@@ -175,13 +180,8 @@ class LocaliseControllerPackages extends JControllerLegacy
 		$ids = JFactory::getApplication()->input->get('cid', array(), 'array');
 
 		// Access checks.
-		foreach ($ids as $i => $package)
+		foreach ($ids as $i => $id)
 		{
-			$id    = LocaliseHelper::getFileId(JPATH_ROOT . '/media/com_localise/packages/' . $package . '.xml');
-			$model = $this->getModel('Package');
-			$model->setState('package.id', $id);
-			$item  = $model->getItem();
-
 			if (!$user->authorise('core.create', 'com_localise.' . (int) $id))
 			{
 				// Prune items that you can't clone.
@@ -214,5 +214,47 @@ class LocaliseControllerPackages extends JControllerLegacy
 		}
 
 		$this->setRedirect(JRoute::_('index.php?option=com_localise&view=packages', false), $msg, $type);
+	}
+
+	/**
+	 * Check in override to checkin one record of either package or packagefile.
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @since   12.2
+	 */
+	public function checkin()
+	{
+		// Check for request forgeries.
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		$ids = JFactory::getApplication()->input->post->get('cid', array(), 'array');
+
+		// Checkin only first id if more than one ids are present.
+		$id = $ids[0];
+
+		$path    = LocaliseHelper::getFilePath($id);
+		$context = LocaliseHelper::isCorePackage($path) ?
+					'package' : 'packagefile';
+		$model = JModelLegacy::getInstance($context, 'LocaliseModel', array('ignore_request' => true));
+
+		$return = $model->checkin($id);
+
+		if ($return === false)
+		{
+			// Checkin failed.
+			$message = JText::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError());
+			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false), $message, 'error');
+
+			return false;
+		}
+		else
+		{
+			// Checkin succeeded.
+			$message = JText::plural($this->text_prefix . '_N_ITEMS_CHECKED_IN', count($ids));
+			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false), $message);
+
+			return true;
+		}
 	}
 }

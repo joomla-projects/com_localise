@@ -19,57 +19,12 @@ defined('_JEXEC') or die;
 class LocaliseControllerPackageFile extends JControllerForm
 {
 	/**
-	 * Constructor
+	 * The URL view list variable.
 	 *
-	 * @param   array  $config  constructor parameters
+	 * @var    string
+	 * @since  12.2
 	 */
-	public function __construct($config = array())
-	{
-		parent::__construct($config);
-
-		// Initialise variables.
-		$app = JFactory::getApplication();
-		$input = $app->input;
-
-		// Get the id
-		$cid = $input->get('cid', array(), 'array');
-		$id = count($cid) ? $cid[0] : '';
-
-		if (!empty($id))
-		{
-			// From the packages view
-			$name = $id;
-			$path = JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $name . '.xml';
-			$id   = LocaliseHelper::getFileId($path);
-		}
-		else
-		{
-			// From the package view
-			$data = $input->get('jform', array(), 'array');
-
-			if ($data)
-			{
-				$id   = $data['id'];
-				$name = $data['name'];
-			}
-		}
-
-		// Set the id, and path in the session
-		$app->setUserState('com_localise.edit.package.id', $id);
-
-		if (!empty($name))
-		{
-			$app->setUserState('com_localise.package.name', $name);
-		}
-
-		// Set the id and unset the cid
-		if (!empty($id) && $input->get('task') == 'add')
-		{
-			$input->set('task', 'edit');
-		}
-
-		$input->set('cid', array());
-	}
+	protected $view_list = 'packages';
 
 	/**
 	 * Method to check if you can add a new record.

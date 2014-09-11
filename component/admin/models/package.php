@@ -21,7 +21,7 @@ jimport('joomla.client.helper');
  *
  * @since       1.0
  */
-class LocaliseModelPackage extends JModelForm
+class LocaliseModelPackage extends JModelAdmin
 {
 	/**
 	 * Method to auto-populate the model state.
@@ -46,36 +46,6 @@ class LocaliseModelPackage extends JModelForm
 
 		$id = $app->getUserState('com_localise.edit.package.id');
 		$this->setState('package.id', $id);
-	}
-
-	/**
-	 * Method to override check-out a row for editing.
-	 *
-	 * @param   int  $pk  The ID of the primary key.
-	 *
-	 * @return  boolean
-	 */
-	public function checkout($pk = null)
-	{
-		// Initialise variables.
-		$pk = (!empty($pk)) ? $pk : (int) $this->getState('package.id');
-
-		return parent::checkout($pk);
-	}
-
-	/**
-	 * Method to checkin a row.
-	 *
-	 * @param   int  $pk  The ID of the primary key.
-	 *
-	 * @return  boolean
-	 */
-	public function checkin($pk = null)
-	{
-		// Initialise variables.
-		$pk = (!empty($pk)) ? $pk : (int) $this->getState('package.id');
-
-		return parent::checkin($pk);
 	}
 
 	/**
@@ -178,9 +148,10 @@ class LocaliseModelPackage extends JModelForm
 	 *
 	 * @return JObject the package
 	 */
-	public function getItem()
+	public function getItem($pk = null)
 	{
 		$id = $this->getState('package.id');
+		$id = is_array($id) ? (count($id) > 0 ? $id[0] : 0) : $id;
 		$package = new JObject;
 		$package->checked_out = 0;
 		$package->standalone  = true;
@@ -318,6 +289,9 @@ class LocaliseModelPackage extends JModelForm
 		$app = JFactory::getApplication('administrator');
 		$originalId = $app->getUserState('com_localise.edit.package.id');
 		$oldpath = null;
+
+		$originalId = is_array($originalId) && count($originalId) > 0 ?
+						$originalId[0] : $originalId;
 
 		if (!empty($originalId))
 		{
@@ -570,7 +544,10 @@ class LocaliseModelPackage extends JModelForm
 				$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_OLDFILE_REMOVE'), 'notice');
 			}
 
+			// Don't just set the user state, first check if the old is present then replace it with new one.
 			$app->setUserState('com_localise.edit.package.id', $id);
+
+			// @todo : Delete the old row from table.
 		}
 
 		return true;

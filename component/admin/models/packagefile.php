@@ -21,7 +21,7 @@ jimport('joomla.client.helper');
  *
  * @since       1.0
  */
-class LocaliseModelPackageFile extends JModelForm
+class LocaliseModelPackageFile extends JModelAdmin
 {
 	/**
 	 * Method to auto-populate the model state.
@@ -41,41 +41,11 @@ class LocaliseModelPackageFile extends JModelForm
 		$app = JFactory::getApplication('administrator');
 
 		// Load the User state.
-		$name = $app->getUserState('com_localise.package.name');
-		$this->setState('package.name', $name);
+		$name = $app->getUserState('com_localise.packagefile.name');
+		$this->setState('packagefile.name', $name);
 
-		$id = $app->getUserState('com_localise.edit.package.id');
-		$this->setState('package.id', $id);
-	}
-
-	/**
-	 * Method to override check-out a row for editing.
-	 *
-	 * @param   int  $pk  The ID of the primary key.
-	 *
-	 * @return  boolean
-	 */
-	public function checkout($pk = null)
-	{
-		// Initialise variables.
-		$pk = (!empty($pk)) ? $pk : (int) $this->getState('package.id');
-
-		return parent::checkout($pk);
-	}
-
-	/**
-	 * Method to checkin a row.
-	 *
-	 * @param   int  $pk  The ID of the primary key.
-	 *
-	 * @return  boolean
-	 */
-	public function checkin($pk = null)
-	{
-		// Initialise variables.
-		$pk = (!empty($pk)) ? $pk : (int) $this->getState('package.id');
-
-		return parent::checkin($pk);
+		$id = $app->getUserState('com_localise.edit.packagefile.id');
+		$this->setState('packagefile.id', $id);
 	}
 
 	/**
@@ -103,8 +73,8 @@ class LocaliseModelPackageFile extends JModelForm
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$id   = $this->getState('package.id');
-		$name = $this->getState('package.name');
+		$id   = $this->getState('packagefile.id');
+		$name = $this->getState('packagefile.name');
 		$form = $this->loadForm('com_localise.packagefile', 'packagefile', array('control' => 'jform', 'load_data' => $loadData));
 
 		if (empty($form))
@@ -178,9 +148,10 @@ class LocaliseModelPackageFile extends JModelForm
 	 *
 	 * @return JObject the package
 	 */
-	public function getItem()
+	public function getItem($pk = null)
 	{
-		$id = $this->getState('package.id');
+		$id = $this->getState('packagefile.id');
+		$id = is_array($id) ? (count($id) > 0 ? $id[0] : 0) : $id;
 		$package = new JObject;
 		$package->checked_out = 0;
 		$package->standalone  = true;
@@ -223,6 +194,7 @@ class LocaliseModelPackageFile extends JModelForm
 				// $package->client      = $client;
 
 				// $package->standalone  = substr($manifest, 0, 4) == 'fil_';
+				$package->core        = ((string) $xml->attributes()->core) == 'true';
 				$package->title       = (string) $xml->title;
 				$package->version     = (string) $xml->version;
 				$package->packversion = (string) $xml->packversion;
@@ -314,8 +286,11 @@ class LocaliseModelPackageFile extends JModelForm
 	{
 		// When editing a package, find the original path
 		$app = JFactory::getApplication('administrator');
-		$originalId = $app->getUserState('com_localise.edit.package.id');
+		$originalId = $app->getUserState('com_localise.edit.packagefile.id');
 		$oldpath = null;
+
+		$originalId = is_array($originalId) && count($originalId) > 0 ?
+						$originalId[0] : $originalId;
 
 		if (!empty($originalId))
 		{
@@ -520,8 +495,7 @@ class LocaliseModelPackageFile extends JModelForm
 
 		*/
 		$id = LocaliseHelper::getFileId($path);
-		$this->setState('package.id', $id);
-		JFactory::getApplication()->setUserState('com_localise.edit.package.id', $id);
+		$this->setState('packagefile.id', $id);
 
 		// Bind the rules.
 		$table = $this->getTable();
@@ -557,7 +531,10 @@ class LocaliseModelPackageFile extends JModelForm
 				$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_OLDFILE_REMOVE'), 'notice');
 			}
 
-			$app->setUserState('com_localise.edit.package.id', $id);
+			// Don't just set the user state, first check if the old is present then replace it with new one.
+			$app->setUserState('com_localise.edit.packagefile.id', $id);
+
+			// @todo : Delete the old row from table.
 		}
 
 		return true;
@@ -579,7 +556,7 @@ class LocaliseModelPackageFile extends JModelForm
 		if (strpos($data['name'], 'master_') !== false)
 		{
 			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_ERROR_MASTER_PACKAGE_DOWNLOAD_FORBIDDEN', $data['name']), 'warning');
-			$app->redirect(JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('package.id'), false));
+			$app->redirect(JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('packagefile.id'), false));
 
 			return false;
 		}
@@ -786,7 +763,7 @@ class LocaliseModelPackageFile extends JModelForm
 			$msg .= '<p>...</p>';
 			$msg .= JText::_('COM_LOCALISE_UNTRANSLATED');
 			$app->enqueueMessage($msg, 'error');
-			$app->redirect(JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('package.id'), false));
+			$app->redirect(JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('packagefile.id'), false));
 
 			return false;
 		}
