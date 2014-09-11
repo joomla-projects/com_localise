@@ -314,6 +314,14 @@ class LocaliseModelPackageFile extends JModelAdmin
 
 		// $client   = $package->client ? $package->client : 'site';
 
+		// Check whether a package with the new package's name exist already or not.
+		if (empty($originalId) && ((int) LocaliseHelper::getFileId($path)) > 0)
+		{
+			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_EXIST', $name));
+
+			return false;
+		}
+
 		if ($package->standalone)
 		{
 			$title = $name;
