@@ -241,12 +241,14 @@ class LocaliseModelLanguage extends JModelAdmin
 		$client = $data['client'];
 		$path   = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.xml";
 		$exists = JFile::exists($path);
+		$parts = explode('.', $data['version']);
+		$small_version = implode('.', array($parts[0],$parts[1]));
 
 		if ($exists && !empty($id) || !$exists && empty($id))
 		{
 			$text = '';
 			$text .= '<?xml version="1.0" encoding="utf-8"?>' . "\n";
-			$text .= '<metafile version="3.1" client="' . htmlspecialchars($client, ENT_COMPAT, 'UTF-8') . '">' . "\n";
+			$text .= '<metafile version="' . $small_version . '" client="' . htmlspecialchars($client, ENT_COMPAT, 'UTF-8') . '">' . "\n";
 			$text .= "\t" . '<tag>' . htmlspecialchars($tag, ENT_COMPAT, 'UTF-8') . '</tag>' . "\n";
 			$text .= "\t" . '<name>' . htmlspecialchars($data['name'], ENT_COMPAT, 'UTF-8') . '</name>' . "\n";
 			$text .= "\t" . '<version>' . htmlspecialchars($data['version'], ENT_COMPAT, 'UTF-8') . '</version>' . "\n";
