@@ -75,13 +75,6 @@ Get codeception phar:
 ```
 wget http://codeception.com/codecept.phar .
 ```
-
-Run the BootStrap Command:
-
-```
-php ./codecept.phar boostrap
-```
-
 Build codeception testers classes:
 
 ```
