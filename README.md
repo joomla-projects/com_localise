@@ -41,6 +41,7 @@ The following image details the actors and use cases of the application:
 ## System Tests
 See testing documentation for the system tests at [tests/system/readme.md](./tests/system/readme.md)
 
+
 ## PHP_CodeSniffer
 All PHP files except for layout files (located in a `/tmpl` directory) should be formatted to follow the [Joomla! Coding Standards](http://joomla.github.io/coding-standards/).  These are validated by using PHP_CodeSniffer.  You can run the PHP_CodeSniffer in one of the following manners:
 
@@ -66,3 +67,56 @@ A PHING build file can be found at build/build.xml. After executing it you will 
 ## Shell script for *nix systems
 
 To package, on a *nix system, navigate to the build folder and run ./build.sh. When complete, you will have an installable .zip file under build/packages.
+
+# Testing with Codeception
+
+Get codeception phar:
+
+```
+wget http://codeception.com/codecept.phar .
+```
+
+Run the BootStrap Command:
+
+```
+php ./codecept.phar boostrap
+```
+
+Build codeception testers classes:
+
+```
+php ./codecept.phar build
+```
+
+Rename tests/acceptance.suite.dist.yml to tests/acceptance.suite.yml
+
+Modify the configuration at tests/acceptance.suite.yml to fit your server details. Find the instructions in the same file: https://github.com/redCOMPONENT-COM/redSHOP/blob/develop/tests/acceptance.suite.dist.yml#L3
+
+Run Selenium server:
+
+```
+# Download
+curl -O http://selenium-release.storage.googleapis.com/2.41/selenium-server-standalone-2.41.0.jar
+
+# And start the Selenium Server
+java -Xms40m -Xmx256m -jar /Applications/XAMPP/xamppfiles/htdocs/selenium/selenium-server-standalone-2.41.0.jar
+```
+
+
+Execute the tests:
+
+```
+php codecept.phar run
+
+; Or with --steps to see a step-by-step report on the performed actions.
+php codecept.phar run --steps
+
+; Or with --html. This command will run all tests for all suites, displaying the steps, and building HTML and XML reports. Reports will be store in tests/_output/ directory.
+php codecept.phar run --html
+```
+
+## Firefox Addons
+To generate tests really fast you can use these firefox addons:
+
+- Selenium IDE (records your screen)
+- Selenium IDE Codeception Formatter (Export your Selenium IDE test to Codeception language)
