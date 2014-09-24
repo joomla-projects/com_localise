@@ -204,6 +204,12 @@ class LocaliseModelPackages extends JModelList
 	 */
 	public function delete($selected)
 	{
+		// Sanitize the array.
+		$selected = (array) $selected;
+
+		// Get a row instance.
+		$table = JTable::getInstance('Localise', 'LocaliseTable');
+
 		foreach ($selected as $packageId)
 		{
 			$path = LocaliseHelper::getFilePath($packageId);
@@ -212,6 +218,13 @@ class LocaliseModelPackages extends JModelList
 			if (!JFile::delete($path))
 			{
 				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGES_REMOVE', $package));
+
+				return false;
+			}
+
+			if (!$table->delete((int) $packageId))
+			{
+				$this->setError($table->getError());
 
 				return false;
 			}
