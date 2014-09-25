@@ -13,13 +13,22 @@ JHtml::_('behavior.formvalidation');
 
 $fieldSets = $this->form->getFieldsets();
 $ftpSets   = $this->formftp->getFieldsets();
+JText::script('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE');
+
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'packagefile.cancel' || document.formvalidator.isValid(document.id('localise-package-form')))
+		if ((task == 'packagefile.apply' || task == 'packagefile.save') && document.formvalidator.isValid(document.id('localise-package-form')))
 		{
-			submitform(task);
+			if (confirm(Joomla.JText._('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE')))
+			{
+				Joomla.submitform(task, document.getElementById('localise-package-form'));
+			}
+		}
+		else if (task == 'packagefile.cancel' || task == 'packagefile.download')
+		{
+			Joomla.submitform(task, document.getElementById('localise-package-form'));
 		}
 	}
 </script>

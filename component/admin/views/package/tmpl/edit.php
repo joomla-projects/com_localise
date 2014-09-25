@@ -15,6 +15,7 @@ JHtml::_('jquery.framework');
 
 $fieldSets = $this->form->getFieldsets();
 $ftpSets   = $this->formftp->getFieldsets();
+JText::script('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE');
 JFactory::getDocument()->addScriptDeclaration("
 	(function($){
 		$(document).ready(function () {
@@ -41,9 +42,16 @@ JFactory::getDocument()->addScriptDeclaration("
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'package.cancel' || document.formvalidator.isValid(document.id('localise-package-form')))
+		if ((task == 'package.apply' || task == 'package.save') && document.formvalidator.isValid(document.id('localise-package-form')))
 		{
-			submitform(task);
+			if (confirm(Joomla.JText._('COM_LOCALISE_MSG_CONFIRM_PACKAGE_SAVE')))
+			{
+				Joomla.submitform(task, document.getElementById('localise-package-form'));
+			}
+		}
+		else if (task == 'package.cancel' || task == 'package.download')
+		{
+			Joomla.submitform(task, document.getElementById('localise-package-form'));
 		}
 	}
 </script>
