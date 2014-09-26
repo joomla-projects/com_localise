@@ -14,6 +14,9 @@ Master: [![Build Status](https://api.travis-ci.org/joomla-projects/com_localise.
 
 Develop: [![Build Status](https://travis-ci.org/joomla-projects/com_localise.svg?branch=develop)](https://travis-ci.org/joomla-projects/com_localise)
 
+# Scrutinizer Status
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/joomla-projects/com_localise/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/joomla-projects/com_localise/?branch=develop)
+
 # The goal
 With the new com_localise we are trying to solve the following needs:
 
