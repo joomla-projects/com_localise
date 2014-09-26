@@ -237,31 +237,35 @@ class LocaliseModelTranslation extends JModelAdmin
 						$line = $stream->gets();
 						$lineNumber++;
 
-						if ($line[0] == '#' || $line[0] == ';')
+						if ($line[0] == '#')
 						{
-							if (preg_match('/^(#|;).*(\$Id.*\$)/', $line, $matches))
+							$this->item->error[] = $lineNumber;
+						}
+						elseif ($line[0] == ';')
+						{
+							if (preg_match('/^(;).*(\$Id.*\$)/', $line, $matches))
 							{
 								$this->item->svn = $matches[2];
 							}
-							elseif (preg_match('/(#|;)\s*@?(\pL+):?.*/', $line, $matches))
+							elseif (preg_match('/(;)\s*@?(\pL+):?.*/', $line, $matches))
 							{
 								switch (strtolower($matches[2]))
 								{
 									case 'note':
-										preg_match('/(#|;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+										preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
 										$this->item->complete = $this->item->complete || strtolower($matches2[3]) == 'complete';
 										break;
 									case 'version':
-										preg_match('/(#|;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+										preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
 										$this->item->version = $matches2[3];
 										break;
 									case 'desc':
 									case 'description':
-										preg_match('/(#|;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+										preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
 										$this->item->description = $matches2[3];
 										break;
 									case 'date':
-										preg_match('/(#|;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+										preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
 										$this->item->creationdate = $matches2[3];
 										break;
 									case 'author':
@@ -271,12 +275,12 @@ class LocaliseModelTranslation extends JModelAdmin
 										}
 										else
 										{
-											preg_match('/(#|;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+											preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
 											$this->item->author = $matches2[3];
 										}
 										break;
 									case 'copyright':
-										preg_match('/(#|;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+										preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
 
 										if (empty($this->item->maincopyright))
 										{
@@ -309,16 +313,16 @@ class LocaliseModelTranslation extends JModelAdmin
 										}
 										else
 										{
-											preg_match('/(#|;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+											preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
 											$this->item->license = $matches2[3];
 										}
 										break;
 									case 'package':
-										preg_match('/(#|;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+										preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
 										$this->item->package = $matches2[3];
 										break;
 									case 'subpackage':
-										preg_match('/(#|;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+										preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
 										$this->item->subpackage = $matches2[3];
 										break;
 									case 'link':
@@ -332,7 +336,7 @@ class LocaliseModelTranslation extends JModelAdmin
 											}
 											else
 											{
-												preg_match('/(#|;)\s*(.*)/', $line, $matches2);
+												preg_match('/(;)\s*(.*)/', $line, $matches2);
 												$this->item->author = $matches2[2];
 											}
 										}
