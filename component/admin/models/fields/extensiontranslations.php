@@ -46,7 +46,11 @@ class JFormFieldExtensionTranslations extends JFormFieldGroupedList
 			}
 		}
 
-		$xml = simplexml_load_file(JPATH_ROOT . '/media/com_localise/packages/core.xml');
+		// Switching master core depending on version set in config
+		$params = JComponentHelper::getParams('com_localise');
+		$core = $params->get('core_version', 'core.xml');
+		$xml = simplexml_load_file(JPATH_ROOT . '/media/com_localise/packages/' . $core);
+
 		$coreadminfiles	= (array) $xml->administrator->children();
 		$coresitefiles	= (array) $xml->site->children();
 
