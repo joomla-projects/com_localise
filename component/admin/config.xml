@@ -45,6 +45,13 @@
 			label="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE"
 			description="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE_DESC" />
 		<field
+			name="core_version"
+			type="coreVersion"
+			default="core.xml"
+			required="true"
+			label="COM_LOCALISE_LABEL_CORE_VERSION"
+			description="COM_LOCALISE_LABEL_CORE_VERSION_DESC" />
+		<field
 			name="filesavepermission"
 			type="text"
 			size="4"
