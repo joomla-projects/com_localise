@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 $user     = JFactory::getUser();
 ?>
 <?php foreach($this->items as $i => $item) : ?>
-	<?php if ($item->name !== 'core') : ?>
+	<?php if ($item->name !== 'core' && $item->name !== 'core_340') : ?>
 		<?php $canEdit = $user->authorise('localise.edit', 'com_localise.'.$item->id); ?>
 		<tr class="row<?php echo $i % 2; ?>">
 			<td width="20" class="center hidden-phone"><?php echo $i + 1; ?></td>
