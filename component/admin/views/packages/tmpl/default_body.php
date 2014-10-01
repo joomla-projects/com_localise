@@ -9,10 +9,11 @@
 
 defined('_JEXEC') or die;
 
-$user     = JFactory::getUser();
+$user	= JFactory::getUser();
+$path	= '@/administrator/components/com_localise/packages/@';
 ?>
 <?php foreach($this->items as $i => $item) : ?>
-	<?php if ($item->name !== 'core' && $item->name !== 'core_340') : ?>
+	<?php if (preg_match($path, $item->path)) : ?>
 		<?php $canEdit = $user->authorise('localise.edit', 'com_localise.'.$item->id); ?>
 		<tr class="row<?php echo $i % 2; ?>">
 			<td width="20" class="center hidden-phone"><?php echo $i + 1; ?></td>
