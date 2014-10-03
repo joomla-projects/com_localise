@@ -571,6 +571,8 @@ abstract class LocaliseHelper
 				case 'plg':
 					$parts  = explode('_', $extension);
 					$group  = $parts[1];
+					$parts	= explode('.', $filename);
+					$filename = $parts[0];
 					$plugin = substr($filename, 5 + strlen($group));
 					$path   = JPATH_PLUGINS . "/$group/$plugin/language/$tag/$tag.$filename.ini";
 
