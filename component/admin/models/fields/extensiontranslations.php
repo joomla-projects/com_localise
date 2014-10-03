@@ -109,16 +109,16 @@ class JFormFieldExtensionTranslations extends JFormFieldGroupedList
 			{
 				// Take off core extensions containing a language folder
 				if ($extension != 'mod_version' && $extension != 'mod_multilangstatus' && $extension != 'protostar'
-					&& $extension != 'hathor' && $extension != 'isis' && $extension != 'beez3')
+					&& $extension != 'hathor' && $extension != 'isis' && $extension != 'beez3' && $extension != 'languagecode')
 				{
-					if (JFolder::exists("$path$extension$folder/language"))
+					if (JFolder::exists("$path$extension/language"))
 					{
 						// Scan extensions folder
-						$tags = JFolder::folders("$path$extension$folder/language");
+						$tags = JFolder::folders("$path$extension/language");
 
 						foreach ($tags as $tag)
 						{
-							$file = "$path$extension$folder/language/$tag/$tag.$prefix$extension$suffix.ini";
+							$file = "$path$extension/language/$tag/$tag.$prefix$extension$suffix.ini";
 
 							if (JFile::exists($file))
 							{
