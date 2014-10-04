@@ -287,6 +287,37 @@ abstract class LocaliseHelper
 					);
 				}
 			}
+
+			// Scan plugins folders
+			if (preg_match("/$filter_type/", 'plugin'))
+			{
+				$plugin_types = JFolder::folders(JPATH_PLUGINS);
+
+				foreach ($plugin_types as $plugin_type)
+				{
+					// Scan administrator language folders as this is where plugin languages are installed
+					$scans[] = array(
+						'prefix' => 'plg_' . $plugin_type . '_',
+						'suffix' => '',
+						'type'   => 'plugin',
+						'client' => 'administrator',
+						'path'   => JPATH_PLUGINS . "/$plugin_type/",
+						'folder' => ''
+					);
+
+					foreach ($suffixes as $suffix)
+					{
+						$scans[] = array(
+							'prefix' => 'plg_' . $plugin_type . '_',
+							'suffix' => $suffix,
+							'type'   => 'plugin',
+							'client' => 'administrator',
+							'path'   => JPATH_PLUGINS . "/$plugin_type/",
+							'folder' => ''
+						);
+					}
+				}
+			}
 		}
 
 		// Scan site folders
@@ -363,37 +394,6 @@ abstract class LocaliseHelper
 						'client' => 'site',
 						'path'   => LOCALISEPATH_SITE . '/templates/',
 						'folder' => ''
-					);
-				}
-			}
-		}
-
-		// Scan plugins folders
-		if (preg_match("/$filter_type/", 'plugin'))
-		{
-			$plugin_types = JFolder::folders(JPATH_PLUGINS);
-
-			foreach ($plugin_types as $plugin_type)
-			{
-				// Scan administrator language folders as this is where plugin languages are installed
-				$scans[] = array(
-					'prefix' => 'plg_' . $plugin_type . '_',
-					'suffix' => '',
-					'type'   => 'plugin',
-					'client' => 'administrator',
-					'path'   => JPATH_PLUGINS . "/$plugin_type/",
-					'folder' => '/administrator'
-				);
-
-				foreach ($suffixes as $suffix)
-				{
-					$scans[] = array(
-						'prefix' => 'plg_' . $plugin_type . '_',
-						'suffix' => $suffix,
-						'type'   => 'plugin',
-						'client' => 'administrator',
-						'path'   => JPATH_PLUGINS . "/$plugin_type/",
-						'folder' => '/administrator'
 					);
 				}
 			}
