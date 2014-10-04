@@ -175,14 +175,14 @@ class LocaliseModelTranslations extends JModelList
 
 				foreach ($extensions as $extension)
 				{
-					if (JFolder::exists("$path$extension$folder/language"))
+					if (JFolder::exists("$path$extension/language"))
 					{
 						// Scan extensions folder
-						$tags = JFolder::folders("$path$extension$folder/language", $filter_tag);
+						$tags = JFolder::folders("$path$extension/language", $filter_tag);
 
 						foreach ($tags as $tag)
 						{
-							$file   = "$path$extension$folder/language/$tag/$tag.$prefix$extension$suffix.ini";
+							$file   = "$path$extension/language/$tag/$tag.$prefix$extension$suffix.ini";
 							$origin = LocaliseHelper::getOrigin("$prefix$extension$suffix", $client);
 
 							if (JFile::exists($file) && preg_match("/$filter_origin/", $origin))
@@ -428,7 +428,9 @@ class LocaliseModelTranslations extends JModelList
 					{
 						// Coping with Core files not considered as reference
 						if ($file == $reftag . '.com_messages.ini' || $file == $reftag . '.com_mailto.sys.ini'
-							|| $file == $reftag . '.com_wrapper.ini'|| $file == $reftag . '.com_wrapper.sys.ini' || $file == $reftag . '.finder_cli.ini')
+							|| $file == $reftag . '.com_wrapper.ini'|| $file == $reftag . '.com_wrapper.sys.ini' || $file == $reftag . '.finder_cli.ini'
+							|| $file == $reftag . '.plg_user_session.ini' || $file == $reftag . '.plg_user_session.sys.ini'
+							|| $file == $reftag . '.plg_system_session.ini' || $file == $reftag . '.plg_system_session.sys.ini')
 						{
 							$reftaglength = strlen($reftag);
 
