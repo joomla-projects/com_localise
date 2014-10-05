@@ -195,6 +195,8 @@
 		<filename>plg_system_remember.sys</filename>
 		<filename>plg_system_sef</filename>
 		<filename>plg_system_sef.sys</filename>
+		<filename>plg_system_session</filename>
+		<filename>plg_system_session.sys</filename>
 		<filename>plg_twofactorauth_totp</filename>
 		<filename>plg_twofactorauth_totp.sys</filename>
 		<filename>plg_twofactorauth_yubikey</filename>
@@ -205,6 +207,8 @@
 		<filename>plg_user_joomla.sys</filename>
 		<filename>plg_user_profile</filename>
 		<filename>plg_user_profile.sys</filename>
+		<filename>plg_user_session</filename>
+		<filename>plg_user_session.sys</filename>
 		<filename>tpl_hathor</filename>
 		<filename>tpl_hathor.sys</filename>
 		<filename>tpl_isis</filename>
