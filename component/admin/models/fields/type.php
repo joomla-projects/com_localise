@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.form.formfield');
+JFormHelper::loadFieldClass('list');
 
 /**
  * Form Field Place class.
@@ -19,7 +19,7 @@ jimport('joomla.form.formfield');
  *
  * @since       1.0
  */
-class JFormFieldType extends JFormField
+class JFormFieldType extends JFormFieldList
 {
 	/**
 	 * The field type.
@@ -33,7 +33,7 @@ class JFormFieldType extends JFormField
 	 *
 	 * @return  string    The field input.
 	 */
-	protected function getInput()
+	protected function getOptions()
 	{
 		$attributes = '';
 
@@ -77,10 +77,7 @@ class JFormFieldType extends JFormField
 		$options[] = JHtml::_('select.option', 'override', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_OVERRIDE'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-override"')
 						);
-		$return    = JHtml::_('select.genericlist', $options, $this->name,
-						array('id' => $this->id, 'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes)
-						);
 
-		return $return;
+		return $options;
 	}
 }

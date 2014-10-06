@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.form.formfield');
+JFormHelper::loadFieldClass('list');
 
 /**
  * Form Field State class.
@@ -19,7 +19,7 @@ jimport('joomla.form.formfield');
  *
  * @since       1.0
  */
-class JFormFieldState extends JFormField
+class JFormFieldState extends JFormFieldList
 {
 	/**
 	 * The field type.
@@ -33,7 +33,7 @@ class JFormFieldState extends JFormField
 	 *
 	 * @return  string    The field input.
 	 */
-	protected function getInput()
+	protected function getOptions()
 	{
 		$attributes = '';
 
@@ -64,10 +64,7 @@ class JFormFieldState extends JFormField
 		$options[] = JHtml::_('select.option', 'error', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_STATE_ERROR'),
 						array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-error error"')
 						);
-		$return    = JHtml::_('select.genericlist', $options, $this->name,
-						array('id' => $this->id, 'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes)
-						);
 
-		return $return;
+		return $options;
 	}
 }
