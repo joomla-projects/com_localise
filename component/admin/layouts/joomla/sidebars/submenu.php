@@ -19,7 +19,7 @@ jimport('joomla.filesystem.file');
 	</script>
 
 <div class="toggle-sidebar">
-	<?php if (JFile::exists(JPATH_ROOT . '/layouts/joomla/sidebars/submenu.php')) : ?>
+	<?php if (JFile::exists(JPATH_ROOT . '/layouts/joomla/searchtools/default/togglesidebar.php')) : ?>
 		<?php echo JLayoutHelper::render('joomla.searchtools.default.togglesidebar'); ?>
 	<?php else : ?>
 		<?php echo JLayoutHelper::render('joomla.sidebars.toggle'); ?>
