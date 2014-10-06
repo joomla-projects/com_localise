@@ -15,10 +15,11 @@ $params     = (isset($this->state->params)) ? $this->state->params : new JObject
 $saveOrder  = $listOrder == 'title';
 $sortFields = $this->getSortFields();
 ?>
-<!-- Begin Sidebar -->
-<!-- Begin Sidebar -->
+<!-- Begin Sidebar using custom submenu layout -->
 <div id="j-sidebar-container" class="span2">
-	<?php echo $this->sidebar; ?>
+			<?php echo $this->sidebar; ?>
+		</div>
+	</div>
 </div>
 <!-- End Sidebar -->
 <!-- Begin Content -->

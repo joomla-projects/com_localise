@@ -15,11 +15,9 @@ $params     = (isset($this->state->params)) ? $this->state->params : new JObject
 $saveOrder  = $listOrder == 'tag';
 $sortFields = $this->getSortFields();
 ?>
-<!-- Begin Sidebar -->
+<!-- Begin Sidebar using custom submenu layout -->
 <div id="j-sidebar-container" class="span2">
 	<?php echo $this->sidebar; ?>
-	<div id="sidebar">
-		<div class="sidebar-nav">
 			<hr />
 			<div class="filter-select hidden-phone">
 				<h4 class="page-header"><?php echo JText::_('JSEARCH_FILTER_LABEL');?></h4>
