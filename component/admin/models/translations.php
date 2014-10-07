@@ -293,7 +293,12 @@ class LocaliseModelTranslations extends JModelList
 										$translation->setProperties(array('type' => 'joomla', 'filename' => 'joomla', 'name' => JText::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA')));
 										$this->translations["$client|$tag|joomla"] = $translation;
 									}
-									elseif ($file == "$tag.finder_cli.ini")
+									elseif ($file == "$tag.finder_cli.ini" && preg_match("/$filter_type/", 'file'))
+									{
+										$translation->setProperties(array('type' => 'file', 'filename' => $filename, 'name' => $filename));
+										$this->translations["$client|$tag|$filename"] = $translation;
+									}
+									elseif ($file == "$tag.files_joomla.sys.ini" && preg_match("/$filter_type/", 'file'))
 									{
 										$translation->setProperties(array('type' => 'file', 'filename' => $filename, 'name' => $filename));
 										$this->translations["$client|$tag|$filename"] = $translation;
@@ -332,12 +337,6 @@ class LocaliseModelTranslations extends JModelList
 									{
 										// Scan library ini file
 										$translation->setProperties(array('type' => 'library', 'filename' => $filename, 'name' => $filename));
-										$this->translations["$client|$tag|$filename"] = $translation;
-									}
-									elseif ($prefix == "$tag.fil" && preg_match("/$filter_type/", 'file'))
-									{
-										// Scan files ini file
-										$translation->setProperties(array('type' => 'file', 'filename' => $filename, 'name' => $filename));
 										$this->translations["$client|$tag|$filename"] = $translation;
 									}
 								}
@@ -558,7 +557,8 @@ class LocaliseModelTranslations extends JModelList
 								}
 							}
 						}
-						elseif (preg_match("/^$reftag\.(fil.*)\.ini$/", $file, $matches))
+						elseif (preg_match("/^$reftag\.(finder_cli)\.ini$/", $file, $matches)
+								|| preg_match("/^$reftag\.(files_joomla.sys)\.ini$/", $file, $matches) )
 						{
 							$name   = $matches[1];
 							$origin = LocaliseHelper::getOrigin($name, $client);
@@ -588,7 +588,7 @@ class LocaliseModelTranslations extends JModelList
 												'path' => $path,
 												'state' => 'unexisting',
 												'writable' => LocaliseHelper::isWritable($path),
-												'origin' => '_thirdparty'
+												'origin' => 'core'
 											)
 										);
 										$this->translations["$client|$tag|$name"] = $translation;
