@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.filesystem.folder');
+JFormHelper::loadFieldClass('list');
 
 /**
  * Renders a list of all languages
@@ -20,7 +20,7 @@ jimport('joomla.filesystem.folder');
  *
  * @since       1.0
  */
-class JFormFieldCoreLanguage extends JFormField
+class JFormFieldCoreLanguage extends JFormFieldList
 {
 	/**
 	 * The field type.
@@ -34,7 +34,7 @@ class JFormFieldCoreLanguage extends JFormField
 	 *
 	 * @return  string    The field input.
 	 */
-	protected function getInput()
+	protected function getOptions()
 	{
 		$attributes = '';
 
@@ -79,10 +79,6 @@ class JFormFieldCoreLanguage extends JFormField
 			);
 		}
 
-		$return	= JHtml::_('select.genericlist', $options, $this->name, array('id' => $this->id,
-				'list.select' => $this->value, 'option.attr' => 'attributes', 'list.attr' => $attributes)
-				);
-
-		return $return;
+		return $options;
 	}
 }
