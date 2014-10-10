@@ -152,7 +152,7 @@ class LocaliseControllerPackage extends JControllerForm
 	public function uploadOtherFile()
 	{
 		$app		= JFactory::getApplication();
-		$name		= $app->getUserState('com_localise.package.name');
+		$id			= $app->getUserState('com_localise.edit.package.id');
 		$model		= $this->getModel();
 		$upload		= $app->input->files->get('files');
 		$location	= $app->input->get('location');
@@ -175,7 +175,8 @@ class LocaliseControllerPackage extends JControllerForm
 			$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_OTHER_FILE_UPLOAD'), 'error');
 		}
 
-		$url = 'index.php?option=com_localise&task=package.edit&cid[]=' . $name;
+		$url = 'index.php?option=com_localise&task=package.edit&cid[]=' . $id;
+
 		$this->setRedirect(JRoute::_($url, false));
 	}
 }

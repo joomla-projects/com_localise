@@ -1084,10 +1084,18 @@ class LocaliseModelPackage extends JModelAdmin
 	{
 		jimport('joomla.filesystem.folder');
 
-		$app		= JFactory::getApplication();
-		$name		= $app->getUserState('com_localise.package.name');
-		$packPath	= JPATH_COMPONENT_ADMINISTRATOR . '/packages/' . $name . '.xml';
-		$xml		= simplexml_load_file($packPath);
+		$app	= JFactory::getApplication();
+		$id		= $app->getUserState('com_localise.edit.package.id');
+
+		if (is_array($id))
+		{
+			$id = $id[0];
+		}
+
+		$table = $this->getTable();
+		$table->load($id);
+
+		$xml = simplexml_load_file($table->path);
 
 		if ($xml)
 		{
