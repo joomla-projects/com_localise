@@ -62,9 +62,9 @@
 			<filename>localise.php</filename>
 		</files>
 	</administration>
-	<!-- @Todo: new update servers will need to be created
+
 	<updateservers>
-		<server type="extension" priority="1" name="Localise Update Site">http://joomlacode.org/gf/project/com_localise/scmsvn/?action=browse&amp;path=%2F*checkout*%2Ftrunk%2Flocalise-update.xml</server>
+		<server type="extension" priority="1" name="Localise Update Site">https://raw.githubusercontent.com/joomla-projects/com_localise/develop/update-server.xml</server>
 	</updateservers>
-	-->
+
 </extension>
