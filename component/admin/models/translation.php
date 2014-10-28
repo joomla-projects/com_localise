@@ -135,7 +135,9 @@ class LocaliseModelTranslation extends JModelAdmin
 	/**
 	 * Get a translation
 	 *
-	 * @return JObject|mixed|null
+	 * @param   integer  $pk  The id of the primary key (Note unused by the function).
+	 *
+	 * @return  JObject|null  Object on success, null on failure.
 	 */
 	public function getItem($pk = null)
 	{
