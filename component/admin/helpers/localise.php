@@ -480,7 +480,7 @@ abstract class LocaliseHelper
 		}
 
 		return array_key_exists("$id", $filePaths) ?
-                $filePaths["$id"]->path : '';
+		$filePaths["$id"]->path : '';
 	}
 
 	/**
