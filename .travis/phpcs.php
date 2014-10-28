@@ -27,7 +27,7 @@ fwrite(STDOUT, "\033[32;1mInitializing PHP_CodeSniffer checks.\033[0m\n");
 $options = array(
 	'files'        => array(REPO_BASE . '/component'),
 	'standard'     => array(__DIR__ . '/coding-standards/Joomla'),
-	'ignored'      => array(REPO_BASE . '/component/admin/views/*/tmpl/*'),
+	'ignored'      => array(REPO_BASE . '/component/admin/views/*/tmpl/*', REPO_BASE . '/component/admin/layouts/*'),
 	'showProgress' => true
 );
 
