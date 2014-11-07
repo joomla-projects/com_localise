@@ -287,8 +287,6 @@
     <filename>plg_system_remember.sys.ini</filename>
     <filename>plg_system_sef.ini</filename>
     <filename>plg_system_sef.sys.ini</filename>
-    <filename>plg_system_session.ini</filename>
-    <filename>plg_system_session.sys.ini</filename>
     <filename>plg_twofactorauth_totp.ini</filename>
     <filename>plg_twofactorauth_totp.sys.ini</filename>
     <filename>plg_twofactorauth_yubikey.ini</filename>
@@ -299,8 +297,6 @@
     <filename>plg_user_joomla.sys.ini</filename>
     <filename>plg_user_profile.ini</filename>
     <filename>plg_user_profile.sys.ini</filename>
-    <filename>plg_user_session.ini</filename>
-    <filename>plg_user_session.sys.ini</filename>
     <filename>tpl_hathor.ini</filename>
     <filename>tpl_hathor.sys.ini</filename>
     <filename>tpl_isis.ini</filename>
