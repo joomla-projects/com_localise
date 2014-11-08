@@ -137,7 +137,7 @@ class LocaliseModelTranslation extends JModelAdmin
 	 *
 	 * @param   integer  $pk  The id of the primary key (Note unused by the function).
 	 *
-	 * @return  JObject|null  Object on success, null on failure.
+	 * @return  stdClass|null  Object on success, null on failure.
 	 */
 	public function getItem($pk = null)
 	{
@@ -169,7 +169,7 @@ class LocaliseModelTranslation extends JModelAdmin
 					? $this->getState('translation.path')
 					: $this->getState('translation.refpath');
 
-				$this->item = new JObject(
+				$this->item = new JRegistry(
 									array
 										(
 										'reference'           => $this->getState('translation.reference'),
@@ -192,6 +192,8 @@ class LocaliseModelTranslation extends JModelAdmin
 										'error'               => array()
 										)
 				);
+				$this->item = $this->item->toObject();
+
 
 				if (JFile::exists($path))
 				{
@@ -440,7 +442,10 @@ class LocaliseModelTranslation extends JModelAdmin
 					$table = $this->getTable();
 					$table->load($this->getState('translation.id'));
 					$user = JFactory::getUser($table->checked_out);
-					$this->item->setProperties($table->getProperties());
+
+					$this->item = new JRegistry($this->item);
+					$this->item->loadArray($table->getProperties());
+					$this->item = $this->item->toObject();
 
 					if ($this->item->checked_out == JFactory::getUser()->id)
 					{

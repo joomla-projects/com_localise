@@ -81,7 +81,7 @@ class LocaliseModelLanguage extends JModelAdmin
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return   JObject  The data for the form.
+	 * @return   JRegistry  The data for the form.
 	 */
 	protected function loadFormData()
 	{
@@ -89,7 +89,7 @@ class LocaliseModelLanguage extends JModelAdmin
 		$data = JFactory::getApplication()->getUserState('com_localise.edit.language.data', array());
 
 		// Get the language data.
-		$data = empty($data) ? $this->getItem() : new JObject($data);
+		$data = empty($data) ? $this->getItem() : new JRegistry($data);
 
 		$data->joomlacopyright = sprintf("Copyright (C) 2005 - %s Open Source Matters. All rights reserved.", JFactory::getDate()->format('Y'));
 
@@ -125,7 +125,7 @@ class LocaliseModelLanguage extends JModelAdmin
 	/**
 	 * Method to get the language.
 	 *
-	 * @return JObject
+	 * @return JRegistry
 	 */
 	public function getItem($pk = null)
 	{
@@ -133,29 +133,19 @@ class LocaliseModelLanguage extends JModelAdmin
 		$client = $this->getState('language.client');
 		$tag    = $this->getState('language.tag');
 
-		$language = new JObject;
+		$language = new JRegistry;
 
-		$language->id          = $id;
-		$language->client      = $client;
-		$language->tag         = $tag;
-		$language->checked_out = 0;
+		$language->set('id', 			$id);
+		$language->set('client',		$client);
+		$language->set('tag', 			$tag);
+		$language->set('checked_out', 	0);
 
 		$params = JComponentHelper::getParams('com_localise');
-		$language->author      = isset($language->author)
-			? $language->author
-			: $params->get('author');
-		$language->authorEmail = isset($language->authorEmail)
-			? $language->authorEmail
-			: $params->get('authorEmail');
-		$language->authorUrl   = isset($language->authorUrl)
-			? $language->authorUrl
-			: $params->get('authorUrl');
-		$language->copyright   = isset($language->copyright)
-			? $language->copyright
-			: $params->get('copyright');
-		$language->license     = isset($language->license)
-			? $language->license
-			: $params->get('license');
+		$language->set('author', $language->get('author', $params->get('author')));
+		$language->set('authorEmail', $language->get('authorEmail', $params->get('authorEmail')));
+		$language->set('authorUrl', $language->get('authorUrl', $params->get('authorUrl')));
+		$language->set('copyright', $language->get('copyright', $params->get('copyright')));
+		$language->set('license', $language->get('license', $params->get('license')));
 
 		if (!empty($id))
 		{
@@ -164,19 +154,19 @@ class LocaliseModelLanguage extends JModelAdmin
 
 			$user = JFactory::getUser($table->checked_out);
 
-			$language->setProperties($table->getProperties());
+			$language->loadArray($table->getProperties());
 
-			if ($language->checked_out == JFactory::getUser()->id)
+			if ($language->get('checked_out', false) == JFactory::getUser()->id)
 			{
-				$language->checked_out = 0;
+				$language->set('checked_out', 0);
 			}
 
-			$language->editor   = JText::sprintf('COM_LOCALISE_TEXT_LANGUAGE_EDITOR', $user->name, $user->username);
-			$language->writable = LocaliseHelper::isWritable($language->path);
+			$language->set('editor', JText::sprintf('COM_LOCALISE_TEXT_LANGUAGE_EDITOR', $user->name, $user->username));
+			$language->set('writable', LocaliseHelper::isWritable($language->get('path', '')));
 
-			if (JFile::exists($language->path))
+			if (JFile::exists($language->get('path', false)))
 			{
-				$xml = simplexml_load_file($language->path);
+				$xml = simplexml_load_file($language->get('path'));
 
 				if ($xml)
 				{
@@ -188,7 +178,7 @@ class LocaliseModelLanguage extends JModelAdmin
 							foreach ($node->children() as $subnode)
 							{
 								$property            = $subnode->getName();
-								$language->$property = $subnode;
+								$language->set($property, $subnode);
 							}
 						}
 						else
@@ -198,33 +188,35 @@ class LocaliseModelLanguage extends JModelAdmin
 
 							if ($property == 'copyright')
 							{
-								if (isset($language->joomlacopyright))
+								if ($language->get('joomlacopyright', false))
 								{
-									$language->copyright[] = $node;
+									$copyright = $language->get('copright', array());
+									$copyright[] = $node;
+									$language->set('copyright', $node);
 								}
 								else
 								{
-									$language->copyright       = array();
-									$language->joomlacopyright = $node;
+									$language->set('copyright', array());
+									$language->set('joomlacopyright', $node);
 								}
 							}
 							else
 							{
-								$language->$property = $node;
+								$language->set($property, $node);
 							}
 						}
 					}
 
-					$language->copyright = implode('<br/>', $language->copyright);
+					$language->set('copyright', implode('<br/>', $language->get('copyright', '')));
 				}
 				else
 				{
-					$this->setError(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_FILEEDIT', $language->path));
+					$this->setError(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_FILEEDIT', $language->get('path')));
 				}
 			}
 		}
 
-		return $language;
+		return $language->toObject();
 	}
 
 	/**

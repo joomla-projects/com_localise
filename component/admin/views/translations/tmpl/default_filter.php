@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
-$params     = (isset($this->state->params)) ? $this->state->params : new JObject;
+$params     = (isset($this->state->params)) ? $this->state->params : new JRegistry;
 $saveOrder  = $listOrder == 'filename';
 $sortFields = $this->getSortFields();
 ?>

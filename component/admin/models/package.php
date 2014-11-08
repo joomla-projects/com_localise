@@ -146,13 +146,13 @@ class LocaliseModelPackage extends JModelAdmin
 	/**
 	 * Method to get the package.
 	 *
-	 * @return JObject the package
+	 * @return stdClass the package
 	 */
 	public function getItem($pk = null)
 	{
 		$id = $this->getState('package.id');
 		$id = is_array($id) ? (count($id) > 0 ? $id[0] : 0) : $id;
-		$package = new JObject;
+		$package = new stdClass;
 		$package->checked_out = 0;
 		$package->standalone  = true;
 		$package->manifest    = null;
@@ -171,7 +171,10 @@ class LocaliseModelPackage extends JModelAdmin
 			}
 
 			$table->load($id);
-			$package->setProperties($table->getProperties());
+
+			$package = new JRegistry($package);
+			$package->loadArray($table->getProperties());
+			$package = $package->toObject();
 
 			// Get the manifest
 			$xml = simplexml_load_file($table->path);
@@ -213,7 +216,10 @@ class LocaliseModelPackage extends JModelAdmin
 				$package->writable    = LocaliseHelper::isWritable($package->path);
 
 				$user = JFactory::getUser($table->checked_out);
-				$package->setProperties($table->getProperties());
+
+				$package = new JRegistry($package);
+				$package->loadArray($table->getProperties());
+				$package = $package->toObject();
 
 				if ($package->checked_out == JFactory::getUser()->id)
 				{
