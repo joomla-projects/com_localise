@@ -125,6 +125,8 @@ class LocaliseModelLanguage extends JModelAdmin
 	/**
 	 * Method to get the language.
 	 *
+	 * @param   integer  $pk  The ID of the primary key.
+	 *
 	 * @return JObject
 	 */
 	public function getItem($pk = null)
@@ -379,6 +381,8 @@ class LocaliseModelLanguage extends JModelAdmin
 
 	/**
 	 * Remove languages
+	 *
+	 * @param   array  &$pks  An array of item ids.
 	 *
 	 * @return  boolean  true for success, false for failure
 	 */
