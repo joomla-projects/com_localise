@@ -17,9 +17,7 @@ $sortFields = $this->getSortFields();
 ?>
 <!-- Begin Sidebar using custom submenu layout -->
 <div id="j-sidebar-container" class="span2">
-			<?php echo $this->sidebar; ?>
-		</div>
-	</div>
+	<?php echo $this->sidebar; ?>
 </div>
 <!-- End Sidebar -->
 <!-- Begin Content -->

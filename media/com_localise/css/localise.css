@@ -280,3 +280,7 @@ ul.adminformlist li {
 	background-position: bottom left;
 	background-repeat: repeat-x;
 }
+
+.j-toggle-hidden .hidden-collapsed {
+	display: none;
+}
