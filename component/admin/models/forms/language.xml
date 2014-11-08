@@ -120,7 +120,7 @@
 			description="COM_LOCALISE_LABEL_LANGUAGE_VERSION_DESC" />
 		<field
 			name="creationDate"
-			type="text"
+			type="calendar"
 			default="now"
 			label="COM_LOCALISE_LABEL_LANGUAGE_CREATIONDATE"
 			description="COM_LOCALISE_LABEL_LANGUAGE_CREATIONDATE_DESC" />
