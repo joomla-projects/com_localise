@@ -73,17 +73,36 @@ To package, on a *nix system, navigate to the build folder and run ./build.sh. W
 
 # Testing with Codeception
 
+Codeception is a testing framework built in PHP, you can know more about it at http://codeception.com. We use Codeception for System Testing com_localise.
+
+There are two ways to get and run codeception, via PHAR or via Composer.
+
+## Codeception.phar
+
 Get codeception phar:
 
 ```
-wget http://codeception.com/codecept.phar .
+wget http://codeception.com/codecept.phar
 ```
 Build codeception testers classes:
 
 ```
 php ./codecept.phar build
 ```
+## using composer to get Codeception
 
+Execute 
+```
+# You need to have Composer in your system, if not download it from here: https://getcomposer.org/
+composer update
+```
+After that you will be able to run Codeception doing:
+
+```
+php vendor/codeception/codeception/codecept build
+```
+
+## Runing the tests
 Rename tests/acceptance.suite.dist.yml to tests/acceptance.suite.yml
 
 Modify the configuration at tests/acceptance.suite.yml to fit your server details. Find the instructions in the same file: https://github.com/redCOMPONENT-COM/redSHOP/blob/develop/tests/acceptance.suite.dist.yml#L3
