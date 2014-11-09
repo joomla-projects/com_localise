@@ -41,6 +41,20 @@ class LocaliseControllerLanguages extends JControllerAdmin
 	}
 
 	/**
+	 * Method to fetch the en-GB data from Github
+	 *
+	 * @return  void
+	 *
+	 * @since   3.3
+	 */
+	public function sync()
+	{
+		$model = $this->getModel('languages');
+		$model->fetchFromGithub();
+		$this->setRedirect(JRoute::_('index.php?option=com_localise&view=languages', false));
+	}
+
+	/**
 	 * Method to get a model object, loading it if required.
 	 *
 	 * @param   string  $name    The model name. Optional.

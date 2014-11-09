@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.filesystem.folder');
+jimport('joomla.filesystem.file');
 
 /**
  * Languages Model class for the Localise component
@@ -292,6 +293,48 @@ class LocaliseModelLanguages extends JModelList
 		}
 
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_PURGE_SUCCESS'));
+
+		return true;
+	}
+
+	/**
+	 * Fetches the staging version of the en-GB file from github
+	 *
+	 * @return  bool True on success
+	 *
+	 * @since   1.0
+	 */
+	public function fetchFromGithub()
+	{
+		$options = new JRegistry();
+
+		// @TODO: make a config variable for a token to avoid api rate limits
+		//$options->set('gh.token', '');
+		
+		$github = new JGithub($options);
+
+		try 
+		{
+			$contents = $github->repositories->contents->get('joomla', 'joomla-cms', 'language/en-GB', 'staging');
+			$contents = array_merge($contents, $github->repositories->contents->get('joomla', 'joomla-cms', 'administrator/language/en-GB', 'staging'));
+			$contents = array_merge($contents, $github->repositories->contents->get('joomla', 'joomla-cms', 'installation/language', 'staging'));
+		} 
+		catch (Exception $e)
+		{
+			JFactory::getApplication()->enqueueMessage($e);
+			return false;
+		}
+		
+		foreach ($contents as $content) 
+		{
+			$file = $github->repositories->contents->get('joomla', 'joomla-cms', $content->path, 'staging');
+
+			if ($file && isset($file->content))
+			{
+				$file_contents = base64_decode($file->content);
+				JFile::write(JPATH_SITE . $content->path, $file_contents);
+			}
+		}
 
 		return true;
 	}

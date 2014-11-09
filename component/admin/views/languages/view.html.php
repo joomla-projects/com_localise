@@ -77,6 +77,7 @@ class LocaliseViewLanguages extends JViewLegacy
 		{
 			JToolbarHelper::addNew('language.add');
 			JToolbarHelper::custom('languages.purge', 'purge', 'purge', 'COM_LOCALISE_PURGE', false, false);
+			JToolbarHelper::custom('languages.sync', 'refresh', 'refresh', 'COM_LOCALISE_SYNC', false, false);
 			JToolbarHelper::divider();
 		}
 
