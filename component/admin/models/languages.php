@@ -306,10 +306,10 @@ class LocaliseModelLanguages extends JModelList
 	 */
 	public function fetchFromGithub()
 	{
-		$options = new JRegistry();
+		$options = new JRegistry;
 
 		// @TODO: make a config variable for a token to avoid api rate limits
-		//$options->set('gh.token', '');
+		// $options->set('gh.token', '');
 		
 		$github = new JGithub($options);
 
@@ -318,14 +318,15 @@ class LocaliseModelLanguages extends JModelList
 			$contents = $github->repositories->contents->get('joomla', 'joomla-cms', 'language/en-GB', 'staging');
 			$contents = array_merge($contents, $github->repositories->contents->get('joomla', 'joomla-cms', 'administrator/language/en-GB', 'staging'));
 			$contents = array_merge($contents, $github->repositories->contents->get('joomla', 'joomla-cms', 'installation/language', 'staging'));
-		} 
+		}
 		catch (Exception $e)
 		{
-			JFactory::getApplication()->enqueueMessage($e);
+			JFactory::getApplication()->enqueueMessage($e->getMessage());
+
 			return false;
 		}
-		
-		foreach ($contents as $content) 
+
+		foreach ($contents as $content)
 		{
 			$file = $github->repositories->contents->get('joomla', 'joomla-cms', $content->path, 'staging');
 

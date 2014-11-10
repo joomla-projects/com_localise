@@ -192,8 +192,8 @@ class LocaliseModelTranslation extends JModelAdmin
 										'error'               => array()
 										)
 				);
+				
 				$this->item = $this->item->toObject();
-
 
 				if (JFile::exists($path))
 				{

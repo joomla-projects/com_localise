@@ -124,6 +124,8 @@ class LocaliseModelLanguage extends JModelAdmin
 
 	/**
 	 * Method to get the language.
+	 * 
+	 * @param mixed $pk The primary key of the item to fetch.
 	 *
 	 * @return JRegistry
 	 */
@@ -371,6 +373,8 @@ class LocaliseModelLanguage extends JModelAdmin
 
 	/**
 	 * Remove languages
+	 * 
+	 * @param mixed $pks The primary keys of the items to delete.
 	 *
 	 * @return  boolean  true for success, false for failure
 	 */
