@@ -71,6 +71,7 @@
 		<field
 			name="locale"
 			type="text"
+			required="true"
 			label="COM_LOCALISE_LABEL_LANGUAGE_LOCALE"
 			description="COM_LOCALISE_LABEL_LANGUAGE_LOCALE_DESC" />
 		<field
@@ -122,13 +123,14 @@
 		<field
 			name="version"
 			type="text"
+			required="true"
 			class="ltr"
 			label="COM_LOCALISE_LABEL_LANGUAGE_VERSION"
 			description="COM_LOCALISE_LABEL_LANGUAGE_VERSION_DESC" />
 		<field
 			name="creationDate"
 			type="text"
-			default="now"
+			required="true"
 			label="COM_LOCALISE_LABEL_LANGUAGE_CREATIONDATE"
 			description="COM_LOCALISE_LABEL_LANGUAGE_CREATIONDATE_DESC" />
 		<field
