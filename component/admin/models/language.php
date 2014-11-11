@@ -252,7 +252,7 @@ class LocaliseModelLanguage extends JModelAdmin
 			return false;
 		}
 
-		$partstag = explode ('-', $tag);
+		$partstag = explode('-', $tag);
 
 		if (strlen($partstag[1]) > 2 || strtoupper($partstag[1]) != $partstag[1]
 			|| strlen($partstag[0]) > 3 || strtolower($partstag[0]) != $partstag[0])
