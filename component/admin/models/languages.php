@@ -61,7 +61,7 @@ class LocaliseModelLanguages extends JModelList
 
 		$this->setState('filter.tag', isset($data['select']['tag']) ? $data['select']['tag'] : '');
 
-		$this->setState('filter.tag', isset($data['select']['name']) ? $data['select']['name'] : '');
+		$this->setState('filter.name', isset($data['select']['name']) ? $data['select']['name'] : '');
 
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_localise');
