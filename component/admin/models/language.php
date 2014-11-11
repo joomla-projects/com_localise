@@ -238,6 +238,36 @@ class LocaliseModelLanguage extends JModelAdmin
 	{
 		$id = $this->getState('language.id');
 		$tag    = $data['tag'];
+
+		// Trim whitespace in $tag
+		$tag = JFilterInput::getInstance()->clean($tag, 'TRIM');
+
+		// Check tag is correct
+		if (strpos($tag, '-') == false)
+		{
+			$this->setError(JText::_('COM_LOCALISE_ERROR_LANGUAGE_TAG'));
+
+			return false;
+		}
+
+		$partstag = explode ('-', $tag);
+
+		if (strlen($partstag[1]) > 2 || strtoupper($partstag[1]) != $partstag[1]
+			|| strlen($partstag[0]) > 3 || strtolower($partstag[0]) != $partstag[0])
+		{
+			$this->setError(JText::_('COM_LOCALISE_ERROR_LANGUAGE_TAG'));
+
+			return false;
+		}
+
+		// Checks that a custom language name has been entered
+		if ($data['name'] == "[Name of language] ([Country name])")
+		{
+			$this->setError(JText::_('COM_LOCALISE_ERROR_LANGUAGE_NAME'));
+
+			return false;
+		}
+
 		$client = $data['client'];
 		$path   = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.xml";
 		$exists = JFile::exists($path);
