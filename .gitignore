@@ -50,6 +50,8 @@ build/logs
 # Test related files #
 /tests/system/servers/configdef.php
 /tests/system/webdriver/tests/logs/
+/tests/acceptance.suite.yml
+/tests/_output/
 
 # Never ignore #
 !build/packages/index.html
