@@ -49,6 +49,12 @@ $user     = JFactory::getUser();
 				<?php endif; ?>
 			</td>
 			<td>
+				<?php echo $item->language; ?>
+			</td>
+			<td>
+				<?php echo $item->version; echo (!empty($item->packversion) ? '.' . $item->packversion : ''); ?>
+			</td>
+			<td>
 				<?php if ($item->core) : ?>
 					<span class="icon-16-core"></span>
 					<?php echo JText::_('COM_LOCALISE_CORE'); ?>

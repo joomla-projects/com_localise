@@ -148,7 +148,10 @@ class LocaliseViewPackages extends JViewLegacy
 	protected function getSortFields()
 	{
 		return array(
-			'title' => JText::_('COM_LOCALISE_HEADING_PACKAGES_TITLE'),
+			'title'    => JText::_('COM_LOCALISE_HEADING_PACKAGES_TITLE'),
+			'language' => JText::_('COM_LOCALISE_LABEL_PACKAGE_LANGUAGE'),
+			'version'  => JText::_('COM_LOCALISE_LABEL_PACKAGE_VERSION'),
+			'core'     => JText::_('COM_LOCALISE_HEADING_PACKAGES_TYPE'),
 		);
 	}
 }
