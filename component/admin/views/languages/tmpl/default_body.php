@@ -62,28 +62,31 @@ JFactory::getDocument()->addScriptDeclaration("
 			<?php if ($item->writable && $canEdit): ?>
 				<span title="" class="localise-icon">
 					<a href="<?php echo JRoute::_('index.php?option=com_localise&task=language.edit&id='.$item->id.'&client='.$item->client.'&tag='.$item->tag); ?>" class="hasTooltip" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_LANGUAGES_EDIT'); ?>">
-					<?php echo JText::sprintf('COM_LOCALISE_TEXT_LANGUAGES_TITLE', $item->tag, $item->name); ?>
+					<?php echo $item->name; ?>
 					</a>
 				</span>
 			<?php else: ?>
 				<i class="icon-warning hasTooltip" title="<?php echo JText::sprintf($canEdit ? 'COM_LOCALISE_TOOLTIP_LANGUAGES_NOTWRITABLE':'COM_LOCALISE_TOOLTIP_LANGUAGES_NOTEDITABLE', substr($item->path, strlen(JPATH_ROOT) + 1)); ?>"></i>
 				<span title="<?php echo JText::sprintf($canEdit ? 'COM_LOCALISE_TOOLTIP_LANGUAGES_NOTWRITABLE':'COM_LOCALISE_TOOLTIP_LANGUAGES_NOTEDITABLE', substr($item->path, strlen(JPATH_ROOT) + 1)); ?>">
-					<?php echo JText::sprintf('COM_LOCALISE_TEXT_LANGUAGES_TITLE', $item->tag, $item->name); ?>
+					<?php echo $item->name; ?>
 				</span>
 			<?php endif; ?>
+		</td>
+		<td class="center">
+			<?php echo $item->tag; ?>
 		</td>
 		<td class="center">
 			<?php echo JText::_(ucfirst($item->client)); ?>
 		</td>
 		<td class="center">
-			<?php if ($item->tag == $params->get($item->client, 'en-GB') && $item->client != 'installation'): ?>
-				<i title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_LANGUAGES_DEFAULT');?>"  class="hasTooltip icon-16-default"></i>
-			<?php endif; ?>
-		</td>
-		<td class="center">
 			<a href="<?php echo JRoute::_('index.php?option=com_localise&view=translations&filters[select][client]=' . $item->client . '&filters[select][tag]=' . $item->tag); ?>" class="btn btn-micro hasTooltip">
 				<i class="icon-16-translations"></i>
 			</a>
+		</td>
+		<td class="center">
+			<?php if ($item->tag == $params->get($item->client, 'en-GB') && $item->client != 'installation'): ?>
+				<i title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_LANGUAGES_DEFAULT');?>"  class="hasTooltip icon-16-default"></i>
+			<?php endif; ?>
 		</td>
 		<td class="center hidden-phone">
 			<?php if (isset($item->version)) :
