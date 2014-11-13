@@ -101,7 +101,8 @@ class LocaliseViewLanguages extends JViewLegacy
 	protected function getSortFields()
 	{
 		return array(
-			'tag'    => JText::_('COM_LOCALISE_HEADING_LANGUAGES_NAME'),
+			'name'   => JText::_('COM_LOCALISE_HEADING_LANGUAGES_NAME'),
+			'tag'    => JText::_('COM_LOCALISE_HEADING_LANGUAGES_TAG'),
 			'client' => JText::_('COM_LOCALISE_HEADING_LANGUAGES_CLIENT'),
 		);
 	}

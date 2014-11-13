@@ -145,6 +145,8 @@ class LocaliseModelPackage extends JModelAdmin
 
 	/**
 	 * Method to get the package.
+	 * 
+	 * @param   integer  $pk  The ID of the primary key.
 	 *
 	 * @return stdClass the package
 	 */

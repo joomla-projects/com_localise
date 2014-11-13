@@ -146,6 +146,8 @@ class LocaliseModelPackageFile extends JModelAdmin
 	/**
 	 * Method to get the package.
 	 *
+	 * @param   integer  $pk  The ID of the primary key.
+	 *
 	 * @return JRegistry the package
 	 */
 	public function getItem($pk = null)
