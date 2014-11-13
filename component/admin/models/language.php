@@ -91,7 +91,9 @@ class LocaliseModelLanguage extends JModelAdmin
 		// Get the language data.
 		$data = empty($data) ? $this->getItem() : new JRegistry($data);
 
-		$data->joomlacopyright = sprintf("Copyright (C) 2005 - %s Open Source Matters. All rights reserved.", JFactory::getDate()->format('Y'));
+		if (!$data->joomlacopyright) {
+			$data->joomlacopyright = sprintf("Copyright (C) 2005 - %s Open Source Matters. All rights reserved.", JFactory::getDate()->format('Y'));
+		}
 
 		return $data;
 	}
@@ -190,13 +192,12 @@ class LocaliseModelLanguage extends JModelAdmin
 							{
 								if ($language->get('joomlacopyright', false))
 								{
-									$copyright = $language->get('copright', array());
-									$copyright[] = $node;
+									$copyright = $language->get('copyright', array());
 									$language->set('copyright', $node);
 								}
 								else
 								{
-									$language->set('copyright', array());
+									$language->set('copyright', $node);
 									$language->set('joomlacopyright', $node);
 								}
 							}
@@ -207,7 +208,7 @@ class LocaliseModelLanguage extends JModelAdmin
 						}
 					}
 
-					$language->set('copyright', implode('<br/>', $language->get('copyright', '')));
+					//$language->set('copyright', implode('<br/>', $language->get('copyright', '')));
 				}
 				else
 				{
