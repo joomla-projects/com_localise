@@ -18,6 +18,7 @@
 			$('#jform_weekEnd-lbl').closest('.control-group').fadeOut();
 			$('#jform_authorEmail').closest('.control-group').fadeOut();
 			$('#jform_authorUrl').closest('.control-group').fadeOut();
+			$('#jform_copyright').closest('.control-group').fadeOut();
 		}
 
 		/**
@@ -40,6 +41,7 @@
 				$('#jform_weekEnd').closest('.control-group').fadeIn();
 				$('#jform_authorEmail').closest('.control-group').fadeIn();
 				$('#jform_authorUrl').closest('.control-group').fadeIn();
+				$('#jform_copyright').closest('.control-group').fadeIn();
 			}
 		}
 
