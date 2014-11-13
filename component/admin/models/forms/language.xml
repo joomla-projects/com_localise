@@ -10,7 +10,7 @@
 			default="site"
 			label="COM_LOCALISE_LABEL_LANGUAGE_CLIENT"
 			description="COM_LOCALISE_LABEL_LANGUAGE_CLIENT_DESC"
-			required="true" onchange="jQuery('#jform_locale').attr('disabled', this.value == 'installation')" />
+			required="true" />
 		<field
 			name="firstDay"
 			type="list"
