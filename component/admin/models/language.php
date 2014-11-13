@@ -12,7 +12,6 @@ defined('_JEXEC') or die;
 jimport('joomla.filesystem.file');
 jimport('joomla.client.helper');
 jimport('joomla.access.rules');
-require_once JPATH_COMPONENT . '/helpers/localise.php';
 
 /**
  * Language model.
