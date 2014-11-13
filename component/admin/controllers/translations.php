@@ -35,8 +35,15 @@ class LocaliseControllerTranslations extends JControllerAdmin
 	 *
 	 * @return  object  The model.
 	 */
-	public function getModel($name = 'Translation', $prefix = 'LocaliseModel', $config = array('ignore_request' => true))
+	public function getModel($name = '', $prefix = '', $config = array())
 	{
+		if (empty($name))
+		{
+			$name = 'Translation';
+		}
+
+		$config = array_merge($config, array('ignore_request' => true));
+
 		return parent::getModel($name, $prefix, $config);
 	}
 }

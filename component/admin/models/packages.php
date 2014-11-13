@@ -28,6 +28,8 @@ class LocaliseModelPackages extends JModelList
 
 	protected $packages;
 
+	protected $filter_fields = array('title', 'language', 'version', 'core');
+
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -56,6 +58,15 @@ class LocaliseModelPackages extends JModelList
 		}
 
 		$this->setState('filter.search', isset($data['search']['expr']) ? $data['search']['expr'] : '');
+
+		$this->setState('filter.title', isset($data['select']['title']) ? $data['select']['title'] : '');
+
+		$this->setState('filter.language', isset($data['select']['language']) ? $data['select']['language'] : '');
+
+		$this->setState('filter.version', isset($data['select']['version']) ? $data['select']['version'] : '');
+
+		$this->setState('filter.core', isset($data['select']['core']) ? $data['select']['core'] : '');
+
 		$params = JComponentHelper::getParams('com_localise');
 		$this->setState('params', $params);
 

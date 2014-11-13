@@ -19,7 +19,7 @@ jimport('joomla.filesystem.file');
  */
 class LocaliseModelLanguages extends JModelList
 {
-	protected $filter_fields = array('tag', 'client');
+	protected $filter_fields = array('tag', 'client', 'name');
 
 	protected $context = 'com_localise.languages';
 
@@ -61,6 +61,8 @@ class LocaliseModelLanguages extends JModelList
 		$this->setState('filter.client', isset($data['select']['client']) ? $data['select']['client'] : '');
 
 		$this->setState('filter.tag', isset($data['select']['tag']) ? $data['select']['tag'] : '');
+
+		$this->setState('filter.name', isset($data['select']['name']) ? $data['select']['name'] : '');
 
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_localise');

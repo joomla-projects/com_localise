@@ -73,6 +73,23 @@ class LocaliseModelLanguage extends JModelAdmin
 		if ($this->getState('language.id'))
 		{
 			$form->setFieldAttribute('client', 'readonly', 'true');
+
+			$client = $form->getValue('client');
+
+			if ($client == "installation")
+			{
+				$form->setFieldAttribute('locale', 'required', 'false');
+				$form->setFieldAttribute('locale', 'disabled', 'true');
+
+				$form->setFieldAttribute('weekEnd', 'disabled', 'true');
+
+				$form->setFieldAttribute('firstDay', 'required', 'false');
+				$form->setFieldAttribute('firstDay', 'disabled', 'true');
+
+				$form->setFieldAttribute('authorEmail', 'disabled', 'true');
+				$form->setFieldAttribute('authorUrl', 'disabled', 'true');
+				$form->setFieldAttribute('copyright', 'disabled', 'true');
+			}
 		}
 
 		return $form;
@@ -222,6 +239,31 @@ class LocaliseModelLanguage extends JModelAdmin
 	}
 
 	/**
+	 * Method to validate the form data.
+	 *
+	 * @param   JForm   $form   The form to validate against.
+	 * @param   array   $data   The data to validate.
+	 * @param   string  $group  The name of the field group to validate.
+	 *
+	 * @return  mixed  Array of filtered data if valid, false otherwise.
+	 *
+	 * @see     JFormRule
+	 * @see     JFilterInput
+	 * @since   12.2
+	 */
+	public function validate($form, $data, $group = null)
+	{
+		if ($data['client'] == "installation")
+		{
+			$form->setFieldAttribute('locale', 'required', 'false');
+
+			$form->setFieldAttribute('firstDay', 'required', 'false');
+		}
+
+		return parent::validate($form, $data, $group);
+	}
+
+	/**
 	 * Saves a language
 	 *
 	 * @param   array  $data  Language data
@@ -232,6 +274,36 @@ class LocaliseModelLanguage extends JModelAdmin
 	{
 		$id = $this->getState('language.id');
 		$tag    = $data['tag'];
+
+		// Trim whitespace in $tag
+		$tag = JFilterInput::getInstance()->clean($tag, 'TRIM');
+
+		// Check tag is correct
+		if (strpos($tag, '-') == false)
+		{
+			$this->setError(JText::_('COM_LOCALISE_ERROR_LANGUAGE_TAG'));
+
+			return false;
+		}
+
+		$partstag = explode('-', $tag);
+
+		if (strlen($partstag[1]) > 2 || strtoupper($partstag[1]) != $partstag[1]
+			|| strlen($partstag[0]) > 3 || strtolower($partstag[0]) != $partstag[0])
+		{
+			$this->setError(JText::_('COM_LOCALISE_ERROR_LANGUAGE_TAG'));
+
+			return false;
+		}
+
+		// Checks that a custom language name has been entered
+		if ($data['name'] == "[Name of language] ([Country name])")
+		{
+			$this->setError(JText::_('COM_LOCALISE_ERROR_LANGUAGE_NAME'));
+
+			return false;
+		}
+
 		$client = $data['client'];
 		$path   = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.xml";
 		$exists = JFile::exists($path);
@@ -375,6 +447,8 @@ class LocaliseModelLanguage extends JModelAdmin
 	 * Remove languages
 	 * 
 	 * @param mixed $pks The primary keys of the items to delete.
+	 *
+	 * @param   array  &$pks  An array of item ids.
 	 *
 	 * @return  boolean  true for success, false for failure
 	 */
