@@ -80,6 +80,14 @@ class LocaliseModelLanguage extends JModelAdmin
 			{
 				$form->setFieldAttribute('locale', 'required', 'false');
 				$form->setFieldAttribute('locale', 'disabled', 'true');
+
+				$form->setFieldAttribute('weekEnd', 'disabled', 'true');
+
+				$form->setFieldAttribute('firstDay', 'required', 'false');
+				$form->setFieldAttribute('firstDay', 'disabled', 'true');
+
+				$form->setFieldAttribute('authorEmail', 'disabled', 'true');
+				$form->setFieldAttribute('authorUrl', 'disabled', 'true');
 			}
 		}
 
@@ -255,7 +263,8 @@ class LocaliseModelLanguage extends JModelAdmin
 		if ($data['client'] == "installation")
 		{
 			$form->setFieldAttribute('locale', 'required', 'false');
-			$form->setFieldAttribute('locale', 'disabled', 'true');
+
+			$form->setFieldAttribute('firstDay', 'required', 'false');
 		}
 
 		return parent::validate($form, $data, $group);
