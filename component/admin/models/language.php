@@ -73,6 +73,14 @@ class LocaliseModelLanguage extends JModelAdmin
 		if ($this->getState('language.id'))
 		{
 			$form->setFieldAttribute('client', 'readonly', 'true');
+
+			$client = $form->getValue('client');
+
+			if ($client == "installation")
+			{
+				$form->setFieldAttribute('locale', 'required', 'false');
+				$form->setFieldAttribute('locale', 'disabled', 'true');
+			}
 		}
 
 		return $form;
@@ -227,6 +235,30 @@ class LocaliseModelLanguage extends JModelAdmin
 		}
 
 		return $language;
+	}
+
+	/**
+	 * Method to validate the form data.
+	 *
+	 * @param   JForm   $form   The form to validate against.
+	 * @param   array   $data   The data to validate.
+	 * @param   string  $group  The name of the field group to validate.
+	 *
+	 * @return  mixed  Array of filtered data if valid, false otherwise.
+	 *
+	 * @see     JFormRule
+	 * @see     JFilterInput
+	 * @since   12.2
+	 */
+	public function validate($form, $data, $group = null)
+	{
+		if ($data['client'] == "installation")
+		{
+			$form->setFieldAttribute('locale', 'required', 'false');
+			$form->setFieldAttribute('locale', 'disabled', 'true');
+		}
+
+		return parent::validate($form, $data, $group);
 	}
 
 	/**
