@@ -88,6 +88,7 @@ class LocaliseModelLanguage extends JModelAdmin
 
 				$form->setFieldAttribute('authorEmail', 'disabled', 'true');
 				$form->setFieldAttribute('authorUrl', 'disabled', 'true');
+				$form->setFieldAttribute('copyright', 'disabled', 'true');
 			}
 		}
 
