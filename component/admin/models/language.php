@@ -209,7 +209,7 @@ class LocaliseModelLanguage extends JModelAdmin
 							{
 								if ($language->get('joomlacopyright', false))
 								{
-									$copyright = $language->get('copright', array());
+									$copyright = $language->get('copyright', array());
 									$copyright[] = $node;
 									$language->set('copyright', $node);
 								}
