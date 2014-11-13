@@ -15,6 +15,7 @@ JHtml::_('formbehavior.chosen', 'select');
 $fieldSets = $this->form->getFieldsets();
 $ftpSets   = $this->formftp->getFieldsets();
 
+JHtml::_('script', 'media/com_localise/js/language-form.js', false, false, false, false);
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
