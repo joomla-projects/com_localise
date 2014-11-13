@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 jimport('joomla.filesystem.file');
 jimport('joomla.client.helper');
 jimport('joomla.access.rules');
+require_once JPATH_COMPONENT . '/helpers/localise.php';
 
 /**
  * Language model.
@@ -522,6 +523,9 @@ class LocaliseModelLanguage extends JModelAdmin
 			$data['tag'] = '';
 			$app->setUserState('com_localise.select', $data);
 		}
+
+		// Purge table to let it be rebuilt
+		LocaliseHelper::purge();
 
 		return true;
 	}

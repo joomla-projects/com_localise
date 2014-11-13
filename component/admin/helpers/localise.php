@@ -747,4 +747,58 @@ abstract class LocaliseHelper
 
 		return $sections[$filename];
 	}
+
+	/**
+	 * Cleans out _localise table.
+	 *
+	 * @return  bool True on success
+	 *
+	 * @throws	Exception
+	 * @since   1.0
+	 */
+	public static function purge()
+	{
+		// Get the localise data
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('l.id')
+			->from($db->quotename('#__localise') . ' AS l')
+			->join('LEFT', $db->quoteName('#__assets') . ' AS ast ON ast.id = l.asset_id')
+			->order('ast.rgt DESC');
+		$db->setQuery($query);
+
+		try
+		{
+			$data = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage());
+		}
+
+		foreach ($data as $key => $value)
+		{
+			$id = $value->id;
+
+			// Get the localise table
+			$table = JTable::getInstance('Localise', 'LocaliseTable');
+
+			// Load it before delete.
+			$table->load($id);
+
+			// Delete
+			try
+			{
+				$table->delete($id);
+			}
+			catch (RuntimeException $e)
+			{
+				throw new RuntimeException($e->getMessage());
+			}
+		}
+
+		JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_PURGE_SUCCESS'));
+
+		return true;
+	}
 }
