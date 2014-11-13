@@ -523,6 +523,8 @@ class LocaliseModelLanguage extends JModelAdmin
 			$app->setUserState('com_localise.select', $data);
 		}
 
-		return true;
+		$pks = array($id);
+
+		return parent::delete($pks);
 	}
 }
