@@ -184,4 +184,66 @@ class LocaliseTableLocalise extends JTable
 
 		return $asset->id;
 	}
+
+	/**
+	 * Method to delete a row from the database table by primary key value.
+	 *
+	 * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @link    http://docs.joomla.org/JTable/delete
+	 * @since   11.1
+	 * @throws  UnexpectedValueException
+	 */
+	public function delete($pk = null)
+	{
+		if (!$this->deleteLanguageTranslations())
+		{
+			return false;
+		}
+
+		return parent::delete($pk);
+	}
+
+	/**
+	 * Delete language translations
+	 *
+	 * @return  boolean
+	 */
+	protected function deleteLanguageTranslations()
+	{
+		$fileName  = basename($this->path);
+		$fileInfo  = pathinfo($fileName);
+		$extension = $fileInfo['extension'];
+		$langTag   = $fileInfo['filename'];
+
+		// Make sure we are deleting a base language. Otherwise avoid to delete
+		if ($extension != 'xml')
+		{
+			return true;
+		}
+
+		if ($langTag)
+		{
+			$db = $this->getDbo();
+
+			$searchTag = $db->quote('%' . $db->escape($langTag, true) . '%');
+
+			$query = $db->getQuery(true)
+				->delete('#__localise')
+				->where('path LIKE ' . $searchTag);
+
+			$db->setQuery($query);
+
+			if (!$db->execute())
+			{
+				$this->setError('COM_LOCALISE_ERROR_DELETING_DB_TRANSLATIONS');
+
+				return false;
+			}
+		}
+
+		return true;
+	}
 }
