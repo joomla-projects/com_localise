@@ -215,7 +215,7 @@ class LocaliseTableLocalise extends JTable
 	{
 		$fileName  = basename($this->path);
 		$fileInfo  = pathinfo($fileName);
-		$extension = $fileInfo['extension'];
+		$extension = isset($fileInfo['extension']) ? $fileInfo['extension'] : null;
 		$langTag   = $fileInfo['filename'];
 
 		// Make sure we are deleting a base language. Otherwise avoid to delete
