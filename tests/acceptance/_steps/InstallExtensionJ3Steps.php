@@ -9,7 +9,7 @@
 namespace AcceptanceTester;
 
 /**
- * Class InstallExtensionSteps
+ * Class InstallExtensionJ3Steps
  *
  * @package  AcceptanceTester
  *
@@ -17,7 +17,7 @@ namespace AcceptanceTester;
  *
  * @since    1.4
  */
-class InstallExtensionSteps extends \AcceptanceTester
+class InstallExtensionJ3Steps extends \AcceptanceTester
 {
 	/**
 	 * Function to Install RedShop1, inside Joomla 3

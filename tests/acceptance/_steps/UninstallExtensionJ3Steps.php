@@ -8,7 +8,7 @@
 
 namespace AcceptanceTester;
 /**
- * Class UninstallExtensionSteps
+ * Class UninstallExtensionJ3Steps
  *
  * @package  AcceptanceTester
  *
@@ -16,7 +16,7 @@ namespace AcceptanceTester;
  *
  * @since    1.4
  */
-class UninstallExtensionSteps extends \AcceptanceTester
+class UninstallExtensionJ3Steps extends \AcceptanceTester
 {
 	/**
 	 * Function to Uninstall Extension
