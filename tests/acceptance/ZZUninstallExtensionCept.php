@@ -14,5 +14,5 @@ $I = new AcceptanceTester\LoginSteps($scenario);
 $I->wantTo('Uninstall Extension');
 $I->doAdminLogin();
 
-$I = new AcceptanceTester\UninstallExtensionSteps($scenario);
+$I = new AcceptanceTester\UninstallExtensionJ3Steps($scenario);
 $I->uninstallExtension('localise');
