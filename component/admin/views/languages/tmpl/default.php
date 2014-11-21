@@ -36,6 +36,7 @@ $sortFields = $this->getSortFields();
 	}
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_localise&view=languages');?>" method="post" name="adminForm" id="adminForm">
+	<div class="row-fluid">
 	<?php echo $this->loadTemplate('filter'); ?>
 		<table class="table table-striped" id="localiseList">
 			<thead>
