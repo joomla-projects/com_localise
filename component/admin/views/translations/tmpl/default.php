@@ -36,7 +36,6 @@ $sortFields = $this->getSortFields();
 	}
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_localise&view=translations');?>" method="post" name="adminForm" id="adminForm">
-	<div class="row-fluid">
 	<?php echo $this->loadTemplate('filter');?>
 		<?php echo $this->loadTemplate('legend');?>
 		<table class="table table-striped" id="localiseList">
@@ -57,6 +56,5 @@ $sortFields = $this->getSortFields();
 			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 			<?php echo JHtml::_('form.token'); ?>
 		</div>
-	</div>
 	<!-- End Content -->
 </form>

@@ -61,7 +61,6 @@ JFactory::getDocument()->addScriptDeclaration("
 </script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_localise&view=packages');?>" method="post" name="adminForm" id="adminForm">
-	<div class="row-fluid">
 	<?php echo $this->loadTemplate('filter'); ?>
 		<table class="table table-striped" id="localiseList">
 			<thead>
@@ -81,7 +80,6 @@ JFactory::getDocument()->addScriptDeclaration("
 			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 			<?php echo JHtml::_('form.token'); ?>
 		</div>
-	</div>
 	<!-- End Content -->
 </form>
 
