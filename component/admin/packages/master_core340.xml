@@ -39,7 +39,6 @@
     <filename>lib_joomla.ini</filename>
     <filename>lib_joomla.sys.ini</filename>
     <filename>lib_phpass.sys.ini</filename>
-    <filename>lib_phpmailer.sys.ini</filename>
     <filename>lib_phputf8.sys.ini</filename>
     <filename>lib_simplepie.sys.ini</filename>
     <filename>mod_articles_archive.ini</filename>
