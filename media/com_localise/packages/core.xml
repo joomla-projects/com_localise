@@ -109,6 +109,8 @@
 		<filename>plg_authentication_joomla.sys</filename>
 		<filename>plg_authentication_ldap</filename>
 		<filename>plg_authentication_ldap.sys</filename>
+		<filename>plg_captcha_nocaptcha</filename>
+		<filename>plg_captcha_nocaptcha.sys</filename>
 		<filename>plg_captcha_recaptcha</filename>
 		<filename>plg_captcha_recaptcha.sys</filename>
 		<filename>plg_content_emailcloak</filename>
