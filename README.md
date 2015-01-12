@@ -105,7 +105,7 @@ php vendor/codeception/codeception/codecept build
 ## Runing the tests
 Rename tests/acceptance.suite.dist.yml to tests/acceptance.suite.yml
 
-Modify the configuration at tests/acceptance.suite.yml to fit your server details. Find the instructions in the same file: https://github.com/redCOMPONENT-COM/redSHOP/blob/develop/tests/acceptance.suite.dist.yml#L3
+Modify the configuration at tests/acceptance.suite.yml to fit your server details. Find the instructions in the same file: https://github.com/redCOMPONENT-COM/redCORE/blob/develop/tests/acceptance.suite.dist.yml#L3
 
 Run Selenium server:
 
