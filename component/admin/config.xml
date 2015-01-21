@@ -57,6 +57,14 @@
 			label="COM_LOCALISE_LABEL_SAVE_PERMISSION"
 			description="COM_LOCALISE_LABEL_SAVE_PERMISSION_DESC" />
 		<field
+			name="allowed_groups"
+			type="usergroup"
+			description="Groups than can access to the raw view mode or access to start new files in raw view mode."
+			label="Allowed groups"
+			multiple="true"
+			size="10"
+			required="false" />
+		<field
 			name="installation"
 			type="folderlist"
 			label="COM_LOCALISE_LABEL_INSTALLATION_FOLDER"
