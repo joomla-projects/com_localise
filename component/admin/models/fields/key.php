@@ -163,13 +163,19 @@ class JFormFieldKey extends JFormField
 						. JText::_('COM_LOCALISE_TOOLTIP_TRANSLATION_AZURE') . '" onclick="' . $onclick2 . '" rel="' . $this->id . '"></i>';
 		}
 
+			if ($status == 'blocked')
+			{
+			$final_status = 'blocked';
+			} else {
+			$final_status = ($this->value == '' ? 'untranslated' : ($this->value == $this->element['description'] ? $status : 'translated'));
+			}
+
 		$onkeyup = "javascript:";
 		$onkeyup .= "if (this.get('value')=='') {this.set('class','width-45 untranslated');}
 					else {if (this.get('value')=='" . addslashes(htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'))
 					. "') this.set('class','width-45 " . $status . "');
 					" . ($status == 'extra' ? "else this.set('class','width-45 extra');}" : "else this.set('class','width-45 translated');}");
-		$input = '<textarea name="' . $this->name . '" id="' . $this->id . '" onfocus="this.select()" class="width-45 ' . ($this->value == '' ?
-					'untranslated' : ($this->value == $this->element['description'] ? $status : 'translated')) . '" onkeyup="'
+		$input = '<textarea name="' . $this->name . '" ' . $is_read_only . 'id="' . $this->id . '" onfocus="this.select()" class="width-45 ' . $final_status . '" onkeyup="'
 					. $onkeyup . '">' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
 
 		return $button . $button2 . $input;

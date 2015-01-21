@@ -184,6 +184,8 @@ class LocaliseModelTranslation extends JModelAdmin
 										'license'             => '',
 										'exists'              => JFile::exists($this->getState('translation.path')),
 										'translated'          => 0,
+										'untranslatable'      => 0,
+										'blocked'             => 0,
 										'unchanged'           => 0,
 										'extra'               => 0,
 										'total'               => 0,
@@ -233,6 +235,32 @@ class LocaliseModelTranslation extends JModelAdmin
 
 					$params             = JComponentHelper::getParams('com_localise');
 					$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
+					$global_untranslatablekeys = $params->get('untranslatablekeys', '[xx-XX]&#xA;COM_CATEGORIES_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s&quot;&#xA;COM_CONTACT_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_CONTENT_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_LANGUAGES_VIEW_OVERRIDE_LANGUAGE=&quot;%1$s [%2$s]&quot;&#xA;COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM=&quot;%1$s - %2$s&quot;&#xA;COM_MEDIA_IMAGE_TITLE=&quot;%1$s - %2$s&quot;&#xA;COM_MEDIA_IMAGE_DIMENSIONS=&quot;%1$s x %2$s&quot;&#xA;COM_MENUS_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_NEWSFEEDS_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_POSTINSTALL_TITLE_JOOMLA=&quot;Joomla!&quot;&#xA;COM_USERS_EMPTY_REVIEW=&quot;-&quot;&#xA;COM_USERS_NOTE_N_SUBJECT=&quot;#%d %s&quot;&#xA;JGLOBAL_GT=&quot;&gt;&quot;&#xA;JGLOBAL_ICON_SEP=&quot;|&quot;&#xA;JGLOBAL_NUM=&quot;#&quot;&#xA;JPAGETITLE=&quot;%1$s - %2$s&quot;&#xA;DECIMALS_SEPARATOR=&quot;.&quot;&#xA;THOUSANDS_SEPARATOR=&quot;,&quot;&#xA;JLIB_RULES_GROUP=&quot;%s&quot;&#xA;[/xx-XX]&#xA;');
+					$global_untranslatablekeys = htmlspecialchars_decode ($global_untranslatablekeys);
+					$global_blockedkeys = $params->get('blockedkeys', '');
+					$global_blockedkeys = htmlspecialchars_decode ($global_blockedkeys);
+
+					$tag = $this->getState('translation.tag');
+					$target_tag = preg_quote ($tag, '-');
+					$regex_syntax	= '/\['.$target_tag.'\](.*?)\[\/'.$target_tag.'\]/s';
+
+					if (preg_match($regex_syntax, $global_untranslatablekeys))
+					{
+					preg_match_all($regex_syntax, $global_untranslatablekeys, $untranslatablekeys_block, PREG_SET_ORDER);
+					$untranslatablekeys = preg_split( '/\r\n|\r|\n/', $untranslatablekeys_block[0][1]);
+
+					} else {
+					$untranslatablekeys = array();
+					}
+
+					if (preg_match($regex_syntax, $global_blockedkeys))
+					{
+					preg_match_all($regex_syntax, $global_blockedkeys, $blockedkeys_block, PREG_SET_ORDER);
+					$blockedkeys = preg_split( '/\r\n|\r|\n/', $blockedkeys_block[0][1]);
+
+					} else {
+					$blockedkeys = array();
+					}
 
 					while (!$stream->eof())
 					{
@@ -398,10 +426,22 @@ class LocaliseModelTranslation extends JModelAdmin
 						foreach ($refsections['keys'] as $key => $string)
 						{
 							$this->item->total++;
+							$full_line = htmlspecialchars_decode ($key.'="'.$string.'"');
 
 							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']) && $sections['keys'][$key] != '')
 							{
-								if ($sections['keys'][$key] != $string || $this->getState('translation.path') == $this->getState('translation.refpath'))
+
+								if (in_array($full_line, $blockedkeys))
+								{
+									$this->item->translated++;
+									$this->item->blocked++;
+								}
+								elseif (in_array($full_line, $untranslatablekeys))
+								{
+									$this->item->translated++;
+									$this->item->untranslatable++;
+								}
+								elseif ($sections['keys'][$key] != $string || $this->getState('translation.path') == $this->getState('translation.refpath'))
 								{
 									$this->item->translated++;
 								}
@@ -554,6 +594,32 @@ class LocaliseModelTranslation extends JModelAdmin
 		$origin   = LocaliseHelper::getOrigin($filename, $client);
 		$app      = JFactory::getApplication();
 		$false    = false;
+		$params   = JComponentHelper::getParams('com_localise');
+		$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
+		$global_untranslatablekeys = $params->get('untranslatablekeys', '[xx-XX]&#xA;COM_CATEGORIES_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s&quot;&#xA;COM_CONTACT_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_CONTENT_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_LANGUAGES_VIEW_OVERRIDE_LANGUAGE=&quot;%1$s [%2$s]&quot;&#xA;COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM=&quot;%1$s - %2$s&quot;&#xA;COM_MEDIA_IMAGE_TITLE=&quot;%1$s - %2$s&quot;&#xA;COM_MEDIA_IMAGE_DIMENSIONS=&quot;%1$s x %2$s&quot;&#xA;COM_MENUS_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_NEWSFEEDS_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_POSTINSTALL_TITLE_JOOMLA=&quot;Joomla!&quot;&#xA;COM_USERS_EMPTY_REVIEW=&quot;-&quot;&#xA;COM_USERS_NOTE_N_SUBJECT=&quot;#%d %s&quot;&#xA;JGLOBAL_GT=&quot;&gt;&quot;&#xA;JGLOBAL_ICON_SEP=&quot;|&quot;&#xA;JGLOBAL_NUM=&quot;#&quot;&#xA;JPAGETITLE=&quot;%1$s - %2$s&quot;&#xA;DECIMALS_SEPARATOR=&quot;.&quot;&#xA;THOUSANDS_SEPARATOR=&quot;,&quot;&#xA;JLIB_RULES_GROUP=&quot;%s&quot;&#xA;[/xx-XX]&#xA;');
+		$global_untranslatablekeys = htmlspecialchars_decode ($global_untranslatablekeys);
+		$global_blockedkeys = $params->get('blockedkeys', '');
+		$global_blockedkeys = htmlspecialchars_decode ($global_blockedkeys);
+		$target_tag = preg_quote ($tag, '-');
+		$regex_syntax	= '/\['.$target_tag.'\](.*?)\[\/'.$target_tag.'\]/s';
+
+			if (preg_match($regex_syntax, $global_untranslatablekeys))
+			{
+			preg_match_all($regex_syntax, $global_untranslatablekeys, $untranslatablekeys_block, PREG_SET_ORDER);
+			$untranslatablekeys = preg_split( '/\r\n|\r|\n/', $untranslatablekeys_block[0][1]);
+
+			} else {
+			$untranslatablekeys = array();
+			}
+
+			if (preg_match($regex_syntax, $global_blockedkeys))
+			{
+			preg_match_all($regex_syntax, $global_blockedkeys, $blockedkeys_block, PREG_SET_ORDER);
+			$blockedkeys = preg_split( '/\r\n|\r|\n/', $blockedkeys_block[0][1]);
+
+			} else {
+			$blockedkeys = array();
+			}
 
 		// Compute all known languages
 		static $languages = array();
@@ -568,6 +634,8 @@ class LocaliseModelTranslation extends JModelAdmin
 		{
 			$form->setFieldAttribute('legend', 'unchanged', $item->unchanged, 'legend');
 			$form->setFieldAttribute('legend', 'translated', $item->translated, 'legend');
+			$form->setFieldAttribute('legend', 'untranslatable', $item->untranslatable, 'legend');
+			$form->setFieldAttribute('legend', 'blocked', $item->blocked, 'legend');
 			$form->setFieldAttribute('legend', 'untranslated', $item->total - $item->translated - $item->unchanged, 'legend');
 			$form->setFieldAttribute('legend', 'extra', $item->extra, 'legend');
 		}
@@ -640,8 +708,10 @@ class LocaliseModelTranslation extends JModelAdmin
 						$key        = $matches[1];
 						$field      = $fieldset->addChild('field');
 						$string     = $refsections['keys'][$key];
+						$full_line = htmlspecialchars_decode ($key.'="'.$string.'"');
 						$translated = isset($sections['keys'][$key]);
-						$modified   = $translated && $sections['keys'][$key] != $refsections['keys'][$key];
+						$modified   = ($translated && $sections['keys'][$key] != $refsections['keys'][$key])
+								|| ($translated && in_array($full_line, $untranslatablekeys));
 						$status     = $modified
 							? 'translated'
 							: ($translated
@@ -651,6 +721,18 @@ class LocaliseModelTranslation extends JModelAdmin
 							? $sections['keys'][$key]
 							: '';
 						$label      = '<b>' . $key . '</b><br />' . htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
+
+							if (in_array($full_line, $untranslatablekeys))
+							{
+							$status = "untranslatable";
+							}
+
+							if (in_array($full_line, $blockedkeys))
+							{
+							$status = "blocked";
+							}
+
+
 						$field->addAttribute('status', $status);
 						$field->addAttribute('description', $string);
 
