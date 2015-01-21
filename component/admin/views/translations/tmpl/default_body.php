@@ -15,6 +15,18 @@ $reference = $params->get('reference', 'en-GB');
 $packages = LocaliseHelper::getPackages();
 $user = JFactory::getUser();
 $userId = $user->get('id');
+$allowed_groups = (array) $params->get('allowed_groups', null);
+$user_groups = $user->get('groups');
+$have_raw_mode = 0;
+
+	if (!empty($allowed_groups) && !empty($user_groups))
+	{
+		if (array_intersect($allowed_groups, $user_groups))
+		{
+		$have_raw_mode = 1;
+		}
+	}
+
 $lang = JFactory::getLanguage();
 ?>
 <?php foreach ($this->items as $i => $item) : ?>
