@@ -37,7 +37,7 @@ class JFormFieldLegend extends JFormField
 		$return .= '<tr><td><input class="translated" size="30" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_TRANSLATED')
 					. '" readonly="readonly"/></td></tr>';
 		$return .= '<tr><td><input class="untranslatable" size="30" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNTRANSLATABLE') . '" readonly="readonly"/></td></tr>';
-		$return .= '<tr><td><input class="blocket" size="30" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNTRANSLATABLE') . '" readonly="readonly"/></td></tr>';
+		$return .= '<tr><td><input class="blocked" size="30" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_BLOCKED') . '" readonly="readonly"/></td></tr>';
 		$return .= '<tr><td><input class="unchanged" size="30"  type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNCHANGED')
 					. '" readonly="readonly"/></td></tr>';
 		$return .= '<tr><td><input class="untranslated" size="30"  type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNTRANSLATED')
