@@ -130,23 +130,32 @@
 	</fieldset>
 	<fieldset
 		name="specialkeys"
-		label="Special keys"
-		description="Special keys cases. This one can help to handle untranslatable keys, keys to comment, protected keys or keys to add in target language. Use the syntax to set your language tag and the lines separated list of strings. For example: [xx-XX]&#xA;KEY=&quot;Text&quot;&#xA;[/xx-XX].">
+		label="COM_LOCALISE_LABEL_SPECIAL_KEYS"
+		description="COM_LOCALISE_LABEL_SPECIAL_KEYS_DESC">
 		<field
 			name="untranslatablekeys"
 			type="textarea"
 			filter="raw"
 			default="[xx-XX]&#xA;COM_CATEGORIES_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s&quot;&#xA;COM_CONTACT_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_CONTENT_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_LANGUAGES_VIEW_OVERRIDE_LANGUAGE=&quot;%1$s [%2$s]&quot;&#xA;COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM=&quot;%1$s - %2$s&quot;&#xA;COM_MEDIA_IMAGE_TITLE=&quot;%1$s - %2$s&quot;&#xA;COM_MEDIA_IMAGE_DIMENSIONS=&quot;%1$s x %2$s&quot;&#xA;COM_MENUS_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_NEWSFEEDS_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_POSTINSTALL_TITLE_JOOMLA=&quot;Joomla!&quot;&#xA;COM_USERS_EMPTY_REVIEW=&quot;-&quot;&#xA;COM_USERS_NOTE_N_SUBJECT=&quot;#%d %s&quot;&#xA;JGLOBAL_GT=&quot;&gt;&quot;&#xA;JGLOBAL_ICON_SEP=&quot;|&quot;&#xA;JGLOBAL_NUM=&quot;#&quot;&#xA;JPAGETITLE=&quot;%1$s - %2$s&quot;&#xA;DECIMALS_SEPARATOR=&quot;.&quot;&#xA;THOUSANDS_SEPARATOR=&quot;,&quot;&#xA;JLIB_RULES_GROUP=&quot;%s&quot;&#xA;[/xx-XX]&#xA;"
-			label="Untranslatable Keys"
-			description="Keys than means the same in both languages." />
+			label="COM_LOCALISE_LABEL_UNTRANSLATABLE_KEYS"
+			description="COM_LOCALISE_LABEL_UNTRANSLATABLE_KEYS_DESC" />
 
 		<field
 			name="blockedkeys"
 			type="textarea"
 			filter="raw"
 			default=""
-			label="Keys to protect"
-			description="Keys than should be protected in target language." />
+			label="COM_LOCALISE_LABEL_KEYS_TO_PROTECT"
+			description="Keys than should be protected in target language" />
+
+		<field
+			name="keystokeep"
+			type="textarea"
+			filter="raw"
+			default=""
+			label="COM_LOCALISE_LABEL_KEYS_TO_KEEP"
+			description="COM_LOCALISE_LABEL_KEYS_TO_KEEP_DESC" />
+
 	</fieldset>
 	<fieldset
 		name="permissions"
