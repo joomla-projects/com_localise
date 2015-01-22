@@ -9,6 +9,7 @@
 #localise-translation-form .blocked,
 #localise-translation-form .untranslated,
 #localise-translation-form .unchanged,
+#localise-translation-form .keytodelete,
 #localise-translation-form .extra {
 	padding: 2px;
 	float: left;
@@ -37,6 +38,9 @@
 }
 #localise-translation-form .extra {
 	background-color:#CCCCFF;
+}
+#localise-translation-form .keytodelete {
+	background-color:red;
 }
 #localise-translation-form .width-50 {
 	width: 50%;
@@ -223,6 +227,10 @@ div.filter-select select {
 #adminForm .notinreference td,
 #adminForm .notinreference {
 	background-color: #aaddff;
+}
+#adminForm .keytodelete td,
+#adminForm .keytodelete {
+	background-color: red;
 }
 #adminForm .unchanged td,
 #adminForm .unchanged {

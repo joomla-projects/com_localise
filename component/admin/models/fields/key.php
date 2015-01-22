@@ -173,7 +173,7 @@ class JFormFieldKey extends JFormField
 		$onkeyup .= "if (this.get('value')=='') {this.set('class','width-45 untranslated');}
 					else {if (this.get('value')=='" . addslashes(htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'))
 					. "') this.set('class','width-45 " . $status . "');
-					" . ($status == 'extra' ? "else this.set('class','width-45 extra');}" : "else this.set('class','width-45 translated');}");
+					" . (($status == 'extra' || $status == 'keytodelete') ? "else this.set('class','width-45 " . $status . "');}" : "else this.set('class','width-45 translated');}");
 		$input = '<textarea name="' . $this->name . '" ' . $is_read_only . 'id="' . $this->id . '" onfocus="this.select()" class="width-45 ' . $final_status . '" onkeyup="'
 					. $onkeyup . '">' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
 

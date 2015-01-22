@@ -188,6 +188,7 @@ class LocaliseModelTranslation extends JModelAdmin
 										'blocked'             => 0,
 										'unchanged'           => 0,
 										'extra'               => 0,
+										'keytodelete'         => 0,
 										'total'               => 0,
 										'complete'            => false,
 										'source'              => '',
@@ -239,6 +240,8 @@ class LocaliseModelTranslation extends JModelAdmin
 					$global_untranslatablekeys = htmlspecialchars_decode ($global_untranslatablekeys);
 					$global_blockedkeys = $params->get('blockedkeys', '');
 					$global_blockedkeys = htmlspecialchars_decode ($global_blockedkeys);
+					$global_keystokeep = $params->get('keystokeep', '');
+					$global_keystokeep = htmlspecialchars_decode ($global_keystokeep);
 
 					$tag = $this->getState('translation.tag');
 					$target_tag = preg_quote ($tag, '-');
@@ -260,6 +263,15 @@ class LocaliseModelTranslation extends JModelAdmin
 
 					} else {
 					$blockedkeys = array();
+					}
+
+					if (preg_match($regex_syntax, $global_keystokeep))
+					{
+					preg_match_all($regex_syntax, $global_keystokeep, $keystokeep_block, PREG_SET_ORDER);
+					$keystokeep = preg_split( '/\r\n|\r|\n/', $keystokeep_block[0][1]);
+
+					} else {
+					$keystokeep = array();
 					}
 
 					while (!$stream->eof())
@@ -459,7 +471,12 @@ class LocaliseModelTranslation extends JModelAdmin
 						{
 							if (empty($refsections['keys']) || !array_key_exists($key, $refsections['keys']))
 							{
+								if (in_array($key, $keystokeep))
+								{
 								$this->item->extra++;
+								} else {
+								$this->item->keytodelete++;
+								}
 							}
 						}
 					}
@@ -600,6 +617,8 @@ class LocaliseModelTranslation extends JModelAdmin
 		$global_untranslatablekeys = htmlspecialchars_decode ($global_untranslatablekeys);
 		$global_blockedkeys = $params->get('blockedkeys', '');
 		$global_blockedkeys = htmlspecialchars_decode ($global_blockedkeys);
+		$global_keystokeep = $params->get('keystokeep', '');
+		$global_keystokeep = htmlspecialchars_decode ($global_keystokeep);
 		$target_tag = preg_quote ($tag, '-');
 		$regex_syntax	= '/\['.$target_tag.'\](.*?)\[\/'.$target_tag.'\]/s';
 
@@ -621,6 +640,15 @@ class LocaliseModelTranslation extends JModelAdmin
 			$blockedkeys = array();
 			}
 
+			if (preg_match($regex_syntax, $global_keystokeep))
+			{
+			preg_match_all($regex_syntax, $global_keystokeep, $keystokeep_block, PREG_SET_ORDER);
+			$keystokeep = preg_split( '/\r\n|\r|\n/', $keystokeep_block[0][1]);
+
+			} else {
+			$keystokeep = array();
+			}
+
 		// Compute all known languages
 		static $languages = array();
 		jimport('joomla.language.language');
@@ -638,6 +666,7 @@ class LocaliseModelTranslation extends JModelAdmin
 			$form->setFieldAttribute('legend', 'blocked', $item->blocked, 'legend');
 			$form->setFieldAttribute('legend', 'untranslated', $item->total - $item->translated - $item->unchanged, 'legend');
 			$form->setFieldAttribute('legend', 'extra', $item->extra, 'legend');
+			$form->setFieldAttribute('legend', 'keytodelete', $item->keytodelete, 'legend');
 		}
 
 		if ($this->getState('translation.layout') != 'raw')
@@ -759,6 +788,7 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				$stream->close();
 				$newstrings = false;
+				$todeletestrings = false;
 
 				if (!empty($sections['keys']))
 				{
@@ -766,39 +796,79 @@ class LocaliseModelTranslation extends JModelAdmin
 					{
 						if (!isset($refsections['keys'][$key]))
 						{
-							if (!$newstrings)
+							if (in_array($key, $keystokeep))
 							{
-								$newstrings = true;
-								$form->load($addform, false);
-								$section = 'New Strings';
-								$addform = new SimpleXMLElement('<form />');
-								$group   = $addform->addChild('fields');
-								$group->addAttribute('name', 'strings');
-								$fieldset = $group->addChild('fieldset');
-								$fieldset->addAttribute('name', $section);
-								$fieldset->addAttribute('label', $section);
-							}
+								if (!$newstrings)
+								{
+									$newstrings = true;
+									$form->load($addform, false);
+									$section = 'Keys to keep as extra';
+									$addform = new SimpleXMLElement('<form />');
+									$group   = $addform->addChild('fields');
+									$group->addAttribute('name', 'strings');
+									$fieldset = $group->addChild('fieldset');
+									$fieldset->addAttribute('name', $section);
+									$fieldset->addAttribute('label', $section);
+								}
 
-							$field   = $fieldset->addChild('field');
-							$status  = 'extra';
-							$default = $string;
-							$label   = '<b>' . $key . '</b>';
-							$field->addAttribute('status', $status);
-							$field->addAttribute('description', $string);
+								$field   = $fieldset->addChild('field');
+								$status  = 'extra';
+								$default = $string;
+								$label   = '<b>' . $key . '</b>';
+								$field->addAttribute('status', $status);
+								$field->addAttribute('description', $string);
 
-							if ($default)
-							{
-								$field->addAttribute('default', $default);
-							}
-							else
-							{
-								$field->addAttribute('default', $string);
-							}
+								if ($default)
+								{
+									$field->addAttribute('default', $default);
+								}
+								else
+								{
+									$field->addAttribute('default', $string);
+								}
 
-							$field->addAttribute('label', $label);
-							$field->addAttribute('name', $key);
-							$field->addAttribute('type', 'key');
-							$field->addAttribute('filter', 'raw');
+								$field->addAttribute('label', $label);
+								$field->addAttribute('name', $key);
+								$field->addAttribute('type', 'key');
+								$field->addAttribute('filter', 'raw');
+
+							} else {
+
+								if (!$todeletestrings)
+								{
+									$todeletestrings = true;
+									$form->load($addform, false);
+									$section = 'Keys to delete';
+									$addform = new SimpleXMLElement('<form />');
+									$group   = $addform->addChild('fields');
+									$group->addAttribute('name', 'strings');
+									$fieldset = $group->addChild('fieldset');
+									$fieldset->addAttribute('name', $section);
+									$fieldset->addAttribute('label', $section);
+								}
+
+								$field   = $fieldset->addChild('field');
+								$status  = 'keytodelete';
+								$default = $string;
+								$label   = '<b>' . $key . '</b>';
+								$field->addAttribute('status', $status);
+								$field->addAttribute('description', $string);
+
+								if ($default)
+								{
+									$field->addAttribute('default', $default);
+								}
+								else
+								{
+									$field->addAttribute('default', $string);
+								}
+
+								$field->addAttribute('label', $label);
+								$field->addAttribute('name', $key);
+								$field->addAttribute('type', 'key');
+								$field->addAttribute('filter', 'raw');
+
+							}
 						}
 					}
 				}
@@ -862,6 +932,21 @@ class LocaliseModelTranslation extends JModelAdmin
 		$exists    = JFile::exists($path);
 		$refexists = JFile::exists($refpath);
 		$client    = $this->getState('translation.client');
+		$params   = JComponentHelper::getParams('com_localise');
+		$global_keystokeep = $params->get('keystokeep', '');
+		$global_keystokeep = htmlspecialchars_decode ($global_keystokeep);
+		$tag = $this->getState('translation.tag');
+		$target_tag = preg_quote ($tag, '-');
+		$regex_syntax	= '/\['.$target_tag.'\](.*?)\[\/'.$target_tag.'\]/s';
+			if (preg_match($regex_syntax, $global_keystokeep))
+			{
+			preg_match_all($regex_syntax, $global_keystokeep, $keystokeep_block, PREG_SET_ORDER);
+			$keystokeep = preg_split( '/\r\n|\r|\n/', $keystokeep_block[0][1]);
+
+			} else {
+			$keystokeep = array();
+			}
+
 
 		// Set FTP credentials, if given.
 		JClientHelper::setCredentialsFromRequest('ftp');
@@ -1036,17 +1121,39 @@ class LocaliseModelTranslation extends JModelAdmin
 
 			if (!empty($strings))
 			{
-				$contents[] = "\n[New Strings]\n\n";
+				$contents_to_add = array();
+				$contents_to_delete = array();
 
 				foreach ($strings as $key => $string)
 				{
-					$contents[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
+					if (in_array($key, $keystokeep))
+					{
+					$contents_to_add[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
+					} else {
+					$contents_to_delete[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";					}
 				}
 			}
 
 			$stream->close();
 			$contents = implode($contents);
 			$contents = $contents2 . $contents;
+
+			if(!empty($contents_to_add))
+			{
+			$contents .= "\n[Keys to keep in target]\n\n";
+			$contents .= ";This keys are not present in en-GB language but are required in this language (extra plural cases, custom CAPTCHA translations, etc).\n\n";
+			$contents_to_add = implode($contents_to_add);
+			$contents .= $contents_to_add;
+			}
+
+			if(!empty($contents_to_delete))
+			{
+			$contents .= "\n[Keys to delete]\n\n";
+			$contents .= ";This keys are not present in en-GB language and are not required in this language.\n\n";
+			$contents_to_delete = implode($contents_to_delete);
+			$contents .= $contents_to_delete;
+			}
+
 		}
 
 		$return = JFile::write($path, $contents);
