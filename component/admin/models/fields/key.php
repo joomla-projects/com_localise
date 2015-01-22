@@ -94,8 +94,7 @@ class JFormFieldKey extends JFormField
 						.set(
 						'value','" . addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8')) . "'
 						);
-						if (document.id('" . $this->id . "').get('value')=='') {document.id('" . $this->id . "').set('class','width-45 blocked');}
-						else {document.id('" . $this->id . "').set('class','width-45 " . $status . "');}";
+						document.id('" . $this->id . "').set('class','width-45 " . $status . "');";
 			$button  = '<i class="icon-reset hasTooltip return pointer" title="' . JText::_('COM_LOCALISE_TOOLTIP_TRANSLATION_INSERT')
 						. '" onclick="' . $onclick . '"></i>';
 			/* $onclick2 = "javascript:if (typeof(google) !== 'undefined') {
