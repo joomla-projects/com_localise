@@ -59,8 +59,8 @@
 		<field
 			name="allowed_groups"
 			type="usergroup"
-			description="Groups than can access to the raw view mode or access to start new files in raw view mode."
-			label="Allowed groups"
+			description="COM_LOCALISE_LABEL_ALLOWED_GROUPS_DESC"
+			label="COM_LOCALISE_LABEL_ALLOWED_GROUPS"
 			multiple="true"
 			size="10"
 			required="false" />
