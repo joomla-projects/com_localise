@@ -118,7 +118,7 @@ $lang = JFactory::getLanguage();
 			<?php elseif ($item->translated == $item->total || $item->complete) : ?>
 				<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_COMPLETE', $item->translated, $item->unchanged, $item->total, $item->extra, $item->keytodelete, $item->blocked, $item->untranslatable), 'inactive_class'=>'16-complete', 'enabled' => false, 'translate'=>false)); ?>
 			<?php else : ?>
-				<span class="hasTooltip" title="<?php echo $item->translated + $item->unchanged == 0 ? JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS', $item->translated, $item->unchanged, $item->total, $item->extra, $item->blocked, $item->untranslatable); ?>">
+				<span class="hasTooltip" title="<?php echo $item->translated + $item->unchanged == 0 ? JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS', $item->translated, $item->unchanged, $item->total, $item->extra, $item->keytodelete, $item->blocked, $item->untranslatable); ?>">
 				<?php $translated =  $item->total ? intval(100 * $item->translated / $item->total) : 0; ?>
 				<?php $unchanged =  ($item->translated+$item->unchanged==$item->total)?(100-$translated):($item->total ? intval(100 * $item->unchanged / $item->total) : 0); ?>
 					<?php if ($item->unchanged):?>
@@ -148,7 +148,7 @@ $lang = JFactory::getLanguage();
 					<?php echo $item->translated; ?>
 				<?php
 				else : ?>
-					<?php echo ($item->unchanged ? ("(" . $item->translated . "+" . $item->unchanged . ")") : $item->translated) . "/" . $item->total . ($item->extra ? "<br />Extra keys: " . $item->extra : ''). ($item->keytodelete ? "<br />Keys to delete: " . $item->keytodelete : ''); ?>
+					<?php echo ($item->unchanged ? ("(" . $item->translated . "+" . $item->unchanged . ")") : $item->translated) . "/" . $item->total . ($item->extra ? "<br />Extra keys: " . $item->extra : '') . ($item->keytodelete ? "<br />Keys to delete: " . $item->keytodelete : ''); ?>
 				<?php endif; ?>
 			<?php endif; ?>
 		</td>

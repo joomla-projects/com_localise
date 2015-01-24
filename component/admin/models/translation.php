@@ -440,7 +440,7 @@ class LocaliseModelTranslation extends JModelAdmin
 							$this->item->total++;
 							$full_line = htmlspecialchars_decode ($key.'="'.$string.'"');
 
-							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']) && $sections['keys'][$key] != '')
+							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']))
 							{
 
 								if (in_array($full_line, $blockedkeys))
@@ -746,9 +746,9 @@ class LocaliseModelTranslation extends JModelAdmin
 							: ($translated
 								? 'unchanged'
 								: 'untranslated');
-						$default    = $translated
-							? $sections['keys'][$key]
-							: '';
+
+						$default    = $translated ? $sections['keys'][$key] : '';
+
 						$label      = '<b>' . $key . '</b><br />' . htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
 
 							if (in_array($full_line, $untranslatablekeys))
