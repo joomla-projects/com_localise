@@ -469,8 +469,16 @@ class LocaliseModelTranslation extends JModelAdmin
 					{
 						foreach ($sections['keys'] as $key => $string)
 						{
+
+						$full_line = htmlspecialchars_decode ($key.'="'.$string.'"');
+
 							if (empty($refsections['keys']) || !array_key_exists($key, $refsections['keys']))
 							{
+								if (in_array($full_line, $blockedkeys))
+								{
+									$this->item->blocked++;
+								}
+
 								if (in_array($key, $keystokeep))
 								{
 								$this->item->extra++;
