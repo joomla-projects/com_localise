@@ -1146,7 +1146,9 @@ class LocaliseModelTranslation extends JModelAdmin
 					if (in_array($key, $keystokeep))
 					{
 					$contents_to_add[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
-					} else {
+					}
+					else
+					{
 					$contents_to_delete[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";					}
 				}
 			}
