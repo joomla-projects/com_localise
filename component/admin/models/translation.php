@@ -948,6 +948,7 @@ class LocaliseModelTranslation extends JModelAdmin
 		$tag = $this->getState('translation.tag');
 		$target_tag = preg_quote ($tag, '-');
 		$regex_syntax = '/\['.$target_tag.'\](.*?)\[\/'.$target_tag.'\]/s';
+
 			if (preg_match($regex_syntax, $global_keystokeep))
 			{
 			preg_match_all($regex_syntax, $global_keystokeep, $keystokeep_block, PREG_SET_ORDER);
