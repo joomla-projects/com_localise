@@ -236,7 +236,7 @@ class LocaliseModelTranslation extends JModelAdmin
 
 					$params             = JComponentHelper::getParams('com_localise');
 					$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
-					$global_untranslatablekeys = $params->get('untranslatablekeys', '[xx-XX]&#xA;COM_CATEGORIES_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s&quot;&#xA;COM_CONTACT_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_CONTENT_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_LANGUAGES_VIEW_OVERRIDE_LANGUAGE=&quot;%1$s [%2$s]&quot;&#xA;COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM=&quot;%1$s - %2$s&quot;&#xA;COM_MEDIA_IMAGE_TITLE=&quot;%1$s - %2$s&quot;&#xA;COM_MEDIA_IMAGE_DIMENSIONS=&quot;%1$s x %2$s&quot;&#xA;COM_MENUS_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_NEWSFEEDS_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_POSTINSTALL_TITLE_JOOMLA=&quot;Joomla!&quot;&#xA;COM_USERS_EMPTY_REVIEW=&quot;-&quot;&#xA;COM_USERS_NOTE_N_SUBJECT=&quot;#%d %s&quot;&#xA;JGLOBAL_GT=&quot;&gt;&quot;&#xA;JGLOBAL_ICON_SEP=&quot;|&quot;&#xA;JGLOBAL_NUM=&quot;#&quot;&#xA;JPAGETITLE=&quot;%1$s - %2$s&quot;&#xA;DECIMALS_SEPARATOR=&quot;.&quot;&#xA;THOUSANDS_SEPARATOR=&quot;,&quot;&#xA;JLIB_RULES_GROUP=&quot;%s&quot;&#xA;[/xx-XX]&#xA;');
+					$global_untranslatablekeys = $params->get('untranslatablekeys', '');
 					$global_untranslatablekeys = htmlspecialchars_decode ($global_untranslatablekeys);
 					$global_blockedkeys = $params->get('blockedkeys', '');
 					$global_blockedkeys = htmlspecialchars_decode ($global_blockedkeys);
@@ -626,7 +626,7 @@ class LocaliseModelTranslation extends JModelAdmin
 		$false    = false;
 		$params   = JComponentHelper::getParams('com_localise');
 		$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
-		$global_untranslatablekeys = $params->get('untranslatablekeys', '[xx-XX]&#xA;COM_CATEGORIES_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s&quot;&#xA;COM_CONTACT_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_CONTENT_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_LANGUAGES_VIEW_OVERRIDE_LANGUAGE=&quot;%1$s [%2$s]&quot;&#xA;COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM=&quot;%1$s - %2$s&quot;&#xA;COM_MEDIA_IMAGE_TITLE=&quot;%1$s - %2$s&quot;&#xA;COM_MEDIA_IMAGE_DIMENSIONS=&quot;%1$s x %2$s&quot;&#xA;COM_MENUS_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_NEWSFEEDS_TIP_ASSOCIATED_LANGUAGE=&quot;%s %s (%s)&quot;&#xA;COM_POSTINSTALL_TITLE_JOOMLA=&quot;Joomla!&quot;&#xA;COM_USERS_EMPTY_REVIEW=&quot;-&quot;&#xA;COM_USERS_NOTE_N_SUBJECT=&quot;#%d %s&quot;&#xA;JGLOBAL_GT=&quot;&gt;&quot;&#xA;JGLOBAL_ICON_SEP=&quot;|&quot;&#xA;JGLOBAL_NUM=&quot;#&quot;&#xA;JPAGETITLE=&quot;%1$s - %2$s&quot;&#xA;DECIMALS_SEPARATOR=&quot;.&quot;&#xA;THOUSANDS_SEPARATOR=&quot;,&quot;&#xA;JLIB_RULES_GROUP=&quot;%s&quot;&#xA;[/xx-XX]&#xA;');
+		$global_untranslatablekeys = $params->get('untranslatablekeys', '');
 		$global_untranslatablekeys = htmlspecialchars_decode ($global_untranslatablekeys);
 		$global_blockedkeys = $params->get('blockedkeys', '');
 		$global_blockedkeys = htmlspecialchars_decode ($global_blockedkeys);
