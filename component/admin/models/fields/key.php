@@ -192,7 +192,9 @@ class JFormFieldKey extends JFormField
 			if ($status == 'blocked')
 			{
 			$final_status = 'blocked';
-			} else {
+			}
+			else
+			{
 			$final_status = ($this->value == '' ? 'untranslated' : ($this->value == $this->element['description'] ? $status : 'translated'));
 			}
 
