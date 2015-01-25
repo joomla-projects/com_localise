@@ -17,13 +17,13 @@ $user = JFactory::getUser();
 $userId = $user->get('id');
 $allowed_groups = (array) $params->get('allowed_groups', null);
 $user_groups = $user->get('groups');
-$have_raw_mode = 0;
+$have_raw_mode = 1;
 
 	if (!empty($allowed_groups) && !empty($user_groups))
 	{
-		if (array_intersect($allowed_groups, $user_groups))
+		if (!array_intersect($allowed_groups, $user_groups))
 		{
-		$have_raw_mode = 1;
+		$have_raw_mode = 0;
 		}
 	}
 
