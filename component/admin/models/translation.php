@@ -633,14 +633,15 @@ class LocaliseModelTranslation extends JModelAdmin
 		$global_keystokeep = $params->get('keystokeep', '');
 		$global_keystokeep = htmlspecialchars_decode ($global_keystokeep);
 		$target_tag = preg_quote ($tag, '-');
-		$regex_syntax	= '/\['.$target_tag.'\](.*?)\[\/'.$target_tag.'\]/s';
+		$regex_syntax = '/\['.$target_tag.'\](.*?)\[\/'.$target_tag.'\]/s';
 
 			if (preg_match($regex_syntax, $global_untranslatablekeys))
 			{
 			preg_match_all($regex_syntax, $global_untranslatablekeys, $untranslatablekeys_block, PREG_SET_ORDER);
 			$untranslatablekeys = preg_split( '/\r\n|\r|\n/', $untranslatablekeys_block[0][1]);
-
-			} else {
+			}
+			else
+			{
 			$untranslatablekeys = array();
 			}
 
@@ -648,8 +649,9 @@ class LocaliseModelTranslation extends JModelAdmin
 			{
 			preg_match_all($regex_syntax, $global_blockedkeys, $blockedkeys_block, PREG_SET_ORDER);
 			$blockedkeys = preg_split( '/\r\n|\r|\n/', $blockedkeys_block[0][1]);
-
-			} else {
+			}
+			else
+			{
 			$blockedkeys = array();
 			}
 
@@ -657,8 +659,9 @@ class LocaliseModelTranslation extends JModelAdmin
 			{
 			preg_match_all($regex_syntax, $global_keystokeep, $keystokeep_block, PREG_SET_ORDER);
 			$keystokeep = preg_split( '/\r\n|\r|\n/', $keystokeep_block[0][1]);
-
-			} else {
+			}
+			else
+			{
 			$keystokeep = array();
 			}
 
