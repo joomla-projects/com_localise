@@ -485,7 +485,9 @@ class LocaliseModelTranslation extends JModelAdmin
 								if (in_array($key, $keystokeep))
 								{
 								$this->item->extra++;
-								} else {
+								}
+								else
+								{
 								$this->item->keytodelete++;
 								}
 							}
