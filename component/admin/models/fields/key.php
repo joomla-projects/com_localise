@@ -96,7 +96,9 @@ class JFormFieldKey extends JFormField
 			if (in_array($full_line, $blockedkeys))
 			{
 			$status = "blocked";
-			} else {
+			}
+			else
+			{
 			$status = (string) $this->element['status'];
 			}
 
