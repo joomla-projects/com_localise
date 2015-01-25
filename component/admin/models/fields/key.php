@@ -64,14 +64,15 @@ class JFormFieldKey extends JFormField
 		$input = JFactory::getApplication()->input;
 		$tag      = $input->getCmd('tag', '');
 		$target_tag = preg_quote ($tag, '-');
-		$regex_syntax	= '/\['.$target_tag.'\](.*?)\[\/'.$target_tag.'\]/s';
+		$regex_syntax = '/\['.$target_tag.'\](.*?)\[\/'.$target_tag.'\]/s';
 
 			if (preg_match($regex_syntax, $global_blockedkeys))
 			{
 			preg_match_all($regex_syntax, $global_blockedkeys, $blockedkeys_block, PREG_SET_ORDER);
 			$blockedkeys = preg_split( '/\r\n|\r|\n/', $blockedkeys_block[0][1]);
-
-			} else {
+			}
+			else
+			{
 			$blockedkeys = array();
 			}
 
