@@ -847,9 +847,9 @@ class LocaliseModelTranslation extends JModelAdmin
 								$field->addAttribute('name', $key);
 								$field->addAttribute('type', 'key');
 								$field->addAttribute('filter', 'raw');
-
-							} else {
-
+							}
+							else
+							{
 								if (!$todeletestrings)
 								{
 									$todeletestrings = true;
