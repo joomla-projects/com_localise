@@ -772,12 +772,6 @@ class LocaliseModelTranslation extends JModelAdmin
 							$status = "untranslatable";
 							}
 
-							if (in_array($full_line, $blockedkeys))
-							{
-							$status = "blocked";
-							}
-
-
 						$field->addAttribute('status', $status);
 						$field->addAttribute('description', $string);
 
