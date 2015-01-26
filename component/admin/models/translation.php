@@ -457,12 +457,12 @@ class LocaliseModelTranslation extends JModelAdmin
 
 							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']))
 							{
-								if (in_array($full_line, $blockedkeys))
+								if (in_array($full_line, $blockedstrings))
 								{
 									$this->item->translated++;
 									$this->item->blocked++;
 								}
-								elseif (in_array($full_line, $untranslatablekeys))
+								elseif (in_array($full_line, $untranslatablestrings))
 								{
 									$this->item->translated++;
 									$this->item->untranslatable++;
