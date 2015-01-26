@@ -34,17 +34,19 @@ class JFormFieldLegend extends JFormField
 	protected function getInput()
 	{
 		$return = '<table class="pull-left">';
-		$return .= '<tr><td><input class="translated" size="30" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_TRANSLATED')
+		$return .= '<tr><td><input class="translated center" size="40" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_TRANSLATED')
 					. '" readonly="readonly"/></td></tr>';
-		$return .= '<tr><td><input class="untranslatable" size="30" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNTRANSLATABLE') . '" readonly="readonly"/></td></tr>';
-		$return .= '<tr><td><input class="blocked" size="30" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_BLOCKED') . '" readonly="readonly"/></td></tr>';
-		$return .= '<tr><td><input class="unchanged" size="30"  type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNCHANGED')
+		$return .= '<tr><td><input class="untranslatable center" size="40" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNTRANSLATABLE')
 					. '" readonly="readonly"/></td></tr>';
-		$return .= '<tr><td><input class="untranslated" size="30"  type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNTRANSLATED')
+		$return .= '<tr><td><input class="blocked center" size="40" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_BLOCKED')
 					. '" readonly="readonly"/></td></tr>';
-		$return .= '<tr><td><input class="extra" size="30" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_KEYTOKEEP')
+		$return .= '<tr><td><input class="unchanged center" size="40"  type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNCHANGED')
 					. '" readonly="readonly"/></td></tr>';
-		$return .= '<tr><td><input class="keytodelete" size="30" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_NOTINREFERENCE')
+		$return .= '<tr><td><input class="untranslated center" size="40"  type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNTRANSLATED')
+					. '" readonly="readonly"/></td></tr>';
+		$return .= '<tr><td><input class="extra center" size="40" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_KEYTOKEEP')
+					. '" readonly="readonly"/></td></tr>';
+		$return .= '<tr><td><input class="keytodelete center" size="40" type="text" value="' . JText::_('COM_LOCALISE_TEXT_TRANSLATION_NOTINREFERENCE')
 					. '" readonly="readonly"/></td></tr>';
 		$return .= '</table>';
 

@@ -137,16 +137,16 @@
 			type="textarea"
 			filter="raw"
 			default=""
-			label="COM_LOCALISE_LABEL_UNTRANSLATABLE_KEYS"
-			description="COM_LOCALISE_LABEL_UNTRANSLATABLE_KEYS_DESC" />
+			label="COM_LOCALISE_LABEL_STRINGS_SAME"
+			description="COM_LOCALISE_LABEL_STRINGS_SAME_DESC" />
 
 		<field
 			name="blockedkeys"
 			type="textarea"
 			filter="raw"
 			default=""
-			label="COM_LOCALISE_LABEL_KEYS_TO_PROTECT"
-			description="Keys than should be protected in target language" />
+			label="COM_LOCALISE_LABEL_STRINGS_TO_PROTECT"
+			description="COM_LOCALISE_LABEL_STRINGS_TO_PROTECT_DESC" />
 
 		<field
 			name="keystokeep"

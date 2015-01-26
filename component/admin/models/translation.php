@@ -237,44 +237,44 @@ class LocaliseModelTranslation extends JModelAdmin
 					$params             = JComponentHelper::getParams('com_localise');
 					$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
 					$global_untranslatablekeys = $params->get('untranslatablekeys', '');
-					$global_untranslatablekeys = htmlspecialchars_decode ($global_untranslatablekeys);
+					$global_untranslatablekeys = htmlspecialchars_decode($global_untranslatablekeys);
 					$global_blockedkeys = $params->get('blockedkeys', '');
-					$global_blockedkeys = htmlspecialchars_decode ($global_blockedkeys);
+					$global_blockedkeys = htmlspecialchars_decode($global_blockedkeys);
 					$global_keystokeep = $params->get('keystokeep', '');
-					$global_keystokeep = htmlspecialchars_decode ($global_keystokeep);
+					$global_keystokeep = htmlspecialchars_decode($global_keystokeep);
 
 					$tag = $this->getState('translation.tag');
-					$target_tag = preg_quote ($tag, '-');
-					$regex_syntax = '/\['.$target_tag.'\](.*?)\[\/'.$target_tag.'\]/s';
+					$target_tag = preg_quote($tag, '-');
+					$regex_syntax = '/\[' . $target_tag . '\](.*?)\[\/' . $target_tag . '\]/s';
 
 					if (preg_match($regex_syntax, $global_untranslatablekeys))
 					{
-					preg_match_all($regex_syntax, $global_untranslatablekeys, $untranslatablekeys_block, PREG_SET_ORDER);
-					$untranslatablekeys = preg_split( '/\r\n|\r|\n/', $untranslatablekeys_block[0][1]);
+						preg_match_all($regex_syntax, $global_untranslatablekeys, $untranslatablekeys_block, PREG_SET_ORDER);
+						$untranslatablekeys = preg_split('/\r\n|\r|\n/', $untranslatablekeys_block[0][1]);
 					}
 					else
 					{
-					$untranslatablekeys = array();
+						$untranslatablekeys = array();
 					}
 
 					if (preg_match($regex_syntax, $global_blockedkeys))
 					{
-					preg_match_all($regex_syntax, $global_blockedkeys, $blockedkeys_block, PREG_SET_ORDER);
-					$blockedkeys = preg_split( '/\r\n|\r|\n/', $blockedkeys_block[0][1]);
+						preg_match_all($regex_syntax, $global_blockedkeys, $blockedkeys_block, PREG_SET_ORDER);
+						$blockedkeys = preg_split('/\r\n|\r|\n/', $blockedkeys_block[0][1]);
 					}
 					else
 					{
-					$blockedkeys = array();
+						$blockedkeys = array();
 					}
 
 					if (preg_match($regex_syntax, $global_keystokeep))
 					{
-					preg_match_all($regex_syntax, $global_keystokeep, $keystokeep_block, PREG_SET_ORDER);
-					$keystokeep = preg_split( '/\r\n|\r|\n/', $keystokeep_block[0][1]);
+						preg_match_all($regex_syntax, $global_keystokeep, $keystokeep_block, PREG_SET_ORDER);
+						$keystokeep = preg_split('/\r\n|\r|\n/', $keystokeep_block[0][1]);
 					}
 					else
 					{
-					$keystokeep = array();
+						$keystokeep = array();
 					}
 
 					while (!$stream->eof())
@@ -441,11 +441,10 @@ class LocaliseModelTranslation extends JModelAdmin
 						foreach ($refsections['keys'] as $key => $string)
 						{
 							$this->item->total++;
-							$full_line = htmlspecialchars_decode ($key.'="'.$string.'"');
+							$full_line = htmlspecialchars_decode($key . '="' . $string . '"');
 
 							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']))
 							{
-
 								if (in_array($full_line, $blockedkeys))
 								{
 									$this->item->translated++;
@@ -472,8 +471,7 @@ class LocaliseModelTranslation extends JModelAdmin
 					{
 						foreach ($sections['keys'] as $key => $string)
 						{
-
-						$full_line = htmlspecialchars_decode ($key.'="'.$string.'"');
+							$full_line = htmlspecialchars_decode($key . '="' . $string . '"');
 
 							if (empty($refsections['keys']) || !array_key_exists($key, $refsections['keys']))
 							{
@@ -484,11 +482,11 @@ class LocaliseModelTranslation extends JModelAdmin
 
 								if (in_array($key, $keystokeep))
 								{
-								$this->item->extra++;
+									$this->item->extra++;
 								}
 								else
 								{
-								$this->item->keytodelete++;
+									$this->item->keytodelete++;
 								}
 							}
 						}
@@ -627,42 +625,42 @@ class LocaliseModelTranslation extends JModelAdmin
 		$params   = JComponentHelper::getParams('com_localise');
 		$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
 		$global_untranslatablekeys = $params->get('untranslatablekeys', '');
-		$global_untranslatablekeys = htmlspecialchars_decode ($global_untranslatablekeys);
+		$global_untranslatablekeys = htmlspecialchars_decode($global_untranslatablekeys);
 		$global_blockedkeys = $params->get('blockedkeys', '');
-		$global_blockedkeys = htmlspecialchars_decode ($global_blockedkeys);
+		$global_blockedkeys = htmlspecialchars_decode($global_blockedkeys);
 		$global_keystokeep = $params->get('keystokeep', '');
-		$global_keystokeep = htmlspecialchars_decode ($global_keystokeep);
-		$target_tag = preg_quote ($tag, '-');
-		$regex_syntax = '/\['.$target_tag.'\](.*?)\[\/'.$target_tag.'\]/s';
+		$global_keystokeep = htmlspecialchars_decode($global_keystokeep);
+		$target_tag = preg_quote($tag, '-');
+		$regex_syntax = '/\[' . $target_tag . '\](.*?)\[\/' . $target_tag . '\]/s';
 
 			if (preg_match($regex_syntax, $global_untranslatablekeys))
 			{
-			preg_match_all($regex_syntax, $global_untranslatablekeys, $untranslatablekeys_block, PREG_SET_ORDER);
-			$untranslatablekeys = preg_split( '/\r\n|\r|\n/', $untranslatablekeys_block[0][1]);
+				preg_match_all($regex_syntax, $global_untranslatablekeys, $untranslatablekeys_block, PREG_SET_ORDER);
+				$untranslatablekeys = preg_split('/\r\n|\r|\n/', $untranslatablekeys_block[0][1]);
 			}
 			else
 			{
-			$untranslatablekeys = array();
+				$untranslatablekeys = array();
 			}
 
 			if (preg_match($regex_syntax, $global_blockedkeys))
 			{
-			preg_match_all($regex_syntax, $global_blockedkeys, $blockedkeys_block, PREG_SET_ORDER);
-			$blockedkeys = preg_split( '/\r\n|\r|\n/', $blockedkeys_block[0][1]);
+				preg_match_all($regex_syntax, $global_blockedkeys, $blockedkeys_block, PREG_SET_ORDER);
+				$blockedkeys = preg_split('/\r\n|\r|\n/', $blockedkeys_block[0][1]);
 			}
 			else
 			{
-			$blockedkeys = array();
+				$blockedkeys = array();
 			}
 
 			if (preg_match($regex_syntax, $global_keystokeep))
 			{
-			preg_match_all($regex_syntax, $global_keystokeep, $keystokeep_block, PREG_SET_ORDER);
-			$keystokeep = preg_split( '/\r\n|\r|\n/', $keystokeep_block[0][1]);
+				preg_match_all($regex_syntax, $global_keystokeep, $keystokeep_block, PREG_SET_ORDER);
+				$keystokeep = preg_split('/\r\n|\r|\n/', $keystokeep_block[0][1]);
 			}
 			else
 			{
-			$keystokeep = array();
+				$keystokeep = array();
 			}
 
 		// Compute all known languages
@@ -753,24 +751,18 @@ class LocaliseModelTranslation extends JModelAdmin
 						$key        = $matches[1];
 						$field      = $fieldset->addChild('field');
 						$string     = $refsections['keys'][$key];
-						$full_line = htmlspecialchars_decode ($key.'="'.$string.'"');
+						$full_line  = htmlspecialchars_decode($key . '="' . $string . '"');
 						$translated = isset($sections['keys'][$key]);
 						$modified   = ($translated && $sections['keys'][$key] != $refsections['keys'][$key])
-								|| ($translated && in_array($full_line, $untranslatablekeys));
-						$status     = $modified
-							? 'translated'
-							: ($translated
-								? 'unchanged'
-								: 'untranslated');
-
+										|| ($translated && in_array($full_line, $untranslatablekeys));
+						$status     = $modified ? 'translated' : ($translated ? 'unchanged' : 'untranslated');
 						$default    = $translated ? $sections['keys'][$key] : '';
-
 						$label      = '<b>' . $key . '</b><br />' . htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
 
-							if (in_array($full_line, $untranslatablekeys))
-							{
+						if (in_array($full_line, $untranslatablekeys))
+						{
 							$status = "untranslatable";
-							}
+						}
 
 						$field->addAttribute('status', $status);
 						$field->addAttribute('description', $string);
@@ -877,7 +869,6 @@ class LocaliseModelTranslation extends JModelAdmin
 								$field->addAttribute('name', $key);
 								$field->addAttribute('type', 'key');
 								$field->addAttribute('filter', 'raw');
-
 							}
 						}
 					}
@@ -942,23 +933,22 @@ class LocaliseModelTranslation extends JModelAdmin
 		$exists    = JFile::exists($path);
 		$refexists = JFile::exists($refpath);
 		$client    = $this->getState('translation.client');
-		$params   = JComponentHelper::getParams('com_localise');
+		$params    = JComponentHelper::getParams('com_localise');
 		$global_keystokeep = $params->get('keystokeep', '');
-		$global_keystokeep = htmlspecialchars_decode ($global_keystokeep);
+		$global_keystokeep = htmlspecialchars_decode($global_keystokeep);
 		$tag = $this->getState('translation.tag');
-		$target_tag = preg_quote ($tag, '-');
-		$regex_syntax = '/\['.$target_tag.'\](.*?)\[\/'.$target_tag.'\]/s';
+		$target_tag = preg_quote($tag, '-');
+		$regex_syntax = '/\[' . $target_tag . '\](.*?)\[\/' . $target_tag . '\]/s';
 
-			if (preg_match($regex_syntax, $global_keystokeep))
-			{
+		if (preg_match($regex_syntax, $global_keystokeep))
+		{
 			preg_match_all($regex_syntax, $global_keystokeep, $keystokeep_block, PREG_SET_ORDER);
-			$keystokeep = preg_split( '/\r\n|\r|\n/', $keystokeep_block[0][1]);
-			}
-			else
-			{
+			$keystokeep = preg_split('/\r\n|\r|\n/', $keystokeep_block[0][1]);
+		}
+		else
+		{
 			$keystokeep = array();
-			}
-
+		}
 
 		// Set FTP credentials, if given.
 		JClientHelper::setCredentialsFromRequest('ftp');
@@ -1140,11 +1130,12 @@ class LocaliseModelTranslation extends JModelAdmin
 				{
 					if (in_array($key, $keystokeep))
 					{
-					$contents_to_add[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
+						$contents_to_add[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
 					}
 					else
 					{
-					$contents_to_delete[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";					}
+						$contents_to_delete[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
+					}
 				}
 			}
 
@@ -1152,22 +1143,22 @@ class LocaliseModelTranslation extends JModelAdmin
 			$contents = implode($contents);
 			$contents = $contents2 . $contents;
 
-			if(!empty($contents_to_add))
+			if (!empty($contents_to_add))
 			{
-			$contents .= "\n[Keys to keep in target]\n\n";
-			$contents .= ";This keys are not present in en-GB language but are required in this language (extra plural cases, custom CAPTCHA translations, etc).\n\n";
-			$contents_to_add = implode($contents_to_add);
-			$contents .= $contents_to_add;
+				$contents .= "\n[Keys to keep in target]\n\n";
+				$contents .= ";This keys are not present in en-GB language but are required in this language
+							(extra plural cases, custom CAPTCHA translations, etc).\n\n";
+				$contents_to_add = implode($contents_to_add);
+				$contents .= $contents_to_add;
 			}
 
-			if(!empty($contents_to_delete))
+			if (!empty($contents_to_delete))
 			{
-			$contents .= "\n[Keys to delete]\n\n";
-			$contents .= ";This keys are not present in en-GB language and are not required in this language.\n\n";
-			$contents_to_delete = implode($contents_to_delete);
-			$contents .= $contents_to_delete;
+				$contents .= "\n[Keys to delete]\n\n";
+				$contents .= ";This keys are not present in en-GB language and are not required in this language.\n\n";
+				$contents_to_delete = implode($contents_to_delete);
+				$contents .= $contents_to_delete;
 			}
-
 		}
 
 		$return = JFile::write($path, $contents);
