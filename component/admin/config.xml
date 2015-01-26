@@ -57,6 +57,14 @@
 			label="COM_LOCALISE_LABEL_SAVE_PERMISSION"
 			description="COM_LOCALISE_LABEL_SAVE_PERMISSION_DESC" />
 		<field
+			name="allowed_groups"
+			type="usergroup"
+			description="COM_LOCALISE_LABEL_ALLOWED_GROUPS_DESC"
+			label="COM_LOCALISE_LABEL_ALLOWED_GROUPS"
+			multiple="true"
+			size="10"
+			required="false" />
+		<field
 			name="installation"
 			type="folderlist"
 			label="COM_LOCALISE_LABEL_INSTALLATION_FOLDER"
@@ -119,6 +127,35 @@
 			class="ltr"
 			label="COM_LOCALISE_LABEL_LICENSE"
 			description="COM_LOCALISE_LABEL_LICENSE_DESC" />
+	</fieldset>
+	<fieldset
+		name="specialkeys"
+		label="COM_LOCALISE_LABEL_SPECIAL_KEYS"
+		description="COM_LOCALISE_LABEL_SPECIAL_KEYS_DESC">
+		<field
+			name="untranslatablekeys"
+			type="textarea"
+			filter="raw"
+			default=""
+			label="COM_LOCALISE_LABEL_STRINGS_SAME"
+			description="COM_LOCALISE_LABEL_STRINGS_SAME_DESC" />
+
+		<field
+			name="blockedkeys"
+			type="textarea"
+			filter="raw"
+			default=""
+			label="COM_LOCALISE_LABEL_STRINGS_TO_PROTECT"
+			description="COM_LOCALISE_LABEL_STRINGS_TO_PROTECT_DESC" />
+
+		<field
+			name="keystokeep"
+			type="textarea"
+			filter="raw"
+			default=""
+			label="COM_LOCALISE_LABEL_KEYS_TO_KEEP"
+			description="COM_LOCALISE_LABEL_KEYS_TO_KEEP_DESC" />
+
 	</fieldset>
 	<fieldset
 		name="permissions"
