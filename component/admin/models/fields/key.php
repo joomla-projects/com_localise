@@ -77,7 +77,7 @@ class JFormFieldKey extends JFormField
 
 		$full_line = htmlspecialchars_decode((string) $this->element['name'] . '="' . $this->value . '"');
 
-		if (in_array($full_line, $blockedkeys))
+		if ($this->element['isblocked'] == '1')
 		{
 			$status = "blocked";
 		}
