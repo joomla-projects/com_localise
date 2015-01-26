@@ -286,49 +286,8 @@ class LocaliseModelTranslation extends JModelAdmin
 					$stream->seek(0);
 					$continue   = true;
 					$lineNumber = 0;
-
-					$params             = JComponentHelper::getParams('com_localise');
+					$params = JComponentHelper::getParams('com_localise');
 					$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
-					$global_untranslatablekeys = $params->get('untranslatablekeys', '');
-					$global_untranslatablekeys = htmlspecialchars_decode($global_untranslatablekeys);
-					$global_blockedkeys = $params->get('blockedkeys', '');
-					$global_blockedkeys = htmlspecialchars_decode($global_blockedkeys);
-					$global_keystokeep = $params->get('keystokeep', '');
-					$global_keystokeep = htmlspecialchars_decode($global_keystokeep);
-
-					$tag = $this->getState('translation.tag');
-					$target_tag = preg_quote($tag, '-');
-					$regex_syntax = '/\[' . $target_tag . '\](.*?)\[\/' . $target_tag . '\]/s';
-
-					if (preg_match($regex_syntax, $global_untranslatablekeys))
-					{
-						preg_match_all($regex_syntax, $global_untranslatablekeys, $untranslatablekeys_block, PREG_SET_ORDER);
-						$untranslatablekeys = preg_split('/\r\n|\r|\n/', $untranslatablekeys_block[0][1]);
-					}
-					else
-					{
-						$untranslatablekeys = array();
-					}
-
-					if (preg_match($regex_syntax, $global_blockedkeys))
-					{
-						preg_match_all($regex_syntax, $global_blockedkeys, $blockedkeys_block, PREG_SET_ORDER);
-						$blockedkeys = preg_split('/\r\n|\r|\n/', $blockedkeys_block[0][1]);
-					}
-					else
-					{
-						$blockedkeys = array();
-					}
-
-					if (preg_match($regex_syntax, $global_keystokeep))
-					{
-						preg_match_all($regex_syntax, $global_keystokeep, $keystokeep_block, PREG_SET_ORDER);
-						$keystokeep = preg_split('/\r\n|\r|\n/', $keystokeep_block[0][1]);
-					}
-					else
-					{
-						$keystokeep = array();
-					}
 
 					while (!$stream->eof())
 					{
