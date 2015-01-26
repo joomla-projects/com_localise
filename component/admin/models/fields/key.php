@@ -58,23 +58,7 @@ class JFormFieldKey extends JFormField
 		// Set the class for the label.
 		$class = !empty($this->descText) ? 'key-label hasTooltip fltrt' : 'key-label fltrt';
 		$is_read_only = '';
-		$params				= JComponentHelper::getParams('com_localise');
-		$global_blockedkeys	= $params->get('blockedkeys', '');
-		$global_blockedkeys	= htmlspecialchars_decode($global_blockedkeys);
-		$input				= JFactory::getApplication()->input;
-		$tag				= $input->getCmd('tag', '');
-		$target_tag			= preg_quote($tag, '-');
-		$regex_syntax		= '/\[' . $target_tag . '\](.*?)\[\/' . $target_tag . '\]/s';
-
-		if (preg_match($regex_syntax, $global_blockedkeys))
-		{
-			preg_match_all($regex_syntax, $global_blockedkeys, $blockedkeys_block, PREG_SET_ORDER);
-			$blockedkeys = preg_split('/\r\n|\r|\n/', $blockedkeys_block[0][1]);
-		}
-		else
-		{
-			$blockedkeys = array();
-		}
+		$blockedstrings = (array) $this->element['blockedstrings'];
 
 		// If a description is specified, use it to build a tooltip.
 		if (!empty($this->descText))
