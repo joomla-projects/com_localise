@@ -165,34 +165,87 @@ class LocaliseModelTranslation extends JModelAdmin
 
 			if (!$this->item)
 			{
-				$path = JFile::exists($this->getState('translation.path'))
-					? $this->getState('translation.path')
-					: $this->getState('translation.refpath');
+				$path                        = JFile::exists($this->getState('translation.path'))
+					                       ? $this->getState('translation.path')
+					                       : $this->getState('translation.refpath');
+				// Get Special keys cases
+				$params                       = JComponentHelper::getParams('com_localise');
+				$global_untranslatablestrings = $params->get('untranslatablestrings', '');
+				$global_untranslatablestrings = htmlspecialchars_decode($global_untranslatablestrings);
+				$global_blockedstrings        = $params->get('blockedstrings', '');
+				$global_blockedstrings        = htmlspecialchars_decode($global_blockedstrings);
+				$global_keystokeep            = $params->get('keystokeep', '');
+				$global_keystokeep            = htmlspecialchars_decode($global_keystokeep);
+				$tag                          = $this->getState('translation.tag');
+				$target_tag                   = preg_quote($tag, '-');
+				$regex_syntax                 = '/\[' . $target_tag . '\](.*?)\[\/' . $target_tag . '\]/s';
+
+				if (preg_match($regex_syntax, $global_untranslatablestrings))
+				{
+					preg_match_all($regex_syntax, $global_untranslatablestrings, $untranslatablestrings_block, PREG_SET_ORDER);
+					$untranslatablestrings = preg_split('/\r\n|\r|\n/', $untranslatablestrings_block[0][1]);
+				}
+				else
+				{
+					$untranslatablestrings = array();
+				}
+
+				if (preg_match($regex_syntax, $global_blockedstrings))
+				{
+					preg_match_all($regex_syntax, $global_blockedstrings, $blockedstrings_block, PREG_SET_ORDER);
+					$blockedstrings = preg_split('/\r\n|\r|\n/', $blockedstrings_block[0][1]);
+				}
+				else
+				{
+					$blockedstrings = array();
+				}
+
+				if (preg_match($regex_syntax, $global_keystokeep))
+				{
+					preg_match_all($regex_syntax, $global_keystokeep, $keystokeep_block, PREG_SET_ORDER);
+					$keystokeep = preg_split('/\r\n|\r|\n/', $keystokeep_block[0][1]);
+				}
+				else
+				{
+					$keystokeep = array();
+				}
+
+				$this->setState('translation.untranslatablestrings', (array) $untranslatablestrings);
+				$this->setState('translation.blockedstrings', (array) $blockedstrings);
+				$this->setState('translation.keystokeep', (array) $keystokeep);
+
+				$untranslatablestrings = (array) $this->getState('translation.untranslatablestrings');
+				$blockedstrings        = (array) $this->getState('translation.blockedstrings');
+				$keystokeep            = (array) $this->getState('translation.keystokeep');
+
 
 				$this->item = new JObject(
 									array
 										(
-										'reference'           => $this->getState('translation.reference'),
-										'bom'                 => 'UTF-8',
-										'svn'                 => '',
-										'version'             => '',
-										'description'         => '',
-										'creationdate'        => '',
-										'author'              => '',
-										'maincopyright'       => '',
-										'additionalcopyright' => array(),
-										'license'             => '',
-										'exists'              => JFile::exists($this->getState('translation.path')),
-										'translated'          => 0,
-										'untranslatable'      => 0,
-										'blocked'             => 0,
-										'unchanged'           => 0,
-										'extra'               => 0,
-										'keytodelete'         => 0,
-										'total'               => 0,
-										'complete'            => false,
-										'source'              => '',
-										'error'               => array()
+										'reference'             => $this->getState('translation.reference'),
+										'bom'                   => 'UTF-8',
+										'svn'                   => '',
+										'version'               => '',
+										'description'           => '',
+										'creationdate'          => '',
+										'author'                => '',
+										'maincopyright'         => '',
+										'additionalcopyright'   => array(),
+										'license'               => '',
+										'exists'                => JFile::exists($this->getState('translation.path')),
+										'translated'            => 0,
+										'untranslatable'        => 0,
+										'blocked'               => 0,
+										'unchanged'             => 0,
+										'extra'                 => 0,
+										'keytodelete'           => 0,
+										'total'                 => 0,
+										'complete'              => false,
+										'source'                => '',
+										'untranslatablestrings' => (array) $untranslatablestrings,
+										'blockedstrings'        => (array) $blockedstrings,
+										'keystokeep'            => (array) $keystokeep,
+										'error'                 => array()
 										)
 				);
 
