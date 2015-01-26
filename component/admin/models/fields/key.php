@@ -57,6 +57,24 @@ class JFormFieldKey extends JFormField
 	{
 		// Set the class for the label.
 		$class = !empty($this->descText) ? 'key-label hasTooltip fltrt' : 'key-label fltrt';
+		$is_read_only = '';
+		$params				= JComponentHelper::getParams('com_localise');
+		$global_blockedkeys	= $params->get('blockedkeys', '');
+		$global_blockedkeys	= htmlspecialchars_decode($global_blockedkeys);
+		$input				= JFactory::getApplication()->input;
+		$tag				= $input->getCmd('tag', '');
+		$target_tag			= preg_quote($tag, '-');
+		$regex_syntax		= '/\[' . $target_tag . '\](.*?)\[\/' . $target_tag . '\]/s';
+
+		if (preg_match($regex_syntax, $global_blockedkeys))
+		{
+			preg_match_all($regex_syntax, $global_blockedkeys, $blockedkeys_block, PREG_SET_ORDER);
+			$blockedkeys = preg_split('/\r\n|\r|\n/', $blockedkeys_block[0][1]);
+		}
+		else
+		{
+			$blockedkeys = array();
+		}
 
 		// If a description is specified, use it to build a tooltip.
 		if (!empty($this->descText))
@@ -72,7 +90,17 @@ class JFormFieldKey extends JFormField
 		JText::script('COM_LOCALISE_LABEL_TRANSLATION_GOOGLE_ERROR');
 		$label .= $this->element['label'] . 'br />' . $this->element['description'];
 		$label .= '</label>';
-		$status = (string) $this->element['status'];
+
+		$full_line = htmlspecialchars_decode((string) $this->element['name'] . '="' . $this->value . '"');
+
+		if (in_array($full_line, $blockedkeys))
+		{
+			$status = "blocked";
+		}
+		else
+		{
+			$status = (string) $this->element['status'];
+		}
 
 		if ($status == 'extra')
 		{
@@ -83,6 +111,44 @@ class JFormFieldKey extends JFormField
 			$onclick2 = '';
 			$button2  = '<span style="width:5%;">'
 						. JHtml::_('image', 'com_localise/icon-16-bing-gray.png', '', array('class' => 'pointer'), true) . '</span>';
+		}
+		elseif ($status == 'blocked')
+		{
+			$is_read_only = ' readonly="readonly" ';
+			$onclick = "javascript:document.id(
+						'" . $this->id . "'
+						)
+						.set(
+						'value','" . addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8')) . "'
+						);
+						document.id('" . $this->id . "').set('class','width-45 " . $status . "');";
+			$button  = '<i class="icon-reset hasTooltip return pointer" title="' . JText::_('COM_LOCALISE_TOOLTIP_TRANSLATION_INSERT')
+						. '" onclick="' . $onclick . '"></i>';
+			/* $onclick2 = "javascript:if (typeof(google) !== 'undefined') {
+			var translation='" . addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8')) . "';
+				translation=translation.replace('%s','___s');translation=translation.replace('%d','___d');
+				translation=translation.replace(/%([0-9]+)\\\$s/,'___\$1');google.language.translate(translation,
+				Localise.language_src, Localise.language_dest, function(result) {if (result.translation) {
+			  translation = result.translation;
+			  translation = translation.replace('___s','%s');
+			  translation = translation.replace('___d','%d');
+			  translation = translation.replace(/___([0-9]+)/,'%$1\$s');
+			  document.id('" . $this->id . "').set('value',translation);
+			  if (document.id('" . $this->id . "').get('value')=='" . addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8'))
+				. "') document.id('" . $this->id . "').set('class','width-45 blocked');
+				else document.id('" . $this->id . "').set('class','width-45 blocked');}
+				else alert(Joomla.JText._('COM_LOCALISE_LABEL_TRANSLATION_GOOGLE_ERROR'));});}
+				else alert(Joomla.JText._('COM_LOCALISE_LABEL_TRANSLATION_GOOGLE_ERROR'));";
+			  $button2 = '<span style="width:5%;">' . JHtml::_('image', 'com_localise/icon-16-google.png', '',
+				array('title' => JText::_('COM_LOCALISE_TOOLTIP_TRANSLATION_GOOGLE'), 'class' => 'hasTooltip pointer',
+				'onclick' => $onclick2), true) . '</span>';
+			  */
+			$token    = JSession::getFormToken();
+			$onclick2 = "javascript:AzureTranslator(this, [], 0, '$token');";
+			$button2  = '<input type="hidden" id="' . $this->id . 'text" value=\''
+						. addslashes(htmlspecialchars($this->element['description'], ENT_COMPAT, 'UTF-8')) . '\' />';
+			$button2 .= '<i class="icon-translate-bing hasTooltip translate pointer" title="'
+						. JText::_('COM_LOCALISE_TOOLTIP_TRANSLATION_AZURE') . '" onclick="' . $onclick2 . '" rel="' . $this->id . '"></i>';
 		}
 		else
 		{
@@ -123,13 +189,23 @@ class JFormFieldKey extends JFormField
 						. JText::_('COM_LOCALISE_TOOLTIP_TRANSLATION_AZURE') . '" onclick="' . $onclick2 . '" rel="' . $this->id . '"></i>';
 		}
 
+		if ($status == 'blocked')
+		{
+			$final_status = 'blocked';
+		}
+		else
+		{
+			$final_status = ($this->value == '' ? 'untranslated' : ($this->value == $this->element['description'] ? $status : 'translated'));
+		}
+
 		$onkeyup = "javascript:";
 		$onkeyup .= "if (this.get('value')=='') {this.set('class','width-45 untranslated');}
 					else {if (this.get('value')=='" . addslashes(htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'))
 					. "') this.set('class','width-45 " . $status . "');
-					" . ($status == 'extra' ? "else this.set('class','width-45 extra');}" : "else this.set('class','width-45 translated');}");
-		$input = '<textarea name="' . $this->name . '" id="' . $this->id . '" onfocus="this.select()" class="width-45 ' . ($this->value == '' ?
-					'untranslated' : ($this->value == $this->element['description'] ? $status : 'translated')) . '" onkeyup="'
+					" . (($status == 'extra' || $status == 'keytodelete') ? "else this.set('class','width-45 " . $status . "');}" :
+					"else this.set('class','width-45 translated');}");
+		$input = '<textarea name="' . $this->name . '" ' . $is_read_only . 'id="' . $this->id . '" onfocus="this.select()"
+					class="width-45 ' . $final_status . '" onkeyup="'
 					. $onkeyup . '">' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '</textarea>';
 
 		return $button . $button2 . $input;

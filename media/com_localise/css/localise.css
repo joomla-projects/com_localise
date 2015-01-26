@@ -5,8 +5,11 @@
 	margin-right: 5px;
 }
 #localise-translation-form .translated,
+#localise-translation-form .untranslatable,
+#localise-translation-form .blocked,
 #localise-translation-form .untranslated,
 #localise-translation-form .unchanged,
+#localise-translation-form .keytodelete,
 #localise-translation-form .extra {
 	padding: 2px;
 	float: left;
@@ -15,14 +18,29 @@
 #localise-translation-form .translated {
 	background-color: #CCFFCC;
 }
+#localise-translation-form .untranslatable {
+	background-color:#EEFF7A;
+}
+#localise-translation-form .blocked {
+	background-color:lightgray;
+}
 #localise-translation-form .untranslated {
 	background-color:#FFCCCC;
+}
+#localise-translation-form .untranslatable {
+	background-color:#EEFF7A;
+}
+#localise-translation-form .blocked {
+	background-color:lightgray;
 }
 #localise-translation-form .unchanged {
 	background-color:#FFDDBB;
 }
 #localise-translation-form .extra {
 	background-color:#CCCCFF;
+}
+#localise-translation-form .keytodelete {
+	background-color:red;
 }
 #localise-translation-form .width-50 {
 	width: 50%;
@@ -162,7 +180,7 @@
 }
 .icon-16-default:before {
 	content: "B";
-	color: orange;
+	color: #FFA07A;
 }
 .icon-16-component:before,
 .iconlist-16-component:before {
@@ -210,6 +228,10 @@ div.filter-select select {
 #adminForm .notinreference {
 	background-color: #aaddff;
 }
+#adminForm .keytodelete td,
+#adminForm .keytodelete {
+	background-color: red;
+}
 #adminForm .unchanged td,
 #adminForm .unchanged {
 	background-color: #ffddaa;
@@ -217,6 +239,14 @@ div.filter-select select {
 #adminForm .translated td,
 #adminForm .translated {
 	background-color: #ccffcc;
+}
+#adminForm .untranslatable td,
+#adminForm .untranslatable {
+	background-color: #EEFF7A;
+}
+#adminForm .blocked td,
+#adminForm .blocked {
+	background-color: lightgray;
 }
 #adminForm .error td,
 #adminForm .error {
