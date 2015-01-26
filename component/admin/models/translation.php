@@ -487,7 +487,7 @@ class LocaliseModelTranslation extends JModelAdmin
 
 							if (empty($refsections['keys']) || !array_key_exists($key, $refsections['keys']))
 							{
-								if (in_array($full_line, $blockedkeys))
+								if (in_array($full_line, $blockedstrings))
 								{
 									$this->item->blocked++;
 								}
