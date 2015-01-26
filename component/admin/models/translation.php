@@ -869,12 +869,12 @@ class LocaliseModelTranslation extends JModelAdmin
 								$field->addAttribute('name', $key);
 								$field->addAttribute('type', 'key');
 								$field->addAttribute('filter', 'raw');
-
 							}
 						}
 					}
 				}
 			}
+
 			$form->load($addform, false);
 		}
 
@@ -937,7 +937,7 @@ class LocaliseModelTranslation extends JModelAdmin
 		$global_keystokeep = $params->get('keystokeep', '');
 		$global_keystokeep = htmlspecialchars_decode($global_keystokeep);
 		$tag = $this->getState('translation.tag');
-		$target_tag = preg_quote ($tag, '-');
+		$target_tag = preg_quote($tag, '-');
 		$regex_syntax = '/\[' . $target_tag . '\](.*?)\[\/' . $target_tag . '\]/s';
 
 		if (preg_match($regex_syntax, $global_keystokeep))
@@ -1130,11 +1130,12 @@ class LocaliseModelTranslation extends JModelAdmin
 				{
 					if (in_array($key, $keystokeep))
 					{
-					$contents_to_add[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
+						$contents_to_add[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
 					}
 					else
 					{
-					$contents_to_delete[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";					}
+						$contents_to_delete[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
+					}
 				}
 			}
 
@@ -1142,7 +1143,7 @@ class LocaliseModelTranslation extends JModelAdmin
 			$contents = implode($contents);
 			$contents = $contents2 . $contents;
 
-			if(!empty($contents_to_add))
+			if (!empty($contents_to_add))
 			{
 				$contents .= "\n[Keys to keep in target]\n\n";
 				$contents .= ";This keys are not present in en-GB language but are required in this language
@@ -1151,7 +1152,7 @@ class LocaliseModelTranslation extends JModelAdmin
 				$contents .= $contents_to_add;
 			}
 
-			if(!empty($contents_to_delete))
+			if (!empty($contents_to_delete))
 			{
 				$contents .= "\n[Keys to delete]\n\n";
 				$contents .= ";This keys are not present in en-GB language and are not required in this language.\n\n";
