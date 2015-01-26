@@ -133,7 +133,7 @@
 		label="COM_LOCALISE_LABEL_SPECIAL_KEYS"
 		description="COM_LOCALISE_LABEL_SPECIAL_KEYS_DESC">
 		<field
-			name="untranslatablekeys"
+			name="untranslatablestrings"
 			type="textarea"
 			filter="raw"
 			default=""
@@ -141,7 +141,7 @@
 			description="COM_LOCALISE_LABEL_STRINGS_SAME_DESC" />
 
 		<field
-			name="blockedkeys"
+			name="blockedstrings"
 			type="textarea"
 			filter="raw"
 			default=""
