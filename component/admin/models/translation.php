@@ -680,6 +680,7 @@ class LocaliseModelTranslation extends JModelAdmin
 				$stream->open($refpath);
 				$header     = true;
 				$lineNumber = 0;
+				$full_line  = '';
 
 				while (!$stream->eof())
 				{
