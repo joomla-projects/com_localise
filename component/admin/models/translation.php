@@ -214,11 +214,6 @@ class LocaliseModelTranslation extends JModelAdmin
 				$this->setState('translation.blockedstrings', (array) $blockedstrings);
 				$this->setState('translation.keystokeep', (array) $keystokeep);
 
-				$untranslatablestrings = (array) $this->getState('translation.untranslatablestrings');
-				$blockedstrings        = (array) $this->getState('translation.blockedstrings');
-				$keystokeep            = (array) $this->getState('translation.keystokeep');
-
-
 				$this->item = new JObject(
 									array
 										(
