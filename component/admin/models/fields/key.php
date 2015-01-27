@@ -58,7 +58,6 @@ class JFormFieldKey extends JFormField
 		// Set the class for the label.
 		$class = !empty($this->descText) ? 'key-label hasTooltip fltrt' : 'key-label fltrt';
 		$is_read_only = '';
-		$blockedstrings = (array) $this->element['blockedstrings'];
 
 		// If a description is specified, use it to build a tooltip.
 		if (!empty($this->descText))
