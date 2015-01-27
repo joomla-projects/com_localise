@@ -49,6 +49,7 @@
 			<folder>controllers</folder>
 			<folder>help</folder>
 			<folder>helpers</folder>
+			<folder>lang</folder>
 			<folder>language</folder>
 			<folder>layouts</folder>
 			<folder>models</folder>
