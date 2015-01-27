@@ -62,7 +62,7 @@ CodeMirror.defineMode("parseini", function() {
 				}
 				else
 				{
-					checkString = string.replace(/"_QQ_"/g, '"');
+					checkString = string.replace(/"_QQ_"/g, '');
 					count = checkString.match(/"/g).length;
 				}
 
