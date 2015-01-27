@@ -122,16 +122,16 @@ class LocaliseLangFile
 	 */
 	public function check()
 	{
-		$file = $this->getLines();
+		$lines = $this->getLines();
 
-		if (!$file)
+		if (!$lines)
 		{
 			return false;
 		}
 
 		$errors = 0;
 
-		foreach ($file as $lineNumber => $line)
+		foreach ($lines as $lineNumber => $line)
 		{
 			if (!$this->checkLine($lineNumber, $line))
 			{
@@ -416,7 +416,7 @@ class LocaliseLangFile
 	 */
 	protected function loadLines()
 	{
-		if (file_exists($this->filePath))
+		if ($this->isParseable())
 		{
 			$this->lines = new SplFileObject($this->filePath);
 		}
