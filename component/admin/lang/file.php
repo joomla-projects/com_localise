@@ -42,11 +42,11 @@ class LocaliseLangFile
 	);
 
 	/**
-	 * Lines of the file
+	 * Instnace of the file to read operations
 	 *
 	 * @var  mixed  SplFileObject if fine | null otherwise
 	 */
-	protected $lines;
+	protected $file;
 
 	/**
 	 * Path to the language file
@@ -122,22 +122,24 @@ class LocaliseLangFile
 	 */
 	public function check()
 	{
-		$lines = $this->getLines();
+		$file = $this->getFile();
 
-		if (!($lines instanceof SplFileObject))
+		if (!($file instanceof SplFileObject))
 		{
 			return false;
 		}
 
 		$errors = 0;
 
-		foreach ($lines as $lineNumber => $line)
+		foreach ($file as $lineNumber => $line)
 		{
 			if (!$this->checkLine($lineNumber, $line))
 			{
 				++$errors;
 			}
 		}
+
+		$this->destroyFile();
 
 		return $errors ? false : true;
 	}
@@ -236,6 +238,18 @@ class LocaliseLangFile
 	}
 
 	/**
+	 * To avoid unclosed files ensure that the file is destroyed
+	 *
+	 * @return  LocaliseLangFile  Self instance for chaining
+	 */
+	public function destroyFile()
+	{
+		$this->file = null;
+
+		return $this;
+	}
+
+	/**
 	 * Get the blackList
 	 *
 	 * @return  array
@@ -314,17 +328,18 @@ class LocaliseLangFile
 
 	/**
 	 * Get an instance of SplFileObject
+	 * WARNING: Remember to use destroyFile() to avoid file collissions
 	 *
 	 * @return  mixed  SplFileObject on success | null otherwise
 	 */
-	public function getLines()
+	public function getFile()
 	{
-		if (null === $this->lines)
+		if (null === $this->file)
 		{
-			$this->loadLines();
+			$this->loadFile();
 		}
 
-		return $this->lines;
+		return $this->file;
 	}
 
 	/**
@@ -410,15 +425,15 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Method to load the file contents
+	 * Method to load an instance of SplFileObject to read the file
 	 *
 	 * @return  LocaliseLangFile  Self instance for chaining
 	 */
-	protected function loadLines()
+	protected function loadFile()
 	{
 		if ($this->isParseable())
 		{
-			$this->lines = new SplFileObject($this->filePath);
+			$this->file = new SplFileObject($this->filePath);
 		}
 
 		return $this;

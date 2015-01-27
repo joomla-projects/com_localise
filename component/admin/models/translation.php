@@ -215,11 +215,11 @@ class LocaliseModelTranslation extends JModelAdmin
 					$params             = JComponentHelper::getParams('com_localise');
 					$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
 
-					$lines = $langFile->getLines();
+					$file = $langFile->getFile();
 
-					if ($lines)
+					if ($file)
 					{
-						foreach ($lines as $lineNumber => $line)
+						foreach ($file as $lineNumber => $line)
 						{
 							if (!strlen(trim($line)))
 							{
@@ -359,6 +359,8 @@ class LocaliseModelTranslation extends JModelAdmin
 					{
 						$this->item->additionalcopyright[] = $params->get('additionalcopyright');
 					}
+
+					$langFile->destroyFile();
 
 					if (!$langFile->check())
 					{
