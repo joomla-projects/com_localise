@@ -629,7 +629,6 @@ class LocaliseModelTranslation extends JModelAdmin
 		$origin                = LocaliseHelper::getOrigin($filename, $client);
 		$app                   = JFactory::getApplication();
 		$false                 = false;
-		$isTranslationsView    = JFactory::getApplication()->input->get('view') == 'translations';
 		$untranslatablestrings = (array) $this->getState('translation.untranslatablestrings');
 		$blockedstrings        = (array) $this->getState('translation.blockedstrings');
 		$keystokeep            = (array) $this->getState('translation.keystokeep');
