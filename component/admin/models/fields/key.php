@@ -74,8 +74,6 @@ class JFormFieldKey extends JFormField
 		$label .= $this->element['label'] . 'br />' . $this->element['description'];
 		$label .= '</label>';
 
-		$full_line = htmlspecialchars_decode((string) $this->element['name'] . '="' . $this->value . '"');
-
 		if ($this->element['isblocked'] == '1')
 		{
 			$status = "blocked";
