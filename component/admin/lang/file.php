@@ -18,21 +18,21 @@ defined('_JEXEC') or die;
 class LocaliseLangFile
 {
 	/**
-	 * Word blacklist used to validate lines
+	 * Word blacklist used to validate lines.
 	 *
 	 * @var  mixed
 	 */
 	protected $blackList;
 
 	/**
-	 * Contents of the file
+	 * Contents of the file.
 	 *
 	 * @var  string
 	 */
 	protected $contents;
 
 	/**
-	 * Errors found
+	 * Errors found.
 	 *
 	 * @var  array
 	 */
@@ -42,35 +42,35 @@ class LocaliseLangFile
 	);
 
 	/**
-	 * Instance of the file to read operations
+	 * Instance of the file to read operations.
 	 *
 	 * @var  mixed  SplFileObject if fine | null otherwise
 	 */
 	protected $file;
 
 	/**
-	 * Path to the language file
+	 * Path to the language file.
 	 *
 	 * @var  string
 	 */
 	protected $filePath;
 
 	/**
-	 * File language strings
+	 * File language strings.
 	 *
 	 * @var  mixed  Array on parse success | FALSE on error
 	 */
 	protected $strings;
 
 	/**
-	 * Cached instances
+	 * Cached instances.
 	 *
 	 * @var  array
 	 */
 	protected static $instances = array();
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 *
 	 * @param   string  $filePath  Path to the language file
 	 *
@@ -82,7 +82,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Add a global error
+	 * Add a global error.
 	 *
 	 * @param   string  $errorMessage  Description of the error
 	 *
@@ -96,7 +96,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Add error found in a line
+	 * Add error found in a line.
 	 *
 	 * @param   integer  $lineNumber    Line failing
 	 * @param   string   $errorMessage  Description of the error
@@ -116,7 +116,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Check that file has no errors
+	 * Check that file has no errors.
 	 *
 	 * @return  boolean
 	 */
@@ -145,7 +145,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Check the format of one line of the file
+	 * Check the format of one line of the file.
 	 *
 	 * @param   integer  $lineNumber  Number of the line being validated
 	 * @param   string   $line        Line contents
@@ -238,7 +238,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * To avoid unclosed files ensure that the file is destroyed
+	 * To avoid unclosed files ensure that the file is destroyed.
 	 *
 	 * @return  LocaliseLangFile  Self instance for chaining
 	 */
@@ -250,7 +250,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Get the blackList
+	 * Get the blackList.
 	 *
 	 * @return  array
 	 */
@@ -265,7 +265,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Get the contents of the file
+	 * Get the contents of the file.
 	 *
 	 * @return  mixed  String on success | FALSE otherwise
 	 */
@@ -280,7 +280,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Get last error encountered
+	 * Get last error encountered.
 	 *
 	 * @return  string
 	 */
@@ -290,7 +290,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Get all the errors encountered
+	 * Get all the errors encountered.
 	 *
 	 * @return  array
 	 */
@@ -300,7 +300,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Get the lines errors
+	 * Get the lines errors.
 	 *
 	 * @return  array
 	 */
@@ -310,7 +310,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Create and return a cached instance
+	 * Create and return a cached instance.
 	 *
 	 * @param   string  $filePath  Path to the language file
 	 *
@@ -327,7 +327,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Get an instance of SplFileObject
+	 * Get an instance of SplFileObject.
 	 * WARNING: Remember to use destroyFile() to avoid file collissions
 	 *
 	 * @return  mixed  SplFileObject on success | null otherwise
@@ -343,7 +343,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Get a language string
+	 * Get a language string.
 	 *
 	 * @param   string  $key  Key of the language string
 	 *
@@ -362,22 +362,24 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Get the file language strings
+	 * Get the file language strings.
+	 *
+	 * @param   array  $options  Parsing options
 	 *
 	 * @return  mixed  Array on success | FALSE otherwise
 	 */
-	public function getStrings()
+	public function getStrings($options = array('process_sections' => false, 'scanner_mode' => INI_SCANNER_RAW))
 	{
 		if (null === $this->strings)
 		{
-			$this->loadStrings();
+			$this->loadStrings($options);
 		}
 
 		return $this->strings;
 	}
 
 	/**
-	 * Fast check to see if the file is parseable with parse_ini_string
+	 * Fast check to see if the file is parseable with parse_ini_string.
 	 *
 	 * @return  boolean
 	 */
@@ -394,7 +396,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Load the file contents with file_get_contents
+	 * Load the file contents with file_get_contents.
 	 *
 	 * @return  LocaliseLangFile  Self instance for chaining
 	 */
@@ -413,7 +415,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Load the default blacklist from Joomla
+	 * Load the default blacklist from Joomla.
 	 *
 	 * @return  LocaliseLangFile  Self instance for chaining
 	 */
@@ -425,7 +427,7 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Method to load an instance of SplFileObject to read the file
+	 * Method to load an instance of SplFileObject to read the file.
 	 *
 	 * @return  LocaliseLangFile  Self instance for chaining
 	 */
@@ -440,11 +442,13 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Load the file language strings
+	 * Load the file language strings.
+	 *
+	 * @param   array  $options  Parsing options
 	 *
 	 * @return  LocaliseLangFile  Self instance for chaining
 	 */
-	protected function loadStrings()
+	protected function loadStrings($options = array('process_sections' => false, 'scanner_mode' => INI_SCANNER_RAW))
 	{
 		$this->strings = false;
 
@@ -455,10 +459,11 @@ class LocaliseLangFile
 			return $this;
 		}
 
-		$content = str_replace('_QQ_', '"\""', $content);
+		$processSections = isset($options['process_sections']) ? $options['process_sections'] : false;
+		$scannerMode     = isset($options['scanner_mode']) ? $options['scanner_mode'] : INI_SCANNER_RAW;
 
 		ini_set('track_errors', '1');
-		$this->strings = @parse_ini_string($content);
+		$this->strings = @parse_ini_string($content, $processSections, $scannerMode);
 
 		if (false === $this->strings)
 		{

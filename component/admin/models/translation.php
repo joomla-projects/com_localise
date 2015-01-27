@@ -643,6 +643,7 @@ class LocaliseModelTranslation extends JModelAdmin
 						$field      = $fieldset->addChild('field');
 						$string     = $refsections['keys'][$key];
 						$translated = isset($sections['keys'][$key]);
+
 						$modified   = $translated && $sections['keys'][$key] != $refsections['keys'][$key];
 						$status     = $modified
 							? 'translated'
@@ -936,13 +937,15 @@ class LocaliseModelTranslation extends JModelAdmin
 
 			while (!$stream->eof())
 			{
+				$line = $stream->gets();
+
 				if (preg_match('/^([A-Z][A-Z0-9_\-\.]*)\s*=/', $line, $matches))
 				{
 					$key = $matches[1];
 
 					if (isset($strings[$key]))
 					{
-						$contents[] = $key . '="' . str_replace('"', '"_QQ_"', $strings[$key]) . "\"\n";
+						$contents[] = $key . '="' . $strings[$key] . "\"\n";
 						unset($strings[$key]);
 					}
 				}
@@ -950,8 +953,6 @@ class LocaliseModelTranslation extends JModelAdmin
 				{
 					$contents[] = $line;
 				}
-
-				$line = $stream->gets();
 			}
 
 			if (!empty($strings))
@@ -960,7 +961,7 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				foreach ($strings as $key => $string)
 				{
-					$contents[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
+					$contents[] = $key . '="' . $string . "\"\n";
 				}
 			}
 
