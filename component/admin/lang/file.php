@@ -42,7 +42,7 @@ class LocaliseLangFile
 	);
 
 	/**
-	 * Instnace of the file to read operations
+	 * Instance of the file to read operations
 	 *
 	 * @var  mixed  SplFileObject if fine | null otherwise
 	 */
