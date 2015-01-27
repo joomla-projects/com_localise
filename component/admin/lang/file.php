@@ -188,7 +188,7 @@ class LocaliseLangFile
 
 		$string = $lineParts[1];
 
-		if ($string[0] != '"' || $string[strlen($string) - 1] != '"')
+		if (strlen($string) < 2 || $string[0] != '"' || $string[strlen($string) - 1] != '"')
 		{
 			$this->addLineError($realNumber, 'Incorrect format');
 
