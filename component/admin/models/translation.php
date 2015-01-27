@@ -863,6 +863,15 @@ class LocaliseModelTranslation extends JModelAdmin
 								$field->addAttribute('name', $key);
 								$field->addAttribute('type', 'key');
 								$field->addAttribute('filter', 'raw');
+
+								if (in_array($full_line, $blockedstrings))
+								{
+									$field->addAttribute('isblocked', '1');
+								}
+								else
+								{
+									$field->addAttribute('isblocked', '0');
+								}
 							}
 						}
 					}
