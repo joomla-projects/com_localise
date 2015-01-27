@@ -52,18 +52,34 @@ CodeMirror.defineMode("parseini", function() {
 			}
 			else if (ch === '"' && state.position === "string")
 			{
-				state.position = "string";
-				stream.skipTo('"'); stream.eat('"');
-				return 'string';
-			}
-			else if (ch === '_' && state.position === "string")
-			{
-				if(stream.match('QQ_'))
+				var count,
+					string = stream.string.substring(stream.start, stream.string.length),
+					checkString = string.replace(/"_QQ_"/g, 'QQQQQ');
+
+				if (checkString.charAt(0) !== '"' || checkString.charAt(checkString.length - 1) !== '"')
 				{
-					state.position = "string";
-					return 'constant';
+					count = 1;
 				}
-				return "error";
+				else
+				{
+					checkString = string.replace(/"_QQ_"/g, '"');
+					count = checkString.match(/"/g).length;
+				}
+
+				// Move until the last string quotes
+				while(stream.skipTo('"'))
+				{
+					stream.eat('"');
+				}
+
+				if (count % 2)
+				{
+					return 'error';
+				}
+
+				state.position = "string";
+
+				return 'string';
 			}
 			else
 			{
