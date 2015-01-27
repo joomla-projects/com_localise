@@ -15,6 +15,9 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_localise'))
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
+// Register component prefix
+JLoader::registerPrefix('Localise', __DIR__);
+
 // Include helper files
 require_once JPATH_COMPONENT . '/helpers/defines.php';
 require_once JPATH_COMPONENT . '/helpers/localise.php';

@@ -672,74 +672,61 @@ abstract class LocaliseHelper
 	{
 		static $sections = array();
 
+		$model = JModelLegacy::getInstance('Translation', 'LocaliseModel');
+
 		if (!array_key_exists($filename, $sections))
 		{
-			if (file_exists($filename))
+			$langFile = LocaliseLangFile::getInstance($filename);
+
+			$strings = $langFile->getStrings();
+
+			// Errors encountered
+			if (false === $strings)
 			{
-				$error = '';
+				$error = $langFile->getLastError();
 
-				if (!defined('_QQ_'))
+				$sections[$filename] = array('sections' => array(), 'keys' => array(), 'error' => $error);
+
+				if ($error)
 				{
-					define('_QQ_', '"');
+					$model->setError($error);
 				}
 
-				ini_set('track_errors', '1');
+				return $sections[$filename];
+			}
 
-				$contents = file_get_contents($filename);
-				$contents = str_replace('_QQ_', '"\""', $contents);
-				$strings  = @parse_ini_string($contents, true);
+			$default = array();
 
-				if (!empty($php_errormsg))
+			foreach ($strings as $key => $value)
+			{
+				if (is_string($value))
 				{
-					$error = "Error parsing " . basename($filename) . ": $php_errormsg";
-				}
+					$default[$key] = $value;
 
-				ini_restore('track_errors');
-
-				if ($strings !== false)
-				{
-					$default = array();
-
-					foreach ($strings as $key => $value)
-					{
-						if (is_string($value))
-						{
-							$default[$key] = $value;
-
-							unset($strings[$key]);
-						}
-						else
-						{
-							break;
-						}
-					}
-
-					if (!empty($default))
-					{
-						$strings = array_merge(array('Default' => $default), $strings);
-					}
-
-					$keys = array();
-
-					foreach ($strings as $section => $value)
-					{
-						foreach ($value as $key => $string)
-						{
-							$keys[$key] = $strings[$section][$key];
-						}
-					}
+					unset($strings[$key]);
 				}
 				else
 				{
-					$keys = false;
+					break;
 				}
+			}
 
-				$sections[$filename] = array('sections' => $strings, 'keys' => $keys, 'error' => $error);
-			}
-			else
+			if (!empty($default))
 			{
-				$sections[$filename] = array('sections' => array(), 'keys' => array(), 'error' => '');
+				$strings = array_merge(array('Default' => $default), $strings);
 			}
+
+			$keys = array();
+
+			foreach ($strings as $section => $value)
+			{
+				foreach ($value as $key => $string)
+				{
+					$keys[$key] = $strings[$section][$key];
+				}
+			}
+
+			$sections[$filename] = array('sections' => $strings, 'keys' => $keys, 'error' => '');
 		}
 
 		if (!empty($sections[$filename]['error']))

@@ -208,160 +208,135 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				if (JFile::exists($path))
 				{
-					$this->item->source = file_get_contents($path);
-					$stream             = new JStream;
-					$stream->open($path);
-					$begin = $stream->read(4);
-					$bom   = strtolower(bin2hex($begin));
+					$langFile = LocaliseLangFile::getInstance($path);
 
-					if ($bom == '0000feff')
-					{
-						$this->item->bom = 'UTF-32 BE';
-					}
-					else
-					{
-						if ($bom == 'feff0000')
-						{
-							$this->item->bom = 'UTF-32 LE';
-						}
-						else
-						{
-							if (substr($bom, 0, 4) == 'feff')
-							{
-								$this->item->bom = 'UTF-16 BE';
-							}
-							else
-							{
-								if (substr($bom, 0, 4) == 'fffe')
-								{
-									$this->item->bom = 'UTF-16 LE';
-								}
-							}
-						}
-					}
-
-					$stream->seek(0);
-					$continue   = true;
-					$lineNumber = 0;
+					$this->item->source = $langFile->getContents();
 
 					$params             = JComponentHelper::getParams('com_localise');
 					$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
 
-					while (!$stream->eof())
+					$lines = $langFile->getLines();
+
+					if ($lines)
 					{
-						$line = $stream->gets();
-						$lineNumber++;
-
-						if ($line[0] == '#')
+						foreach ($lines as $lineNumber => $line)
 						{
-							$this->item->error[] = $lineNumber;
-						}
-						elseif ($line[0] == ';')
-						{
-							if (preg_match('/^(;).*(\$Id.*\$)/', $line, $matches))
+							if (!strlen(trim($line)))
 							{
-								$this->item->svn = $matches[2];
+								continue;
 							}
-							elseif (preg_match('/(;)\s*@?(\pL+):?.*/', $line, $matches))
+
+							if ($line[0] == '#')
 							{
-								switch (strtolower($matches[2]))
+								$this->item->error[] = $lineNumber + 1;
+							}
+							elseif ($line[0] == ';')
+							{
+								if (preg_match('/^(;).*(\$Id.*\$)/', $line, $matches))
 								{
-									case 'note':
-										preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
-										$this->item->complete = $this->item->complete || strtolower($matches2[3]) == 'complete';
-										break;
-									case 'version':
-										preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
-										$this->item->version = $matches2[3];
-										break;
-									case 'desc':
-									case 'description':
-										preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
-										$this->item->description = $matches2[3];
-										break;
-									case 'date':
-										preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
-										$this->item->creationdate = $matches2[3];
-										break;
-									case 'author':
-										if ($params->get('author') && !$isTranslationsView)
-										{
-											$this->item->author = $params->get('author');
-										}
-										else
-										{
+									$this->item->svn = $matches[2];
+								}
+								elseif (preg_match('/(;)\s*@?(\pL+):?.*/', $line, $matches))
+								{
+									switch (strtolower($matches[2]))
+									{
+										case 'note':
 											preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
-											$this->item->author = $matches2[3];
-										}
-										break;
-									case 'copyright':
-										preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
-
-										if (empty($this->item->maincopyright))
-										{
-											if ($params->get('copyright') && !$isTranslationsView)
-											{
-												$this->item->maincopyright = $params->get('copyright');
-											}
-											else
-											{
-												$this->item->maincopyright = $matches2[3];
-											}
-										}
-
-										if (empty($this->item->additionalcopyright))
-										{
-											if ($params->get('additionalcopyright') && !$isTranslationsView)
-											{
-												$this->item->additionalcopyright[] = $params->get('additionalcopyright');
-											}
-											else
-											{
-												$this->item->additionalcopyright[] = $matches2[3];
-											}
-										}
-										break;
-									case 'license':
-										if ($params->get('license') && !$isTranslationsView)
-										{
-											$this->item->license = $params->get('license');
-										}
-										else
-										{
+											$this->item->complete = $this->item->complete || strtolower($matches2[3]) == 'complete';
+											break;
+										case 'version':
 											preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
-											$this->item->license = $matches2[3];
-										}
-										break;
-									case 'package':
-										preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
-										$this->item->package = $matches2[3];
-										break;
-									case 'subpackage':
-										preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
-										$this->item->subpackage = $matches2[3];
-										break;
-									case 'link':
-										break;
-									default:
-										if (empty($this->item->author))
-										{
+											$this->item->version = $matches2[3];
+											break;
+										case 'desc':
+										case 'description':
+											preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+											$this->item->description = $matches2[3];
+											break;
+										case 'date':
+											preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+											$this->item->creationdate = $matches2[3];
+											break;
+										case 'author':
 											if ($params->get('author') && !$isTranslationsView)
 											{
 												$this->item->author = $params->get('author');
 											}
 											else
 											{
-												preg_match('/(;)\s*(.*)/', $line, $matches2);
-												$this->item->author = $matches2[2];
+												preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+												$this->item->author = $matches2[3];
 											}
-										}
-										break;
+											break;
+										case 'copyright':
+											preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+
+											if (empty($this->item->maincopyright))
+											{
+												if ($params->get('copyright') && !$isTranslationsView)
+												{
+													$this->item->maincopyright = $params->get('copyright');
+												}
+												else
+												{
+													$this->item->maincopyright = $matches2[3];
+												}
+											}
+
+											if (empty($this->item->additionalcopyright))
+											{
+												if ($params->get('additionalcopyright') && !$isTranslationsView)
+												{
+													$this->item->additionalcopyright[] = $params->get('additionalcopyright');
+												}
+												else
+												{
+													$this->item->additionalcopyright[] = $matches2[3];
+												}
+											}
+											break;
+										case 'license':
+											if ($params->get('license') && !$isTranslationsView)
+											{
+												$this->item->license = $params->get('license');
+											}
+											else
+											{
+												preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+												$this->item->license = $matches2[3];
+											}
+											break;
+										case 'package':
+											preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+											$this->item->package = $matches2[3];
+											break;
+										case 'subpackage':
+											preg_match('/(;)\s*@?(\pL+):?\s+(.*)/', $line, $matches2);
+											$this->item->subpackage = $matches2[3];
+											break;
+										case 'link':
+											break;
+										default:
+											if (empty($this->item->author))
+											{
+												if ($params->get('author') && !$isTranslationsView)
+												{
+													$this->item->author = $params->get('author');
+												}
+												else
+												{
+													preg_match('/(;)\s*(.*)/', $line, $matches2);
+													$this->item->author = $matches2[2];
+												}
+											}
+											break;
+									}
 								}
 							}
-						}
-						else
-						{
-							break;
+							else
+							{
+								break;
+							}
 						}
 					}
 
@@ -385,18 +360,12 @@ class LocaliseModelTranslation extends JModelAdmin
 						$this->item->additionalcopyright[] = $params->get('additionalcopyright');
 					}
 
-					while (!$stream->eof())
+					if (!$langFile->check())
 					{
-						$line = $stream->gets();
-						$lineNumber++;
+						$errors = $langFile->getLinesErrors();
 
-						if (!preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $line))
-						{
-							$this->item->error[] = $lineNumber;
-						}
+						$this->item->error = array_keys($errors);
 					}
-
-					$stream->close();
 				}
 
 				$this->item->additionalcopyright = implode("\n", $this->item->additionalcopyright);
