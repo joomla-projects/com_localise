@@ -124,7 +124,7 @@ class LocaliseLangFile
 	{
 		$lines = $this->getLines();
 
-		if (!$lines)
+		if (!($lines instanceof SplFileObject))
 		{
 			return false;
 		}
