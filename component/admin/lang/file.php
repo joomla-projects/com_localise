@@ -452,9 +452,9 @@ class LocaliseLangFile
 	{
 		$this->strings = false;
 
-		$content = $this->getContents();
+		$contents = $this->getContents();
 
-		if (false === $content)
+		if (false === $contents)
 		{
 			return $this;
 		}
@@ -462,8 +462,16 @@ class LocaliseLangFile
 		$processSections = isset($options['process_sections']) ? $options['process_sections'] : false;
 		$scannerMode     = isset($options['scanner_mode']) ? $options['scanner_mode'] : INI_SCANNER_NORMAL;
 
+		$contents = preg_replace_callback('/"(.*)"/', function ($matches) {
+					$result = '"' . str_replace('"', '\"', $matches[1]) . '"';
+
+					return $result;
+			},
+			$contents
+		);
+
 		ini_set('track_errors', '1');
-		$this->strings = @parse_ini_string($content, $processSections, $scannerMode);
+		$this->strings = @parse_ini_string($contents, $processSections, $scannerMode);
 
 		if (false === $this->strings)
 		{
