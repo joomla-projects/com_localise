@@ -69,59 +69,56 @@ $ftpSets   = $this->formftp->getFieldsets();
 JText::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 ?>
 <script type="text/javascript">
-	var bingTranslateComplete = false, translator;
+	var translator;
 	var Localise = {};
 	Localise.language_src = '<?php echo $src; ?>';
 	Localise.language_dest = '<?php echo $dest; ?>';
 
 	function AzureTranslator(obj, targets, i, token, transUrl){
-		var idname = jQuery(obj).attr('rel');
-		if(translator && !translator.status){
-			alert(Joomla.JText._('COM_LOCALISE_BINGTRANSLATING_NOW'));
-			return;
-		}
+		var targetSelector = '#' + jQuery(obj).attr('data-translate'),
+			targetField = jQuery(targetSelector),
+			referenceSelector = targetSelector + '-reference',
+			referenceField = jQuery(referenceSelector);
+
+		targetField.attr('disabled', 'disabled').css('opacity', '0.4');
 
 		translator =jQuery.ajax({
 			type:'POST',
-			uril:'index.php',
-			data:'option=com_localise&view=translator&format=json&id=<?php echo $this->form->getValue('id');?>&from=<?php echo $src;?>&to=<?php echo $dest;?>&text='+encodeURI(jQuery('#'+idname+'text').val())+'&'+token+'=1',
+			url:'index.php?' + token + '=1',
+			data : {
+				option : 'com_localise',
+				view   : 'translator',
+				format : 'json',
+				id     : '<?php echo $this->form->getValue("id");?>',
+				from   : '<?php echo $src;?>',
+				to     : '<?php echo $dest;?>',
+				text   : referenceField.val()
+			},
 			dataType:'json',
 			success:function(res){
 				if(res.success){
-					jQuery('#'+idname).val(res.text);
-				}
-				if(targets && targets.length > (i+1)){
-					AzureTranslator(targets[i+1], targets, i+1, token);
-					jQuery('html,body').animate({scrollTop:jQuery(targets[i+1]).offset().top-150}, 0);
+					targetField.val(res.text);
 				} else {
-					bingTranslateComplete = false;
-					if(targets.length > 1)
-						jQuery('html,body').animate({scrollTop:0}, 0);
+					alert(res.text);
 				}
+
+				targetField.removeAttr('disabled').css('opacity', '1').trigger('focusout');
 			}
 		});
 	}
 
 	function returnAll()
 	{
-		$$('i.return').each(function(e){
-			if(e.click)
-				e.click();
-			else
-				e.onclick();
+		jQuery('i.js-localise-btn-reset').each(function(e){
+			jQuery(this).trigger('click');
 		});
 	}
 
 	function translateAll()
 	{
-		if(bingTranslateComplete){
-			alert(Joomla.JText._('COM_LOCALISE_BINGTRANSLATING_NOW'));
-			return false;
-		}
-
-		bingTranslateComplete = true;
-		var targets = $$('i.translate');
-		AzureTranslator(targets[0], targets, 0, '<?php echo JSession::getFormToken();?>');
+		jQuery('i.js-localise-btn-translate').each(function(){
+			jQuery(this).trigger('click');
+		})
 	}
 
 	Joomla.submitbutton = function(task)
