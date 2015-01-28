@@ -368,7 +368,7 @@ class LocaliseLangFile
 	 *
 	 * @return  mixed  Array on success | FALSE otherwise
 	 */
-	public function getStrings($options = array('process_sections' => false, 'scanner_mode' => INI_SCANNER_RAW))
+	public function getStrings($options = array('process_sections' => false, 'scanner_mode' => INI_SCANNER_NORMAL))
 	{
 		if (null === $this->strings)
 		{
@@ -448,7 +448,7 @@ class LocaliseLangFile
 	 *
 	 * @return  LocaliseLangFile  Self instance for chaining
 	 */
-	protected function loadStrings($options = array('process_sections' => false, 'scanner_mode' => INI_SCANNER_RAW))
+	protected function loadStrings($options = array('process_sections' => false, 'scanner_mode' => INI_SCANNER_NORMAL))
 	{
 		$this->strings = false;
 
@@ -460,7 +460,7 @@ class LocaliseLangFile
 		}
 
 		$processSections = isset($options['process_sections']) ? $options['process_sections'] : false;
-		$scannerMode     = isset($options['scanner_mode']) ? $options['scanner_mode'] : INI_SCANNER_RAW;
+		$scannerMode     = isset($options['scanner_mode']) ? $options['scanner_mode'] : INI_SCANNER_NORMAL;
 
 		ini_set('track_errors', '1');
 		$this->strings = @parse_ini_string($content, $processSections, $scannerMode);
