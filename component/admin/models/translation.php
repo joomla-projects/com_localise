@@ -171,50 +171,35 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				// Get Special keys cases
 				$params                       = JComponentHelper::getParams('com_localise');
-				$global_untranslatablestrings = $params->get('untranslatablestrings', '');
-				$global_untranslatablestrings = htmlspecialchars_decode($global_untranslatablestrings);
-				$global_blockedstrings        = $params->get('blockedstrings', '');
-				$global_blockedstrings        = htmlspecialchars_decode($global_blockedstrings);
-				$global_keystokeep            = $params->get('keystokeep', '');
-				$global_keystokeep            = htmlspecialchars_decode($global_keystokeep);
 				$tag                          = $this->getState('translation.tag');
 				$target_tag                   = preg_quote($tag, '-');
+				$special_keys_types           = array ('untranslatablestrings', 'blockedstrings', 'keystokeep');
 				$regex_syntax                 = '/\[' . $target_tag . '\](.*?)\[\/' . $target_tag . '\]/s';
 				$regex_lines                  = '/\r\n|\r|\n/';
 
-				if (preg_match($regex_syntax, $global_untranslatablestrings))
+				foreach ($special_keys_types as $special_keys_case)
 				{
-					preg_match_all($regex_syntax, $global_untranslatablestrings, $untranslatablestrings_block, PREG_SET_ORDER);
-					$untranslatablestrings = preg_split($regex_lines, $untranslatablestrings_block[0][1]);
-				}
-				else
-				{
-					$untranslatablestrings = array();
+					$global_special_keys[$special_keys_case] = $params->get($special_keys_case, '');
+
+					if (preg_match($regex_syntax, $global_special_keys[$special_keys_case]))
+					{
+						preg_match_all($regex_syntax,
+								$global_special_keys[$special_keys_case],
+								$preg_result, PREG_SET_ORDER);
+
+						$special_keys[$special_keys_case] = preg_split($regex_lines, $preg_result[0][1]);
+					}
+					else
+					{
+						$special_keys[$special_keys_case] = array();
+					}
+
+					$this->setState('translation.'.$special_keys_case, (array) $special_keys[$special_keys_case]);
 				}
 
-				if (preg_match($regex_syntax, $global_blockedstrings))
-				{
-					preg_match_all($regex_syntax, $global_blockedstrings, $blockedstrings_block, PREG_SET_ORDER);
-					$blockedstrings = preg_split($regex_lines, $blockedstrings_block[0][1]);
-				}
-				else
-				{
-					$blockedstrings = array();
-				}
-
-				if (preg_match($regex_syntax, $global_keystokeep))
-				{
-					preg_match_all($regex_syntax, $global_keystokeep, $keystokeep_block, PREG_SET_ORDER);
-					$keystokeep = preg_split($regex_lines, $keystokeep_block[0][1]);
-				}
-				else
-				{
-					$keystokeep = array();
-				}
-
-				$this->setState('translation.untranslatablestrings', (array) $untranslatablestrings);
-				$this->setState('translation.blockedstrings', (array) $blockedstrings);
-				$this->setState('translation.keystokeep', (array) $keystokeep);
+				$untranslatablestrings = $special_keys['untranslatablestrings'];
+				$blockedstrings        = $special_keys['blockedstrings'];
+				$keystokeep            = $special_keys['keystokeep'];
 
 				$this->item = new JObject(
 									array
