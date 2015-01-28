@@ -65,7 +65,7 @@ class LocaliseModelTranslation extends JModelAdmin
 		$params = JComponentHelper::getParams('com_localise');
 
 		// Get the reference tag
-		$ref = $params->get('language.reference', 'en-GB');
+		$ref = $params->get('reference', 'en-GB');
 		$this->setState('translation.reference', $ref);
 
 		// Get the paths
