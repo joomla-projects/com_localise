@@ -250,6 +250,18 @@ class LocaliseLangFile
 	}
 
 	/**
+	 * Callback for preg_replace_callback to escape double quotes inside language strings.
+	 *
+	 * @param   array  $matches  Array of strings that match with the regular expression
+	 *
+	 * @return  string
+	 */
+	private function escapeQuotes($matches)
+	{
+		return '"' . str_replace('"', '\"', $matches[1]) . '"';
+	}
+
+	/**
 	 * Get the blackList.
 	 *
 	 * @return  array
@@ -462,25 +474,36 @@ class LocaliseLangFile
 		$processSections = isset($options['process_sections']) ? $options['process_sections'] : false;
 		$scannerMode     = isset($options['scanner_mode']) ? $options['scanner_mode'] : INI_SCANNER_NORMAL;
 
-		$contents = preg_replace_callback('/"(.*)"/', function ($matches) {
-					$result = '"' . str_replace('"', '\"', $matches[1]) . '"';
+		$contents = $this->prepareContents($contents);
 
-					return $result;
-			},
-			$contents
-		);
-
+		// Capture hidden PHP errors from the parsing.
+		$php_errormsg = null;
+		$trackErrors = ini_get('track_errors');
 		ini_set('track_errors', '1');
+
 		$this->strings = @parse_ini_string($contents, $processSections, $scannerMode);
+
+		// Restore error tracking to what it was before.
+		ini_set('track_errors', $trackErrors);
 
 		if (false === $this->strings)
 		{
-			$error = isset($php_errormsg) ? $php_errormsg : '';
-
-			$this->addError("Error parsing file contents of " . $this->filePath . ": " . $error);
+			$this->addError("Error parsing file contents of " . $this->filePath . ": " . $php_errormsg);
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Sanitize / prepare contents to be used by parse_ini_string
+	 *
+	 * @param   string  $contents  String containing the contents to prepare
+	 *
+	 * @return  string
+	 */
+	protected function prepareContents($contents)
+	{
+		return preg_replace_callback('/"(.*)"/', array($this, 'escapeQuotes'), $contents);
 	}
 
 	/**
