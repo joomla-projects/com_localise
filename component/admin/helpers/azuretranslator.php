@@ -95,7 +95,7 @@ Class HTTPTranslator
 
 		try
 		{
-			require __DIR__ . '/azuretoken.php';
+			require_once __DIR__ . '/azuretoken.php';
 
 			// OAuth Url.
 			$authUrl = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/";
