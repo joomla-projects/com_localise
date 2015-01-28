@@ -30,14 +30,6 @@ $position	= $displayData['position'];
 $id = $for . '-lbl';
 $title = '';
 
-// If a description is specified, use it to build a tooltip.
-if (!empty($desc))
-{
-	JHtml::_('bootstrap.tooltip');
-	$classes[] = 'hasTooltip';
-	$title = ' title="' . JHtml::tooltipText(trim($text, ':'), $desc, 0) . '"';
-}
-
 // If required, there's a class for that.
 if ($req)
 {
