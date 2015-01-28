@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\Utilities\ArrayHelper;
-
 extract($displayData);
 
 /**
@@ -78,4 +76,4 @@ $safeReference = htmlspecialchars($element['description'], ENT_NOQUOTES, 'UTF-8'
 	<textarea id="<?php echo $id; ?>-reference" style="display: none;"><?php echo $safeReference; ?></textarea>
 	<textarea id="<?php echo $id; ?>-original" style="display: none;"><?php echo $safeValue; ?></textarea>
 <?php endif; ?>
-<textarea <?php echo ArrayHelper::toString($attributes); ?> ><?php echo $safeValue; ?></textarea>
+<textarea <?php echo JArrayHelper::toString($attributes); ?> ><?php echo $safeValue; ?></textarea>
