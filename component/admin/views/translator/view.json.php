@@ -33,13 +33,19 @@ class LocaliseViewTranslator extends JViewLegacy
 
 		$id = JFactory::getApplication()->input->getInt('id');
 
-		if (!JSession::checkToken()
+		if (!JSession::checkToken('get')
 			|| !JFactory::getUser()->authorise('core.edit', 'com_localise.edit.' . $id))
 		{
 			return false;
 		}
 
-		$text = $this->get('text');
+		$model = $this->getModel();
+		$text = $model->getText();
+
+		if (false === $text)
+		{
+			$results['text'] = $model->getError();
+		}
 
 		if (!empty($text))
 		{

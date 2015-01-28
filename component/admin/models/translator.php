@@ -34,7 +34,7 @@ class LocaliseModelTranslator extends JModelLegacy
 		{
 			$this->setError(JText::_('COM_LOCALISE_MISSING_CLIENTID_SECRET'));
 
-			return '';
+			return false;
 		}
 
 		$app  = JFactory::getApplication();
@@ -44,7 +44,7 @@ class LocaliseModelTranslator extends JModelLegacy
 		{
 			$this->setError(JText::_('COM_LOCALISE_MISSING_TEXT'));
 
-			return '';
+			return false;
 		}
 
 		$to = $app->input->getCmd('to');
@@ -53,7 +53,7 @@ class LocaliseModelTranslator extends JModelLegacy
 		{
 			$this->setError(JText::_('COM_LOCALISE_MISSING_TO_LANGUAGECODE'));
 
-			return '';
+			return false;
 		}
 
 		$from = $app->input->getCmd('from');
