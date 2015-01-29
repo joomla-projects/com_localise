@@ -1099,7 +1099,7 @@ class LocaliseModelTranslation extends JModelAdmin
 			if (!empty($contents_to_delete))
 			{
 				$contents .= "\n[Keys to delete]\n\n";
-				$contents .= ";This keys are not present in en-GB language and are not required in this language.\n\n";
+				$contents .= ";This keys are not used in en-GB language and are not required in this language.\n\n";
 				$contents_to_delete = implode($contents_to_delete);
 				$contents .= $contents_to_delete;
 			}
