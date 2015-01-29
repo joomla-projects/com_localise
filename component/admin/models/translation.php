@@ -166,8 +166,8 @@ class LocaliseModelTranslation extends JModelAdmin
 			if (!$this->item)
 			{
 				$path                        = JFile::exists($this->getState('translation.path'))
-								? $this->getState('translation.path')
-								: $this->getState('translation.refpath');
+							       ? $this->getState('translation.path')
+							       : $this->getState('translation.refpath');
 
 				// Get Special keys cases
 				$params                       = JComponentHelper::getParams('com_localise');
