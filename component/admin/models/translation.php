@@ -176,6 +176,8 @@ class LocaliseModelTranslation extends JModelAdmin
 				$special_keys_types           = array ('untranslatablestrings', 'blockedstrings', 'keystokeep');
 				$regex_syntax                 = '/\[' . $target_tag . '\](.*?)\[\/' . $target_tag . '\]/s';
 				$regex_lines                  = '/\r\n|\r|\n/';
+				$global_special_keys          = array();
+				$special_keys                 = array();
 
 				foreach ($special_keys_types as $special_keys_case)
 				{
