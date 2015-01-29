@@ -185,9 +185,7 @@ class LocaliseModelTranslation extends JModelAdmin
 
 					if (preg_match($regex_syntax, $global_special_keys[$special_keys_case]))
 					{
-						preg_match_all($regex_syntax,
-								$global_special_keys[$special_keys_case],
-								$preg_result, PREG_SET_ORDER);
+						preg_match_all($regex_syntax, $global_special_keys[$special_keys_case], $preg_result, PREG_SET_ORDER);
 
 						$special_keys[$special_keys_case] = preg_split($regex_lines, $preg_result[0][1]);
 					}
