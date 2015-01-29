@@ -781,7 +781,6 @@ class LocaliseModelTranslation extends JModelAdmin
 								}
 
 								$status  = 'extra';
-
 							}
 							else
 							{
