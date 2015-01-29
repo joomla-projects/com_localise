@@ -266,9 +266,9 @@ class LocaliseModelTranslation extends JModelAdmin
 					}
 
 					$stream->seek(0);
-					$continue   = true;
-					$lineNumber = 0;
-					$params = JComponentHelper::getParams('com_localise');
+					$continue           = true;
+					$lineNumber         = 0;
+					$params             = JComponentHelper::getParams('com_localise');
 					$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
 
 					while (!$stream->eof())
