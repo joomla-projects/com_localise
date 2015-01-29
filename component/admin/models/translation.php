@@ -194,7 +194,7 @@ class LocaliseModelTranslation extends JModelAdmin
 						$special_keys[$special_keys_case] = array();
 					}
 
-					$this->setState('translation.'.$special_keys_case, (array) $special_keys[$special_keys_case]);
+					$this->setState('translation.' . $special_keys_case, (array) $special_keys[$special_keys_case]);
 				}
 
 				$untranslatablestrings = $special_keys['untranslatablestrings'];
