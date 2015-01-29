@@ -798,35 +798,36 @@ class LocaliseModelTranslation extends JModelAdmin
 									$fieldset->addAttribute('label', $section);
 								}
 
-								$field   = $fieldset->addChild('field');
 								$status  = 'keytodelete';
-								$default = $string;
-								$label   = '<b>' . $key . '</b>';
-								$field->addAttribute('status', $status);
-								$field->addAttribute('description', $string);
+							}
 
-								if ($default)
-								{
-									$field->addAttribute('default', $default);
-								}
-								else
-								{
-									$field->addAttribute('default', $string);
-								}
+							$field   = $fieldset->addChild('field');
+							$default = $string;
+							$label   = '<b>' . $key . '</b>';
+							$field->addAttribute('status', $status);
+							$field->addAttribute('description', $string);
 
-								$field->addAttribute('label', $label);
-								$field->addAttribute('name', $key);
-								$field->addAttribute('type', 'key');
-								$field->addAttribute('filter', 'raw');
+							if ($default)
+							{
+								$field->addAttribute('default', $default);
+							}
+							else
+							{
+								$field->addAttribute('default', $string);
+							}
 
-								if (in_array($full_line, $blockedstrings))
-								{
-									$field->addAttribute('isblocked', '1');
-								}
-								else
-								{
-									$field->addAttribute('isblocked', '0');
-								}
+							$field->addAttribute('label', $label);
+							$field->addAttribute('name', $key);
+							$field->addAttribute('type', 'key');
+							$field->addAttribute('filter', 'raw');
+
+							if (in_array($full_line, $blockedstrings))
+							{
+								$field->addAttribute('isblocked', '1');
+							}
+							else
+							{
+								$field->addAttribute('isblocked', '0');
 							}
 						}
 					}
