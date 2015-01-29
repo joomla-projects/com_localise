@@ -1090,7 +1090,7 @@ class LocaliseModelTranslation extends JModelAdmin
 			if (!empty($contents_to_add))
 			{
 				$contents .= "\n[Keys to keep in target]\n\n";
-				$contents .= ";This keys are not present in en-GB language but are required in this language
+				$contents .= ";The next keys are not present in en-GB language but are required in this language
 							(extra plural cases, custom CAPTCHA translations, etc).\n\n";
 				$contents_to_add = implode($contents_to_add);
 				$contents .= $contents_to_add;
