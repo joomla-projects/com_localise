@@ -78,7 +78,7 @@ class LocaliseViewLanguage extends JViewLegacy
 				'COM_LOCALISE_HEADER_MANAGER',
 				$isNew ? JText::_('COM_LOCALISE_HEADER_LANGUAGE_NEW') : JText::_('COM_LOCALISE_HEADER_LANGUAGE_EDIT')
 			),
-			'icon-comments-2 langmanager'
+			'comments-2 langmanager'
 		);
 
 		// If not checked out, can save the item.
