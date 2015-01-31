@@ -435,7 +435,7 @@ class LocaliseModelTranslation extends JModelAdmin
 						foreach ($refsections['keys'] as $key => $string)
 						{
 							$this->item->total++;
-							$full_line = htmlspecialchars_decode($key . '="' . $string . '"');
+							$full_line = $key . '="' . $string . '"';
 
 							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']))
 							{
@@ -465,7 +465,7 @@ class LocaliseModelTranslation extends JModelAdmin
 					{
 						foreach ($sections['keys'] as $key => $string)
 						{
-							$full_line = htmlspecialchars_decode($key . '="' . $string . '"');
+							$full_line = $key . '="' . $string . '"';
 
 							if (empty($refsections['keys']) || !array_key_exists($key, $refsections['keys']))
 							{
@@ -709,7 +709,7 @@ class LocaliseModelTranslation extends JModelAdmin
 						$key        = $matches[1];
 						$field      = $fieldset->addChild('field');
 						$string     = $refsections['keys'][$key];
-						$full_line  = htmlspecialchars_decode($key . '="' . $string . '"');
+						$full_line  = $key . '="' . $string . '"';
 						$translated = isset($sections['keys'][$key]);
 						$modified   = ($translated && $sections['keys'][$key] != $refsections['keys'][$key])
 										|| ($translated && in_array($full_line, $untranslatablestrings));
