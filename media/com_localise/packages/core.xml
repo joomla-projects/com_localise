@@ -233,7 +233,6 @@
 		<filename>lib_joomla</filename>
 		<filename>lib_joomla.sys</filename>
 		<filename>lib_phpass.sys</filename>
-		<filename>lib_phpmailer.sys</filename>
 		<filename>lib_phputf8.sys</filename>
 		<filename>lib_simplepie.sys</filename>
 		<filename>localise.php</filename>
