@@ -66,8 +66,8 @@ foreach ($attributes as $attributeName => $attributeValue)
 	}
 }
 
-$safeValue     = htmlspecialchars($value, ENT_NOQUOTES, 'UTF-8');
-$safeReference = htmlspecialchars($element['description'], ENT_NOQUOTES, 'UTF-8');
+$safeValue     = htmlspecialchars($value, ENT_COMPAT, 'UTF-8');
+$safeReference = htmlspecialchars($element['description'], ENT_COMPAT, 'UTF-8');
 ?>
 
 <?php if ($status != 'extra') : ?>

@@ -250,18 +250,6 @@ class LocaliseLangFile
 	}
 
 	/**
-	 * Callback for preg_replace_callback to escape double quotes inside language strings.
-	 *
-	 * @param   array  $matches  Array of strings that match with the regular expression
-	 *
-	 * @return  string
-	 */
-	private function escapeQuotes($matches)
-	{
-		return '"' . str_replace('"', '\"', $matches[1]) . '"';
-	}
-
-	/**
 	 * Get the blackList.
 	 *
 	 * @return  array
@@ -503,7 +491,12 @@ class LocaliseLangFile
 	 */
 	protected function prepareContents($contents)
 	{
-		return preg_replace_callback('/"(.*)"/', array($this, 'escapeQuotes'), $contents);
+		$strings = array(
+			'\"'     => '\\\"',
+			'"_QQ_"' => '\"_QQ_\"'
+		);
+
+		return strtr($contents, $strings);
 	}
 
 	/**
