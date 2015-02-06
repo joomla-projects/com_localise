@@ -103,7 +103,7 @@ $lang = JFactory::getLanguage();
 				<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_STATE_UNEXISTING', $item->translated, $item->unchanged, $item->total, $item->extra), 'inactive_class'=>'16-unexisting', 'enabled' => false, 'translate'=>false)); ?>
 			<?php elseif ($item->tag == $reference) : ?>
 				<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_REFERENCE'), 'inactive_class'=>'16-reference', 'enabled' => false, 'translate'=>false)); ?>
-			<?php elseif ($item->translated == $item->total || $item->complete) : ?>
+			<?php elseif (($item->translated + $item->unchanged) == $item->total && $item->complete) : ?>
 				<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_COMPLETE', $item->translated, $item->unchanged, $item->total, $item->extra), 'inactive_class'=>'16-complete', 'enabled' => false, 'translate'=>false)); ?>
 			<?php else : ?>
 				<span class="hasTooltip" title="<?php echo $item->translated + $item->unchanged == 0 ? JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS', $item->translated, $item->unchanged, $item->total, $item->extra); ?>">
