@@ -631,7 +631,7 @@ class LocaliseModelPackage extends JModelAdmin
 		// Prepare text to save for the xml package description
 		$text = '';
 		$text .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-		$text .= '<extension type="package" version="' . $small_version . '">' . "\n";
+		$text .= '<extension type="package" version="' . $small_version . '" method="upgrade">' . "\n";
 		$text .= "\t" . '<name>' . $data['name'] . '</name>' . "\n";
 		$text .= "\t" . '<packagename>' . $data['language'] . '</packagename>' . "\n";
 		$text .= "\t" . '<version>' . $data['version'] . '.' . $data['packversion'] . '</version>' . "\n";

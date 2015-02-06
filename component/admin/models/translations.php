@@ -428,8 +428,7 @@ class LocaliseModelTranslations extends JModelList
 						// Coping with Core files not considered as reference
 						if ($file == $reftag . '.com_messages.ini' || $file == $reftag . '.com_mailto.sys.ini'
 							|| $file == $reftag . '.com_wrapper.ini'|| $file == $reftag . '.com_wrapper.sys.ini' || $file == $reftag . '.finder_cli.ini'
-							|| $file == $reftag . '.plg_user_session.ini' || $file == $reftag . '.plg_user_session.sys.ini'
-							|| $file == $reftag . '.plg_system_session.ini' || $file == $reftag . '.plg_system_session.sys.ini')
+							|| $file == $reftag . '.com_weblinks.ini')
 						{
 							$reftaglength = strlen($reftag);
 

@@ -81,7 +81,7 @@ class LocaliseViewPackageFile extends JViewLegacy
 				'COM_LOCALISE_HEADER_MANAGER',
 				$isNew ? JText::_('COM_LOCALISE_HEADER_FILEPACKAGE_NEW') : JText::_('COM_LOCALISE_HEADER_FILEPACKAGE_NEW')
 			),
-			'comments-2 langmanager'
+			'icon-comments-2 langmanager'
 		);
 
 		// If not checked out, can save the item.

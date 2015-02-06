@@ -589,7 +589,7 @@ abstract class LocaliseHelper
 
 					if (!is_file($path))
 					{
-						$path = $client == 'administrator' ? LOCALISEPATH_SITE : LOCALISE_ADMINISTRATOR . "/language/$tag/$tag.$filename.ini";
+						$path = $client == 'administrator' ? LOCALISEPATH_SITE : LOCALISEPATH_ADMINISTRATOR . "/language/$tag/$tag.$filename.ini";
 					}
 
 					break;
