@@ -165,69 +165,31 @@ class LocaliseModelTranslation extends JModelAdmin
 
 			if (!$this->item)
 			{
-				$path                        = JFile::exists($this->getState('translation.path'))
-								? $this->getState('translation.path')
-								: $this->getState('translation.refpath');
-
-				// Get Special keys cases
-				$params                       = JComponentHelper::getParams('com_localise');
-				$tag                          = $this->getState('translation.tag');
-				$target_tag                   = preg_quote($tag, '-');
-				$special_keys_types           = array ('untranslatablestrings', 'blockedstrings', 'keystokeep');
-				$regex_syntax                 = '/\[' . $target_tag . '\](.*?)\[\/' . $target_tag . '\]/s';
-				$regex_lines                  = '/\r\n|\r|\n/';
-				$global_special_keys          = array();
-				$special_keys                 = array();
-
-				foreach ($special_keys_types as $special_keys_case)
-				{
-					$global_special_keys[$special_keys_case] = $params->get($special_keys_case, '');
-
-					if (preg_match($regex_syntax, $global_special_keys[$special_keys_case]))
-					{
-						preg_match_all($regex_syntax, $global_special_keys[$special_keys_case], $preg_result, PREG_SET_ORDER);
-
-						$special_keys[$special_keys_case] = preg_split($regex_lines, $preg_result[0][1]);
-					}
-					else
-					{
-						$special_keys[$special_keys_case] = array();
-					}
-
-					$this->setState('translation.' . $special_keys_case, (array) $special_keys[$special_keys_case]);
-				}
-
-				$untranslatablestrings = $special_keys['untranslatablestrings'];
-				$blockedstrings        = $special_keys['blockedstrings'];
-				$keystokeep            = $special_keys['keystokeep'];
+				$path = JFile::exists($this->getState('translation.path'))
+					? $this->getState('translation.path')
+					: $this->getState('translation.refpath');
 
 				$this->item = new JObject(
 									array
 										(
-										'reference'             => $this->getState('translation.reference'),
-										'bom'                   => 'UTF-8',
-										'svn'                   => '',
-										'version'               => '',
-										'description'           => '',
-										'creationdate'          => '',
-										'author'                => '',
-										'maincopyright'         => '',
-										'additionalcopyright'   => array(),
-										'license'               => '',
-										'exists'                => JFile::exists($this->getState('translation.path')),
-										'translated'            => 0,
-										'untranslatable'        => 0,
-										'blocked'               => 0,
-										'unchanged'             => 0,
-										'extra'                 => 0,
-										'keytodelete'           => 0,
-										'total'                 => 0,
-										'complete'              => false,
-										'source'                => '',
-										'untranslatablestrings' => (array) $untranslatablestrings,
-										'blockedstrings'        => (array) $blockedstrings,
-										'keystokeep'            => (array) $keystokeep,
-										'error'                 => array()
+										'reference'           => $this->getState('translation.reference'),
+										'bom'                 => 'UTF-8',
+										'svn'                 => '',
+										'version'             => '',
+										'description'         => '',
+										'creationdate'        => '',
+										'author'              => '',
+										'maincopyright'       => '',
+										'additionalcopyright' => array(),
+										'license'             => '',
+										'exists'              => JFile::exists($this->getState('translation.path')),
+										'translated'          => 0,
+										'unchanged'           => 0,
+										'extra'               => 0,
+										'total'               => 0,
+										'complete'            => false,
+										'source'              => '',
+										'error'               => array()
 										)
 				);
 
@@ -266,8 +228,9 @@ class LocaliseModelTranslation extends JModelAdmin
 					}
 
 					$stream->seek(0);
-					$continue           = true;
-					$lineNumber         = 0;
+					$continue   = true;
+					$lineNumber = 0;
+
 					$params             = JComponentHelper::getParams('com_localise');
 					$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
 
@@ -435,21 +398,10 @@ class LocaliseModelTranslation extends JModelAdmin
 						foreach ($refsections['keys'] as $key => $string)
 						{
 							$this->item->total++;
-							$full_line = $key . '="' . $string . '"';
 
-							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']))
+							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']) && $sections['keys'][$key] != '')
 							{
-								if (in_array($full_line, $blockedstrings))
-								{
-									$this->item->translated++;
-									$this->item->blocked++;
-								}
-								elseif (in_array($full_line, $untranslatablestrings))
-								{
-									$this->item->translated++;
-									$this->item->untranslatable++;
-								}
-								elseif ($sections['keys'][$key] != $string || $this->getState('translation.path') == $this->getState('translation.refpath'))
+								if ($sections['keys'][$key] != $string || $this->getState('translation.path') == $this->getState('translation.refpath'))
 								{
 									$this->item->translated++;
 								}
@@ -465,23 +417,9 @@ class LocaliseModelTranslation extends JModelAdmin
 					{
 						foreach ($sections['keys'] as $key => $string)
 						{
-							$full_line = $key . '="' . $string . '"';
-
 							if (empty($refsections['keys']) || !array_key_exists($key, $refsections['keys']))
 							{
-								if (in_array($full_line, $blockedstrings))
-								{
-									$this->item->blocked++;
-								}
-
-								if (in_array($key, $keystokeep))
-								{
-									$this->item->extra++;
-								}
-								else
-								{
-									$this->item->keytodelete++;
-								}
+								$this->item->extra++;
 							}
 						}
 					}
@@ -610,15 +548,12 @@ class LocaliseModelTranslation extends JModelAdmin
 	protected function preprocessForm(JForm $form, $item, $group = 'content')
 	{
 		// Initialize variables.
-		$filename              = $this->getState('translation.filename');
-		$client                = $this->getState('translation.client');
-		$tag                   = $this->getState('translation.tag');
-		$origin                = LocaliseHelper::getOrigin($filename, $client);
-		$app                   = JFactory::getApplication();
-		$false                 = false;
-		$untranslatablestrings = (array) $this->getState('translation.untranslatablestrings');
-		$blockedstrings        = (array) $this->getState('translation.blockedstrings');
-		$keystokeep            = (array) $this->getState('translation.keystokeep');
+		$filename = $this->getState('translation.filename');
+		$client   = $this->getState('translation.client');
+		$tag      = $this->getState('translation.tag');
+		$origin   = LocaliseHelper::getOrigin($filename, $client);
+		$app      = JFactory::getApplication();
+		$false    = false;
 
 		// Compute all known languages
 		static $languages = array();
@@ -633,11 +568,8 @@ class LocaliseModelTranslation extends JModelAdmin
 		{
 			$form->setFieldAttribute('legend', 'unchanged', $item->unchanged, 'legend');
 			$form->setFieldAttribute('legend', 'translated', $item->translated, 'legend');
-			$form->setFieldAttribute('legend', 'untranslatable', $item->untranslatable, 'legend');
-			$form->setFieldAttribute('legend', 'blocked', $item->blocked, 'legend');
 			$form->setFieldAttribute('legend', 'untranslated', $item->total - $item->translated - $item->unchanged, 'legend');
 			$form->setFieldAttribute('legend', 'extra', $item->extra, 'legend');
-			$form->setFieldAttribute('legend', 'keytodelete', $item->keytodelete, 'legend');
 		}
 
 		if ($this->getState('translation.layout') != 'raw')
@@ -661,7 +593,6 @@ class LocaliseModelTranslation extends JModelAdmin
 				$stream->open($refpath);
 				$header     = true;
 				$lineNumber = 0;
-				$full_line  = '';
 
 				while (!$stream->eof())
 				{
@@ -709,28 +640,17 @@ class LocaliseModelTranslation extends JModelAdmin
 						$key        = $matches[1];
 						$field      = $fieldset->addChild('field');
 						$string     = $refsections['keys'][$key];
-						$full_line  = $key . '="' . $string . '"';
 						$translated = isset($sections['keys'][$key]);
-						$modified   = ($translated && $sections['keys'][$key] != $refsections['keys'][$key])
-										|| ($translated && in_array($full_line, $untranslatablestrings));
-						$status     = $modified ? 'translated' : ($translated ? 'unchanged' : 'untranslated');
-						$default    = $translated ? $sections['keys'][$key] : '';
+						$modified   = $translated && $sections['keys'][$key] != $refsections['keys'][$key];
+						$status     = $modified
+							? 'translated'
+							: ($translated
+								? 'unchanged'
+								: 'untranslated');
+						$default    = $translated
+							? $sections['keys'][$key]
+							: '';
 						$label      = '<b>' . $key . '</b><br />' . htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
-
-						if (in_array($full_line, $untranslatablestrings))
-						{
-							$status = "untranslatable";
-						}
-
-						if (in_array($full_line, $blockedstrings))
-						{
-							$field->addAttribute('isblocked', '1');
-						}
-						else
-						{
-							$field->addAttribute('isblocked', '0');
-						}
-
 						$field->addAttribute('status', $status);
 						$field->addAttribute('description', $string);
 
@@ -757,7 +677,6 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				$stream->close();
 				$newstrings = false;
-				$todeletestrings = false;
 
 				if (!empty($sections['keys']))
 				{
@@ -765,42 +684,21 @@ class LocaliseModelTranslation extends JModelAdmin
 					{
 						if (!isset($refsections['keys'][$key]))
 						{
-							if (in_array($key, $keystokeep))
+							if (!$newstrings)
 							{
-								if (!$newstrings)
-								{
-									$newstrings = true;
-									$form->load($addform, false);
-									$section = 'Keys to keep as extra';
-									$addform = new SimpleXMLElement('<form />');
-									$group   = $addform->addChild('fields');
-									$group->addAttribute('name', 'strings');
-									$fieldset = $group->addChild('fieldset');
-									$fieldset->addAttribute('name', $section);
-									$fieldset->addAttribute('label', $section);
-								}
-
-								$status  = 'extra';
-							}
-							else
-							{
-								if (!$todeletestrings)
-								{
-									$todeletestrings = true;
-									$form->load($addform, false);
-									$section = 'Keys to delete';
-									$addform = new SimpleXMLElement('<form />');
-									$group   = $addform->addChild('fields');
-									$group->addAttribute('name', 'strings');
-									$fieldset = $group->addChild('fieldset');
-									$fieldset->addAttribute('name', $section);
-									$fieldset->addAttribute('label', $section);
-								}
-
-								$status  = 'keytodelete';
+								$newstrings = true;
+								$form->load($addform, false);
+								$section = 'New Strings';
+								$addform = new SimpleXMLElement('<form />');
+								$group   = $addform->addChild('fields');
+								$group->addAttribute('name', 'strings');
+								$fieldset = $group->addChild('fieldset');
+								$fieldset->addAttribute('name', $section);
+								$fieldset->addAttribute('label', $section);
 							}
 
 							$field   = $fieldset->addChild('field');
+							$status  = 'extra';
 							$default = $string;
 							$label   = '<b>' . $key . '</b>';
 							$field->addAttribute('status', $status);
@@ -819,15 +717,6 @@ class LocaliseModelTranslation extends JModelAdmin
 							$field->addAttribute('name', $key);
 							$field->addAttribute('type', 'key');
 							$field->addAttribute('filter', 'raw');
-
-							if (in_array($full_line, $blockedstrings))
-							{
-								$field->addAttribute('isblocked', '1');
-							}
-							else
-							{
-								$field->addAttribute('isblocked', '0');
-							}
 						}
 					}
 				}
@@ -886,12 +775,11 @@ class LocaliseModelTranslation extends JModelAdmin
 	 */
 	public function saveFile($data)
 	{
-		$path       = $this->getState('translation.path');
-		$refpath    = $this->getState('translation.refpath');
-		$exists     = JFile::exists($path);
-		$refexists  = JFile::exists($refpath);
-		$client     = $this->getState('translation.client');
-		$keystokeep = (array) $this->getState('translation.keystokeep');
+		$path      = $this->getState('translation.path');
+		$refpath   = $this->getState('translation.refpath');
+		$exists    = JFile::exists($path);
+		$refexists = JFile::exists($refpath);
+		$client    = $this->getState('translation.client');
 
 		// Set FTP credentials, if given.
 		JClientHelper::setCredentialsFromRequest('ftp');
@@ -1066,42 +954,17 @@ class LocaliseModelTranslation extends JModelAdmin
 
 			if (!empty($strings))
 			{
-				$contents_to_add = array();
-				$contents_to_delete = array();
+				$contents[] = "\n[New Strings]\n\n";
 
 				foreach ($strings as $key => $string)
 				{
-					if (in_array($key, $keystokeep))
-					{
-						$contents_to_add[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
-					}
-					else
-					{
-						$contents_to_delete[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
-					}
+					$contents[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
 				}
 			}
 
 			$stream->close();
 			$contents = implode($contents);
 			$contents = $contents2 . $contents;
-
-			if (!empty($contents_to_add))
-			{
-				$contents .= "\n[Keys to keep in target]\n\n";
-				$contents .= ";The next keys are not present in en-GB language but are used as extra in this language
-							(extra plural cases, custom CAPTCHA translations, etc).\n\n";
-				$contents_to_add = implode($contents_to_add);
-				$contents .= $contents_to_add;
-			}
-
-			if (!empty($contents_to_delete))
-			{
-				$contents .= "\n[Keys to delete]\n\n";
-				$contents .= ";This keys are not used in en-GB language and are not required in this language.\n\n";
-				$contents_to_delete = implode($contents_to_delete);
-				$contents .= $contents_to_delete;
-			}
 		}
 
 		$return = JFile::write($path, $contents);

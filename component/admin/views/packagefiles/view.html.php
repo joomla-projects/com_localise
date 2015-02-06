@@ -85,7 +85,7 @@ class LocaliseViewPackagefiles extends JViewLegacy
 	{
 		$canDo = JHelperContent::getActions('com_localise', 'component');
 
-		JToolBarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', JText::_('COM_LOCALISE_HEADER_PACKAGES')), '');
+		JToolBarHelper::title(JText::sprintf('COM_LOCALISE_HEADER_MANAGER', JText::_('COM_LOCALISE_HEADER_PACKAGES')), 'install');
 
 		if ($canDo->get('localise.create'))
 		{
