@@ -84,6 +84,30 @@
 			label="COM_LOCALISE_LABEL_BING_CLIENTSECRET"
 			description="COM_LOCALISE_LABEL_BING_CLIENTSECRET_DESC" />
 		<field
+			name="transifex_user"
+			type="text"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_TRANSIFEX_USERNAME"
+			description="COM_LOCALISE_LABEL_TRANSIFEX_USERNAME_DESC" />
+		<field
+			name="transifex_password"
+			type="text"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_TRANSIFEX_PASSWORD"
+			description="COM_LOCALISE_LABEL_TRANSIFEX_PASSWORD_DESC" />
+		<field
+			name="github_user"
+			type="text"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_GITHUB_USERNAME"
+			description="COM_LOCALISE_LABEL_GITHUB_USERNAME_DESC" />
+		<field
+			name="github_password"
+			type="text"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_GITHUB_PASSWORD"
+			description="COM_LOCALISE_LABEL_GITHUB_PASSWORD_DESC" />
+		<field
 			name="author"
 			type="text"
 			label="COM_LOCALISE_LABEL_AUTHOR"
