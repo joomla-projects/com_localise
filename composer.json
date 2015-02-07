@@ -3,8 +3,9 @@
 	"description": "forked version of the original com_localise for experimental purposes",
 	"license"    : "GPL-2.0+",
 	"require"    : {
-		"php": ">=5.3.10"
-	},
+      "php": ">=5.3.10",
+      "babdev/transifex": "~1.0"
+    },
 	"require-dev": {
 		"squizlabs/php_codesniffer": "1.*",
 		"phpmd/phpmd": "*",
