@@ -135,7 +135,7 @@ JText::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 		<!-- Begin Localise Translation -->
 		<div class="span12 form-horizontal">
 			<fieldset>
-				<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : 'default')); ?>
+				<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : $tabchoised)); ?>
 					<?php if ($this->ftp) : ?>
 					<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'ftp', JText::_($ftpSets['ftp']->label, true)); ?>
 						<?php if (!empty($ftpSets['ftp']->description)):?>
