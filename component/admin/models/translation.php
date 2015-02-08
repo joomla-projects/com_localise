@@ -171,6 +171,14 @@ class LocaliseModelTranslation extends JModelAdmin
 					? $this->getState('translation.path')
 					: $this->getState('translation.refpath');
 
+				$this->setState('translation.translatedkeys', array());
+				$this->setState('translation.untranslatedkeys', array());
+				$this->setState('translation.unchangedkeys', array());
+
+				$translatedkeys   = $this->getState('translation.translatedkeys');
+				$untranslatedkeys = $this->getState('translation.untranslatedkeys');
+				$unchangedkeys    = $this->getState('translation.unchangedkeys');
+
 				$this->item = new JObject(
 									array
 										(
