@@ -164,6 +164,27 @@ JText::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
 					<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'strings', JText::_('COM_LOCALISE_FIELDSET_TRANSLATION_STRINGS')); ?>
 						<div class="key">
+							<?php
+							if ($istranslation)
+							{
+							?>
+							<div class="filter-select">
+							<h4 class="page-header"><?php echo JText::_('JSEARCH_FILTER_LABEL');?></h4>
+							<?php foreach($this->form->getFieldset('select') as $field): ?>
+								<?php if ($field->type != "Spacer") : ?>
+									<?php
+									$field->value = $filter;
+									echo $field->input;
+									?>
+									<hr class="hr-condensed"/>
+								<?php else : ?>
+									<?php echo $field->label; ?>
+								<?php endif; ?>
+							<?php endforeach; ?>
+							</div>
+							<?php
+							}
+							?>
 							<div class="accordion" id="com_localise_legend_translation">
 								<div class="accordion-group">
 									<div class="accordion-heading">
