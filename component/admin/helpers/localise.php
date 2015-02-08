@@ -515,11 +515,14 @@ abstract class LocaliseHelper
 	 */
 	public static function findTranslationPath($client, $tag, $filename)
 	{
-		$path = static::getTranslationPath($client, $tag, $filename, 'local');
+		$params = JComponentHelper::getParams('com_localise');
+		$priority = $params->get('priority', '0') == '0' ? 'global' : 'local';
+		$path = static::getTranslationPath($client, $tag, $filename, $priority);
 
 		if (!is_file($path))
 		{
-			$path = static::getTranslationPath($client, $tag, $filename, 'global');
+			$priority = $params->get('priority', '0') == '0' ? 'local' : 'global';
+			$path = static::getTranslationPath($client, $tag, $filename, $priority);
 		}
 
 		return $path;
