@@ -80,8 +80,8 @@
 				id="keystatus"
 				name="keystatus"
 				type="keystatus"
-				default="allkeys"
-				class="span12 small"
+				default=""
+				class="filter-select"
 				hidden="true"
 				onchange="this.form.submit()">
 				<option value="">Select status</option>

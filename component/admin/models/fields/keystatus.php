@@ -42,13 +42,13 @@ class JFormFieldKeystatus extends JFormFieldList
 			$attributes .= ' onchange="' . $v . '"';
 		}
 
-		$attributes .= ' class="' . (string) $this->element['class'] . ' iconlist-16-' . $this->value . ' ' . $this->value . '"';
+		$attributes .= ' class="filter-select"';
 		$options = array();
 
 		foreach ($this->element->children() as $option)
 		{
-			$options[] = JHtml::_('select.option', 'allkeys', JText::_(trim($option)),
-						array('option.attr' => 'attributes', 'attr' => 'class="localise-icon inlanguage"')
+			$options[] = JHtml::_('select.option', '', JText::_(trim($option)),
+						array('option.attr' => 'attributes', 'attr' => 'class="filter-select"')
 						);
 		}
 
