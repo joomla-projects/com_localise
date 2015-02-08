@@ -52,17 +52,17 @@ class JFormFieldKeystatus extends JFormFieldList
 						);
 		}
 
-		$options[] = JHtml::_('select.option', 'allkeys', JText::sprintf('All'),
+		$options[] = JHtml::_('select.option', 'allkeys', JText::sprintf('COM_LOCALISE_FILTER_ALL_KEYS'),
 						array('option.attr' => 'attributes', 'attr' => 'class="allkeys"')
 						);
 
-		$options[] = JHtml::_('select.option', 'translatedkeys', JText::sprintf('Translated'),
+		$options[] = JHtml::_('select.option', 'translatedkeys', JText::sprintf('COM_LOCALISE_FILTER_TRANSLATED_KEYS'),
 						array('option.attr' => 'attributes', 'attr' => 'class="translated"')
 						);
-		$options[] = JHtml::_('select.option', 'untranslatedkeys', JText::sprintf('Untranslated'),
+		$options[] = JHtml::_('select.option', 'untranslatedkeys', JText::sprintf('COM_LOCALISE_FILTER_UNTRANSLATED_KEYS'),
 						array('option.attr' => 'attributes', 'attr' => 'class="untranslated"')
 						);
-		$options[] = JHtml::_('select.option', 'unchangedkeys', JText::sprintf('Unchanged'),
+		$options[] = JHtml::_('select.option', 'unchangedkeys', JText::sprintf('COM_LOCALISE_FILTER_UNCHANGED_KEYS'),
 						array('option.attr' => 'attributes', 'attr' => 'class="unchanged"')
 						);
 
