@@ -74,6 +74,20 @@
 			name="svn"
 			type="hidden" />
 	</fieldset>
+	<fields name="select">
+		<fieldset name="select">
+			<field
+				id="keystatus"
+				name="keystatus"
+				type="keystatus"
+				default="allkeys"
+				class="span12 small"
+				hidden="true"
+				onchange="this.form.submit()">
+				<option value="">Select status</option>
+			</field>
+		</fieldset>
+	</fields>
 	<fieldset
 		label="COM_LOCALISE_FIELDSET_TRANSLATION_LEGEND"
 		description="COM_LOCALISE_FIELDSET_TRANSLATION_LEGEND_DESC"
