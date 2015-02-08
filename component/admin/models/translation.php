@@ -26,6 +26,8 @@ class LocaliseModelTranslation extends JModelAdmin
 
 	protected $contents;
 
+	protected $filter_fields = array('translatedkeys', 'untranslatedkeys', 'unchangedkeys');
+
 	/**
 	 * Method to auto-populate the model state.
 	 *
