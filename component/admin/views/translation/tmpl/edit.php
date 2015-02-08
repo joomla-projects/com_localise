@@ -17,6 +17,30 @@ $src   = $parts[0];
 $parts = explode('-', $this->state->get('translation.tag'));
 $dest  = $parts[0];
 
+	if ($this->state->get('translation.reference') != $this->state->get('translation.tag'))
+	{
+		$istranslation = 1;
+	}
+	else
+	{
+		$istranslation = 0;
+	}
+	
+$input     = JFactory::getApplication()->input;
+$posted     = $input->post->get('jform', array(), 'array');
+
+	if (isset($posted['select']['keystatus'])
+	&& $posted['select']['keystatus'] != 'allkeys')
+	{
+		$filter       = $posted['select']['keystatus'];
+		$keystofilter = array ($this->item->$filter);
+	}
+	else
+	{
+		$filter = 'allkeys';
+		$keystofilter = array();
+	}
+
 $document = JFactory::getDocument();
 $document->addScriptDeclaration("
 	if (typeof(Localise) === 'undefined') {
