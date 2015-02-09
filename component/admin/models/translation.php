@@ -930,11 +930,12 @@ class LocaliseModelTranslation extends JModelAdmin
 	 */
 	public function saveFile($data)
 	{
-		$path      = $this->getState('translation.path');
-		$refpath   = $this->getState('translation.refpath');
-		$exists    = JFile::exists($path);
-		$refexists = JFile::exists($refpath);
-		$client    = $this->getState('translation.client');
+		$path       = $this->getState('translation.path');
+		$refpath    = $this->getState('translation.refpath');
+		$exists     = JFile::exists($path);
+		$refexists  = JFile::exists($refpath);
+		$client     = $this->getState('translation.client');
+		$keystokeep = (array) $this->getState('translation.keystokeep');
 
 		// Set FTP credentials, if given.
 		JClientHelper::setCredentialsFromRequest('ftp');
