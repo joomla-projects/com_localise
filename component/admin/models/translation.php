@@ -705,6 +705,7 @@ class LocaliseModelTranslation extends JModelAdmin
 				$stream->open($refpath);
 				$header     = true;
 				$lineNumber = 0;
+				$full_line  = '';
 
 				while (!$stream->eof())
 				{
@@ -752,17 +753,28 @@ class LocaliseModelTranslation extends JModelAdmin
 						$key        = $matches[1];
 						$field      = $fieldset->addChild('field');
 						$string     = $refsections['keys'][$key];
+						$full_line  = $key . '="' . $string . '"';
 						$translated = isset($sections['keys'][$key]);
-						$modified   = $translated && $sections['keys'][$key] != $refsections['keys'][$key];
-						$status     = $modified
-							? 'translated'
-							: ($translated
-								? 'unchanged'
-								: 'untranslated');
-						$default    = $translated
-							? $sections['keys'][$key]
-							: '';
+						$modified   = ($translated && $sections['keys'][$key] != $refsections['keys'][$key])
+										|| ($translated && in_array($full_line, $untranslatablestrings));
+						$status     = $modified ? 'translated' : ($translated ? 'unchanged' : 'untranslated');
+						$default    = $translated ? $sections['keys'][$key] : '';
 						$label      = '<b>' . $key . '</b><br />' . htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
+
+						if (in_array($full_line, $untranslatablestrings))
+						{
+							$status = "untranslatable";
+						}
+
+						if (in_array($full_line, $blockedstrings))
+						{
+							$field->addAttribute('isblocked', '1');
+						}
+						else
+						{
+							$field->addAttribute('isblocked', '0');
+						}
+
 						$field->addAttribute('status', $status);
 						$field->addAttribute('description', $string);
 
