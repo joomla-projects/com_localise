@@ -421,7 +421,7 @@ class LocaliseModelTranslation extends JModelAdmin
 								}
 								elseif ($this->getState('translation.path') == $this->getState('translation.refpath'))
 								{
-								$this->item->translated++;
+									$this->item->translated++;
 								}
 								else
 								{
