@@ -453,31 +453,82 @@ class LocaliseModelTranslation extends JModelAdmin
 						foreach ($refsections['keys'] as $key => $string)
 						{
 							$this->item->total++;
+							$full_line = $key . '="' . $string . '"';
 
-							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']) && $sections['keys'][$key] != '')
+							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']))
 							{
-								if ($sections['keys'][$key] != $string || $this->getState('translation.path') == $this->getState('translation.refpath'))
+								if (in_array($full_line, $blockedstrings))
 								{
 									$this->item->translated++;
+									$this->item->blocked++;
+									$blockedkeys[] = $key;
+								}
+								elseif (in_array($full_line, $untranslatablestrings))
+								{
+									$this->item->translated++;
+									$this->item->untranslatable++;
+									$untranslatablekeys[] = $key;
+								}
+								elseif ($sections['keys'][$key] != $string)
+								{
+									$this->item->translated++;
+									$translatedkeys[] = $key;
+								}
+								elseif ($this->getState('translation.path') == $this->getState('translation.refpath'))
+								{
+								$this->item->translated++;
 								}
 								else
 								{
 									$this->item->unchanged++;
+									$unchangedkeys[] = $key;
 								}
+							}
+							elseif (!array_key_exists($key, $sections['keys']))
+							{
+								$untranslatedkeys[] = $key;
 							}
 						}
 					}
+
+					$this->item->translatedkeys     = $translatedkeys;
+					$this->item->untranslatedkeys   = $untranslatedkeys;
+					$this->item->unchangedkeys      = $unchangedkeys;
+					$this->item->blockedkeys        = $blockedkeys;
+					$this->item->untranslatablekeys = $untranslatablekeys;
 
 					if (!empty($sections['keys']))
 					{
 						foreach ($sections['keys'] as $key => $string)
 						{
+							$full_line = $key . '="' . $string . '"';
+
 							if (empty($refsections['keys']) || !array_key_exists($key, $refsections['keys']))
 							{
-								$this->item->extra++;
+								if (in_array($full_line, $blockedstrings))
+								{
+									$this->item->blocked++;
+									$blockedkeys[] = $key;
+								}
+
+								if (in_array($key, $keystokeep))
+								{
+									$this->item->extra++;
+								}
+								else
+								{
+									$this->item->keytodelete++;
+								}
 							}
 						}
 					}
+
+					$this->setState('translation.translatedkeys', $translatedkeys);
+					$this->setState('translation.untranslatedkeys', $untranslatedkeys);
+					$this->setState('translation.unchangedkeys', $unchangedkeys);
+					$this->setState('translation.blockedkeys', $blockedkeys);
+					$this->setState('translation.untranslatablekeys', $untranslatablekeys);
+
 
 					$this->item->completed = $this->item->total
 						? intval(100 * $this->item->translated / $this->item->total) + $this->item->unchanged / $this->item->total
