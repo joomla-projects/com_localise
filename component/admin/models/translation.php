@@ -654,12 +654,15 @@ class LocaliseModelTranslation extends JModelAdmin
 	protected function preprocessForm(JForm $form, $item, $group = 'content')
 	{
 		// Initialize variables.
-		$filename = $this->getState('translation.filename');
-		$client   = $this->getState('translation.client');
-		$tag      = $this->getState('translation.tag');
-		$origin   = LocaliseHelper::getOrigin($filename, $client);
-		$app      = JFactory::getApplication();
-		$false    = false;
+		$filename              = $this->getState('translation.filename');
+		$client                = $this->getState('translation.client');
+		$tag                   = $this->getState('translation.tag');
+		$origin                = LocaliseHelper::getOrigin($filename, $client);
+		$app                   = JFactory::getApplication();
+		$false                 = false;
+		$untranslatablestrings = (array) $this->getState('translation.untranslatablestrings');
+		$blockedstrings        = (array) $this->getState('translation.blockedstrings');
+		$keystokeep            = (array) $this->getState('translation.keystokeep');
 
 		// Compute all known languages
 		static $languages = array();
