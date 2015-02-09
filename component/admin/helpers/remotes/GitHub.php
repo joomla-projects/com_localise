@@ -32,10 +32,6 @@ class GitHub extends AbstractRemote
 	{
 		parent::setCredentials($username, $password);
 
-		// UGH.....
-		//require_once '/home/elkuku/repos/com_localise/vendor/autoload.php';
-
-
 		$options = new \JRegistry;
 
 		$options->set('api.username', $username);
@@ -51,8 +47,6 @@ class GitHub extends AbstractRemote
 		$sha = 'master';
 
 		$resourcesObject = $this->gitHub->data->trees->getRecursively($project, $repository, $sha);
-
-		//var_dump($resourcesObject);
 
 		foreach ($resourcesObject->tree as $i => $resource)
 		{
@@ -86,7 +80,7 @@ class GitHub extends AbstractRemote
 
 			$resources[] = $r;
 		}
-var_dump($resources);
+
 		return $resources;
 	}
 

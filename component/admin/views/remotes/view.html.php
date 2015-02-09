@@ -36,13 +36,10 @@ class LocaliseViewRemotes extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		// Get the data
-		$app				= JFactory::getApplication();
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
-		$this->state		= $this->get('State');
-		$this->form			= $this->get('Form');
-		$this->file			= $app->input->get('file');
+		$this->items        = $this->get('Items');
+		$this->pagination   = $this->get('Pagination');
+		$this->state        = $this->get('State');
+		$this->form         = $this->get('Form');
 
 		LocaliseHelper::addSubmenu('remotes');
 

@@ -7,8 +7,6 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-use BabDev\Transifex\Transifex;
-
 defined('_JEXEC') or die;
 
 /**
@@ -209,36 +207,6 @@ class LocaliseModelRemotes extends JModelList
 			$this->items[] = $item;
 		}
 			return $this->items;
-
-		/////
-
-			// Call out to Transifex
-//			$translation = $transifex->translations->getTranslation(
-//				$this->getApplication()->get('transifex.project'),
-//				strtolower(str_replace('.', '-', $extension)) . '-' . strtolower($domain),
-//				str_replace('-', '_', $language)
-//			);
-
-			$languages = $this->getLanguages();
-			$count     = count($languages);
-			$start     = $this->getState('list.start');
-			$limit     = $this->getState('list.limit');
-
-			if ($start > $count)
-			{
-				$start = 0;
-			}
-
-			if ($limit == 0)
-			{
-				$start = 0;
-				$limit = null;
-			}
-
-			$this->items = array_slice($languages, $start, $limit);
-
-
-		return $this->items;
 	}
 
 	/**

@@ -139,7 +139,7 @@ class LocaliseControllerRemotes extends JControllerAdmin
 	 *
 	 * @return  object  The model.
 	 */
-	public function getModel($name = 'Packages', $prefix = 'LocaliseModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Remotes', $prefix = 'LocaliseModel', $config = array('ignore_request' => true))
 	{
 		return parent::getModel($name, $prefix, array('ignore_request' => true));
 	}
@@ -154,7 +154,7 @@ class LocaliseControllerRemotes extends JControllerAdmin
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
-		JFactory::getApplication()->input->set('view', 'packages');
+		JFactory::getApplication()->input->set('view', 'remotes');
 
 		parent::display($cachable);
 	}
@@ -166,11 +166,5 @@ class LocaliseControllerRemotes extends JControllerAdmin
 		echo (file_exists($path))
 			? nl2br(file_get_contents($path))
 			: 'Log file not found !';
-	}
-
-	public function add()
-	{
-		echo 'hey';
-		var_dump($_REQUEST);
 	}
 }
