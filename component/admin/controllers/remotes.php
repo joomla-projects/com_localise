@@ -22,6 +22,8 @@ class LocaliseControllerRemotes extends JControllerAdmin
 	 * Get a remote.
 	 *
 	 * @throws Exception
+	 *
+	 * @return  void
 	 */
 	public function getRemote()
 	{
@@ -166,6 +168,8 @@ class LocaliseControllerRemotes extends JControllerAdmin
 
 	/**
 	 * Get a log file contents.
+	 *
+	 * @return  void
 	 */
 	public function getLog()
 	{

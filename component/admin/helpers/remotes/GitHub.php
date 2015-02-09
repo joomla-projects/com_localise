@@ -17,8 +17,9 @@ if (false == class_exists('AbstractRemote'))
 /**
  * Class GitHub
  *
- * @package FOORemotes
- */
+ * @package  FOORemotes
+ * @since    1.0
+ * */
 class GitHub extends AbstractRemote
 {
 	/**
@@ -29,7 +30,8 @@ class GitHub extends AbstractRemote
 	/**
 	 * Constructor.
 	 *
-	 * @param   string  $project  The project name.
+	 * @param   string  $project     The project name.
+	 * @param   string  $repository  The repository name.
 	 */
 	public function __construct($project, $repository)
 	{
@@ -97,7 +99,6 @@ class GitHub extends AbstractRemote
 				{
 					continue;
 				}
-
 			}
 
 			$r = new \stdClass;

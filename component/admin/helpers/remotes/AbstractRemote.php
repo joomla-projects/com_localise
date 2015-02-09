@@ -12,8 +12,9 @@ namespace FOORemotes;
 /**
  * Class AbstractRemote
  *
- * @package FOORemotes
- */
+ * @package  FOORemotes
+ * @since    1.0
+ * */
 abstract class AbstractRemote
 {
 	protected $project = '';
@@ -29,7 +30,8 @@ abstract class AbstractRemote
 	 * @param   string  $password  The password.
 	 *
 	 * @return  $this
-	 */	public function setCredentials($username, $password)
+	 */
+	public function setCredentials($username, $password)
 	{
 		$this->credentials = array(
 			'user' => $username,

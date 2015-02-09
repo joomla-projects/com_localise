@@ -19,8 +19,9 @@ use BabDev\Transifex\Transifex as TransifexAPI;
 /**
  * Class Transifex
  *
- * @package FOORemotes
- */
+ * @package  FOORemotes
+ * @since    1.0
+ * */
 class Transifex extends AbstractRemote
 {
 	/**
