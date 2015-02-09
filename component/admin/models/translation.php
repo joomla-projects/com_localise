@@ -1110,17 +1110,42 @@ class LocaliseModelTranslation extends JModelAdmin
 
 			if (!empty($strings))
 			{
-				$contents[] = "\n[New Strings]\n\n";
+				$contents_to_add = array();
+				$contents_to_delete = array();
 
 				foreach ($strings as $key => $string)
 				{
-					$contents[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
+					if (in_array($key, $keystokeep))
+					{
+						$contents_to_add[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
+					}
+					else
+					{
+						$contents_to_delete[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
+					}
 				}
 			}
 
 			$stream->close();
 			$contents = implode($contents);
 			$contents = $contents2 . $contents;
+
+			if (!empty($contents_to_add))
+			{
+				$contents .= "\n[Keys to keep in target]\n\n";
+				$contents .= ";The next keys are not present in en-GB language but are used as extra in this language
+							(extra plural cases, custom CAPTCHA translations, etc).\n\n";
+				$contents_to_add = implode($contents_to_add);
+				$contents .= $contents_to_add;
+			}
+
+			if (!empty($contents_to_delete))
+			{
+				$contents .= "\n[Keys to delete]\n\n";
+				$contents .= ";This keys are not used in en-GB language and are not required in this language.\n\n";
+				$contents_to_delete = implode($contents_to_delete);
+				$contents .= $contents_to_delete;
+			}
 		}
 
 		$return = JFile::write($path, $contents);
