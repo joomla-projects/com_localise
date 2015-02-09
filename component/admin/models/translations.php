@@ -425,53 +425,44 @@ class LocaliseModelTranslations extends JModelList
 				{
 					foreach ($files as $file)
 					{
-						// Coping with Core files not considered as reference
-						if ($file == $reftag . '.com_messages.ini' || $file == $reftag . '.com_mailto.sys.ini'
-							|| $file == $reftag . '.com_wrapper.ini'|| $file == $reftag . '.com_wrapper.sys.ini' || $file == $reftag . '.finder_cli.ini'
-							|| $file == $reftag . '.com_weblinks.ini' || $file == $reftag . '.com_weblinks.sys.ini' || $file == $reftag . '.mod_weblinks.ini'
-							|| $file == $reftag . '.mod_weblinks.sys.ini' || $file == $reftag . '.plg_finder_weblinks.ini' || $file == $reftag . '.plg_finder_weblinks.sys.ini'
-							|| $file == $reftag . '.plg_search_weblinks.ini' || $file == $reftag . '.plg_search_weblinks.sys.ini'
-							|| $file == $reftag . '.plg_installer_webinstaller.ini' || $file == $reftag . '.plg_installer_webinstaller.sys.ini')
+						$reftaglength = strlen($reftag);
+
+						$name	= substr($file, 0, -4);
+						$name	= substr($name, $reftaglength + 1);
+
+						$origin	= LocaliseHelper::getOrigin($name, $client);
+
+						foreach ($tags as $tag)
 						{
-							$reftaglength = strlen($reftag);
-
-							$name	= substr($file, 0, -4);
-							$name	= substr($name, $reftaglength + 1);
-
-							$origin	= LocaliseHelper::getOrigin($name, $client);
-
-							foreach ($tags as $tag)
+							if (JFile::exists($client_folder . '/' . $tag . '/' . $tag . '.xml'))
 							{
-								if (JFile::exists($client_folder . '/' . $tag . '/' . $tag . '.xml'))
+								if (array_key_exists("$client|$reftag|$name", $this->translations))
 								{
-									if (array_key_exists("$client|$reftag|$name", $this->translations))
-									{
-										$reftranslation = $this->translations["$client|$reftag|$name"];
+									$reftranslation = $this->translations["$client|$reftag|$name"];
 
-										if (array_key_exists("$client|$tag|$name", $this->translations))
-										{
-											$this->translations["$client|$tag|$name"]->setProperties(array('refpath' => $reftranslation->path, 'state' => 'inlanguage'));
-										}
-										else
-										{
-											$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-											$translation = new JObject(
-												array(
-													'type' => 'library',
-													'tag' => $tag,
-													'client' => $client,
-													'storage' => 'global',
-													'filename' => $name,
-													'name' => $name,
-													'refpath' => $reftranslation->path,
-													'path' => $path,
-													'state' => 'unexisting',
-													'writable' => LocaliseHelper::isWritable($path),
-													'origin' => 'core'
-												)
-											);
-											$this->translations["$client|$tag|$name"] = $translation;
-										}
+									if (array_key_exists("$client|$tag|$name", $this->translations))
+									{
+										$this->translations["$client|$tag|$name"]->setProperties(array('refpath' => $reftranslation->path, 'state' => 'inlanguage'));
+									}
+									else
+									{
+										$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
+										$translation = new JObject(
+											array(
+												'type' => '',
+												'tag' => $tag,
+												'client' => $client,
+												'storage' => 'global',
+												'filename' => $name,
+												'name' => $name,
+												'refpath' => $reftranslation->path,
+												'path' => $path,
+												'state' => 'unexisting',
+												'writable' => LocaliseHelper::isWritable($path),
+												'origin' => 'core'
+											)
+										);
+										$this->translations["$client|$tag|$name"] = $translation;
 									}
 								}
 							}
