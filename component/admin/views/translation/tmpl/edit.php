@@ -172,7 +172,6 @@ JText::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 						<?php endforeach; ?>
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
 					<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'strings', JText::_('COM_LOCALISE_FIELDSET_TRANSLATION_STRINGS')); ?>
-						<div class="key">
 							<div class="accordion" id="com_localise_legend_translation">
 								<div class="accordion-group">
 									<div class="accordion-heading">
