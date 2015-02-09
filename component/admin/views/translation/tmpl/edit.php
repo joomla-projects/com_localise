@@ -197,7 +197,28 @@ JText::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 									</div>
 								</div>
 							</div>
+						<div class="key">
 							<div id="translationbar">
+							<?php
+							if ($istranslation)
+							{
+							?>
+							<div style="float:left;">
+							<?php foreach($this->form->getFieldset('select') as $field): ?>
+								<?php if ($field->type != "Spacer") : ?>
+									<?php
+									$field->value = $filter;
+									echo JText::_('JSEARCH_FILTER_LABEL');
+									echo $field->input;
+									?>
+								<?php else : ?>
+									<?php echo $field->label; ?>
+								<?php endif; ?>
+							<?php endforeach; ?>
+							</div>
+							<?php
+							}
+							?>
 								<a href="javascript:void(0);" class="btn bnt-small" id="translateall" onclick="translateAll();">
 									<i class="icon-translate-bing"></i> <?php echo JText::_('COM_LOCALISE_BUTTON_TRANSLATE_ALL');?>
 								</a>
