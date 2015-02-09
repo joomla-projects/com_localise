@@ -18,6 +18,11 @@ defined('_JEXEC') or die;
  */
 class LocaliseControllerRemotes extends JControllerAdmin
 {
+	/**
+	 * Get a remote.
+	 *
+	 * @throws Exception
+	 */
 	public function getRemote()
 	{
 		$path = JFactory::getConfig()->get('log_path') . '/com_localise.remotes_log.php';
@@ -50,7 +55,7 @@ class LocaliseControllerRemotes extends JControllerAdmin
 
 		$params = JComponentHelper::getParams('com_localise');
 
-		foreach($remotes as $remote)
+		foreach ($remotes as $remote)
 		{
 			if (in_array($remote->id, $cids))
 			{
@@ -77,12 +82,12 @@ class LocaliseControllerRemotes extends JControllerAdmin
 				/* @type \FOORemotes\AbstractRemote $remoteClass */
 				$remoteClass = new $className($remote->user, $remote->project);
 
-				if('Transifex' == $remote->type)
+				if ('Transifex' == $remote->type)
 				{
 					$remoteClass->setCredentials($params->get('transifex_user'), $params->get('transifex_password'));
 				}
 
-				if('GitHub' == $remote->type)
+				if ('GitHub' == $remote->type)
 				{
 					$remoteClass->setCredentials($params->get('github_user'), $params->get('github_password'));
 				}
@@ -159,11 +164,14 @@ class LocaliseControllerRemotes extends JControllerAdmin
 		parent::display($cachable);
 	}
 
+	/**
+	 * Get a log file contents.
+	 */
 	public function getLog()
 	{
 		$path = JFactory::getConfig()->get('log_path') . '/com_localise.remotes_log.php';
 
-		echo (file_exists($path))
+		echo file_exists($path)
 			? nl2br(file_get_contents($path))
 			: 'Log file not found !';
 	}

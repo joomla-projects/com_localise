@@ -206,7 +206,8 @@ class LocaliseModelRemotes extends JModelList
 
 			$this->items[] = $item;
 		}
-			return $this->items;
+
+		return $this->items;
 	}
 
 	/**
@@ -219,6 +220,13 @@ class LocaliseModelRemotes extends JModelList
 		return count($this->getItems());
 	}
 
+	/**
+	 * Get a standard path for a remote object.
+	 *
+	 * @param   object  $remote  The remote object.
+	 *
+	 * @return string
+	 */
 	public function getRemotePath($remote)
 	{
 		return implode('/',

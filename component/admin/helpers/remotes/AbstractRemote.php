@@ -1,13 +1,19 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: elkuku
- * Date: 30.01.15
- * Time: 07:23
+ * @package     Com_Localise
+ * @subpackage  helper
+ *
+ * @copyright   Copyright (C) 2015 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace FOORemotes;
 
+/**
+ * Class AbstractRemote
+ *
+ * @package FOORemotes
+ */
 abstract class AbstractRemote
 {
 	protected $project = '';
@@ -17,15 +23,16 @@ abstract class AbstractRemote
 	protected $credentials = array();
 
 	/**
-	 * @param $user
-	 * @param $password
+	 * Set the credentials for the remote.
 	 *
-	 * @return $this
-	 */
-	public function setCredentials($user, $password)
+	 * @param   string  $username  The user name.
+	 * @param   string  $password  The password.
+	 *
+	 * @return  $this
+	 */	public function setCredentials($username, $password)
 	{
 		$this->credentials = array(
-			'user' => $user,
+			'user' => $username,
 			'pass' => $password
 		);
 
@@ -33,31 +40,37 @@ abstract class AbstractRemote
 	}
 
 	/**
-	 * @param        $project
-	 * @param        $repository
-	 * @param        $path
-	 * @param string $filter
+	 * Get a list of resources.
 	 *
-	 * @return mixed
+	 * @param   string  $project     The project name
+	 * @param   string  $repository  The repository name.
+	 * @param   string  $path        The repository path.
+	 * @param   string  $filter      The search filter.
+	 *
+	 * @return object[]
 	 */
 	abstract public function getResources($project, $repository, $path = '', $filter = '');
 
 	/**
-	 * @param $project
-	 * @param $repository
-	 * @param $resourceName
-	 * @param $language
+	 * Get a resource.
 	 *
-	 * @return mixed
+	 * @param   string  $project     The project name.
+	 * @param   string  $repository  The repository name.
+	 * @param   object  $resource    The resource object.
+	 * @param   string  $language    The language tag.
+	 *
+	 * @return \stdClass
 	 */
-	abstract public function getResource($project, $repository, $resourceName, $language);
+	abstract public function getResource($project, $repository, $resource, $language);
 
 	/**
-	 * @param $language
-	 * @param $resourceName
-	 * @param $extension
+	 * Get a standard file name.
 	 *
-	 * @return mixed
+	 * @param   string  $language   The language tag.
+	 * @param   object  $resource   The resource object.
+	 * @param   string  $extension  The file extension.
+	 *
+	 * @return string
 	 */
-	abstract public function getFileName($language, $resourceName, $extension);
+	abstract public function getFileName($language, $resource, $extension);
 }

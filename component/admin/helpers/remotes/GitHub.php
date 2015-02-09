@@ -1,20 +1,24 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: elkuku
- * Date: 30.01.15
- * Time: 07:22
+ * @package     Com_Localise
+ * @subpackage  helper
+ *
+ * @copyright   Copyright (C) 2015 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace FOORemotes;
 
-if(false == class_exists('AbstractRemote'))
+if (false == class_exists('AbstractRemote'))
 {
 	require_once 'AbstractRemote.php';
 }
 
-use BabDev\Transifex\Transifex as TransifexAPI;
-
+/**
+ * Class GitHub
+ *
+ * @package FOORemotes
+ */
 class GitHub extends AbstractRemote
 {
 	/**
@@ -22,12 +26,25 @@ class GitHub extends AbstractRemote
 	 */
 	private $gitHub;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param   string  $project  The project name.
+	 */
 	public function __construct($project, $repository)
 	{
 		$this->project = $project;
 		$this->repository = $repository;
 	}
 
+	/**
+	 * Set the credentials for the remote.
+	 *
+	 * @param   string  $username  The user name.
+	 * @param   string  $password  The password.
+	 *
+	 * @return  $this
+	 */
 	public function setCredentials($username, $password)
 	{
 		parent::setCredentials($username, $password);
@@ -40,6 +57,16 @@ class GitHub extends AbstractRemote
 		$this->gitHub = new \JGithub($options);
 	}
 
+	/**
+	 * Get a list of resources.
+	 *
+	 * @param   string  $project     The project name
+	 * @param   string  $repository  The repository name.
+	 * @param   string  $path        The repository path.
+	 * @param   string  $filter      The search filter.
+	 *
+	 * @return object[]
+	 */
 	public function getResources($project, $repository, $path = '', $filter = '')
 	{
 		$resources = array();
@@ -84,6 +111,18 @@ class GitHub extends AbstractRemote
 		return $resources;
 	}
 
+	/**
+	 * Get a resource.
+	 *
+	 * @param   string  $project     The project name.
+	 * @param   string  $repository  The repository name.
+	 * @param   object  $resource    The resource object.
+	 * @param   string  $language    The language tag.
+	 *
+	 * @throws  \DomainException
+	 *
+	 * @return \stdClass
+	 */
 	public function getResource($project, $repository, $resource, $language)
 	{
 		$r = $this->gitHub->repositories->contents->get(
@@ -94,7 +133,7 @@ class GitHub extends AbstractRemote
 
 		if (!isset($r->content))
 		{
-			throw new DomainException('Can not fetch ' . $resource->name . ' - old Joomla!&reg; GitHubPackage??');
+			throw new \DomainException('Can not fetch ' . $resource->name . ' - old Joomla!&reg; GitHubPackage??');
 		}
 
 		$resource = new \stdClass;
@@ -104,6 +143,15 @@ class GitHub extends AbstractRemote
 		return $resource;
 	}
 
+	/**
+	 * Get a standard file name.
+	 *
+	 * @param   string  $language   The language tag.
+	 * @param   object  $resource   The resource object.
+	 * @param   string  $extension  The file extension.
+	 *
+	 * @return string
+	 */
 	public function getFileName($language, $resource, $extension)
 	{
 		// Nothing special required here (so far...).
