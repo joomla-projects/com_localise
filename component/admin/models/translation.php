@@ -167,31 +167,85 @@ class LocaliseModelTranslation extends JModelAdmin
 
 			if (!$this->item)
 			{
-				$path = JFile::exists($this->getState('translation.path'))
-					? $this->getState('translation.path')
-					: $this->getState('translation.refpath');
+				$path                        = JFile::exists($this->getState('translation.path'))
+								? $this->getState('translation.path')
+								: $this->getState('translation.refpath');
+
+				// Get Special keys cases
+				$params                       = JComponentHelper::getParams('com_localise');
+				$tag                          = $this->getState('translation.tag');
+				$target_tag                   = preg_quote($tag, '-');
+				$special_keys_types           = array ('untranslatablestrings', 'blockedstrings', 'keystokeep');
+				$regex_syntax                 = '/\[' . $target_tag . '\](.*?)\[\/' . $target_tag . '\]/s';
+				$regex_lines                  = '/\r\n|\r|\n/';
+				$global_special_keys          = array();
+				$special_keys                 = array();
+
+				foreach ($special_keys_types as $special_keys_case)
+				{
+					$global_special_keys[$special_keys_case] = $params->get($special_keys_case, '');
+
+					if (preg_match($regex_syntax, $global_special_keys[$special_keys_case]))
+					{
+						preg_match_all($regex_syntax, $global_special_keys[$special_keys_case], $preg_result, PREG_SET_ORDER);
+
+						$special_keys[$special_keys_case] = preg_split($regex_lines, $preg_result[0][1]);
+					}
+					else
+					{
+						$special_keys[$special_keys_case] = array();
+					}
+
+					$this->setState('translation.' . $special_keys_case, (array) $special_keys[$special_keys_case]);
+				}
+
+				$untranslatablestrings = $special_keys['untranslatablestrings'];
+				$blockedstrings        = $special_keys['blockedstrings'];
+				$keystokeep            = $special_keys['keystokeep'];
+				$this->setState('translation.translatedkeys', array());
+				$this->setState('translation.untranslatedkeys', array());
+				$this->setState('translation.unchangedkeys', array());
+				$this->setState('translation.blockedkeys', array());
+				$this->setState('translation.untranslatablekeys', array());
+
+				$translatedkeys     = $this->getState('translation.translatedkeys');
+				$untranslatedkeys   = $this->getState('translation.untranslatedkeys');
+				$unchangedkeys      = $this->getState('translation.unchangedkeys');
+				$blockedkeys        = $this->getState('translation.blockedkeys');
+				$untranslatablekeys = $this->getState('translation.untranslatablekeys');
 
 				$this->item = new JObject(
 									array
 										(
-										'reference'           => $this->getState('translation.reference'),
-										'bom'                 => 'UTF-8',
-										'svn'                 => '',
-										'version'             => '',
-										'description'         => '',
-										'creationdate'        => '',
-										'author'              => '',
-										'maincopyright'       => '',
-										'additionalcopyright' => array(),
-										'license'             => '',
-										'exists'              => JFile::exists($this->getState('translation.path')),
-										'translated'          => 0,
-										'unchanged'           => 0,
-										'extra'               => 0,
-										'total'               => 0,
-										'complete'            => false,
-										'source'              => '',
-										'error'               => array()
+										'reference'             => $this->getState('translation.reference'),
+										'bom'                   => 'UTF-8',
+										'svn'                   => '',
+										'version'               => '',
+										'description'           => '',
+										'creationdate'          => '',
+										'author'                => '',
+										'maincopyright'         => '',
+										'additionalcopyright'   => array(),
+										'license'               => '',
+										'exists'                => JFile::exists($this->getState('translation.path')),
+										'translatedkeys'        => (array) $translatedkeys,
+										'untranslatedkeys'      => (array) $untranslatedkeys,
+										'unchangedkeys'         => (array) $unchangedkeys,
+										'blockedkeys'           => (array) $blockedkeys,
+										'untranslatablekeys'    => (array) $untranslatablekeys,
+										'translated'            => 0,
+										'untranslatable'        => 0,
+										'blocked'               => 0,
+										'unchanged'             => 0,
+										'extra'                 => 0,
+										'keytodelete'           => 0,
+										'total'                 => 0,
+										'complete'              => false,
+										'source'                => '',
+										'untranslatablestrings' => (array) $untranslatablestrings,
+										'blockedstrings'        => (array) $blockedstrings,
+										'keystokeep'            => (array) $keystokeep,
+										'error'                 => array()
 										)
 				);
 
