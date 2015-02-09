@@ -222,7 +222,7 @@ class LocaliseModelRemotes extends JModelList
 	public function getRemotePath($remote)
 	{
 		return implode('/',
-			[
+			array(
 				JPATH_COMPONENT_ADMINISTRATOR,
 				'build',
 				'remotes',
@@ -231,7 +231,7 @@ class LocaliseModelRemotes extends JModelList
 				$remote->project,
 				$remote->scope,
 				$remote->language
-			]
+			)
 		);
 	}
 }

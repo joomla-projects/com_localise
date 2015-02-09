@@ -85,7 +85,7 @@ class Transifex extends AbstractRemote
 		$resourceName = preg_replace('/_sys$/', '.sys', $resourceName);
 
 		// Special lang.ini and install.ini
-		if (in_array($resourceName, ['langini', 'install-ini']))
+		if (in_array($resourceName, array('langini', 'install-ini')))
 		{
 			return $language . '.' . $extension;
 		}
