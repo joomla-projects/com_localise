@@ -41,7 +41,7 @@ class Transifex extends AbstractRemote
 
 	public function getResources($project, $repository, $path = '', $filter = '')
 	{
-		$resources = [];
+		$resources = array();
 
 		$resourceObjects = $this->transifex->resources->getResources($project);
 

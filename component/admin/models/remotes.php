@@ -117,7 +117,7 @@ class LocaliseModelRemotes extends JModelList
 	{
 		if (!$this->items)
 		{
-			$this->items = [];
+			$this->items = array();
 
 			$item = new stdClass;
 
