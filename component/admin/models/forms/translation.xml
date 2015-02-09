@@ -84,7 +84,7 @@
 				class="filter-select"
 				hidden="true"
 				onchange="this.form.submit()">
-				<option value="">COM_LOCALISE_FILTER_SELECT_KEYS_STATUS</option>
+				<option value="">JOPTION_SELECT_PUBLISHED</option>
 			</field>
 		</fieldset>
 	</fields>

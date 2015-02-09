@@ -52,23 +52,23 @@ class JFormFieldKeystatus extends JFormFieldList
 						);
 		}
 
-		$options[] = JHtml::_('select.option', 'allkeys', JText::sprintf('COM_LOCALISE_FILTER_ALL_KEYS'),
+		$options[] = JHtml::_('select.option', 'allkeys', JText::_('JALL'),
 						array('option.attr' => 'attributes', 'attr' => 'class="allkeys"')
 						);
 
-		$options[] = JHtml::_('select.option', 'translatedkeys', JText::sprintf('COM_LOCALISE_FILTER_TRANSLATED_KEYS'),
+		$options[] = JHtml::_('select.option', 'translatedkeys', JText::_('COM_LOCALISE_TEXT_TRANSLATION_TRANSLATED'),
 						array('option.attr' => 'attributes', 'attr' => 'class="translated"')
 						);
-		$options[] = JHtml::_('select.option', 'untranslatedkeys', JText::sprintf('COM_LOCALISE_FILTER_UNTRANSLATED_KEYS'),
+		$options[] = JHtml::_('select.option', 'untranslatedkeys', JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNTRANSLATED'),
 						array('option.attr' => 'attributes', 'attr' => 'class="untranslated"')
 						);
-		$options[] = JHtml::_('select.option', 'untranslatablekeys', JText::sprintf('COM_LOCALISE_FILTER_UNTRANSLATABLE_KEYS'),
+		$options[] = JHtml::_('select.option', 'untranslatablekeys', JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNTRANSLATABLE'),
 						array('option.attr' => 'attributes', 'attr' => 'class="untranslatable"')
 						);
-		$options[] = JHtml::_('select.option', 'blockedkeys', JText::sprintf('COM_LOCALISE_FILTER_BLOCKED_KEYS'),
+		$options[] = JHtml::_('select.option', 'blockedkeys', JText::_('COM_LOCALISE_TEXT_TRANSLATION_BLOCKED'),
 						array('option.attr' => 'attributes', 'attr' => 'class="blocked"')
 						);
-		$options[] = JHtml::_('select.option', 'unchangedkeys', JText::sprintf('COM_LOCALISE_FILTER_UNCHANGED_KEYS'),
+		$options[] = JHtml::_('select.option', 'unchangedkeys', JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNCHANGED'),
 						array('option.attr' => 'attributes', 'attr' => 'class="unchanged"')
 						);
 
