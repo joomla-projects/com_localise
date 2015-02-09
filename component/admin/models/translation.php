@@ -801,6 +801,7 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				$stream->close();
 				$newstrings = false;
+				$todeletestrings = false;
 
 				if (!empty($sections['keys']))
 				{
@@ -808,21 +809,42 @@ class LocaliseModelTranslation extends JModelAdmin
 					{
 						if (!isset($refsections['keys'][$key]))
 						{
-							if (!$newstrings)
+							if (in_array($key, $keystokeep))
 							{
-								$newstrings = true;
-								$form->load($addform, false);
-								$section = 'New Strings';
-								$addform = new SimpleXMLElement('<form />');
-								$group   = $addform->addChild('fields');
-								$group->addAttribute('name', 'strings');
-								$fieldset = $group->addChild('fieldset');
-								$fieldset->addAttribute('name', $section);
-								$fieldset->addAttribute('label', $section);
+								if (!$newstrings)
+								{
+									$newstrings = true;
+									$form->load($addform, false);
+									$section = 'Keys to keep as extra';
+									$addform = new SimpleXMLElement('<form />');
+									$group   = $addform->addChild('fields');
+									$group->addAttribute('name', 'strings');
+									$fieldset = $group->addChild('fieldset');
+									$fieldset->addAttribute('name', $section);
+									$fieldset->addAttribute('label', $section);
+								}
+
+								$status  = 'extra';
+							}
+							else
+							{
+								if (!$todeletestrings)
+								{
+									$todeletestrings = true;
+									$form->load($addform, false);
+									$section = 'Keys to delete';
+									$addform = new SimpleXMLElement('<form />');
+									$group   = $addform->addChild('fields');
+									$group->addAttribute('name', 'strings');
+									$fieldset = $group->addChild('fieldset');
+									$fieldset->addAttribute('name', $section);
+									$fieldset->addAttribute('label', $section);
+								}
+
+								$status  = 'keytodelete';
 							}
 
 							$field   = $fieldset->addChild('field');
-							$status  = 'extra';
 							$default = $string;
 							$label   = '<b>' . $key . '</b>';
 							$field->addAttribute('status', $status);
