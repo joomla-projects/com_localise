@@ -185,17 +185,28 @@ class LocaliseModelLanguages extends JModelList
 				$clients = array($client);
 			}
 
-			$filter = (empty($tag)) ? '.' : '^' . $tag . '$';
-
 			foreach ($clients as $client)
 			{
-				$folders = JFolder::folders(
-					constant('LOCALISEPATH_' . strtoupper($client)) . '/language',
-					$filter,
-					false,
-					false,
-					array('.svn', 'CVS','.DS_Store','__MACOSX','pdf_fonts','overrides')
-				);
+				if (empty($tag))
+				{
+					$folders = JFolder::folders(
+						constant('LOCALISEPATH_' . strtoupper($client)) . '/language',
+							'.',
+							false,
+							false,
+							array('.svn', 'CVS','.DS_Store','__MACOSX','pdf_fonts','overrides')
+					);
+				}
+				else
+				{
+					$folders = JFolder::folders(
+						constant('LOCALISEPATH_' . strtoupper($client)) . '/language',
+							'^' . $tag . '$',
+							false,
+							false,
+							array('.svn','CVS','.DS_Store','__MACOSX','pdf_fonts','overrides')
+						);
+				}
 
 				foreach ($folders as $folder)
 				{
