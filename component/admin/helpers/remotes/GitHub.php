@@ -42,7 +42,7 @@ class GitHub extends AbstractRemote
 
 	public function getResources($project, $repository, $path = '', $filter = '')
 	{
-		$resources = [];
+		$resources = array();
 
 		$sha = 'master';
 

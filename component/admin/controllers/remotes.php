@@ -29,12 +29,12 @@ class LocaliseControllerRemotes extends JControllerAdmin
 		}
 
 		JLog::addLogger(
-			[
+			array(
 				'text_file' => 'com_localise.remotes_log.php',
 				'text_entry_format' => '{MESSAGE}'
-			],
+			),
 			JLog::ALL,
-			['com_localise']
+			array('com_localise')
 		);
 
 		$application = JFactory::getApplication();

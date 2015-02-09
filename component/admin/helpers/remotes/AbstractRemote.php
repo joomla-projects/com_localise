@@ -24,10 +24,10 @@ abstract class AbstractRemote
 	 */
 	public function setCredentials($user, $password)
 	{
-		$this->credentials = [
+		$this->credentials = array(
 			'user' => $user,
 			'pass' => $password
-		];
+		);
 
 		return $this;
 	}

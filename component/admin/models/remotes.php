@@ -20,7 +20,7 @@ class LocaliseModelRemotes extends JModelList
 
 	protected $context = 'com_localise.languages';
 
-	protected $items = [];
+	protected $items = array();
 
 	/**
 	 * Method to auto-populate the model state.

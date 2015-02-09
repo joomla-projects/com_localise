@@ -34,7 +34,7 @@ class Transifex extends AbstractRemote
 		// UGH..... where is composer??
 		require_once '/home/elkuku/repos/com_localise/vendor/autoload.php';
 
-		$options = ['api.username' => $username, 'api.password' => $password];
+		$options = array('api.username' => $username, 'api.password' => $password);
 
 		$this->transifex = new TransifexAPI($options);
 	}
