@@ -677,8 +677,11 @@ class LocaliseModelTranslation extends JModelAdmin
 		{
 			$form->setFieldAttribute('legend', 'unchanged', $item->unchanged, 'legend');
 			$form->setFieldAttribute('legend', 'translated', $item->translated, 'legend');
+			$form->setFieldAttribute('legend', 'untranslatable', $item->untranslatable, 'legend');
+			$form->setFieldAttribute('legend', 'blocked', $item->blocked, 'legend');
 			$form->setFieldAttribute('legend', 'untranslated', $item->total - $item->translated - $item->unchanged, 'legend');
 			$form->setFieldAttribute('legend', 'extra', $item->extra, 'legend');
+			$form->setFieldAttribute('legend', 'keytodelete', $item->keytodelete, 'legend');
 		}
 
 		if ($this->getState('translation.layout') != 'raw')
