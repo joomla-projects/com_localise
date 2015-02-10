@@ -37,6 +37,8 @@ class JFormFieldLanguage extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
+		$app  = JFactory::getApplication();
+		$state = $app->getUserState('com_localise.select');
 		$attributes = '';
 
 		if ($v = (string) $this->element['onchange'])
@@ -58,7 +60,24 @@ class JFormFieldLanguage extends JFormFieldList
 			$install = array();
 		}
 
-		$languages  = array_merge($admin, $site, $install);
+		// Listing languages in the language filter depending on the client filter
+		if ($state['client'] == 'installation')
+		{
+			$languages = $install;
+		}
+		elseif ($state['client'] == 'administrator')
+		{
+			$languages = $admin;
+		}
+		elseif ($state['client'] == 'site')
+		{
+			$languages = $site;
+		}
+		else
+		{
+			$languages  = array_merge($admin, $site, $install);
+		}
+
 		$attributes .= ' class="' . (string) $this->element['class'] . ($this->value == $reference ? ' iconlist-16-reference"' : '"');
 
 		foreach ($languages as $i => $language)
