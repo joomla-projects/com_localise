@@ -26,6 +26,8 @@ class LocaliseModelTranslation extends JModelAdmin
 
 	protected $contents;
 
+	protected $filter_fields = array('translatedkeys', 'untranslatedkeys', 'unchangedkeys');
+
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -169,6 +171,14 @@ class LocaliseModelTranslation extends JModelAdmin
 					? $this->getState('translation.path')
 					: $this->getState('translation.refpath');
 
+				$this->setState('translation.translatedkeys', array());
+				$this->setState('translation.untranslatedkeys', array());
+				$this->setState('translation.unchangedkeys', array());
+
+				$translatedkeys   = $this->getState('translation.translatedkeys');
+				$untranslatedkeys = $this->getState('translation.untranslatedkeys');
+				$unchangedkeys    = $this->getState('translation.unchangedkeys');
+
 				$this->item = new JObject(
 									array
 										(
@@ -183,6 +193,9 @@ class LocaliseModelTranslation extends JModelAdmin
 										'additionalcopyright' => array(),
 										'license'             => '',
 										'exists'              => JFile::exists($this->getState('translation.path')),
+										'translatedkeys'      => (array) $translatedkeys,
+										'untranslatedkeys'    => (array) $untranslatedkeys,
+										'unchangedkeys'       => (array) $unchangedkeys,
 										'translated'          => 0,
 										'unchanged'           => 0,
 										'extra'               => 0,
@@ -401,17 +414,35 @@ class LocaliseModelTranslation extends JModelAdmin
 
 							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']) && $sections['keys'][$key] != '')
 							{
-								if ($sections['keys'][$key] != $string || $this->getState('translation.path') == $this->getState('translation.refpath'))
+								if ($sections['keys'][$key] != $string)
+								{
+									$this->item->translated++;
+									$translatedkeys[] = $key;
+								}
+								elseif ($this->getState('translation.path') == $this->getState('translation.refpath'))
 								{
 									$this->item->translated++;
 								}
 								else
 								{
 									$this->item->unchanged++;
+									$unchangedkeys[] = $key;
 								}
+							}
+							elseif (!array_key_exists($key, $sections['keys']))
+							{
+								$untranslatedkeys[] = $key;
 							}
 						}
 					}
+
+					$this->item->translatedkeys = $translatedkeys;
+					$this->item->untranslatedkeys = $untranslatedkeys;
+					$this->item->unchangedkeys = $unchangedkeys;
+
+					$this->setState('translation.translatedkeys', $translatedkeys);
+					$this->setState('translation.untranslatedkeys', $untranslatedkeys);
+					$this->setState('translation.unchangedkeys', $unchangedkeys);
 
 					if (!empty($sections['keys']))
 					{
