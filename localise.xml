@@ -9,7 +9,7 @@
 	<copyright>(C) 2015 Open Source Matters. All rights reserved.</copyright>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>https://github.com/joomla-projects/com_localise</authorUrl>
-	<version>4.0.10-dev</version>
+	<version>4.0.11-dev</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>COM_LOCALISE_XML_DESCRIPTION</description>
 	<scriptfile>install.php</scriptfile>
