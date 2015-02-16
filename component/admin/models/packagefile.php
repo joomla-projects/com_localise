@@ -519,7 +519,7 @@ class LocaliseModelPackageFile extends JModelAdmin
 			$table->store();
 
 			$id = LocaliseHelper::getFileId($path);
-			$this->setState('package.id', $id);
+			$this->setState('packagefile.id', $id);
 			$app->setUserState('com_localise.edit.packagefile.id', $id);
 		}
 
