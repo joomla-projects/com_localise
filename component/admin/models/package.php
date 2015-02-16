@@ -509,12 +509,22 @@ class LocaliseModelPackage extends JModelAdmin
 			return false;
 		}
 		*/
-		$id = LocaliseHelper::getFileId($path);
-		$this->setState('package.id', $id);
+		if ($path == $oldpath)
+		{
+			$id = LocaliseHelper::getFileId($path);
+			$this->setState('package.id', $id);
 
-		// Bind the rules.
-		$table = $this->getTable();
-		$table->load($id);
+			// Bind the rules.
+			$table = $this->getTable();
+			$table->load($id);
+		}
+		else
+		{
+			$table = $this->getTable();
+			$table->store();
+			$id = LocaliseHelper::getFileId($path);
+			$this->setState('package.id', $id);
+		}
 
 		if (isset($data['rules']))
 		{

@@ -496,12 +496,22 @@ class LocaliseModelPackageFile extends JModelAdmin
 		}
 
 		*/
-		$id = LocaliseHelper::getFileId($path);
-		$this->setState('packagefile.id', $id);
+		if ($path == $oldpath)
+		{
+			$id = LocaliseHelper::getFileId($path);
+			$this->setState('packagefile.id', $id);
 
-		// Bind the rules.
-		$table = $this->getTable();
-		$table->load($id);
+			// Bind the rules.
+			$table = $this->getTable();
+			$table->load($id);
+		}
+		else
+		{
+			$table = $this->getTable();
+			$table->store();
+			$id = LocaliseHelper::getFileId($path);
+			$this->setState('packagefile.id', $id);
+		}
 
 		if (isset($data['rules']))
 		{
@@ -543,7 +553,7 @@ class LocaliseModelPackageFile extends JModelAdmin
 			$app->setUserState('com_localise.edit.packagefile.id', $id);
 
 			// Redirect to the new $id as name has changed
-			$app->redirect(JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('package.id'), false));
+			$app->redirect(JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('packagefile.id'), false));
 		}
 
 		$this->cleanCache();
