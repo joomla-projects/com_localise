@@ -508,9 +508,19 @@ class LocaliseModelPackageFile extends JModelAdmin
 		else
 		{
 			$table = $this->getTable();
+
+			if (!$table->delete((int) $originalId))
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+
 			$table->store();
+
 			$id = LocaliseHelper::getFileId($path);
-			$this->setState('packagefile.id', $id);
+			$this->setState('package.id', $id);
+			$app->setUserState('com_localise.edit.packagefile.id', $id);
 		}
 
 		if (isset($data['rules']))
@@ -535,22 +545,13 @@ class LocaliseModelPackageFile extends JModelAdmin
 			return false;
 		}
 
-	// Delete the older file
+		// Delete the older file
 		if ($path !== $oldpath && file_exists($oldpath))
 		{
 			if (!JFile::delete($oldpath))
 			{
 				$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_OLDFILE_REMOVE'), 'notice');
 			}
-
-			if (!$table->delete((int) $originalId))
-			{
-				$this->setError($table->getError());
-
-				return false;
-			}
-
-			$app->setUserState('com_localise.edit.packagefile.id', $id);
 
 			// Redirect to the new $id as name has changed
 			$app->redirect(JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('packagefile.id'), false));
