@@ -496,12 +496,32 @@ class LocaliseModelPackageFile extends JModelAdmin
 		}
 
 		*/
-		$id = LocaliseHelper::getFileId($path);
-		$this->setState('packagefile.id', $id);
+		if ($path == $oldpath)
+		{
+			$id = LocaliseHelper::getFileId($path);
+			$this->setState('packagefile.id', $id);
 
-		// Bind the rules.
-		$table = $this->getTable();
-		$table->load($id);
+			// Bind the rules.
+			$table = $this->getTable();
+			$table->load($id);
+		}
+		else
+		{
+			$table = $this->getTable();
+
+			if (!$table->delete((int) $originalId))
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+
+			$table->store();
+
+			$id = LocaliseHelper::getFileId($path);
+			$this->setState('packagefile.id', $id);
+			$app->setUserState('com_localise.edit.packagefile.id', $id);
+		}
 
 		if (isset($data['rules']))
 		{
@@ -525,7 +545,7 @@ class LocaliseModelPackageFile extends JModelAdmin
 			return false;
 		}
 
-	// Delete the older file
+		// Delete the older file and redirect
 		if ($path !== $oldpath && file_exists($oldpath))
 		{
 			if (!JFile::delete($oldpath))
@@ -533,17 +553,17 @@ class LocaliseModelPackageFile extends JModelAdmin
 				$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_OLDFILE_REMOVE'), 'notice');
 			}
 
-			if (!$table->delete((int) $originalId))
+			$task = JFactory::getApplication()->input->get('task');
+
+			if ($task == 'save')
 			{
-				$this->setError($table->getError());
-
-				return false;
+				$app->redirect(JRoute::_('index.php?option=com_localise&view=packages', false));
 			}
-
-			$app->setUserState('com_localise.edit.packagefile.id', $id);
-
-			// Redirect to the new $id as name has changed
-			$app->redirect(JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('package.id'), false));
+			else
+			{
+				// Redirect to the new $id as name has changed
+				$app->redirect(JRoute::_('index.php?option=com_localise&view=packagefile&layout=edit&id=' . $this->getState('packagefile.id'), false));
+			}
 		}
 
 		$this->cleanCache();
