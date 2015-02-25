@@ -654,11 +654,7 @@ class LocaliseModelPackageFile extends JModelAdmin
 
 			foreach ($site as $translation)
 			{
-				$path = JPATH_ROOT . '/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini';
-
-				// @TODO Search also for ini file in the 3pd extension folder
-
-				// $path = JPATH_ROOT . '/EXTENSION-PATH/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini');
+				$path = LocaliseHelper::findTranslationPath($client = 'site', $tag = $data['language'], $filename = $translation);
 
 				if (JFile::exists($path))
 				{
@@ -729,11 +725,7 @@ class LocaliseModelPackageFile extends JModelAdmin
 
 			foreach ($administrator as $translation)
 			{
-				$path = JPATH_ROOT . '/administrator/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini';
-
-				// @TODO Search also for ini file in the 3pd extension folder
-
-				// $path = JPATH_ROOT . '/EXTENSION-PATH/language/' . $data['language'] . '/' . $data['language'] . '.' . $translation . '.ini');
+				$path = LocaliseHelper::findTranslationPath($client = 'administrator', $tag = $data['language'], $filename = $translation);
 
 				if (JFile::exists($path))
 				{
