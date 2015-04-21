@@ -900,7 +900,7 @@ class LocaliseModelTranslation extends JModelAdmin
 			}
 
 			$contents2 .= "; @note        Client " . ucfirst($client) . "\n";
-			$contents2 .= "; @note        All ini files need to be saved as UTF-8 - No BOM\n\n";
+			$contents2 .= "; @note        All ini files need to be saved as UTF-8\n\n";
 
 			$contents = array();
 			$stream   = new JStream;

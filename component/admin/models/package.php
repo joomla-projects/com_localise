@@ -789,6 +789,19 @@ class LocaliseModelPackage extends JModelAdmin
 					$site_txt .= "\t\t" . '<filename>js/calendar-setup.js</filename>' . "\n";
 				}
 
+				$path = JPATH_ROOT . '/media/' . $data['language'] . '/js/calendar-setup-uncompressed.js';
+
+				if (JFile::exists($path))
+				{
+					$file_data = file_get_contents($path);
+				}
+
+				if (JFile::exists($path) && !empty($file_data))
+				{
+					$site_package_files[] = array('name' => 'js/calendar-setup-uncompressed.js','data' => $file_data);
+					$site_txt .= "\t\t" . '<filename>js/calendar-setup-uncompressed</filename>' . "\n";
+				}
+
 				$path = JPATH_ROOT . '/media/' . $data['language'] . '/js/index.html';
 
 				if (JFile::exists($path))
@@ -813,6 +826,19 @@ class LocaliseModelPackage extends JModelAdmin
 				{
 					$site_package_files[] = array('name' => 'js/calendar.js','data' => $file_data);
 					$site_txt .= "\t\t" . '<filename>js/calendar.js</filename>' . "\n";
+				}
+
+				$path = JPATH_ROOT . '/media/' . $data['language'] . '/js/calendar-uncompressed.js';
+
+				if (JFile::exists($path))
+				{
+					$file_data = file_get_contents($path);
+				}
+
+				if (JFile::exists($path) && !empty($file_data))
+				{
+					$site_package_files[] = array('name' => 'js/calendar-uncompressed.js','data' => $file_data);
+					$site_txt .= "\t\t" . '<filename>js/calendar-uncompressed.js</filename>' . "\n";
 				}
 
 				$site_txt .= "\t" . '</media>' . "\n";
