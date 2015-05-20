@@ -191,6 +191,20 @@
 	vertical-align: text-top;
 	width: 16px !important;
 }
+.icon-16-github {
+	background-image: url("../../../media/com_localise/images/icon-16-github.png");
+	background-repeat: no-repeat;
+	height: 16px !important;
+	vertical-align: text-top;
+	width: 16px !important;
+}
+.icon-32-github {
+	background-image: url("../../../media/com_localise/images/icon-32-github.png");
+	background-repeat: no-repeat;
+	height: 32px !important;
+	vertical-align: text-top;
+	width: 32px !important;
+}
 .pointer {
 	cursor: pointer;
 	float: left;

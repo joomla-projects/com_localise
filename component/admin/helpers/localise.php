@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.path');
+jimport("joomla.utilities.date");
 
 /**
  * Localise Helper class
@@ -749,5 +750,524 @@ abstract class LocaliseHelper
 		}
 
 		return $sections[$filename];
+	}
+
+	/**
+	 * Gets from zero or keept updated the files in develop from Github
+	 *
+	 * @param   array  $gh_data  Array with the required data
+	 *
+	 * @return  array
+	 *
+	 * @since   4.11
+	 */
+	public static function getGithubfiles($gh_data = array())
+	{
+		if (!empty($gh_data))
+		{
+			$now                = new JDate;
+			$now                = $now->toSQL();
+			$params             = JComponentHelper::getParams('com_localise');
+			$client_to_update   = 'gh_' . $gh_data['github_client'] . '_last_update';
+			$last_stored_update = $params->get($client_to_update, '');
+			$ref_tag            = $params->get('reference', 'en-GB');
+			$allow_develop      = $params->get('gh_allow_develop', 0);
+
+			if ($allow_develop == 0)
+			{
+				return false;
+			}
+
+			if ($ref_tag != 'en-GB')
+			{
+				return false;
+			}
+
+			if (!empty($last_stored_update))
+			{
+				$last_update = new JDate($last_stored_update);
+				$last_update = $last_update->toSQL();
+				$interval    = $params->get('gh_updates_interval', '1') == '1' ? 24 : 1;
+				$interval    = $last_update . " +" . $interval . " hours";
+				$next_update = new JDate($interval);
+				$next_update = $next_update->toSQL();
+
+				if ($now >= $next_update)
+				{
+					$get_files = 1;
+				}
+				else
+				{
+					$get_files = 0;
+				}
+			}
+			else
+			{
+				$get_files = 1;
+			}
+
+			if ($get_files == 0)
+			{
+				return false;
+			}
+
+			$gh_paths                  = array();
+			$gh_client                 = $gh_data['github_client'];
+			$gh_user                   = 'joomla';
+			$gh_project                = 'joomla-cms';
+			$gh_branch                 = $params->get('gh_branch', 'staging');
+			$gh_token                  = $params->get('gh_token', '');
+			$gh_paths['administrator'] = 'administrator/language/en-GB';
+			$gh_paths['site']          = 'language/en-GB';
+			$gh_paths['installation']  = 'installation/language/en-GB';
+
+			$reference_client_path = JPATH_ROOT . '/' . $gh_paths[$gh_client];
+			$reference_client_path = JFolder::makeSafe($reference_client_path);
+
+			$develop_client_path = JPATH_ROOT . '/media/com_localise/develop/github/joomla-cms/en-GB/' . $gh_client;
+			$develop_client_path = JFolder::makeSafe($develop_client_path);
+
+			$options = new JRegistry;
+
+			if (!empty($gh_token))
+			{
+				$options->set('gh.token', $gh_token);
+				$github = new JGithub($options);
+			}
+			else
+			{
+				// Without a token runs fatal.
+				// $github = new JGithub;
+
+				// Trying with a 'read only' public repositories token
+				// But base 64 encoded to avoid Github alarms sharing it.
+				$gh_token = base64_decode('MzY2NzYzM2ZkMzZmMWRkOGU5NmRiMTdjOGVjNTFiZTIyMzk4NzVmOA==');
+				$options->set('gh.token', $gh_token);
+				$github = new JGithub($options);
+			}
+
+			try
+			{
+				$repostoryfiles = $github->repositories->contents->get(
+					$gh_user,
+					$gh_project,
+					$gh_paths[$gh_client],
+					$gh_branch
+					);
+			}
+			catch (Exception $e)
+			{
+				JFactory::getApplication()->enqueueMessage(
+					JText::_('COM_LOCALISE_ERROR_GITHUB_GETTING_REPOSITORY_FILES'),
+					'warning');
+
+				return false;
+			}
+
+			$all_files_list = self::getFilesindevlist($develop_client_path);
+			$ini_files_list = self::getInifilesindevlist($develop_client_path);
+			$sha_files_list = self::getShafileslist($gh_data);
+
+			$sha = '';
+			$files_to_include = array();
+
+			foreach ($repostoryfiles as $repostoryfile)
+			{
+				$file_to_include = $repostoryfile->name;
+				$file_path = JFolder::makeSafe($develop_client_path . '/' . $file_to_include);
+				$reference_file_path = JFolder::makeSafe($reference_client_path . '/' . $file_to_include);
+
+				if (	(array_key_exists($file_to_include, $sha_files_list)
+					&& ($sha_files_list[$file_to_include] != $repostoryfile->sha))
+					|| empty($sha_files_list)
+					|| !JFile::exists($file_path))
+				{
+					$in_dev_file = $github->repositories->contents->get(
+							$gh_user,
+							$gh_project,
+							$repostoryfile->path,
+							$gh_branch
+							);
+				}
+				else
+				{
+					$in_dev_file = '';
+				}
+
+				$files_to_include[] = $file_to_include;
+				$sha_path  = JPATH_COMPONENT_ADMINISTRATOR . '/develop/gh_joomla_' . $gh_client . '_files.txt';
+				$sha_path  = JFolder::makeSafe($sha_path);
+
+				if (!empty($in_dev_file) && isset($in_dev_file->content))
+				{
+					$file_to_include = $repostoryfile->name;
+					$file_contents = base64_decode($in_dev_file->content);
+					JFile::write($file_path, $file_contents);
+
+					if (!JFile::exists($file_path))
+					{
+						JFactory::getApplication()->enqueueMessage(
+							JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_CREATE_DEV_FILE'),
+							'warning');
+
+						return false;
+					}
+
+					if (!JFile::exists($reference_file_path)
+						&& ($gh_client == 'administrator' || $gh_client == 'site'))
+					{
+						// Adding files only present in develop to reference location.
+						JFile::write($reference_file_path, $file_contents);
+
+						if (!JFile::exists($reference_file_path))
+						{
+							JFactory::getApplication()->enqueueMessage(
+								JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_ADD_NEW_FILES'),
+								'warning');
+
+							return false;
+						}
+					}
+				}
+
+				// Saved for each time due few times get all the github files at same time can crash.
+				// This one can help to remember the last one saved correctly and next time continue from there.
+				$sha .= $repostoryfile->name . "::" . $repostoryfile->sha . "\n";
+				JFile::write($sha_path, $sha);
+
+				if (!JFile::exists($sha_path))
+				{
+					JFactory::getApplication()->enqueueMessage(
+						JText::_('COM_LOCALISE_ERROR_GITHUB_NO_SHA_FILE_PRESENT'),
+						'warning');
+
+					return false;
+				}
+			}
+
+			if (!empty($all_files_list) && !empty($files_to_include))
+			{
+				// For files not present in dev yet.
+				$files_to_delete = array_diff($all_files_list, $files_to_include);
+
+				if (!empty($files_to_delete))
+				{
+					foreach ($files_to_delete as $file_to_delete)
+					{
+						if ($file_to_delete != 'index.html')
+						{
+							$file_path = JFolder::makeSafe($develop_client_path . "/" . $file_to_delete);
+							JFile::delete($file_path);
+
+							if (JFile::exists($file_path))
+							{
+								JFactory::getApplication()->enqueueMessage(
+									JText::_('COM_LOCALISE_ERROR_GITHUB_FILE_TO_DELETE_IS_PRESENT'),
+									'warning');
+
+								return false;
+							}
+						}
+					}
+				}
+			}
+
+			self::saveLastupdate($client_to_update);
+
+			return true;
+		}
+
+		JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_ERROR_GITHUB_NO_DATA_PRESENT'), 'warning');
+
+		return false;
+	}
+
+	/**
+	 * Gets the changes between language files versions
+	 *
+	 * @param   array  $refsections       The released reference data
+	 * @param   array  $develop_sections  The developed reference data
+	 *
+	 * @return  array
+	 *
+	 * @since   4.11
+	 */
+	public static function getDevelopchanges($refsections = array(), $develop_sections = array())
+	{
+		if (isset($refsections['keys']) && isset($develop_sections['keys']))
+		{
+			$keys_in_reference = array_keys($refsections['keys']);
+			$keys_in_develop   = array_keys($develop_sections['keys']);
+
+			// Catching new keys in develop
+			$developdata['extra_keys']['amount'] = 0;
+			$developdata['extra_keys']['keys'] = array();
+			$developdata['extra_keys']['strings'] = array();
+			$extras_in_develop = array_diff($keys_in_develop, $keys_in_reference);
+
+			if (!empty($extras_in_develop))
+			{
+				foreach ($extras_in_develop as $extra_key)
+				{
+					$developdata['extra_keys']['amount']++;
+					$developdata['extra_keys']['keys'][] = $extra_key;
+					$developdata['extra_keys']['strings'][$extra_key] = $develop_sections['keys'][$extra_key];
+				}
+			}
+
+			// Catching text changes in develop
+			$developdata['text_changes']['amount'] = 0;
+			$developdata['text_changes']['keys'] = array();
+			$developdata['text_changes']['ref_in_dev'] = array();
+			$developdata['text_changes']['diff'] = array();
+
+			foreach ($refsections['keys'] as $key => $string)
+			{
+				if (array_key_exists($key, $develop_sections['keys']))
+				{
+					$string_in_develop = $develop_sections['keys'][$key];
+					$text_changes = self::htmlgetTextchanges($string, $string_in_develop);
+
+					if (!empty($text_changes))
+					{
+						$developdata['text_changes']['amount']++;
+						$developdata['text_changes']['keys'][] = $key;
+						$developdata['text_changes']['ref_in_dev'][$key] = $develop_sections['keys'][$key];
+						$developdata['text_changes']['diff'][$key] = $text_changes;
+					}
+				}
+			}
+
+		return $developdata;
+		}
+
+	return array();
+	}
+
+	/**
+	 * Gets the list of ini files in develop
+	 *
+	 * @param   string  $develop_client_path  The data to the client path
+	 *
+	 * @return  array
+	 *
+	 * @since   4.11
+	 */
+	public static function getInifilesindevlist($develop_client_path = '')
+	{
+		if (!empty($develop_client_path))
+		{
+			$files = JFolder::files($develop_client_path, ".ini$");
+
+			return $files;
+		}
+
+	return array();
+	}
+
+	/**
+	 * Gets the list of all type of files in develop
+	 *
+	 * @param   string  $develop_client_path  The data to the client path
+	 *
+	 * @return  array
+	 *
+	 * @since   4.11
+	 */
+	public static function getFilesindevlist($develop_client_path = '')
+	{
+		if (!empty($develop_client_path))
+		{
+			$files = JFolder::files($develop_client_path);
+
+			return $files;
+		}
+
+	return array();
+	}
+
+	/**
+	 * Gets the stored SHA id for the files in develop.
+	 *
+	 * @param   array  $gh_data  The required data.
+	 *
+	 * @return  array
+	 *
+	 * @since   4.11
+	 */
+	public static function getShafileslist($gh_data = array())
+	{
+		$sha_files = array();
+		$gh_client = $gh_data['github_client'];
+		$sha_path  = JFolder::makeSafe(JPATH_COMPONENT_ADMINISTRATOR . '/develop/gh_joomla_' . $gh_client . '_files.txt');
+
+		if (JFile::exists($sha_path))
+		{
+			$file_contents = file_get_contents($sha_path);
+			$lines = preg_split("/\\r\\n|\\r|\\n/", $file_contents);
+
+			if (!empty($lines))
+			{
+				foreach ($lines as $line)
+				{
+					if (!empty($line))
+					{
+						list($filename, $sha) = explode('::', $line, 2);
+
+						if (!empty($filename) && !empty($sha))
+						{
+							$sha_files[$filename] = $sha;
+						}
+					}
+				}
+			}
+		}
+
+	return $sha_files;
+	}
+
+	/**
+	 * Save the date of the last Github files update by client.
+	 *
+	 * @param   string  $client_to_update  The client language files.
+	 *
+	 * @return  bolean
+	 *
+	 * @since   4.11
+	 */
+	public static function saveLastupdate($client_to_update)
+	{
+		$now    = new JDate;
+		$now    = $now->toSQL();
+		$params = JComponentHelper::getParams('com_localise');
+		$params->set($client_to_update, $now);
+
+		$localise_id = JComponentHelper::getComponent('com_localise')->id;
+
+		$table = JTable::getInstance('extension');
+		$table->load($localise_id);
+		$table->bind(array('params' => $params->toString()));
+
+		if (!$table->check())
+		{
+			JFactory::getApplication()->enqueueMessage($table->getError(), 'warning');
+
+			return false;
+		}
+
+		if (!$table->store())
+		{
+			JFactory::getApplication()->enqueueMessage($table->getError(), 'warning');
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Gets the text changes.
+	 *
+	 * @param   array  $old  The string parts in reference.
+	 * @param   array  $new  The string parts in develop.
+	 *
+	 * @return  array
+	 *
+	 * @since   4.11
+	 */
+	public static function getTextchanges($old, $new)
+	{
+		$maxlen = 0;
+
+		foreach ($old as $oindex => $ovalue)
+		{
+		$nkeys = array_keys($new, $ovalue);
+
+			foreach ($nkeys as $nindex)
+			{
+			$matrix[$oindex][$nindex] = isset($matrix[$oindex - 1][$nindex - 1]) ? $matrix[$oindex - 1][$nindex - 1] + 1 : 1;
+
+				if ($matrix[$oindex][$nindex] > $maxlen)
+				{
+				$maxlen = $matrix[$oindex][$nindex];
+				$omax = $oindex + 1 - $maxlen;
+				$nmax = $nindex + 1 - $maxlen;
+				}
+
+			unset ($nkeys, $nindex);
+			}
+
+		unset ($oindex, $ovalue);
+		}
+
+		if ($maxlen == 0)
+		{
+		return array(array ('d' => $old, 'i' => $new));
+		}
+
+		return array_merge(
+			self::getTextchanges(
+			array_slice($old, 0, $omax),
+			array_slice($new, 0, $nmax)
+			),
+			array_slice($new, $nmax, $maxlen),
+			self::getTextchanges(
+			array_slice($old, $omax + $maxlen),
+			array_slice($new, $nmax + $maxlen)
+			)
+			);
+	}
+
+	/**
+	 * Gets the html text changes.
+	 *
+	 * @param   string  $old  The string in reference.
+	 * @param   string  $new  The string in develop.
+	 *
+	 * @return  string
+	 *
+	 * @since   4.11
+	 */
+	public static function htmlgetTextchanges($old, $new)
+	{
+		$text_changes = '';
+
+		if ($old == $new)
+		{
+			return $text_changes;
+		}
+
+		$old = str_replace('  ', 'LOCALISEDOUBLESPACES', $old);
+		$new = str_replace('  ', 'LOCALISEDOUBLESPACES', $new);
+
+		$diff = self::getTextchanges(explode(' ', $old), explode(' ', $new));
+
+		foreach ($diff as $k)
+		{
+			if (is_array($k))
+			{
+			$text_changes .= (!empty ($k['d'])?"LOCALISEDELSTART"
+				. implode(' ', $k['d']) . "LOCALISEDELSTOP ":'')
+				. (!empty($k['i']) ? "LOCALISEINSSTART"
+				. implode(' ', $k['i'])
+				. "LOCALISEINSSTOP " : '');
+			}
+			else
+			{
+			$text_changes .= $k . ' ';
+			}
+
+		unset ($k);
+		}
+
+		$text_changes = htmlspecialchars($text_changes);
+		$text_changes = preg_replace('/LOCALISEINSSTART/', "<ins class='diff_ins'>", $text_changes);
+		$text_changes = preg_replace('/LOCALISEINSSTOP/', "</ins>", $text_changes);
+		$text_changes = preg_replace('/LOCALISEDELSTART/', "<del class='diff_del'>", $text_changes);
+		$text_changes = preg_replace('/LOCALISEDELSTOP/', "</del>", $text_changes);
+		$double_spaces = '<span class="red-space"><font color="red">XX</font></span>';
+		$text_changes = str_replace('LOCALISEDOUBLESPACES', $double_spaces, $text_changes);
+
+	return $text_changes;
 	}
 }

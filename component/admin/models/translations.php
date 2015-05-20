@@ -745,6 +745,10 @@ class LocaliseModelTranslations extends JModelList
 				return $this->translations;
 			}
 
+			$gh_data = array();
+			$gh_data['github_client'] = $filter_client;
+			$get_github_files = LocaliseHelper::getGithubfiles($gh_data);
+
 			$filter_state = $this->getState('filter.state') ? $this->getState('filter.state') : '.';
 			$filter_tag   = $filter_tag   ? ("^" . $filter_tag . "$") : '.';
 

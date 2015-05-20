@@ -171,13 +171,25 @@ class LocaliseModelTranslation extends JModelAdmin
 					? $this->getState('translation.path')
 					: $this->getState('translation.refpath');
 
+				$gh_client           = $this->getState('translation.client');
+				$tag                 = $this->getState('translation.tag');
+				$reftag              = $this->getState('translation.reference');
+				$istranslation       = 0;
+
+				if (!empty($tag) && $tag != $reftag)
+				{
+					$istranslation = 1;
+				}
+
 				$this->setState('translation.translatedkeys', array());
 				$this->setState('translation.untranslatedkeys', array());
 				$this->setState('translation.unchangedkeys', array());
+				$this->setState('translation.developdata', array());
 
 				$translatedkeys   = $this->getState('translation.translatedkeys');
 				$untranslatedkeys = $this->getState('translation.untranslatedkeys');
 				$unchangedkeys    = $this->getState('translation.unchangedkeys');
+				$developdata      = $this->getState('translation.developdata');
 
 				$this->item = new JObject(
 									array
@@ -193,6 +205,8 @@ class LocaliseModelTranslation extends JModelAdmin
 										'additionalcopyright' => array(),
 										'license'             => '',
 										'exists'              => JFile::exists($this->getState('translation.path')),
+										'istranslation'       => $istranslation,
+										'developdata'         => (array) $developdata,
 										'translatedkeys'      => (array) $translatedkeys,
 										'untranslatedkeys'    => (array) $untranslatedkeys,
 										'unchangedkeys'       => (array) $unchangedkeys,
@@ -403,8 +417,26 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				if ($this->getState('translation.layout') != 'raw' && empty($this->item->error))
 				{
-					$sections    = LocaliseHelper::parseSections($this->getState('translation.path'));
-					$refsections = LocaliseHelper::parseSections($this->getState('translation.refpath'));
+					$sections            = LocaliseHelper::parseSections($this->getState('translation.path'));
+					$refsections         = LocaliseHelper::parseSections($this->getState('translation.refpath'));
+					$develop_client_path = JPATH_ROOT
+								. '/media/com_localise/develop/github/joomla-cms/en-GB/'
+								. $gh_client;
+					$develop_client_path = JFolder::makeSafe($develop_client_path);
+					$ref_file            = basename($this->getState('translation.refpath'));
+					$develop_file_path   = "$develop_client_path/$ref_file";
+
+					if (JFile::exists($develop_file_path))
+					{
+						$develop_sections = LocaliseHelper::parseSections($develop_file_path);
+						$developdata      = LocaliseHelper::getDevelopchanges($refsections, $develop_sections);
+
+						if ($developdata['extra_keys']['amount'] > 0  || $developdata['text_changes']['amount'] > 0)
+						{
+							// When develop changes are present replace the reference keys
+							$refsections = $develop_sections;
+						}
+					}
 
 					if (!empty($refsections['keys']))
 					{
@@ -436,13 +468,15 @@ class LocaliseModelTranslation extends JModelAdmin
 						}
 					}
 
-					$this->item->translatedkeys = $translatedkeys;
+					$this->item->translatedkeys   = $translatedkeys;
 					$this->item->untranslatedkeys = $untranslatedkeys;
-					$this->item->unchangedkeys = $unchangedkeys;
+					$this->item->unchangedkeys    = $unchangedkeys;
+					$this->item->developdata      = $developdata;
 
 					$this->setState('translation.translatedkeys', $translatedkeys);
 					$this->setState('translation.untranslatedkeys', $untranslatedkeys);
 					$this->setState('translation.unchangedkeys', $unchangedkeys);
+					$this->setState('translation.developdata', $developdata);
 
 					if (!empty($sections['keys']))
 					{

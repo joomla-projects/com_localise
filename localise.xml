@@ -34,6 +34,7 @@
 	<media destination="com_localise" folder="media/com_localise">
 		<folder>images</folder>
 		<folder>css</folder>
+		<folder>develop</folder>
 		<folder>js</folder>
 		<folder>packages</folder>
 		<filename>index.html</filename>
@@ -47,6 +48,7 @@
 		</submenu>
 		<files folder="component/admin">
 			<folder>controllers</folder>
+			<folder>develop</folder>
 			<folder>help</folder>
 			<folder>helpers</folder>
 			<folder>language</folder>
