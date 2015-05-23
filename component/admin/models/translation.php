@@ -259,6 +259,7 @@ class LocaliseModelTranslation extends JModelAdmin
 					$lineNumber = 0;
 
 					$params             = JComponentHelper::getParams('com_localise');
+					$allow_develop      = $params->get('gh_allow_develop', 0);
 					$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
 
 					while (!$stream->eof())
@@ -426,15 +427,19 @@ class LocaliseModelTranslation extends JModelAdmin
 					$ref_file            = basename($this->getState('translation.refpath'));
 					$develop_file_path   = "$develop_client_path/$ref_file";
 
-					if (JFile::exists($develop_file_path))
+					if (JFile::exists($develop_file_path) && $allow_develop == 1)
 					{
 						$develop_sections = LocaliseHelper::parseSections($develop_file_path);
 						$developdata      = LocaliseHelper::getDevelopchanges($refsections, $develop_sections);
+						$developdata['develop_file_path'] = '';
 
 						if ($developdata['extra_keys']['amount'] > 0  || $developdata['text_changes']['amount'] > 0)
 						{
-							// When develop changes are present replace the reference keys
+							// When develop changes are present, replace the reference keys
 							$refsections = $develop_sections;
+
+							// And store the path for future calls
+							$developdata['develop_file_path'] = $develop_file_path;
 						}
 					}
 
@@ -620,6 +625,12 @@ class LocaliseModelTranslation extends JModelAdmin
 		$app      = JFactory::getApplication();
 		$false    = false;
 
+		$have_develop        = 0;
+		$developdata         = array();
+		$istranslation       = '';
+		$extras_amount       = 0;
+		$text_changes_amount = 0;
+
 		// Compute all known languages
 		static $languages = array();
 		jimport('joomla.language.language');
@@ -635,6 +646,9 @@ class LocaliseModelTranslation extends JModelAdmin
 			$form->setFieldAttribute('legend', 'translated', $item->translated, 'legend');
 			$form->setFieldAttribute('legend', 'untranslated', $item->total - $item->translated - $item->unchanged, 'legend');
 			$form->setFieldAttribute('legend', 'extra', $item->extra, 'legend');
+
+			$developdata   = $item->developdata;
+			$istranslation = $item->istranslation;
 		}
 
 		if ($this->getState('translation.layout') != 'raw')
@@ -643,6 +657,26 @@ class LocaliseModelTranslation extends JModelAdmin
 			$refpath     = $this->getState('translation.refpath');
 			$sections    = LocaliseHelper::parseSections($path);
 			$refsections = LocaliseHelper::parseSections($refpath);
+
+			$this->setState('translation.devpath', '');
+
+			if (!empty($developdata))
+			{
+				$have_develop        = 1;
+				$extras_amount       = $developdata['extra_keys']['amount'];
+				$text_changes_amount = $developdata['text_changes']['amount'];
+
+				if ($extras_amount > 0  || $text_changes_amount > 0)
+				{
+					$develop_file_path = $developdata['develop_file_path'];
+					$develop_sections  = LocaliseHelper::parseSections($develop_file_path);
+					$refsections       = $develop_sections;
+					$refpath           = $develop_file_path;
+
+					$this->setState('translation.devpath', $develop_file_path);
+				}
+			}
+
 			$addform     = new SimpleXMLElement('<form />');
 
 			$group = $addform->addChild('fields');
@@ -715,7 +749,37 @@ class LocaliseModelTranslation extends JModelAdmin
 						$default    = $translated
 							? $sections['keys'][$key]
 							: '';
-						$label      = '<b>' . $key . '</b><br />' . htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
+
+						$diff   = '';
+						$newref = '';
+						$oldref = '';
+
+						if ($have_develop == '1' && in_array($key, $developdata['text_changes']['keys']))
+						{
+							$change  = $developdata['text_changes']['diff'][$key];
+							$label   = '<b>'
+								. $key
+								. '</b><br /><p class="text_changes">'
+								. $change
+								. '</p>';
+						}
+						elseif ($have_develop == '1' && in_array($key, $developdata['extra_keys']['keys']))
+						{
+							$label   = '<span class="new_word"><b>['
+								. JText::_('COM_LOCALISE_NEW_KEY_IN_DEVELOP')
+								. ']</b> </span><b>'
+								. $key
+								. '</b><br />'
+								. htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
+						}
+						else
+						{
+							$label   = '<b>'
+								. $key
+								. '</b><br />'
+								. htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
+						}
+
 						$field->addAttribute('status', $status);
 						$field->addAttribute('description', $string);
 
@@ -842,9 +906,15 @@ class LocaliseModelTranslation extends JModelAdmin
 	{
 		$path      = $this->getState('translation.path');
 		$refpath   = $this->getState('translation.refpath');
+		$devpath   = $this->getState('translation.devpath');
 		$exists    = JFile::exists($path);
 		$refexists = JFile::exists($refpath);
 		$client    = $this->getState('translation.client');
+
+		if ($refexists && !empty($devpath))
+		{
+			$refpath = $devpath;
+		}
 
 		// Set FTP credentials, if given.
 		JClientHelper::setCredentialsFromRequest('ftp');
@@ -858,9 +928,13 @@ class LocaliseModelTranslation extends JModelAdmin
 			return false;
 		}
 
-		if (array_key_exists('source', $data))
+		if (array_key_exists('source', $data) && empty($devpath))
 		{
 			$contents = $data['source'];
+		}
+		elseif (array_key_exists('source', $data) && !empty($devpath))
+		{
+			$contents = file_get_contents($devpath);
 		}
 		else
 		{

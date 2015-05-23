@@ -114,7 +114,7 @@ $lang = JFactory::getLanguage();
 				<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_REFERENCE'), 'inactive_class'=>'16-reference', 'enabled' => false, 'translate'=>false)); ?>
 			<?php elseif (($item->translated + $item->unchanged) == $item->total && $item->complete) : ?>
 				<?php if ($extras_amount > 0 || $text_changes_amount > 0) : ?>
-				<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_COMPLETE_WITH_DEVELOP', $item->translated, $item->unchanged, $text_changes_amount, $item->total, $item->extra), 'inactive_class'=>'16-complete', 'enabled' => false, 'translate'=>false)); ?>
+				<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_COMPLETE_WITH_DEVELOP', $item->translated, $item->unchanged, $extras_amount, $text_changes_amount, $item->total, $item->extra), 'inactive_class'=>'16-complete', 'enabled' => false, 'translate'=>false)); ?>
 				<?php else : ?>
 				<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_COMPLETE', $item->translated, $item->unchanged, $item->total, $item->extra), 'inactive_class'=>'16-complete', 'enabled' => false, 'translate'=>false)); ?>
 				<?php endif; ?>
@@ -141,9 +141,9 @@ $lang = JFactory::getLanguage();
 					</div>
 					<div class="clr"></div>
 				</span>
-				<?php if ($extras_amount > 0 || $text_changes_amount > 0) : ?>
-					<span class="icon-16-github hasTooltip" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_GITHUB'); ?>"></span>
-				<?php endif; ?>
+			<?php endif; ?>
+			<?php if ($extras_amount > 0 || $text_changes_amount > 0) : ?>
+				<br /><span class="icon-16-github hasTooltip" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_GITHUB'); ?>"></span>
 			<?php endif; ?>
 		</td>
 		<td dir="ltr" class="center">

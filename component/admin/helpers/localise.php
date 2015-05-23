@@ -1033,6 +1033,7 @@ abstract class LocaliseHelper
 						$developdata['text_changes']['amount']++;
 						$developdata['text_changes']['keys'][] = $key;
 						$developdata['text_changes']['ref_in_dev'][$key] = $develop_sections['keys'][$key];
+						$developdata['text_changes']['ref'][$key] = $string;
 						$developdata['text_changes']['diff'][$key] = $text_changes;
 					}
 				}

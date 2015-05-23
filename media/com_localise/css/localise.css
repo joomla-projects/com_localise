@@ -294,3 +294,22 @@ ul.adminformlist li {
 	background-position: bottom left;
 	background-repeat: repeat-x;
 }
+.text_changes {
+border: 1px dashed gray !important;
+background-color: #FFFFCC;
+margin-top: 0em;
+text-align: left;
+}
+.diff_del {
+background-color: #E3A0AB !important;
+}
+.diff_ins {
+background-color: lightgreen !important;
+}
+.red-space {
+background-color: red !important;
+
+}
+.new_word {
+color:#8B0000 !important;
+}
