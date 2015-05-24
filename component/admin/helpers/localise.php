@@ -780,6 +780,10 @@ abstract class LocaliseHelper
 
 			if ($ref_tag != 'en-GB')
 			{
+				JFactory::getApplication()->enqueueMessage(
+					JText::_('COM_LOCALISE_ERROR_GETTING_ALLOWED_REFERENCE_TAG'),
+					'warning');
+
 				return false;
 			}
 

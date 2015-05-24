@@ -26,8 +26,6 @@ class LocaliseModelTranslation extends JModelAdmin
 
 	protected $contents;
 
-	protected $filter_fields = array('translatedkeys', 'untranslatedkeys', 'unchangedkeys');
-
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -184,11 +182,13 @@ class LocaliseModelTranslation extends JModelAdmin
 				$this->setState('translation.translatedkeys', array());
 				$this->setState('translation.untranslatedkeys', array());
 				$this->setState('translation.unchangedkeys', array());
+				$this->setState('translation.textchangedkeys', array());
 				$this->setState('translation.developdata', array());
 
 				$translatedkeys   = $this->getState('translation.translatedkeys');
 				$untranslatedkeys = $this->getState('translation.untranslatedkeys');
 				$unchangedkeys    = $this->getState('translation.unchangedkeys');
+				$textchangedkeys  = $this->getState('translation.textchangedkeys');
 				$developdata      = $this->getState('translation.developdata');
 
 				$this->item = new JObject(
@@ -210,6 +210,7 @@ class LocaliseModelTranslation extends JModelAdmin
 										'translatedkeys'      => (array) $translatedkeys,
 										'untranslatedkeys'    => (array) $untranslatedkeys,
 										'unchangedkeys'       => (array) $unchangedkeys,
+										'textchangedkeys'     => (array) $textchangedkeys,
 										'translated'          => 0,
 										'unchanged'           => 0,
 										'extra'               => 0,
@@ -435,6 +436,13 @@ class LocaliseModelTranslation extends JModelAdmin
 
 						if ($developdata['extra_keys']['amount'] > 0  || $developdata['text_changes']['amount'] > 0)
 						{
+							if ($developdata['text_changes']['amount'] > 0)
+							{
+								$textchangedkeys = $developdata['text_changes']['keys'];
+								$this->item->textchangedkeys    = $textchangedkeys;
+								$this->setState('translation.textchangedkeys', $textchangedkeys);
+							}
+
 							// When develop changes are present, replace the reference keys
 							$refsections = $develop_sections;
 
@@ -662,12 +670,12 @@ class LocaliseModelTranslation extends JModelAdmin
 
 			if (!empty($developdata))
 			{
-				$have_develop        = 1;
 				$extras_amount       = $developdata['extra_keys']['amount'];
 				$text_changes_amount = $developdata['text_changes']['amount'];
 
 				if ($extras_amount > 0  || $text_changes_amount > 0)
 				{
+					$have_develop       = 1;
 					$develop_file_path = $developdata['develop_file_path'];
 					$develop_sections  = LocaliseHelper::parseSections($develop_file_path);
 					$refsections       = $develop_sections;
@@ -749,10 +757,6 @@ class LocaliseModelTranslation extends JModelAdmin
 						$default    = $translated
 							? $sections['keys'][$key]
 							: '';
-
-						$diff   = '';
-						$newref = '';
-						$oldref = '';
 
 						if ($have_develop == '1' && in_array($key, $developdata['text_changes']['keys']))
 						{

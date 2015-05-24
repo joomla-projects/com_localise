@@ -143,7 +143,7 @@ $lang = JFactory::getLanguage();
 				</span>
 			<?php endif; ?>
 			<?php if ($extras_amount > 0 || $text_changes_amount > 0) : ?>
-				<br /><span class="icon-16-github hasTooltip" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_GITHUB'); ?>"></span>
+				<br /><span class="icon-16-notice-note hasTooltip" title="<?php echo JText::sprintf('COM_LOCALISE_TOOLTIP_GITHUB', $extras_amount, $text_changes_amount); ?>"></span>
 			<?php endif; ?>
 		</td>
 		<td dir="ltr" class="center">
