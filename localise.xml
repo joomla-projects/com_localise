@@ -33,6 +33,7 @@
 	</update>
 	<media destination="com_localise" folder="media/com_localise">
 		<folder>images</folder>
+		<folder>customisedref</folder>
 		<folder>css</folder>
 		<folder>develop</folder>
 		<folder>js</folder>
@@ -48,6 +49,7 @@
 		</submenu>
 		<files folder="component/admin">
 			<folder>controllers</folder>
+			<folder>customisedref</folder>
 			<folder>develop</folder>
 			<folder>help</folder>
 			<folder>helpers</folder>

@@ -45,6 +45,21 @@
 			label="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE"
 			description="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE_DESC" />
 		<field
+			name="customisedref"
+			type="list"
+			default="REF_0"
+			label="COM_LOCALISE_LABEL_CUSTOMIZED_REF"
+			description="COM_LOCALISE_LABEL_CUSTOMIZED_REF_DESC">
+			<option	value="REF_0">COM_LOCALISE_LOCAL_INSTALLED_INSTANCE</option>
+			<option	value="REF_3_4_1">COM_LOCALISE_CUSTOMIZED_REF_3_4_1</option>
+			<option	value="REF_3_4_0">COM_LOCALISE_CUSTOMIZED_REF_3_4_0</option>
+			<option	value="REF_3_3_4">COM_LOCALISE_CUSTOMIZED_REF_3_3_4</option>
+			<option	value="REF_3_3_3">COM_LOCALISE_CUSTOMIZED_REF_3_3_3</option>
+			<option	value="REF_3_3_2">COM_LOCALISE_CUSTOMIZED_REF_3_3_2</option>
+			<option	value="REF_3_3_1">COM_LOCALISE_CUSTOMIZED_REF_3_3_1</option>
+			<option	value="REF_3_3_0">COM_LOCALISE_CUSTOMIZED_REF_3_3_0</option>
+		</field>
+		<field
 			name="filesavepermission"
 			type="text"
 			size="4"

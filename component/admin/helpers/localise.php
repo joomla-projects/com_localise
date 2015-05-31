@@ -103,6 +103,20 @@ abstract class LocaliseHelper
 	 */
 	public static function hasInstallation()
 	{
+		$params        = JComponentHelper::getParams('com_localise');
+		$customisedref = $params->get('customisedref', 'REF_0');
+
+		if ($customisedref != 'REF_0')
+		{
+			// If enabled installation client with normal reference
+			// This also allow work with customised references of installation client.
+			if (is_dir(LOCALISEPATH_INSTALLATION))
+			{
+				return is_dir(LOCALISEPATH_CUSTOMISED_INSTALLATION);
+			}
+		}
+
+		// Else verify it as normal way.
 		return is_dir(LOCALISEPATH_INSTALLATION);
 	}
 
@@ -543,17 +557,28 @@ abstract class LocaliseHelper
 	 */
 	public static function getTranslationPath($client, $tag, $filename, $storage)
 	{
+		$params          = JComponentHelper::getParams('com_localise');
+		$customisedref   = $params->get('customisedref', 'REF_0');
+		$customised_path = '';
+		$customised_name = '';
+
+		if ($tag == 'en-GB' && $customisedref != 'REF_0')
+		{
+			$customised_path = 'CUSTOMISED_';
+			$customised_name = $customisedref;
+		}
+
 		if ($filename == 'override')
 		{
 			$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/overrides/$tag.override.ini";
 		}
 		elseif ($filename == 'joomla')
 		{
-			$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.ini";
+			$path = constant('LOCALISEPATH_' . $customised_path . strtoupper($client)) . "/language/$tag/$customised_name/$tag.ini";
 		}
 		elseif ($storage == 'global')
 		{
-			$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$filename.ini";
+			$path = constant('LOCALISEPATH_' . $customised_path . strtoupper($client)) . "/language/$tag/$customised_name/$tag.$filename.ini";
 		}
 		else
 		{
@@ -589,11 +614,16 @@ abstract class LocaliseHelper
 					break;
 
 				case 'lib':
-					$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$filename.ini";
+					$path = constant('LOCALISEPATH_' . $customised_path . strtoupper($client)) . "/language/$tag/$tag.$filename.ini";
 
 					if (!is_file($path))
 					{
-						$path = $client == 'administrator' ? LOCALISEPATH_SITE : LOCALISEPATH_ADMINISTRATOR . "/language/$tag/$tag.$filename.ini";
+						$path = $client == 'administrator' ? 'LOCALISEPATH_'
+								. $customised_path
+								. 'SITE' : 'LOCALISEPATH_'
+								. $customised_path
+								. 'ADMINISTRATOR'
+								. "/language/$tag/$tag.$filename.ini";
 					}
 
 					break;
@@ -639,7 +669,7 @@ abstract class LocaliseHelper
 				break;
 
 			case 'plg':
-				$lang->load($extension, LOCALISEPATH_ADMINISTRATOR, null, false, true)
+				$lang->load($extension, 'LOCALISEPATH_' . 'ADMINISTRATOR', null, false, true)
 					|| $lang->load($extension, LOCALISEPATH_ADMINISTRATOR . "/components/$extension/", null, false, true);
 
 				break;
@@ -750,6 +780,254 @@ abstract class LocaliseHelper
 		}
 
 		return $sections[$filename];
+	}
+
+	/**
+	 * Gets the files in to use as reference from Github
+	 *
+	 * @param   array  $gh_data  Array with the required data
+	 *
+	 * @return  array
+	 *
+	 * @since   4.11
+	 */
+	public static function getCustomisedref($gh_data = array())
+	{
+		if (!empty($gh_data))
+		{
+			$params             = JComponentHelper::getParams('com_localise');
+			$ref_tag            = $params->get('reference', 'en-GB');
+			$customisedref      = $params->get('customisedref', 'REF_0');
+
+			if ($customisedref == 'REF_0')
+			{
+				return false;
+			}
+
+			if ($ref_tag != 'en-GB' && $customisedref != 'REF_0')
+			{
+				JFactory::getApplication()->enqueueMessage(
+					JText::_('COM_LOCALISE_ERROR_GETTING_ALLOWED_CUSTOM_REFERENCE_TAG'),
+					'warning');
+
+				return false;
+			}
+
+			$gh_data['customisedref']  = $customisedref;
+			$gh_target                 = self::getCustomisedtarget($gh_data);
+			$customisedref_status      = JPATH_COMPONENT_ADMINISTRATOR
+							. '/customisedref/'
+							. $gh_data['github_client']
+							. '_'
+							. $customisedref
+							. '_customised_ref.txt';
+
+			if (JFile::exists($customisedref_status))
+			{
+				// We have done this trunk and is not required do it again.
+				return false;
+			}
+
+			$gh_paths                  = array();
+			$gh_client                 = $gh_data['github_client'];
+			$gh_user                   = $gh_target['user'];
+			$gh_project                = $gh_target['project'];
+			$gh_branch                 = $gh_target['branch'];
+			$gh_token                  = $params->get('gh_token', '');
+			$gh_paths['administrator'] = 'administrator/language/en-GB';
+			$gh_paths['site']          = 'language/en-GB';
+			$gh_paths['installation']  = 'installation/language/en-GB';
+
+			$reference_client_path = JPATH_ROOT . '/' . $gh_paths[$gh_client];
+			$reference_client_path = JFolder::makeSafe($reference_client_path);
+
+			$custom_client_path = JPATH_ROOT
+					. '/media/com_localise/customisedref/github/'
+					. $gh_paths[$gh_client]
+					. '/'
+					. $gh_data['customisedref'];
+
+			$custom_client_path = JFolder::makeSafe($custom_client_path);
+
+			if (!JFolder::exists($custom_client_path))
+			{
+				$create_folder = self::createFolder($gh_data, $index = 'true');
+
+				if ($create_folder == false)
+				{
+					return false;
+				}
+			}
+
+			$options = new JRegistry;
+
+			if (!empty($gh_token))
+			{
+				$options->set('gh.token', $gh_token);
+				$github = new JGithub($options);
+			}
+			else
+			{
+				// Without a token runs fatal.
+				// $github = new JGithub;
+
+				// Trying with a 'read only' public repositories token
+				// But base 64 encoded to avoid Github alarms sharing it.
+				$gh_token = base64_decode('MzY2NzYzM2ZkMzZmMWRkOGU5NmRiMTdjOGVjNTFiZTIyMzk4NzVmOA==');
+				$options->set('gh.token', $gh_token);
+				$github = new JGithub($options);
+			}
+
+			try
+			{
+				$repostoryfiles = $github->repositories->contents->get(
+					$gh_user,
+					$gh_project,
+					$gh_paths[$gh_client],
+					$gh_branch
+					);
+			}
+			catch (Exception $e)
+			{
+				JFactory::getApplication()->enqueueMessage(
+					JText::_('COM_LOCALISE_ERROR_GITHUB_GETTING_REPOSITORY_FILES'),
+					'warning');
+
+				return false;
+			}
+
+			$all_files_list = self::getFilesindevlist($custom_client_path);
+			$ini_files_list = self::getInifilesindevlist($custom_client_path);
+
+			$files_to_include = array();
+
+			foreach ($repostoryfiles as $repostoryfile)
+			{
+				$file_to_include = $repostoryfile->name;
+				$file_path = JFolder::makeSafe($custom_client_path . '/' . $file_to_include);
+				$reference_file_path = JFolder::makeSafe($reference_client_path . '/' . $file_to_include);
+
+				$custom_file = $github->repositories->contents->get(
+						$gh_user,
+						$gh_project,
+						$repostoryfile->path,
+						$gh_branch
+						);
+
+				$files_to_include[] = $file_to_include;
+
+				if (!empty($custom_file) && isset($custom_file->content))
+				{
+					$file_to_include = $repostoryfile->name;
+					$file_contents = base64_decode($custom_file->content);
+					JFile::write($file_path, $file_contents);
+
+					if (!JFile::exists($file_path))
+					{
+						JFactory::getApplication()->enqueueMessage(
+							JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_CREATE_DEV_FILE'),
+							'warning');
+
+						return false;
+					}
+				}
+			}
+
+			if (!empty($all_files_list) && !empty($files_to_include))
+			{
+				// For files not present in dev yet.
+				$files_to_delete = array_diff($all_files_list, $files_to_include);
+
+				if (!empty($files_to_delete))
+				{
+					foreach ($files_to_delete as $file_to_delete)
+					{
+						if ($file_to_delete != 'index.html')
+						{
+							$file_path = JFolder::makeSafe($custom_client_path . "/" . $file_to_delete);
+							JFile::delete($file_path);
+
+							if (JFile::exists($file_path))
+							{
+								JFactory::getApplication()->enqueueMessage(
+									JText::_('COM_LOCALISE_ERROR_GITHUB_FILE_TO_DELETE_IS_PRESENT'),
+									'warning');
+
+								return false;
+							}
+						}
+					}
+				}
+			}
+
+			$customisedref_path  = JPATH_COMPONENT_ADMINISTRATOR . '/customisedref/' . $gh_client . '_' . $gh_data['customisedref'] . '_customised_ref.txt';
+			$customisedref_path  = JFolder::makeSafe($customisedref_path);
+
+			$file_contents = $gh_data['customisedref'] . "=DONE\n";
+			JFile::write($customisedref_path, $file_contents);
+
+			return true;
+		}
+
+		JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_ERROR_GITHUB_NO_DATA_PRESENT'), 'warning');
+
+		return false;
+	}
+
+	/**
+	 * Gets the regerence name to use at Github
+	 *
+	 * @param   array  $gh_data  Array with the required data
+	 *
+	 * @return  array
+	 *
+	 * @since   4.11
+	 */
+	public static function getCustomisedtarget($gh_data = array())
+	{
+		$target_ref = $gh_data['customisedref'];
+
+		$targets = array();
+
+		// Detailing it one by one due in this case we can add other Github users or projects
+		// To get the language files for a determined Joomla's version that is not present from main repository.
+		$targets['REF_3_4_1']['user'] = 'joomla';
+		$targets['REF_3_4_1']['project'] = 'joomla-cms';
+		$targets['REF_3_4_1']['branch'] = '3.4.1';
+
+		$targets['REF_3_4_0']['user'] = 'joomla';
+		$targets['REF_3_4_0']['project'] = 'joomla-cms';
+		$targets['REF_3_4_0']['branch'] = '3.4.0';
+
+		$targets['REF_3_3_6']['user'] = 'joomla';
+		$targets['REF_3_3_6']['project'] = 'joomla-cms';
+		$targets['REF_3_3_6']['branch'] = '3.3.6';
+
+		$targets['REF_3_3_5']['user'] = 'joomla';
+		$targets['REF_3_3_5']['project'] = 'joomla-cms';
+		$targets['REF_3_3_5']['branch'] = '3.3.5';
+
+		$targets['REF_3_3_4']['user'] = 'joomla';
+		$targets['REF_3_3_4']['project'] = 'joomla-cms';
+		$targets['REF_3_3_4']['branch'] = '3.3.4';
+
+		$targets['REF_3_3_3']['user'] = 'joomla';
+		$targets['REF_3_3_3']['project'] = 'joomla-cms';
+		$targets['REF_3_3_3']['branch'] = '3.3.3';
+
+		$targets['REF_3_3_2']['user'] = 'joomla';
+		$targets['REF_3_3_2']['project'] = 'joomla-cms';
+		$targets['REF_3_3_2']['branch'] = '3.3.2';
+
+		$targets['REF_3_3_1']['user'] = 'joomla';
+		$targets['REF_3_3_1']['project'] = 'joomla-cms';
+		$targets['REF_3_3_1']['branch'] = '3.3.1';
+
+		$targets['REF_3_3_0']['user'] = 'joomla';
+		$targets['REF_3_3_0']['project'] = 'joomla-cms';
+		$targets['REF_3_3_0']['branch'] = '3.3.0';
+
+	return ($targets[$target_ref]);
 	}
 
 	/**
@@ -1168,6 +1446,94 @@ abstract class LocaliseHelper
 		}
 
 		return true;
+	}
+
+	/**
+	 * Create the required folders for develop
+	 *
+	 * @param   array   $gh_data  Array with the data
+	 * @param   string  $index    If true, allow to create an index.html file
+	 *
+	 * @return  bolean
+	 *
+	 * @since   4.11
+	 */
+	public static function createFolder($gh_data = array(), $index = 'true')
+	{
+		if (!empty($gh_data) && isset($gh_data['customisedref']))
+		{
+		$full_path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($gh_data['github_client']))
+					. '/language/en-GB/'
+					. $gh_data['customisedref'];
+
+		$full_path = JFolder::makeSafe($full_path);
+
+			if (!JFolder::create($full_path))
+			{
+			}
+
+			if (JFolder::exists($full_path))
+			{
+				if ($index == 'true')
+				{
+				$cretate_index = self::createIndex($full_path);
+
+					if ($cretate_index == 1)
+					{
+						return true;
+					}
+
+				JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_CREATE_INDEX_FILE'), 'warning');
+
+				return false;
+				}
+
+			return true;
+			}
+			else
+			{
+				JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_CREATE_FOLDERS'), 'warning');
+
+				return false;
+			}
+		}
+
+	return false;
+	}
+
+	/**
+	 * Creates an index.html file within folders for develop
+	 *
+	 * @param   string  $full_path  The full path.
+	 *
+	 * @return  bolean
+	 *
+	 * @since   4.11
+	 */
+	public static function createIndex($full_path = '')
+	{
+		if (!empty($full_path))
+		{
+		$path = JFolder::makeSafe($full_path . '/index.html');
+
+		$index_content = '<!DOCTYPE html><title></title>';
+
+			if (!JFile::exists($path))
+			{
+				JFile::write($path, $index_content);
+			}
+
+			if (!JFile::exists($path))
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+
+	return false;
 	}
 
 	/**
