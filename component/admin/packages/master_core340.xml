@@ -34,6 +34,7 @@
     <filename>com_wrapper.ini</filename>
     <filename>files_joomla.sys.ini</filename>
     <filename>finder_cli.ini</filename>
+    <filename>lib_fof.ini</filename>
     <filename>lib_fof.sys.ini</filename>
     <filename>lib_idna_convert.sys.ini</filename>
     <filename>lib_joomla.ini</filename>
