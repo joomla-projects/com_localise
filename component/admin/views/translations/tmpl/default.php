@@ -17,6 +17,8 @@ $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
 $saveOrder  = $listOrder == 'filename';
 $sortFields = $this->getSortFields();
+$params     = JComponentHelper::getParams('com_localise');
+$ref_tag    = $params->get('reference', 'en-GB');
 ?>
 <script type="text/javascript">
 	Joomla.orderTable = function()
@@ -38,6 +40,7 @@ $sortFields = $this->getSortFields();
 <form action="<?php echo JRoute::_('index.php?option=com_localise&view=translations');?>" method="post" name="adminForm" id="adminForm">
 	<?php echo $this->loadTemplate('filter');?>
 		<?php echo $this->loadTemplate('legend');?>
+		<?php if ($ref_tag == 'en-GB') : echo $this->loadTemplate('references'); endif;?>
 		<table class="table table-striped" id="localiseList">
 			<thead>
 				<?php echo $this->loadTemplate('head');?>

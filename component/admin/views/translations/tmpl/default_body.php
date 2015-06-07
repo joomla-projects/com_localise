@@ -9,13 +9,13 @@
 
 defined('_JEXEC') or die;
 
-$app = JFactory::getApplication('administrator');
-$params = JComponentHelper::getParams('com_localise');
+$app       = JFactory::getApplication('administrator');
+$params    = JComponentHelper::getParams('com_localise');
 $reference = $params->get('reference', 'en-GB');
-$packages = LocaliseHelper::getPackages();
-$user = JFactory::getUser();
-$userId = $user->get('id');
-$lang = JFactory::getLanguage();
+$packages  = LocaliseHelper::getPackages();
+$user      = JFactory::getUser();
+$userId    = $user->get('id');
+$lang      = JFactory::getLanguage();
 ?>
 <?php foreach ($this->items as $i => $item) : ?>
 	<?php $canEdit = $user->authorise('localise.edit', 'com_localise' . (isset($item->id) ? ('.' . $item->id) : '')); ?>

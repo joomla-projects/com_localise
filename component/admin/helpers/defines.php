@@ -15,12 +15,3 @@ $params = JComponentHelper::getParams('com_localise');
 define('LOCALISEPATH_SITE', JPATH_SITE);
 define('LOCALISEPATH_ADMINISTRATOR', JPATH_ADMINISTRATOR);
 define('LOCALISEPATH_INSTALLATION', JPATH_ROOT . '/' . $params->get('installation', 'installation'));
-
-define('LOCALISEPATH_CUSTOMISED_SITE', JPATH_ROOT
-					. '/media/com_localise/customisedref/github');
-
-define('LOCALISEPATH_CUSTOMISED_ADMINISTRATOR', JPATH_ROOT
-						. '/media/com_localise/customisedref/github/administrator');
-
-define('LOCALISEPATH_CUSTOMISED_INSTALLATION', JPATH_ROOT
-						. '/media/com_localise/customisedref/github/installation');

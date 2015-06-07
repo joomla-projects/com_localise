@@ -87,6 +87,10 @@ class LocaliseModelTranslations extends JModelList
 			'filter.tag',
 			isset($data['select']['tag'])     ? $data['select']['tag'] :''
 		);
+		$this->setState(
+			'filter.develop',
+			isset($data['select']['develop']) ? $data['select']['develop'] :''
+		);
 
 		$params    = JComponentHelper::getParams('com_localise');
 		$this->setState('params', $params);
@@ -218,9 +222,6 @@ class LocaliseModelTranslations extends JModelList
 	 */
 	private function scanGlobalTranslationsFolders()
 	{
-		$params          = JComponentHelper::getParams('com_localise');
-		$customisedref   = $params->get('customisedref', 'REF_0');
-
 		$filter_storage = $this->getState('filter.storage');
 		$reftag         = $this->getState('translations.reference');
 
@@ -253,18 +254,10 @@ class LocaliseModelTranslations extends JModelList
 
 					foreach ($tags as $tag)
 					{
-						$ref_name = '';
-
-						if ($reftag == 'en-GB' && $tag == 'en-GB' &&  $customisedref != 'REF_0')
-						{
-							$path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($client)) . '/language';
-							$ref_name = '/' . $customisedref;
-						}
-
-						if (JFile::exists($path . '/' . $tag . $ref_name . '/' . $tag . '.xml'))
+						if (JFile::exists($path . '/' . $tag . '/' . $tag . '.xml'))
 						{
 							// For all selected tags
-							$files = JFolder::files("$path/$tag$ref_name", "$filter_search.*\.ini$");
+							$files = JFolder::files("$path/$tag", "$filter_search.*\.ini$");
 
 							foreach ($files as $file)
 							{
@@ -291,7 +284,7 @@ class LocaliseModelTranslations extends JModelList
 											'client' => $client,
 											'storage' => 'global',
 											'refpath' => null,
-											'path' => "$path/$tag$ref_name/$file",
+											'path' => "$path/$tag/$file",
 											'state' => $tag == $reftag ? 'inlanguage' : 'notinreference',
 											'writable' => LocaliseHelper::isWritable("$path/$tag/$file"),
 											'origin' => $origin
@@ -366,9 +359,6 @@ class LocaliseModelTranslations extends JModelList
 	 */
 	private function scanReference()
 	{
-		$params          = JComponentHelper::getParams('com_localise');
-		$customisedref   = $params->get('customisedref', 'REF_0');
-
 		$reftag         = $this->getState('translations.reference');
 		$filter_tag     = $this->getState('filter.tag')    ? ("^($reftag|" . $this->getState('filter.tag') . ")$") : '.';
 		$filter_search  = $this->getState('filter.search') ? $this->getState('filter.search') : '.';
@@ -388,7 +378,6 @@ class LocaliseModelTranslations extends JModelList
 		foreach ($clients as $client)
 		{
 			$client_folder = constant('LOCALISEPATH_' . strtoupper($client)) . '/language';
-			$customised_client_folder = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($client)) . '/language';
 
 			if (JFolder::exists($client_folder))
 			{
@@ -397,14 +386,6 @@ class LocaliseModelTranslations extends JModelList
 
 				foreach ($tags as $tag)
 				{
-					$customised_path = '';
-
-					if ($reftag == 'en-GB' && $tag == 'en-GB' &&  $customisedref != 'REF_0')
-					{
-						$path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($client)) . '/language';
-						$customised_path = 'CUSTOMISED_';
-					}
-
 					if (JFile::exists($client_folder . '/' . $tag . '/' . $tag . '.xml'))
 					{
 						if (array_key_exists("$client|$reftag|joomla", $this->translations))
@@ -418,26 +399,8 @@ class LocaliseModelTranslations extends JModelList
 							elseif ($filter_storage != 'local')
 							{
 								$origin = LocaliseHelper::getOrigin("", $client);
-								$state  = 'unexisting';
 
-								if ($tag == $reftag && $reftag == 'en-GB' &&  $customisedref != 'REF_0')
-								{
-									$path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($client)) . "/language/$tag/$customisedref/$tag.ini";
-								}
-								elseif ($tag != $reftag && $reftag == 'en-GB' &&  $customisedref != 'REF_0')
-								{
-									$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.ini";
-
-									if (JFile::exists($path))
-									{
-										$state  = 'inlanguage';
-									}
-								}
-								else
-								{
-									$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.ini";
-die(var_dump($path));
-								}
+								$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.ini";
 
 								$translation = new JObject(
 									array(
@@ -449,7 +412,7 @@ die(var_dump($path));
 										'name' => JText::_('COM_LOCALISE_TEXT_TRANSLATIONS_JOOMLA'),
 										'refpath' => $reftranslation->path,
 										'path' => $path,
-										'state' => $state,
+										'state' => 'unexisting',
 										'writable' => LocaliseHelper::isWritable($path),
 										'origin' => $origin
 									)
@@ -460,14 +423,7 @@ die(var_dump($path));
 					}
 				}
 
-				if ($reftag == 'en-GB' && $tag == 'en-GB' &&  $customisedref != 'REF_0')
-				{
-					$files = JFolder::files("$customised_client_folder/$reftag/$customisedref", "\.ini$");
-				}
-				else
-				{
-					$files = JFolder::files("$client_folder/$reftag", "\.ini$");
-				}
+				$files = JFolder::files("$client_folder/$reftag", "\.ini$");
 
 				if ($files)
 				{
@@ -482,14 +438,6 @@ die(var_dump($path));
 
 						foreach ($tags as $tag)
 						{
-							$customised_path = '';
-
-							if ($reftag == 'en-GB' && $tag == 'en-GB' &&  $customisedref != 'REF_0')
-							{
-								$path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($client)) . '/language';
-								$customised_path = 'CUSTOMISED_';
-							}
-
 							if (JFile::exists($client_folder . '/' . $tag . '/' . $tag . '.xml'))
 							{
 								if (array_key_exists("$client|$reftag|$name", $this->translations))
@@ -502,26 +450,7 @@ die(var_dump($path));
 									}
 									else
 									{
-										$state  = 'unexisting';
-
-										if ($tag == $reftag && $reftag == 'en-GB' &&  $customisedref != 'REF_0')
-										{
-											$path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($client)) . "/language/$tag/$customisedref/$tag.$name.ini";
-										}
-										elseif ($tag != $reftag && $reftag == 'en-GB' &&  $customisedref != 'REF_0')
-										{
-											$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-
-											if (JFile::exists($path))
-											{
-												$state  = 'inlanguage';
-											}
-										}
-										else
-										{
-											$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-										}
-
+										$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
 										$translation = new JObject(
 											array(
 												'type' => '',
@@ -532,7 +461,7 @@ die(var_dump($path));
 												'name' => $name,
 												'refpath' => $reftranslation->path,
 												'path' => $path,
-												'state' => $state,
+												'state' => 'unexisting',
 												'writable' => LocaliseHelper::isWritable($path),
 												'origin' => 'core'
 											)
@@ -550,14 +479,6 @@ die(var_dump($path));
 
 							foreach ($tags as $tag)
 							{
-								$customised_path = '';
-
-								if ($reftag == 'en-GB' && $tag == 'en-GB' &&  $customisedref != 'REF_0')
-								{
-									$path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($client)) . '/language';
-									$customised_path = 'CUSTOMISED_';
-								}
-
 								if (JFile::exists($client_folder . '/' . $tag . '/' . $tag . '.xml'))
 								{
 									if (array_key_exists("$client|$reftag|$name", $this->translations))
@@ -570,26 +491,7 @@ die(var_dump($path));
 										}
 										else
 										{
-											$state  = 'unexisting';
-
-											if ($tag == $reftag && $reftag == 'en-GB' &&  $customisedref != 'REF_0')
-											{
-												$path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($client)) . "/language/$tag/$customisedref/$tag.$name.ini";
-											}
-											elseif ($tag != $reftag && $reftag == 'en-GB' &&  $customisedref != 'REF_0')
-											{
-												$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-
-												if (JFile::exists($path))
-												{
-													$state  = 'inlanguage';
-												}
-											}
-											else
-											{
-												$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-											}
-
+											$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
 											$translation = new JObject(
 												array(
 													'type' => 'library',
@@ -600,7 +502,7 @@ die(var_dump($path));
 													'name' => $name,
 													'refpath' => $reftranslation->path,
 													'path' => $path,
-													'state' => $state,
+													'state' => 'unexisting',
 													'writable' => LocaliseHelper::isWritable($path),
 													'origin' => '_thirdparty'
 												)
@@ -618,14 +520,6 @@ die(var_dump($path));
 
 							foreach ($tags as $tag)
 							{
-								$customised_path = '';
-
-								if ($reftag == 'en-GB' && $tag == 'en-GB' &&  $customisedref != 'REF_0')
-								{
-									$path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($client)) . '/language';
-									$customised_path = 'CUSTOMISED_';
-								}
-
 								if (JFile::exists($client_folder . '/' . $tag . '/' . $tag . '.xml'))
 								{
 									if (array_key_exists("$client|$reftag|$name", $this->translations))
@@ -638,26 +532,7 @@ die(var_dump($path));
 										}
 										else
 										{
-											$state  = 'unexisting';
-
-											if ($tag == $reftag && $reftag == 'en-GB' &&  $customisedref != 'REF_0')
-											{
-												$path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($client)) . "/language/$tag/$customisedref/$tag.$name.ini";
-											}
-											elseif ($tag != $reftag && $reftag == 'en-GB' &&  $customisedref != 'REF_0')
-											{
-												$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-
-												if (JFile::exists($path))
-												{
-													$state  = 'inlanguage';
-												}
-											}
-											else
-											{
-												$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-											}
-
+											$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
 											$translation = new JObject(
 												array(
 													'type' => 'package',
@@ -668,7 +543,7 @@ die(var_dump($path));
 													'name' => $name,
 													'refpath' => $reftranslation->path,
 													'path' => $path,
-													'state' => $state,
+													'state' => 'unexisting',
 													'writable' => LocaliseHelper::isWritable($path),
 													'origin' => '_thirdparty'
 												)
@@ -687,14 +562,6 @@ die(var_dump($path));
 
 							foreach ($tags as $tag)
 							{
-								$customised_path = '';
-
-								if ($reftag == 'en-GB' && $tag == 'en-GB' &&  $customisedref != 'REF_0')
-								{
-									$path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($client)) . '/language';
-									$customised_path = 'CUSTOMISED_';
-								}
-
 								if (array_key_exists("$client|$reftag|$name", $this->translations))
 								{
 									$reftranslation = $this->translations["$client|$reftag|$name"];
@@ -705,26 +572,7 @@ die(var_dump($path));
 									}
 									else
 									{
-										$state  = 'unexisting';
-
-										if ($tag == $reftag && $reftag == 'en-GB' &&  $customisedref != 'REF_0')
-										{
-											$path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($client)) . "/language/$tag/$customisedref/$tag.$name.ini";
-										}
-										elseif ($tag != $reftag && $reftag == 'en-GB' &&  $customisedref != 'REF_0')
-										{
-											$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-
-											if (JFile::exists($path))
-											{
-												$state  = 'inlanguage';
-											}
-										}
-										else
-										{
-											$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-										}
-
+										$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
 										$translation = new JObject(
 											array(
 												'type' => 'file',
@@ -735,12 +583,11 @@ die(var_dump($path));
 												'name' => $name,
 												'refpath' => $reftranslation->path,
 												'path' => $path,
-												'state' => $state,
+												'state' => 'unexisting',
 												'writable' => LocaliseHelper::isWritable($path),
 												'origin' => 'core'
 											)
 										);
-
 										$this->translations["$client|$tag|$name"] = $translation;
 									}
 								}
@@ -784,14 +631,6 @@ die(var_dump($path));
 
 						if (JFile::exists($client_folder . '/' . $tag . '/' . $tag . '.xml'))
 						{
-							$customised_path = '';
-
-							if ($reftag == 'en-GB' && $tag == 'en-GB' &&  $customisedref != 'REF_0')
-							{
-								$path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($client)) . '/language';
-								$customised_path = 'CUSTOMISED_';
-							}
-
 							if (array_key_exists("$client|$tag|$prefix$extension$suffix", $this->translations))
 							{
 								$this
@@ -800,26 +639,7 @@ die(var_dump($path));
 							}
 							elseif ($filter_storage != 'local' && ($filter_origin == '' || $filter_origin == $origin))
 							{
-								$state  = 'unexisting';
-
-								if ($tag == $reftag && $reftag == 'en-GB' &&  $customisedref != 'REF_0')
-								{
-									$path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($client)) . "/language/$tag/$customisedref/$tag.$name.ini";
-								}
-								elseif ($tag != $reftag && $reftag == 'en-GB' &&  $customisedref != 'REF_0')
-								{
-									$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-
-									if (JFile::exists($path))
-									{
-										$state  = 'inlanguage';
-									}
-								}
-								else
-								{
-									$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$name.ini";
-								}
-
+								$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$prefix$extension$suffix.ini";
 								$translation = new JObject(
 									array(
 										'type' => $type,
@@ -829,7 +649,7 @@ die(var_dump($path));
 										'filename' => "$prefix$extension$suffix",
 										'name' => "$prefix$extension$suffix",
 										'refpath' => $reftranslation->path,
-										'path' => $path, 'state' => $state,
+										'path' => $path, 'state' => 'unexisting',
 										'writable' => LocaliseHelper::isWritable($path),
 										'origin' => $origin
 									)
@@ -919,6 +739,7 @@ die(var_dump($path));
 		{
 			$filter_client = $this->getState('filter.client');
 			$filter_tag   = $this->getState('filter.tag');
+			$filter_develop = $this->getState('filter.develop');
 
 			// Don't try to find translations if filters not set for client and language.
 			if (empty($filter_client) || empty($filter_tag))
@@ -931,8 +752,8 @@ die(var_dump($path));
 
 			$gh_data = array();
 			$gh_data['github_client'] = $filter_client;
-			$get_customised_ref = LocaliseHelper::getCustomisedref($gh_data);
-			$get_github_files = LocaliseHelper::getGithubfiles($gh_data);
+			$get_customised_ref = LocaliseHelper::getSourceGithubfiles($gh_data);
+			$get_github_files = LocaliseHelper::getTargetgithubfiles($gh_data);
 
 			$filter_state = $this->getState('filter.state') ? $this->getState('filter.state') : '.';
 			$filter_tag   = $filter_tag   ? ("^" . $filter_tag . "$") : '.';
@@ -978,6 +799,33 @@ die(var_dump($path));
 
 				if (preg_match("/$filter_state/", $state) && preg_match("/$filter_tag/", $translation->tag))
 				{
+					$developdata         = $item->developdata;
+					$extras_amount       = 0;
+					$text_changes_amount = 0;
+					$have_develop        = 0;
+
+					if (!empty($developdata))
+					{
+						$extras_amount       = $developdata['extra_keys']['amount'];
+						$text_changes_amount = $developdata['text_changes']['amount'];
+					}
+
+					if ($extras_amount > 0  || $text_changes_amount > 0)
+					{
+						$have_develop = 1;
+					}
+
+					if ($filter_develop == 'equal' && $have_develop == 1)
+					{
+						unset($this->translations[$key]);
+						continue;
+					}
+					elseif ($filter_develop == 'changed' && $have_develop == 0)
+					{
+						unset($this->translations[$key]);
+						continue;
+					}
+
 					if (count($item->error))
 					{
 						$item->state     = 'error';

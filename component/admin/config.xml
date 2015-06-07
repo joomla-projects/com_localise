@@ -45,21 +45,6 @@
 			label="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE"
 			description="COM_LOCALISE_LABEL_REFERENCE_LANGUAGE_DESC" />
 		<field
-			name="customisedref"
-			type="list"
-			default="REF_0"
-			label="COM_LOCALISE_LABEL_CUSTOMIZED_REF"
-			description="COM_LOCALISE_LABEL_CUSTOMIZED_REF_DESC">
-			<option	value="REF_0">COM_LOCALISE_LOCAL_INSTALLED_INSTANCE</option>
-			<option	value="REF_3_4_1">COM_LOCALISE_CUSTOMIZED_REF_3_4_1</option>
-			<option	value="REF_3_4_0">COM_LOCALISE_CUSTOMIZED_REF_3_4_0</option>
-			<option	value="REF_3_3_4">COM_LOCALISE_CUSTOMIZED_REF_3_3_4</option>
-			<option	value="REF_3_3_3">COM_LOCALISE_CUSTOMIZED_REF_3_3_3</option>
-			<option	value="REF_3_3_2">COM_LOCALISE_CUSTOMIZED_REF_3_3_2</option>
-			<option	value="REF_3_3_1">COM_LOCALISE_CUSTOMIZED_REF_3_3_1</option>
-			<option	value="REF_3_3_0">COM_LOCALISE_CUSTOMIZED_REF_3_3_0</option>
-		</field>
-		<field
 			name="filesavepermission"
 			type="text"
 			size="4"
@@ -160,14 +145,37 @@
 			<option value="1">JYES</option>
 		</field>
 		<field
-			name="gh_updates_interval"
+			name="gh_token"
+			type="text"
+			class="ltr"
+			default=""
+			label="COM_LOCALISE_LABEL_GITHUB_TOKEN"
+			description="COM_LOCALISE_LABEL_GITHUB_TOKEN_DESC" />
+		<field
+			type="spacer"
+			name="sourcespacer"
+			class="text"
+			label="COM_LOCALISE_SOURCE_SPACER_LABEL" />
+		<field
+			name="customisedref"
 			type="list"
-			default="1"
-			label="COM_LOCALISE_LABEL_GITHUB_UPDATES_INTERVAL"
-			description="COM_LOCALISE_LABEL_GITHUB_UPDATES_INTERVAL_DESC">
-			<option	value="0">COM_LOCALISE_HOURLY</option>
-			<option	value="1">COM_LOCALISE_DAILY</option>
+			default="0"
+			label="COM_LOCALISE_LABEL_CUSTOMIZED_REF"
+			description="COM_LOCALISE_LABEL_CUSTOMIZED_REF_DESC">
+			<option	value="0">COM_LOCALISE_LOCAL_INSTALLED_INSTANCE</option>
+			<option	value="3.4.1">COM_LOCALISE_CUSTOMIZED_REF_3_4_1</option>
+			<option	value="3.4.0">COM_LOCALISE_CUSTOMIZED_REF_3_4_0</option>
+			<option	value="3.3.4">COM_LOCALISE_CUSTOMIZED_REF_3_3_4</option>
+			<option	value="3.3.3">COM_LOCALISE_CUSTOMIZED_REF_3_3_3</option>
+			<option	value="3.3.2">COM_LOCALISE_CUSTOMIZED_REF_3_3_2</option>
+			<option	value="3.3.1">COM_LOCALISE_CUSTOMIZED_REF_3_3_1</option>
+			<option	value="3.3.0">COM_LOCALISE_CUSTOMIZED_REF_3_3_0</option>
 		</field>
+		<field
+			type="spacer"
+			name="targetspacer"
+			class="text"
+			label="COM_LOCALISE_TARGET_SPACER_LABEL" />
 		<field
 			name="gh_branch"
 			type="text"
@@ -176,12 +184,14 @@
 			label="COM_LOCALISE_LABEL_GITHUB_BRANCH"
 			description="COM_LOCALISE_LABEL_GITHUB_BRANCH_DESC" />
 		<field
-			name="gh_token"
-			type="text"
-			class="ltr"
-			default=""
-			label="COM_LOCALISE_LABEL_GITHUB_TOKEN"
-			description="COM_LOCALISE_LABEL_GITHUB_TOKEN_DESC" />
+			name="gh_updates_interval"
+			type="list"
+			default="1"
+			label="COM_LOCALISE_LABEL_GITHUB_UPDATES_INTERVAL"
+			description="COM_LOCALISE_LABEL_GITHUB_UPDATES_INTERVAL_DESC">
+			<option	value="0">COM_LOCALISE_HOURLY</option>
+			<option	value="1">COM_LOCALISE_DAILY</option>
+		</field>
 		<field
 			name="gh_administrator_last_update"
 			type="calendar"

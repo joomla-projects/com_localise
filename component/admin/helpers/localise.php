@@ -104,9 +104,9 @@ abstract class LocaliseHelper
 	public static function hasInstallation()
 	{
 		$params        = JComponentHelper::getParams('com_localise');
-		$customisedref = $params->get('customisedref', 'REF_0');
+		$customisedref = $params->get('customisedref', '0');
 
-		if ($customisedref != 'REF_0')
+		if ($customisedref != '0')
 		{
 			// If enabled installation client with normal reference
 			// This also allow work with customised references of installation client.
@@ -557,28 +557,17 @@ abstract class LocaliseHelper
 	 */
 	public static function getTranslationPath($client, $tag, $filename, $storage)
 	{
-		$params          = JComponentHelper::getParams('com_localise');
-		$customisedref   = $params->get('customisedref', 'REF_0');
-		$customised_path = '';
-		$customised_name = '';
-
-		if ($tag == 'en-GB' && $customisedref != 'REF_0')
-		{
-			$customised_path = 'CUSTOMISED_';
-			$customised_name = $customisedref;
-		}
-
 		if ($filename == 'override')
 		{
 			$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/overrides/$tag.override.ini";
 		}
 		elseif ($filename == 'joomla')
 		{
-			$path = constant('LOCALISEPATH_' . $customised_path . strtoupper($client)) . "/language/$tag/$customised_name/$tag.ini";
+			$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.ini";
 		}
 		elseif ($storage == 'global')
 		{
-			$path = constant('LOCALISEPATH_' . $customised_path . strtoupper($client)) . "/language/$tag/$customised_name/$tag.$filename.ini";
+			$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$filename.ini";
 		}
 		else
 		{
@@ -614,16 +603,11 @@ abstract class LocaliseHelper
 					break;
 
 				case 'lib':
-					$path = constant('LOCALISEPATH_' . $customised_path . strtoupper($client)) . "/language/$tag/$tag.$filename.ini";
+					$path = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.$filename.ini";
 
 					if (!is_file($path))
 					{
-						$path = $client == 'administrator' ? 'LOCALISEPATH_'
-								. $customised_path
-								. 'SITE' : 'LOCALISEPATH_'
-								. $customised_path
-								. 'ADMINISTRATOR'
-								. "/language/$tag/$tag.$filename.ini";
+						$path = $client == 'administrator' ? 'LOCALISEPATH_' . 'SITE' : 'LOCALISEPATH_' . 'ADMINISTRATOR' . "/language/$tag/$tag.$filename.ini";
 					}
 
 					break;
@@ -783,7 +767,7 @@ abstract class LocaliseHelper
 	}
 
 	/**
-	 * Gets the files in to use as reference from Github
+	 * Gets the files to use as source reference from Github
 	 *
 	 * @param   array  $gh_data  Array with the required data
 	 *
@@ -791,43 +775,33 @@ abstract class LocaliseHelper
 	 *
 	 * @since   4.11
 	 */
-	public static function getCustomisedref($gh_data = array())
+	public static function getSourceGithubfiles($gh_data = array())
 	{
 		if (!empty($gh_data))
 		{
-			$params             = JComponentHelper::getParams('com_localise');
-			$ref_tag            = $params->get('reference', 'en-GB');
-			$customisedref      = $params->get('customisedref', 'REF_0');
+			$params        = JComponentHelper::getParams('com_localise');
+			$ref_tag       = $params->get('reference', 'en-GB');
+			$saved_ref     = $params->get('customisedref', '0');
+			$allow_develop = $params->get('gh_allow_develop', 0);
+			$customisedref = $saved_ref;
 
-			if ($customisedref == 'REF_0')
+			if ($customisedref == '0')
 			{
-				return false;
+				$installed_version = new JVersion;
+				$customisedref     = $installed_version->getShortVersion();
 			}
 
-			if ($ref_tag != 'en-GB' && $customisedref != 'REF_0')
+			if ($ref_tag != 'en-GB' || $allow_develop == 0)
 			{
 				JFactory::getApplication()->enqueueMessage(
-					JText::_('COM_LOCALISE_ERROR_GETTING_ALLOWED_CUSTOM_REFERENCE_TAG'),
+					JText::_('COM_LOCALISE_ERROR_GETTING_UNALLOWED_CONFIGURATION'),
 					'warning');
 
 				return false;
 			}
 
 			$gh_data['customisedref']  = $customisedref;
-			$gh_target                 = self::getCustomisedtarget($gh_data);
-			$customisedref_status      = JPATH_COMPONENT_ADMINISTRATOR
-							. '/customisedref/'
-							. $gh_data['github_client']
-							. '_'
-							. $customisedref
-							. '_customised_ref.txt';
-
-			if (JFile::exists($customisedref_status))
-			{
-				// We have done this trunk and is not required do it again.
-				return false;
-			}
-
+			$gh_target                 = self::getCustomisedsource($gh_data);
 			$gh_paths                  = array();
 			$gh_client                 = $gh_data['github_client'];
 			$gh_user                   = $gh_target['user'];
@@ -841,13 +815,34 @@ abstract class LocaliseHelper
 			$reference_client_path = JPATH_ROOT . '/' . $gh_paths[$gh_client];
 			$reference_client_path = JFolder::makeSafe($reference_client_path);
 
-			$custom_client_path = JPATH_ROOT
-					. '/media/com_localise/customisedref/github/'
-					. $gh_paths[$gh_client]
+			$custom_client_path = JPATH_ROOT . '/media/com_localise/customisedref/github/'
+					. $gh_data['github_client']
 					. '/'
 					. $gh_data['customisedref'];
 
 			$custom_client_path = JFolder::makeSafe($custom_client_path);
+
+			$customisedref_status      = JPATH_COMPONENT_ADMINISTRATOR
+							. '/customisedref/'
+							. $gh_data['github_client']
+							. '_'
+							. $customisedref
+							. '_customised_ref.txt';
+
+			if (JFile::exists($customisedref_status))
+			{
+				// We have done this trunk and is not required get the files from Github again.
+
+				// So we can move the customised source reference files to core client folder
+				$update_files = self::updateSourcereference($gh_client, $custom_client_path, $reference_client_path);
+
+				if ($update_files == false)
+				{
+					return false;
+				}
+
+			return true;
+			}
 
 			if (!JFolder::exists($custom_client_path))
 			{
@@ -889,15 +884,24 @@ abstract class LocaliseHelper
 			}
 			catch (Exception $e)
 			{
-				JFactory::getApplication()->enqueueMessage(
-					JText::_('COM_LOCALISE_ERROR_GITHUB_GETTING_REPOSITORY_FILES'),
-					'warning');
+				if ($saved_ref == '0')
+				{
+					JFactory::getApplication()->enqueueMessage(
+						JText::_('COM_LOCALISE_ERROR_GITHUB_GETTING_LOCAL_INSTALLED_FILES'),
+						'warning');
+				}
+				else
+				{
+					JFactory::getApplication()->enqueueMessage(
+						JText::_('COM_LOCALISE_ERROR_GITHUB_GETTING_REPOSITORY_FILES'),
+						'warning');
+				}
 
 				return false;
 			}
 
-			$all_files_list = self::getFilesindevlist($custom_client_path);
-			$ini_files_list = self::getInifilesindevlist($custom_client_path);
+			$all_files_list = self::getLanguagefileslist($custom_client_path);
+			$ini_files_list = self::getInifileslist($custom_client_path);
 
 			$files_to_include = array();
 
@@ -960,13 +964,35 @@ abstract class LocaliseHelper
 				}
 			}
 
-			$customisedref_path  = JPATH_COMPONENT_ADMINISTRATOR . '/customisedref/' . $gh_client . '_' . $gh_data['customisedref'] . '_customised_ref.txt';
+			$customisedref_path  = JPATH_COMPONENT_ADMINISTRATOR
+					. '/customisedref/'
+					. $gh_client
+					. '_'
+					. $gh_data['customisedref']
+					. '_customised_ref.txt';
+
 			$customisedref_path  = JFolder::makeSafe($customisedref_path);
 
+			// After we have all the files we can mark as done this trunk.
 			$file_contents = $gh_data['customisedref'] . "=DONE\n";
 			JFile::write($customisedref_path, $file_contents);
 
+			if (JFile::exists($customisedref_status))
+			{
+				// We have done this trunk.
+
+				// So we can move the customised source reference files to core client folder
+				$update_files = self::updateSourcereference($gh_client, $custom_client_path, $reference_client_path);
+
+				if ($update_files == false)
+				{
+					return false;
+				}
+
 			return true;
+			}
+
+			return false;
 		}
 
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_ERROR_GITHUB_NO_DATA_PRESENT'), 'warning');
@@ -975,7 +1001,7 @@ abstract class LocaliseHelper
 	}
 
 	/**
-	 * Gets the regerence name to use at Github
+	 * Gets the reference name to use at Github
 	 *
 	 * @param   array  $gh_data  Array with the required data
 	 *
@@ -983,55 +1009,147 @@ abstract class LocaliseHelper
 	 *
 	 * @since   4.11
 	 */
-	public static function getCustomisedtarget($gh_data = array())
+	public static function getCustomisedsource($gh_data = array())
 	{
-		$target_ref = $gh_data['customisedref'];
+		$source_ref = $gh_data['customisedref'];
 
-		$targets = array();
+		$sources = array();
 
 		// Detailing it one by one due in this case we can add other Github users or projects
 		// To get the language files for a determined Joomla's version that is not present from main repository.
-		$targets['REF_3_4_1']['user'] = 'joomla';
-		$targets['REF_3_4_1']['project'] = 'joomla-cms';
-		$targets['REF_3_4_1']['branch'] = '3.4.1';
+		$sources['3.4.1']['user'] = 'joomla';
+		$sources['3.4.1']['project'] = 'joomla-cms';
+		$sources['3.4.1']['branch'] = '3.4.1';
 
-		$targets['REF_3_4_0']['user'] = 'joomla';
-		$targets['REF_3_4_0']['project'] = 'joomla-cms';
-		$targets['REF_3_4_0']['branch'] = '3.4.0';
+		$sources['3.4.0']['user'] = 'joomla';
+		$sources['3.4.0']['project'] = 'joomla-cms';
+		$sources['3.4.0']['branch'] = '3.4.0';
 
-		$targets['REF_3_3_6']['user'] = 'joomla';
-		$targets['REF_3_3_6']['project'] = 'joomla-cms';
-		$targets['REF_3_3_6']['branch'] = '3.3.6';
+		$sources['3.3.6']['user'] = 'joomla';
+		$sources['3.3.6']['project'] = 'joomla-cms';
+		$sources['3.3.6']['branch'] = '3.3.6';
 
-		$targets['REF_3_3_5']['user'] = 'joomla';
-		$targets['REF_3_3_5']['project'] = 'joomla-cms';
-		$targets['REF_3_3_5']['branch'] = '3.3.5';
+		$sources['3.3.5']['user'] = 'joomla';
+		$sources['3.3.5']['project'] = 'joomla-cms';
+		$sources['3.3.5']['branch'] = '3.3.5';
 
-		$targets['REF_3_3_4']['user'] = 'joomla';
-		$targets['REF_3_3_4']['project'] = 'joomla-cms';
-		$targets['REF_3_3_4']['branch'] = '3.3.4';
+		$sources['3.3.4']['user'] = 'joomla';
+		$sources['3.3.4']['project'] = 'joomla-cms';
+		$sources['3.3.4']['branch'] = '3.3.4';
 
-		$targets['REF_3_3_3']['user'] = 'joomla';
-		$targets['REF_3_3_3']['project'] = 'joomla-cms';
-		$targets['REF_3_3_3']['branch'] = '3.3.3';
+		$sources['3.3.3']['user'] = 'joomla';
+		$sources['3.3.3']['project'] = 'joomla-cms';
+		$sources['3.3.3']['branch'] = '3.3.3';
 
-		$targets['REF_3_3_2']['user'] = 'joomla';
-		$targets['REF_3_3_2']['project'] = 'joomla-cms';
-		$targets['REF_3_3_2']['branch'] = '3.3.2';
+		$sources['3.3.2']['user'] = 'joomla';
+		$sources['3.3.2']['project'] = 'joomla-cms';
+		$sources['3.3.2']['branch'] = '3.3.2';
 
-		$targets['REF_3_3_1']['user'] = 'joomla';
-		$targets['REF_3_3_1']['project'] = 'joomla-cms';
-		$targets['REF_3_3_1']['branch'] = '3.3.1';
+		$sources['3.3.1']['user'] = 'joomla';
+		$sources['3.3.1']['project'] = 'joomla-cms';
+		$sources['3.3.1']['branch'] = '3.3.1';
 
-		$targets['REF_3_3_0']['user'] = 'joomla';
-		$targets['REF_3_3_0']['project'] = 'joomla-cms';
-		$targets['REF_3_3_0']['branch'] = '3.3.0';
+		$sources['3.3.0']['user'] = 'joomla';
+		$sources['3.3.0']['project'] = 'joomla-cms';
+		$sources['3.3.0']['branch'] = '3.3.0';
 
-	return ($targets[$target_ref]);
+		if (array_key_exists($source_ref, $sources))
+		{
+			return ($sources[$source_ref]);
+		}
+
+		// For undefined REF 0 cases due Joomla releases at Github are following a version name patern.
+		$sources[$source_ref]['user'] = 'joomla';
+		$sources[$source_ref]['project'] = 'joomla-cms';
+		$sources[$source_ref]['branch'] = $source_ref;
+
+	return ($sources[$source_ref]);
 	}
 
 	/**
-	 * Gets from zero or keept updated the files in develop from Github
+	 * Keep updated the reference client path with the selected customised sourcefiles as reference.
+	 *
+	 * @param   string  $client                 The client
+	 *
+	 * @param   string  $custom_client_path     The path where the new source reference is stored
+	 *
+	 * @param   string  $reference_client_path  The path where the old source reference is stored
+	 *
+	 * @return  boolean
+	 *
+	 * @since   4.11
+	 */
+	public static function updateSourcereference($client, $custom_client_path, $reference_client_path)
+	{
+		$develop_client_path   = JPATH_ROOT . '/media/com_localise/develop/github/joomla-cms/en-GB/' . $client;
+		$develop_client_path   = JFolder::makeSafe($develop_client_path);
+
+		$custom_ini_files_list = self::getInifileslist($custom_client_path);
+		$last_ini_files_list   = self::getInifileslist($develop_client_path);
+
+		$files_to_exclude = array();
+
+			if (!empty($custom_ini_files_list) && !empty($last_ini_files_list))
+			{
+				// Verify that we have stored a full set of core files.
+
+				if (JFile::exists($develop_client_path . '/en-GB.xml'))
+				{
+					// This one is for core files not present within last in dev yet.
+					// Due have no sense add old language files to translate for the comming soon package.
+
+					$files_to_exclude = array_diff($custom_ini_files_list, $last_ini_files_list);
+
+					if (!empty($files_to_exclude))
+					{
+						foreach ($files_to_exclude as $file_to_delete)
+						{
+							$custom_file_path = JFolder::makeSafe($custom_client_path . "/" . $file_to_delete);
+							$actual_file_path = JFolder::makeSafe($reference_client_path . "/" . $file_to_delete);
+
+							JFile::delete($custom_file_path);
+
+							// Also verify if the same file is also present in core language folder.
+							if (JFile::exists($actual_file_path))
+							{
+								JFile::delete($custom_file_path);
+
+								JFactory::getApplication()->enqueueMessage(
+									JText::_('COM_LOCALISE_OLD_FILE_DELETED') . $file_to_delete,
+									'notice');
+							}
+						}
+
+						// Getting the new list again
+						$custom_ini_files_list = self::getInifileslist($custom_client_path);
+					}
+				}
+			}
+
+		$errors = 0;
+
+			foreach ($custom_ini_files_list as $customised_source_file)
+			{
+				$source_path = $custom_client_path . '/' . $customised_source_file;
+				$file_contents = file_get_contents($source_path);
+				$target_path = $reference_client_path . '/' . $customised_source_file;
+
+				if (!JFile::write($target_path, $file_contents))
+				{
+					$errors = 1;
+				}
+			}
+
+			if ($errors == 1)
+			{
+				return false;
+			}
+
+		return true;
+	}
+
+	/**
+	 * Gets from zero or keept updated the files in develop to use as target reference from Github
 	 *
 	 * @param   array  $gh_data  Array with the required data
 	 *
@@ -1039,7 +1157,7 @@ abstract class LocaliseHelper
 	 *
 	 * @since   4.11
 	 */
-	public static function getGithubfiles($gh_data = array())
+	public static function getTargetgithubfiles($gh_data = array())
 	{
 		if (!empty($gh_data))
 		{
@@ -1097,7 +1215,7 @@ abstract class LocaliseHelper
 			$gh_client                 = $gh_data['github_client'];
 			$gh_user                   = 'joomla';
 			$gh_project                = 'joomla-cms';
-			$gh_branch                 = $params->get('gh_branch', 'staging');
+			$gh_branch                 = $params->get('gh_branch', 'master');
 			$gh_token                  = $params->get('gh_token', '');
 			$gh_paths['administrator'] = 'administrator/language/en-GB';
 			$gh_paths['site']          = 'language/en-GB';
@@ -1146,8 +1264,8 @@ abstract class LocaliseHelper
 				return false;
 			}
 
-			$all_files_list = self::getFilesindevlist($develop_client_path);
-			$ini_files_list = self::getInifilesindevlist($develop_client_path);
+			$all_files_list = self::getLanguagefileslist($develop_client_path);
+			$ini_files_list = self::getInifileslist($develop_client_path);
 			$sha_files_list = self::getShafileslist($gh_data);
 
 			$sha = '';
@@ -1198,7 +1316,7 @@ abstract class LocaliseHelper
 					if (!JFile::exists($reference_file_path)
 						&& ($gh_client == 'administrator' || $gh_client == 'site'))
 					{
-						// Adding files only present in develop to reference location.
+						// Adding files only present in develop to core reference location.
 						JFile::write($reference_file_path, $file_contents);
 
 						if (!JFile::exists($reference_file_path))
@@ -1328,19 +1446,19 @@ abstract class LocaliseHelper
 	}
 
 	/**
-	 * Gets the list of ini files in develop
+	 * Gets the list of ini files
 	 *
-	 * @param   string  $develop_client_path  The data to the client path
+	 * @param   string  $client_path  The data to the client path
 	 *
 	 * @return  array
 	 *
 	 * @since   4.11
 	 */
-	public static function getInifilesindevlist($develop_client_path = '')
+	public static function getInifileslist($client_path = '')
 	{
-		if (!empty($develop_client_path))
+		if (!empty($client_path))
 		{
-			$files = JFolder::files($develop_client_path, ".ini$");
+			$files = JFolder::files($client_path, ".ini$");
 
 			return $files;
 		}
@@ -1357,7 +1475,7 @@ abstract class LocaliseHelper
 	 *
 	 * @since   4.11
 	 */
-	public static function getFilesindevlist($develop_client_path = '')
+	public static function getLanguagefileslist($develop_client_path = '')
 	{
 		if (!empty($develop_client_path))
 		{
@@ -1462,8 +1580,9 @@ abstract class LocaliseHelper
 	{
 		if (!empty($gh_data) && isset($gh_data['customisedref']))
 		{
-		$full_path = constant('LOCALISEPATH_CUSTOMISED_' . strtoupper($gh_data['github_client']))
-					. '/language/en-GB/'
+		$full_path = JPATH_ROOT . '/media/com_localise/customisedref/github/'
+					. $gh_data['github_client']
+					. '/'
 					. $gh_data['customisedref'];
 
 		$full_path = JFolder::makeSafe($full_path);
@@ -1552,11 +1671,11 @@ abstract class LocaliseHelper
 
 		foreach ($old as $oindex => $ovalue)
 		{
-		$nkeys = array_keys($new, $ovalue);
+			$nkeys = array_keys($new, $ovalue);
 
 			foreach ($nkeys as $nindex)
 			{
-			$matrix[$oindex][$nindex] = isset($matrix[$oindex - 1][$nindex - 1]) ? $matrix[$oindex - 1][$nindex - 1] + 1 : 1;
+				$matrix[$oindex][$nindex] = isset($matrix[$oindex - 1][$nindex - 1]) ? $matrix[$oindex - 1][$nindex - 1] + 1 : 1;
 
 				if ($matrix[$oindex][$nindex] > $maxlen)
 				{
@@ -1573,7 +1692,7 @@ abstract class LocaliseHelper
 
 		if ($maxlen == 0)
 		{
-		return array(array ('d' => $old, 'i' => $new));
+			return array(array ('d' => $old, 'i' => $new));
 		}
 
 		return array_merge(
@@ -1617,15 +1736,15 @@ abstract class LocaliseHelper
 		{
 			if (is_array($k))
 			{
-			$text_changes .= (!empty ($k['d'])?"LOCALISEDELSTART"
-				. implode(' ', $k['d']) . "LOCALISEDELSTOP ":'')
-				. (!empty($k['i']) ? "LOCALISEINSSTART"
-				. implode(' ', $k['i'])
-				. "LOCALISEINSSTOP " : '');
+				$text_changes .= (!empty ($k['d'])?"LOCALISEDELSTART"
+					. implode(' ', $k['d']) . "LOCALISEDELSTOP ":'')
+					. (!empty($k['i']) ? "LOCALISEINSSTART"
+					. implode(' ', $k['i'])
+					. "LOCALISEINSSTOP " : '');
 			}
 			else
 			{
-			$text_changes .= $k . ' ';
+				$text_changes .= $k . ' ';
 			}
 
 		unset ($k);

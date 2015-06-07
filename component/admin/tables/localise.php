@@ -115,32 +115,17 @@ class LocaliseTableLocalise extends JTable
 			$installation_folder = $params->get('installation', 'installation');
 			$tag                 = $matches[1];
 
-			$reftag              = $params->get('reference', 'en-GB');
-			$customisedref       = $params->get('customisedref', 'REF_0');
-
-			$customised_path = '';
-			$customised_name = '';
-
-			if ($reftag == 'en-GB' && $tag == 'en-GB' &&  $customisedref != 'REF_0')
-			{
-				$customised_path = 'CUSTOMISED_';
-				$customised_name = '/' . $customisedref;
-			}
-
 			if (preg_match('#^/(administrator|plugins)#', $relativePath))
 			{
-				$target_path = constant('LOCALISEPATH_' . $customised_path . 'ADMINISTRATOR');
-				$id = LocaliseHelper::getFileId("$target_path/administrator/language/$tag$customised_name/$tag.xml");
+				$id = LocaliseHelper::getFileId(JPATH_ROOT . "/administrator/language/$tag/$tag.xml");
 			}
 			elseif (preg_match('#^/' . $installation_folder . '#', $relativePath))
 			{
-				$target_path = constant('LOCALISEPATH_' . $customised_path . 'INSTALLATION');
-				$id = LocaliseHelper::getFileId("$target_path/language/$tag$customised_name/$tag.xml");
+				$id = LocaliseHelper::getFileId(LOCALISEPATH_INSTALLATION . "/language/$tag/$tag.xml");
 			}
 			else
 			{
-				$target_path = constant('LOCALISEPATH_' . $customised_path . 'SITE');
-				$id = LocaliseHelper::getFileId("$target_path/language/$tag$customised_name/$tag.xml");
+				$id = LocaliseHelper::getFileId(JPATH_ROOT . "/language/$tag/$tag.xml");
 			}
 
 			$assetName = "com_localise.$id";
