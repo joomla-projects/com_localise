@@ -103,20 +103,6 @@ abstract class LocaliseHelper
 	 */
 	public static function hasInstallation()
 	{
-		$params        = JComponentHelper::getParams('com_localise');
-		$customisedref = $params->get('customisedref', '0');
-
-		if ($customisedref != '0')
-		{
-			// If enabled installation client with normal reference
-			// This also allow work with customised references of installation client.
-			if (is_dir(LOCALISEPATH_INSTALLATION))
-			{
-				return is_dir(LOCALISEPATH_CUSTOMISED_INSTALLATION);
-			}
-		}
-
-		// Else verify it as normal way.
 		return is_dir(LOCALISEPATH_INSTALLATION);
 	}
 
@@ -784,6 +770,8 @@ abstract class LocaliseHelper
 			$saved_ref     = $params->get('customisedref', '0');
 			$allow_develop = $params->get('gh_allow_develop', 0);
 			$customisedref = $saved_ref;
+			$last_sources  = self::getLastsourcereference();
+			$last_source   = $last_sources[$gh_data['github_client']];
 
 			if ($customisedref == '0')
 			{
@@ -791,7 +779,7 @@ abstract class LocaliseHelper
 				$customisedref     = $installed_version->getShortVersion();
 			}
 
-			if ($ref_tag != 'en-GB' || $allow_develop == 0)
+			if ($ref_tag != 'en-GB' && $allow_develop == 1)
 			{
 				JFactory::getApplication()->enqueueMessage(
 					JText::_('COM_LOCALISE_ERROR_GETTING_UNALLOWED_CONFIGURATION'),
@@ -840,6 +828,15 @@ abstract class LocaliseHelper
 				{
 					return false;
 				}
+
+				$last_reference_file      = JPATH_COMPONENT_ADMINISTRATOR
+								. '/customisedref/'
+								. $gh_data['github_client']
+								. '_last_source_ref.txt';
+
+				// And save the last version of language files used for this client.
+				$file_contents = $gh_data['customisedref'] . "\n";
+				JFile::write($last_reference_file, $file_contents);
 
 			return true;
 			}
@@ -989,6 +986,15 @@ abstract class LocaliseHelper
 					return false;
 				}
 
+				$last_reference_file      = JPATH_COMPONENT_ADMINISTRATOR
+								. '/customisedref/'
+								. $gh_data['github_client']
+								. '_last_source_ref.txt';
+
+				// And save the last version of language files used for this client.
+				$file_contents = $gh_data['customisedref'] . "\n";
+				JFile::write($last_reference_file, $file_contents);
+
 			return true;
 			}
 
@@ -998,6 +1004,47 @@ abstract class LocaliseHelper
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_ERROR_GITHUB_NO_DATA_PRESENT'), 'warning');
 
 		return false;
+	}
+
+	/**
+	 * Gets the last en-GB source reference version moved to the core folders.
+	 *
+	 * @return  array
+	 *
+	 * @since   4.11
+	 */
+	public static function getLastsourcereference()
+	{
+		$last_source_reference = array();
+		$last_source_reference['administrator'] = '';
+		$last_source_reference['site'] = '';
+		$last_source_reference['installation'] = '';
+
+		$clients = array('administrator', 'site', 'installation');
+
+		foreach ($clients as $client)
+		{
+			$last_reference_file = JPATH_COMPONENT_ADMINISTRATOR
+							. '/customisedref/'
+							. $client
+							. '_last_source_ref.txt';
+
+			if (JFile::exists($last_reference_file))
+			{
+				$file_contents = file_get_contents($last_reference_file);
+				$lines = preg_split("/\\r\\n|\\r|\\n/", $file_contents);
+
+				foreach ($lines as $line)
+				{
+					if (!empty($line))
+					{
+						$last_source_reference[$client] = $line;
+					}
+				}
+			}
+		}
+
+		return $last_source_reference;
 	}
 
 	/**
