@@ -30,7 +30,8 @@ $has_installation  = LocaliseHelper::hasInstallation();
 $installed_version = new JVersion;
 $installed_version = $installed_version->getShortVersion();
 
-$report = '';
+$report  = '';
+
 $report .= '<b>Source reference</b><br />';
 
 	foreach ($clients as $client)
@@ -101,7 +102,22 @@ $report .= '<br /><b>Target reference</b><br />';
 
 	if ($allow_develop == 1)
 	{
-		$report .= 'The detected modified values or new keys in development to show are comming from the target language files within <b>' . $gh_branch . '</b> branch at Github.<br />';
+		$report .= 'The detected modified values or new keys in development to show are comming from the target language files within <b>' . $gh_branch . '</b> branch at Github.<br /><br />';
+
+		foreach ($clients as $client)
+		{
+			$last_update = 'gh_' . $client . '_last_update';
+			$target_updates[$client] = $params->get($last_update, '');
+
+			if ($target_updates[$client] == '')
+			{
+				$report .= 'The develop files of client ' . strtoupper($client) . ' never have been updated.<br />';
+			}
+			else
+			{
+				$report .= 'The develop files of client ' . strtoupper($client) . ' have been updated on ' . $target_updates[$client] . '.<br />';
+			}
+		}
 	}
 	else
 	{

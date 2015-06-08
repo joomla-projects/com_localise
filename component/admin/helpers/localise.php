@@ -1327,6 +1327,7 @@ abstract class LocaliseHelper
 				if (	(array_key_exists($file_to_include, $sha_files_list)
 					&& ($sha_files_list[$file_to_include] != $repostoryfile->sha))
 					|| empty($sha_files_list)
+					|| !array_key_exists($file_to_include, $sha_files_list)
 					|| !JFile::exists($file_path))
 				{
 					$in_dev_file = $github->repositories->contents->get(
@@ -1374,6 +1375,10 @@ abstract class LocaliseHelper
 
 							return false;
 						}
+
+						JFactory::getApplication()->enqueueMessage(
+							JText::_('COM_LOCALISE_NOTICE_GITHUB_FILE_ADDED'),
+							'notice');
 					}
 				}
 
@@ -1414,6 +1419,10 @@ abstract class LocaliseHelper
 
 								return false;
 							}
+
+							JFactory::getApplication()->enqueueMessage(
+								JText::_('COM_LOCALISE_GITHUB_FILE_NOT_PRESENT_IN_DEV_YET'),
+								'notice');
 						}
 					}
 				}
