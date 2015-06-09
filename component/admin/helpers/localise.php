@@ -884,7 +884,7 @@ abstract class LocaliseHelper
 				if ($saved_ref == '0')
 				{
 					JFactory::getApplication()->enqueueMessage(
-						JText::_('COM_LOCALISE_ERROR_GITHUB_GETTING_LOCAL_INSTALLED_FILES'),
+						JText::sprintf('COM_LOCALISE_ERROR_GITHUB_GETTING_LOCAL_INSTALLED_FILES', $customisedref),
 						'warning');
 				}
 				else
@@ -1159,11 +1159,11 @@ abstract class LocaliseHelper
 							// Also verify if the same file is also present in core language folder.
 							if (JFile::exists($actual_file_path))
 							{
-								JFile::delete($custom_file_path);
+								JFile::delete($actual_file_path);
 
 								JFactory::getApplication()->enqueueMessage(
-									JText::_('COM_LOCALISE_OLD_FILE_DELETED') . $file_to_delete,
-									'notice');
+								JText::sprintf('COM_LOCALISE_OLD_FILE_DELETED', $file_to_delete),
+								'notice');
 							}
 						}
 
