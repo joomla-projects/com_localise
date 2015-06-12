@@ -810,14 +810,9 @@ abstract class LocaliseHelper
 
 			$custom_client_path = JFolder::makeSafe($custom_client_path);
 
-			$customisedref_status      = JPATH_COMPONENT_ADMINISTRATOR
-							. '/customisedref/'
-							. $gh_data['github_client']
-							. '_'
-							. $customisedref
-							. '_customised_ref.txt';
+			$xml_file           = $custom_client_path . '/en-GB.xml';
 
-			if (JFile::exists($customisedref_status))
+			if (JFile::exists($xml_file))
 			{
 				// We have done this trunk and is not required get the files from Github again.
 
@@ -961,20 +956,7 @@ abstract class LocaliseHelper
 				}
 			}
 
-			$customisedref_path  = JPATH_COMPONENT_ADMINISTRATOR
-					. '/customisedref/'
-					. $gh_client
-					. '_'
-					. $gh_data['customisedref']
-					. '_customised_ref.txt';
-
-			$customisedref_path  = JFolder::makeSafe($customisedref_path);
-
-			// After we have all the files we can mark as done this trunk.
-			$file_contents = $gh_data['customisedref'] . "=DONE\n";
-			JFile::write($customisedref_path, $file_contents);
-
-			if (JFile::exists($customisedref_status))
+			if (JFile::exists($xml_file))
 			{
 				// We have done this trunk.
 
@@ -995,8 +977,16 @@ abstract class LocaliseHelper
 				$file_contents = $gh_data['customisedref'] . "\n";
 				JFile::write($last_reference_file, $file_contents);
 
+			JFactory::getApplication()->enqueueMessage(
+				JText::sprintf('COM_LOCALISE_NOTICE_GITHUB_GETS_A_SOURCE_FULL_SET', $customisedref),
+				'notice');
+
 			return true;
 			}
+
+			JFactory::getApplication()->enqueueMessage(
+				JText::sprintf('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_GET_A_FULL_SOURCE_SET', $customisedref),
+				'warning');
 
 			return false;
 		}
@@ -1136,61 +1126,75 @@ abstract class LocaliseHelper
 
 		$files_to_exclude = array();
 
-			if (!empty($custom_ini_files_list) && !empty($last_ini_files_list))
+		if (!JFile::exists($develop_client_path . '/en-GB.xml'))
+		{
+			JFactory::getApplication()->enqueueMessage(
+				JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_TARGET_FILES'),
+				'warning');
+
+			return false;
+		}
+		elseif (!JFile::exists($custom_client_path . '/en-GB.xml'))
+		{
+			JFactory::getApplication()->enqueueMessage(
+				JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_SOURCE_FILES'),
+				'warning');
+
+			return false;
+		}
+
+		// This one is for core files not present within last in dev yet.
+		// Due have no sense add old language files to translate for the comming soon package.
+
+		$files_to_exclude = array_diff($custom_ini_files_list, $last_ini_files_list);
+
+		if (!empty($files_to_exclude))
+		{
+			foreach ($files_to_exclude as $file_to_delete)
 			{
-				// Verify that we have stored a full set of core files.
+				$custom_file_path = JFolder::makeSafe($custom_client_path . "/" . $file_to_delete);
+				$actual_file_path = JFolder::makeSafe($reference_client_path . "/" . $file_to_delete);
 
-				if (JFile::exists($develop_client_path . '/en-GB.xml'))
+				JFile::delete($custom_file_path);
+
+				// Also verify if the same file is also present in core language folder.
+
+				if (JFile::exists($actual_file_path))
 				{
-					// This one is for core files not present within last in dev yet.
-					// Due have no sense add old language files to translate for the comming soon package.
+					JFile::delete($actual_file_path);
 
-					$files_to_exclude = array_diff($custom_ini_files_list, $last_ini_files_list);
-
-					if (!empty($files_to_exclude))
-					{
-						foreach ($files_to_exclude as $file_to_delete)
-						{
-							$custom_file_path = JFolder::makeSafe($custom_client_path . "/" . $file_to_delete);
-							$actual_file_path = JFolder::makeSafe($reference_client_path . "/" . $file_to_delete);
-
-							JFile::delete($custom_file_path);
-
-							// Also verify if the same file is also present in core language folder.
-							if (JFile::exists($actual_file_path))
-							{
-								JFile::delete($actual_file_path);
-
-								JFactory::getApplication()->enqueueMessage(
-								JText::sprintf('COM_LOCALISE_OLD_FILE_DELETED', $file_to_delete),
-								'notice');
-							}
-						}
-
-						// Getting the new list again
-						$custom_ini_files_list = self::getInifileslist($custom_client_path);
-					}
+					JFactory::getApplication()->enqueueMessage(
+					JText::sprintf('COM_LOCALISE_OLD_FILE_DELETED', $file_to_delete),
+					'notice');
 				}
 			}
+
+			// Getting the new list again
+			$custom_ini_files_list = self::getInifileslist($custom_client_path);
+		}
 
 		$errors = 0;
 
-			foreach ($custom_ini_files_list as $customised_source_file)
-			{
-				$source_path = $custom_client_path . '/' . $customised_source_file;
-				$file_contents = file_get_contents($source_path);
-				$target_path = $reference_client_path . '/' . $customised_source_file;
+		foreach ($custom_ini_files_list as $customised_source_file)
+		{
+			$source_path = $custom_client_path . '/' . $customised_source_file;
+			$file_contents = file_get_contents($source_path);
+			$target_path = $reference_client_path . '/' . $customised_source_file;
 
-				if (!JFile::write($target_path, $file_contents))
-				{
-					$errors = 1;
-				}
-			}
-
-			if ($errors == 1)
+			if (!JFile::write($target_path, $file_contents))
 			{
-				return false;
+				$errors++;
 			}
+		}
+
+		if ($errors > 0)
+		{
+			JFactory::getApplication()->enqueueMessage(
+				JText::sprintf('COM_LOCALISE_ERROR_SAVING_FILES_AT_CORE_FOLDER', $errors),
+				'warning');
+
+			return false;
+		}
 
 		return true;
 	}
@@ -1230,7 +1234,18 @@ abstract class LocaliseHelper
 				return false;
 			}
 
-			if (!empty($last_stored_update))
+			$develop_client_path = JPATH_ROOT
+						. '/media/com_localise/develop/github/joomla-cms/en-GB/'
+						. $gh_data['github_client'];
+
+			$develop_client_path = JFolder::makeSafe($develop_client_path);
+			$xml_file            = $develop_client_path . '/en-GB.xml';
+
+			if (!JFile::exists($xml_file))
+			{
+				$get_files = 1;
+			}
+			elseif (!empty($last_stored_update))
 			{
 				$last_update = new JDate($last_stored_update);
 				$last_update = $last_update->toSQL();
@@ -1270,9 +1285,6 @@ abstract class LocaliseHelper
 
 			$reference_client_path = JPATH_ROOT . '/' . $gh_paths[$gh_client];
 			$reference_client_path = JFolder::makeSafe($reference_client_path);
-
-			$develop_client_path = JPATH_ROOT . '/media/com_localise/develop/github/joomla-cms/en-GB/' . $gh_client;
-			$develop_client_path = JFolder::makeSafe($develop_client_path);
 
 			$options = new JRegistry;
 
@@ -1320,8 +1332,8 @@ abstract class LocaliseHelper
 
 			foreach ($repostoryfiles as $repostoryfile)
 			{
-				$file_to_include = $repostoryfile->name;
-				$file_path = JFolder::makeSafe($develop_client_path . '/' . $file_to_include);
+				$file_to_include     = $repostoryfile->name;
+				$file_path           = JFolder::makeSafe($develop_client_path . '/' . $file_to_include);
 				$reference_file_path = JFolder::makeSafe($reference_client_path . '/' . $file_to_include);
 
 				if (	(array_key_exists($file_to_include, $sha_files_list)
@@ -1414,21 +1426,34 @@ abstract class LocaliseHelper
 							if (JFile::exists($file_path))
 							{
 								JFactory::getApplication()->enqueueMessage(
-									JText::_('COM_LOCALISE_ERROR_GITHUB_FILE_TO_DELETE_IS_PRESENT'),
+									JText::sprintf('COM_LOCALISE_ERROR_GITHUB_FILE_TO_DELETE_IS_PRESENT', $file_to_delete),
 									'warning');
 
 								return false;
 							}
 
 							JFactory::getApplication()->enqueueMessage(
-								JText::_('COM_LOCALISE_GITHUB_FILE_NOT_PRESENT_IN_DEV_YET'),
+								JText::sprintf('COM_LOCALISE_GITHUB_FILE_NOT_PRESENT_IN_DEV_YET', $file_to_delete),
 								'notice');
 						}
 					}
 				}
 			}
 
+			if (!JFile::exists($xml_file))
+			{
+				JFactory::getApplication()->enqueueMessage(
+					JText::sprintf('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_GET_A_FULL_SET', $gh_branch),
+					'warning');
+
+				return false;
+			}
+
 			self::saveLastupdate($client_to_update);
+
+			JFactory::getApplication()->enqueueMessage(
+				JText::sprintf('COM_LOCALISE_NOTICE_GITHUB_GETS_A_TARGET_FULL_SET', $gh_branch),
+				'notice');
 
 			return true;
 		}
@@ -1735,9 +1760,9 @@ abstract class LocaliseHelper
 
 				if ($matrix[$oindex][$nindex] > $maxlen)
 				{
-				$maxlen = $matrix[$oindex][$nindex];
-				$omax = $oindex + 1 - $maxlen;
-				$nmax = $nindex + 1 - $maxlen;
+					$maxlen = $matrix[$oindex][$nindex];
+					$omax = $oindex + 1 - $maxlen;
+					$nmax = $nindex + 1 - $maxlen;
 				}
 
 			unset ($nkeys, $nindex);

@@ -752,8 +752,9 @@ class LocaliseModelTranslations extends JModelList
 
 			$gh_data = array();
 			$gh_data['github_client'] = $filter_client;
+
+			$get_github_files   = LocaliseHelper::getTargetgithubfiles($gh_data);
 			$get_customised_ref = LocaliseHelper::getSourceGithubfiles($gh_data);
-			$get_github_files = LocaliseHelper::getTargetgithubfiles($gh_data);
 
 			$filter_state = $this->getState('filter.state') ? $this->getState('filter.state') : '.';
 			$filter_tag   = $filter_tag   ? ("^" . $filter_tag . "$") : '.';
