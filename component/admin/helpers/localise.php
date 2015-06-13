@@ -1052,50 +1052,18 @@ abstract class LocaliseHelper
 
 		$sources = array();
 
-		// Detailing it one by one due in this case we can add other Github users or projects
+		// Detailing it one by one due in this case we can handle exceptions and add other Github users or projects
 		// To get the language files for a determined Joomla's version that is not present from main repository.
 		$sources['3.4.1']['user'] = 'joomla';
 		$sources['3.4.1']['project'] = 'joomla-cms';
 		$sources['3.4.1']['branch'] = '3.4.1';
-
-		$sources['3.4.0']['user'] = 'joomla';
-		$sources['3.4.0']['project'] = 'joomla-cms';
-		$sources['3.4.0']['branch'] = '3.4.0';
-
-		$sources['3.3.6']['user'] = 'joomla';
-		$sources['3.3.6']['project'] = 'joomla-cms';
-		$sources['3.3.6']['branch'] = '3.3.6';
-
-		$sources['3.3.5']['user'] = 'joomla';
-		$sources['3.3.5']['project'] = 'joomla-cms';
-		$sources['3.3.5']['branch'] = '3.3.5';
-
-		$sources['3.3.4']['user'] = 'joomla';
-		$sources['3.3.4']['project'] = 'joomla-cms';
-		$sources['3.3.4']['branch'] = '3.3.4';
-
-		$sources['3.3.3']['user'] = 'joomla';
-		$sources['3.3.3']['project'] = 'joomla-cms';
-		$sources['3.3.3']['branch'] = '3.3.3';
-
-		$sources['3.3.2']['user'] = 'joomla';
-		$sources['3.3.2']['project'] = 'joomla-cms';
-		$sources['3.3.2']['branch'] = '3.3.2';
-
-		$sources['3.3.1']['user'] = 'joomla';
-		$sources['3.3.1']['project'] = 'joomla-cms';
-		$sources['3.3.1']['branch'] = '3.3.1';
-
-		$sources['3.3.0']['user'] = 'joomla';
-		$sources['3.3.0']['project'] = 'joomla-cms';
-		$sources['3.3.0']['branch'] = '3.3.0';
 
 		if (array_key_exists($source_ref, $sources))
 		{
 			return ($sources[$source_ref]);
 		}
 
-		// For undefined REF 0 cases due Joomla releases at Github are following a version name patern.
+		// For undefined REF 0 or unlisted cases due Joomla releases at Github are following a version name patern.
 		$sources[$source_ref]['user'] = 'joomla';
 		$sources[$source_ref]['project'] = 'joomla-cms';
 		$sources[$source_ref]['branch'] = $source_ref;

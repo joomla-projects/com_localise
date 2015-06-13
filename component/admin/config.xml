@@ -158,18 +158,11 @@
 			label="COM_LOCALISE_SOURCE_SPACER_LABEL" />
 		<field
 			name="customisedref"
-			type="list"
+			type="releases"
 			default="0"
 			label="COM_LOCALISE_LABEL_CUSTOMIZED_REF"
 			description="COM_LOCALISE_LABEL_CUSTOMIZED_REF_DESC">
 			<option	value="0">COM_LOCALISE_LOCAL_INSTALLED_INSTANCE</option>
-			<option	value="3.4.1">COM_LOCALISE_CUSTOMIZED_REF_3_4_1</option>
-			<option	value="3.4.0">COM_LOCALISE_CUSTOMIZED_REF_3_4_0</option>
-			<option	value="3.3.4">COM_LOCALISE_CUSTOMIZED_REF_3_3_4</option>
-			<option	value="3.3.3">COM_LOCALISE_CUSTOMIZED_REF_3_3_3</option>
-			<option	value="3.3.2">COM_LOCALISE_CUSTOMIZED_REF_3_3_2</option>
-			<option	value="3.3.1">COM_LOCALISE_CUSTOMIZED_REF_3_3_1</option>
-			<option	value="3.3.0">COM_LOCALISE_CUSTOMIZED_REF_3_3_0</option>
 		</field>
 		<field
 			type="spacer"

@@ -212,6 +212,7 @@ class LocaliseModelTranslation extends JModelAdmin
 										'unchangedkeys'       => (array) $unchangedkeys,
 										'textchangedkeys'     => (array) $textchangedkeys,
 										'translated'          => 0,
+										'untranslated'        => 0,
 										'unchanged'           => 0,
 										'extra'               => 0,
 										'total'               => 0,
@@ -476,6 +477,7 @@ class LocaliseModelTranslation extends JModelAdmin
 							}
 							elseif (!array_key_exists($key, $sections['keys']))
 							{
+								$this->item->untranslated++;
 								$untranslatedkeys[] = $key;
 							}
 						}

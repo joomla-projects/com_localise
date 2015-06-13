@@ -50,10 +50,10 @@ class JFormFieldDevelop extends JFormFieldList
 			$options[] = JHtml::_('select.option', $option->attributes('value'), JText::_(trim($option)), array('option.attr' => 'attributes', 'attr' => ''));
 		}
 
-		$options[] = JHtml::_('select.option', 'equal', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_DEVELOP_EQUAL'),
+		$options[] = JHtml::_('select.option', 'complete', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_DEVELOP_COMPLETE'),
 					array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-equal"')
 					);
-		$options[] = JHtml::_('select.option', 'changed', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_DEVELOP_CHANGED'),
+		$options[] = JHtml::_('select.option', 'incomplete', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_DEVELOP_INCOMPLETE'),
 					array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-changed"')
 					);
 
