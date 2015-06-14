@@ -769,19 +769,23 @@ abstract class LocaliseHelper
 			$ref_tag       = $params->get('reference', 'en-GB');
 			$saved_ref     = $params->get('customisedref', '0');
 			$allow_develop = $params->get('gh_allow_develop', 0);
+			$gh_client     = $gh_data['github_client'];
 			$customisedref = $saved_ref;
 			$last_sources  = self::getLastsourcereference();
-			$last_source   = $last_sources[$gh_data['github_client']];
+			$last_source   = $last_sources[$gh_client];
 
 			$versions_path = JPATH_ROOT
 					. '/administrator/components/com_localise/customisedref/stable_joomla_releases.txt';
+
 			$versions_file = file_get_contents($versions_path);
 			$versions      = preg_split("/\\r\\n|\\r|\\n/", $versions_file);
 
-			if ($saved_ref == '0')
+			$installed_version = new JVersion;
+			$installed_version = $installed_version->getShortVersion();
+
+			if ($customisedref == '0')
 			{
-				$installed_version = new JVersion;
-				$customisedref     = $installed_version->getShortVersion();
+				$customisedref = $installed_version;
 			}
 
 			if ($ref_tag != 'en-GB' && $allow_develop == 1)
@@ -793,7 +797,7 @@ abstract class LocaliseHelper
 				return false;
 			}
 
-			if (!in_array($customisedref, $versions))
+			if (!in_array($customisedref, $versions) && $allow_develop == 1)
 			{
 				JFactory::getApplication()->enqueueMessage(
 					JText::sprintf('COM_LOCALISE_ERROR_GITHUB_GETTING_LOCAL_INSTALLED_FILES', $customisedref),
@@ -802,10 +806,29 @@ abstract class LocaliseHelper
 				return false;
 			}
 
+			if (!in_array($customisedref, $versions) && $allow_develop == 0)
+			{
+				return false;
+			}
+
+			if (!empty($last_source) && $installed_version != $last_source && $allow_develop == 0)
+			{
+				$customisedref = $installed_version;
+
+				JFactory::getApplication()->enqueueMessage(
+					JText::sprintf('COM_LOCALISE_NOTICE_DISABLED_ALLOW_DEVELOP_WITHOUT_LOCAL_SET',
+						$last_source,
+						$installed_version,
+						$gh_client
+						),
+						'notice'
+						);
+			}
+
+			$gh_data['allow_develop']  = $allow_develop;
 			$gh_data['customisedref']  = $customisedref;
 			$gh_target                 = self::getCustomisedsource($gh_data);
 			$gh_paths                  = array();
-			$gh_client                 = $gh_data['github_client'];
 			$gh_user                   = $gh_target['user'];
 			$gh_project                = $gh_target['project'];
 			$gh_branch                 = $gh_target['branch'];
@@ -820,7 +843,7 @@ abstract class LocaliseHelper
 			$custom_client_path = JPATH_ROOT . '/media/com_localise/customisedref/github/'
 					. $gh_data['github_client']
 					. '/'
-					. $gh_data['customisedref'];
+					. $customisedref;
 
 			$custom_client_path = JFolder::makeSafe($custom_client_path);
 
@@ -844,7 +867,7 @@ abstract class LocaliseHelper
 								. '_last_source_ref.txt';
 
 				// And save the last version of language files used for this client.
-				$file_contents = $gh_data['customisedref'] . "\n";
+				$file_contents = $customisedref . "\n";
 				JFile::write($last_reference_file, $file_contents);
 
 			return true;
@@ -979,7 +1002,7 @@ abstract class LocaliseHelper
 								. '_last_source_ref.txt';
 
 				// And save the last version of language files used for this client.
-				$file_contents = $gh_data['customisedref'] . "\n";
+				$file_contents = $customisedref . "\n";
 				JFile::write($last_reference_file, $file_contents);
 
 			JFactory::getApplication()->enqueueMessage(
@@ -1053,7 +1076,15 @@ abstract class LocaliseHelper
 	 */
 	public static function getCustomisedsource($gh_data = array())
 	{
-		$source_ref = $gh_data['customisedref'];
+		$source_ref        = $gh_data['customisedref'];
+		$allow_develop     = $gh_data['allow_develop'];
+		$installed_version = new JVersion;
+		$installed_version = $installed_version->getShortVersion();
+
+		if ($source_ref == 0 || $allow_develop == '0')
+		{
+			$source_ref == $installed_version;
+		}
 
 		$sources = array();
 
@@ -1632,12 +1663,21 @@ abstract class LocaliseHelper
 	 */
 	public static function createFolder($gh_data = array(), $index = 'true')
 	{
-		if (!empty($gh_data) && isset($gh_data['customisedref']))
+		$installed_version = new JVersion;
+		$installed_version = $installed_version->getShortVersion();
+		$source_ref        = $gh_data['customisedref'];
+
+		if ($source_ref == 0)
+		{
+			$source_ref == $installed_version;
+		}
+
+		if (!empty($gh_data) && isset($source_ref))
 		{
 		$full_path = JPATH_ROOT . '/media/com_localise/customisedref/github/'
 					. $gh_data['github_client']
 					. '/'
-					. $gh_data['customisedref'];
+					. $source_ref;
 
 		$full_path = JFolder::makeSafe($full_path);
 
