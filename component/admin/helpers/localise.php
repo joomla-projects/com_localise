@@ -773,7 +773,12 @@ abstract class LocaliseHelper
 			$last_sources  = self::getLastsourcereference();
 			$last_source   = $last_sources[$gh_data['github_client']];
 
-			if ($customisedref == '0')
+			$versions_path = JPATH_ROOT
+					. '/administrator/components/com_localise/customisedref/stable_joomla_releases.txt';
+			$versions_file = file_get_contents($versions_path);
+			$versions      = preg_split("/\\r\\n|\\r|\\n/", $versions_file);
+
+			if ($saved_ref == '0')
 			{
 				$installed_version = new JVersion;
 				$customisedref     = $installed_version->getShortVersion();
@@ -783,6 +788,15 @@ abstract class LocaliseHelper
 			{
 				JFactory::getApplication()->enqueueMessage(
 					JText::_('COM_LOCALISE_ERROR_GETTING_UNALLOWED_CONFIGURATION'),
+					'warning');
+
+				return false;
+			}
+
+			if (!in_array($customisedref, $versions))
+			{
+				JFactory::getApplication()->enqueueMessage(
+					JText::sprintf('COM_LOCALISE_ERROR_GITHUB_GETTING_LOCAL_INSTALLED_FILES', $customisedref),
 					'warning');
 
 				return false;
@@ -876,18 +890,9 @@ abstract class LocaliseHelper
 			}
 			catch (Exception $e)
 			{
-				if ($saved_ref == '0')
-				{
-					JFactory::getApplication()->enqueueMessage(
-						JText::sprintf('COM_LOCALISE_ERROR_GITHUB_GETTING_LOCAL_INSTALLED_FILES', $customisedref),
-						'warning');
-				}
-				else
-				{
-					JFactory::getApplication()->enqueueMessage(
-						JText::_('COM_LOCALISE_ERROR_GITHUB_GETTING_REPOSITORY_FILES'),
-						'warning');
-				}
+				JFactory::getApplication()->enqueueMessage(
+					JText::_('COM_LOCALISE_ERROR_GITHUB_GETTING_REPOSITORY_FILES'),
+					'warning');
 
 				return false;
 			}

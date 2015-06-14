@@ -71,26 +71,43 @@ class JFormFieldReleases extends JFormFieldList
 					$gh_user,
 					$gh_project . '/releases'
 					);
+
+			// Allowed tricks.
+			// Configured to 0 the 2.5.x series are not allowed. Configured to 1 it is allowed.
+			$allow_25x = 1;
+
+			foreach ($releases as $release)
+			{
+				$tag_name = $release->tag_name;
+				$tag_part = explode(".", $tag_name);
+				$undoted  = str_replace('.', '', $tag_name);
+				$excluded = 0;
+
+				if ($tag_part[0] == '2' && $allow_25x == '0')
+				{
+					$excluded = 1;
+				}
+				elseif ($tag_part[0] != '3' && $tag_part[0] != '2')
+				{
+					// Exclude platforms or similar stuff.
+					$excluded = 1;
+				}
+
+				// Filtering also by "is_numeric" disable betas or similar releases.
+				if (!in_array($tag_name, $versions) && is_numeric($undoted) && $excluded == 0)
+				{
+					$versions[] = $tag_name;
+					JFactory::getApplication()->enqueueMessage(
+						JText::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
+						'notice');
+				}
+			}
 		}
 		catch (Exception $e)
 		{
 			JFactory::getApplication()->enqueueMessage(
 				JText::_('COM_LOCALISE_ERROR_GITHUB_GETTING_RELEASES'),
 				'warning');
-		}
-
-		foreach ($releases as $release)
-		{
-			$tag_name = $release->tag_name;
-			$undoted  = str_replace('.', '', $tag_name);
-
-			if (!in_array($tag_name, $versions) && is_numeric($undoted))
-			{
-				$versions[] = $tag_name;
-				JFactory::getApplication()->enqueueMessage(
-					JText::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
-					'notice');
-			}
 		}
 
 		arsort($versions);
