@@ -15,6 +15,26 @@ JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
 JHTML::_('stylesheet', 'com_localise/localise.css', null, true);
 
+$params            = JComponentHelper::getParams('com_localise');
+$ref_tag           = $params->get('reference', 'en-GB');
+$allow_develop     = $params->get('gh_allow_develop', 0);
+$source_ref        = $params->get('customisedref', 0);
+$istranslation     = $this->item->istranslation;
+$installed_version = new JVersion;
+$installed_version = $installed_version->getShortVersion();
+
+	if ($source_ref == 0)
+	{
+		$source_ref = $installed_version;
+	}
+
+	if ($allow_develop == 1 && $ref_tag == 'en-GB' && $istranslation == 0)
+	{
+		JFactory::getApplication()->enqueueMessage(
+		JText::sprintf('COM_LOCALISE_NOTICE_EDIT_REFERENCE_HAS_LIMITED_USE', $source_ref),
+		'notice');
+	}
+
 $fieldSets = $this->form->getFieldsets();
 $ftpSets   = $this->formftp->getFieldsets();
 ?>

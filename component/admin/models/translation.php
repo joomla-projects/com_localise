@@ -169,6 +169,8 @@ class LocaliseModelTranslation extends JModelAdmin
 					? $this->getState('translation.path')
 					: $this->getState('translation.refpath');
 
+				$params              = JComponentHelper::getParams('com_localise');
+				$allow_develop       = $params->get('gh_allow_develop', 0);
 				$gh_client           = $this->getState('translation.client');
 				$tag                 = $this->getState('translation.tag');
 				$reftag              = $this->getState('translation.reference');
@@ -224,7 +226,22 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				if (JFile::exists($path))
 				{
-					$this->item->source = file_get_contents($path);
+					$devpath   = '';
+
+					if ($istranslation == 0 && $reftag == 'en-GB')
+					{
+						$devpath   = LocaliseHelper::searchDevpath($gh_client, $path);
+
+						if (!empty($devpath))
+						{
+							$this->item->source = LocaliseHelper::combineReferences($path, $devpath);
+						}
+					}
+					else
+					{
+						$this->item->source = file_get_contents($path);
+					}
+
 					$stream             = new JStream;
 					$stream->open($path);
 					$begin = $stream->read(4);
@@ -260,8 +277,6 @@ class LocaliseModelTranslation extends JModelAdmin
 					$continue   = true;
 					$lineNumber = 0;
 
-					$params             = JComponentHelper::getParams('com_localise');
-					$allow_develop      = $params->get('gh_allow_develop', 0);
 					$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
 
 					while (!$stream->eof())
@@ -429,7 +444,7 @@ class LocaliseModelTranslation extends JModelAdmin
 					$ref_file            = basename($this->getState('translation.refpath'));
 					$develop_file_path   = "$develop_client_path/$ref_file";
 
-					if (JFile::exists($develop_file_path) && $allow_develop == 1)
+					if (JFile::exists($develop_file_path) && $allow_develop == 1 && $reftag == 'en-GB')
 					{
 						$develop_sections = LocaliseHelper::parseSections($develop_file_path);
 						$developdata      = LocaliseHelper::getDevelopchanges($refsections, $develop_sections);
@@ -493,7 +508,7 @@ class LocaliseModelTranslation extends JModelAdmin
 					$this->setState('translation.unchangedkeys', $unchangedkeys);
 					$this->setState('translation.developdata', $developdata);
 
-					if (!empty($sections['keys']))
+					if (!empty($sections['keys']) && $istranslation == 1)
 					{
 						foreach ($sections['keys'] as $key => $string)
 						{
@@ -910,16 +925,28 @@ class LocaliseModelTranslation extends JModelAdmin
 	 */
 	public function saveFile($data)
 	{
+		$client    = $this->getState('translation.client');
+		$tag       = $this->getState('translation.tag');
+		$reftag    = $this->getState('translation.reference');
 		$path      = $this->getState('translation.path');
 		$refpath   = $this->getState('translation.refpath');
-		$devpath   = $this->getState('translation.devpath');
+		$devpath   = LocaliseHelper::searchDevpath($client, $refpath);
 		$exists    = JFile::exists($path);
 		$refexists = JFile::exists($refpath);
-		$client    = $this->getState('translation.client');
+		$combined  = 0;
 
 		if ($refexists && !empty($devpath))
 		{
-			$refpath = $devpath;
+			if ($reftag == 'en-GB' && $tag == 'en-GB')
+			{
+				// It is not translation
+				$combined = 1;
+			}
+			elseif ($reftag == 'en-GB' &&  $tag != 'en-GB')
+			{
+				// It is translation
+				$refpath = $devpath;
+			}
 		}
 
 		// Set FTP credentials, if given.
@@ -934,13 +961,9 @@ class LocaliseModelTranslation extends JModelAdmin
 			return false;
 		}
 
-		if (array_key_exists('source', $data) && empty($devpath))
+		if (array_key_exists('source', $data))
 		{
 			$contents = $data['source'];
-		}
-		elseif (array_key_exists('source', $data) && !empty($devpath))
-		{
-			$contents = file_get_contents($devpath);
 		}
 		else
 		{

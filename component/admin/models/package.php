@@ -207,7 +207,7 @@ class LocaliseModelPackage extends JModelAdmin
 				$package->author      = (string) $xml->author;
 				$package->authoremail = (string) $xml->authoremail;
 				$package->authorurl   = (string) $xml->authorurl;
-				$package->url      	  = (string) $xml->url;
+				$package->url         = (string) $xml->url;
 				$package->packager    = (string) $xml->packager;
 				$package->packagerurl = (string) $xml->packagerurl;
 				$package->servername  = (string) $xml->servername;

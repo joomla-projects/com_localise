@@ -788,6 +788,16 @@ abstract class LocaliseHelper
 				$customisedref = $installed_version;
 			}
 
+			$custom_client_path = JPATH_ROOT . '/media/com_localise/customisedref/github/'
+					. $gh_data['github_client']
+					. '/'
+					. $customisedref;
+
+			$custom_client_path = JFolder::makeSafe($custom_client_path);
+
+			$xml_file           = $custom_client_path . '/en-GB.xml';
+
+			// If reference tag is not en-GB is not required try it
 			if ($ref_tag != 'en-GB' && $allow_develop == 1)
 			{
 				JFactory::getApplication()->enqueueMessage(
@@ -797,6 +807,7 @@ abstract class LocaliseHelper
 				return false;
 			}
 
+			// If not knowed Joomla version is not required try it
 			if (!in_array($customisedref, $versions) && $allow_develop == 1)
 			{
 				JFactory::getApplication()->enqueueMessage(
@@ -806,11 +817,20 @@ abstract class LocaliseHelper
 				return false;
 			}
 
+			// If not knowed Joomla version and feature is disabled is not required try it
 			if (!in_array($customisedref, $versions) && $allow_develop == 0)
 			{
 				return false;
 			}
 
+			// Unrequired move or update files again
+			if ($installed_version == $last_source && JFile::exists($xml_file))
+			{
+				return false;
+			}
+
+			// If feature is disable but last moved files to core folder are disctinct to Joomla version
+			// is required comeback to original version.
 			if (!empty($last_source) && $installed_version != $last_source && $allow_develop == 0)
 			{
 				$customisedref = $installed_version;
@@ -839,15 +859,6 @@ abstract class LocaliseHelper
 
 			$reference_client_path = JPATH_ROOT . '/' . $gh_paths[$gh_client];
 			$reference_client_path = JFolder::makeSafe($reference_client_path);
-
-			$custom_client_path = JPATH_ROOT . '/media/com_localise/customisedref/github/'
-					. $gh_data['github_client']
-					. '/'
-					. $customisedref;
-
-			$custom_client_path = JFolder::makeSafe($custom_client_path);
-
-			$xml_file           = $custom_client_path . '/en-GB.xml';
 
 			if (JFile::exists($xml_file))
 			{
@@ -1090,9 +1101,9 @@ abstract class LocaliseHelper
 
 		// Detailing it one by one due in this case we can handle exceptions and add other Github users or projects
 		// To get the language files for a determined Joomla's version that is not present from main repository.
-		$sources['3.4.1']['user'] = 'joomla';
+		$sources['3.4.1']['user']    = 'joomla';
 		$sources['3.4.1']['project'] = 'joomla-cms';
-		$sources['3.4.1']['branch'] = '3.4.1';
+		$sources['3.4.1']['branch']  = '3.4.1';
 
 		if (array_key_exists($source_ref, $sources))
 		{
@@ -1100,9 +1111,9 @@ abstract class LocaliseHelper
 		}
 
 		// For undefined REF 0 or unlisted cases due Joomla releases at Github are following a version name patern.
-		$sources[$source_ref]['user'] = 'joomla';
+		$sources[$source_ref]['user']    = 'joomla';
 		$sources[$source_ref]['project'] = 'joomla-cms';
-		$sources[$source_ref]['branch'] = $source_ref;
+		$sources[$source_ref]['branch']  = $source_ref;
 
 	return ($sources[$source_ref]);
 	}
@@ -1528,6 +1539,99 @@ abstract class LocaliseHelper
 		}
 
 	return array();
+	}
+
+	/**
+	 * Gets the develop path if exists
+	 *
+	 * @param   string  $client   The client
+	 * @param   string  $refpath  The data to the reference path
+	 *
+	 * @return  string
+	 *
+	 * @since   4.11
+	 */
+	public static function searchDevpath($client = '', $refpath = '')
+	{
+		$params             = JComponentHelper::getParams('com_localise');
+		$ref_tag            = $params->get('reference', 'en-GB');
+		$allow_develop      = $params->get('gh_allow_develop', 0);
+
+		$develop_client_path = JPATH_ROOT
+					. '/media/com_localise/develop/github/joomla-cms/en-GB/'
+					. $client;
+
+		$ref_file            = basename($refpath);
+		$develop_file_path   = JFolder::makeSafe("$develop_client_path/$ref_file");
+
+		if (JFile::exists($develop_file_path) && $allow_develop == 1 && $ref_tag == 'en-GB')
+		{
+			$devpath = $develop_file_path;
+		}
+		else
+		{
+			$devpath = '';
+		}
+
+		return $devpath;
+	}
+
+	/**
+	 * Allow combine the reference versions to obtain a right result editing in raw mode or saving source reference files
+	 * When development is enabled.
+	 *
+	 * @param   string  $refpath  The data to the reference path
+	 *
+	 * @param   string  $devpath  The data to the develop path
+	 *
+	 * @return  array
+	 *
+	 * @since   4.11
+	 */
+	public static function combineReferences($refpath = '', $devpath = '')
+	{
+		$params             = JComponentHelper::getParams('com_localise');
+		$ref_tag            = $params->get('reference', 'en-GB');
+		$allow_develop      = $params->get('gh_allow_develop', 0);
+
+		if (JFile::exists($devpath) && JFile::exists($refpath) && $allow_develop == 1 && $ref_tag == 'en-GB')
+		{
+			$combined_content  = '';
+			$ref_sections      = self::parseSections($refpath);
+			$keys_in_reference = array_keys($ref_sections['keys']);
+
+			$stream = new JStream;
+			$stream->open($devpath);
+			$stream->seek(0);
+
+			while (!$stream->eof())
+			{
+				$line = $stream->gets();
+
+				if (preg_match('/^([A-Z][A-Z0-9_\-\.]*)\s*=/', $line, $matches))
+				{
+					$key = $matches[1];
+
+					if (in_array($key, $keys_in_reference))
+					{
+						$string = $ref_sections['keys'][$key];
+						$combined_content .= $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
+					}
+					else
+					{
+						$combined_content .= $line;
+					}
+				}
+				else
+				{
+					$combined_content .= $line;
+				}
+			}
+
+			$stream->close();
+		}
+
+		return $combined_content;
 	}
 
 	/**
