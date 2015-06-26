@@ -780,22 +780,35 @@ abstract class LocaliseHelper
 			$versions_file = file_get_contents($versions_path);
 			$versions      = preg_split("/\\r\\n|\\r|\\n/", $versions_file);
 
+			if ($saved_ref != '0' && !in_array($customisedref, $versions))
+			{
+				// Ensure from translations view that we have updated the last one released only when no maches.
+				$search_releases = self::getReleases();
+				$versions_file   = file_get_contents($versions_path);
+				$versions        = preg_split("/\\r\\n|\\r|\\n/", $versions_file);
+			}
+
 			$installed_version = new JVersion;
 			$installed_version = $installed_version->getShortVersion();
 
-			if ($customisedref == '0')
+			$core_paths['administrator'] = 'administrator/language/en-GB';
+			$core_paths['site']          = 'language/en-GB';
+			$core_paths['installation']  = 'installation/language/en-GB';
+
+			if ($saved_ref == '0')
 			{
-				$customisedref = $installed_version;
+				// It will use core language folders.
+				$customisedref = "Local installed instance ($installed_version??)";
 			}
-
-			$custom_client_path = JPATH_ROOT . '/media/com_localise/customisedref/github/'
-					. $gh_data['github_client']
-					. '/'
-					. $customisedref;
-
-			$custom_client_path = JFolder::makeSafe($custom_client_path);
-
-			$xml_file           = $custom_client_path . '/en-GB.xml';
+			else
+			{
+				// It will use language folders with other stored versions.
+				$custom_client_path = JPATH_ROOT . '/media/com_localise/customisedref/github/'
+						. $gh_data['github_client']
+						. '/'
+						. $customisedref;
+				$custom_client_path = JFolder::makeSafe($custom_client_path);
+			}
 
 			// If reference tag is not en-GB is not required try it
 			if ($ref_tag != 'en-GB' && $allow_develop == 1)
@@ -808,30 +821,22 @@ abstract class LocaliseHelper
 			}
 
 			// If not knowed Joomla version is not required try it
-			if (!in_array($customisedref, $versions) && $allow_develop == 1)
+			if ($saved_ref != '0' && !in_array($customisedref, $versions) && $allow_develop == 1)
 			{
 				JFactory::getApplication()->enqueueMessage(
 					JText::sprintf('COM_LOCALISE_ERROR_GITHUB_GETTING_LOCAL_INSTALLED_FILES', $customisedref),
 					'warning');
 
+				$option    = '0';
+				$revert    = self::setCustomisedsource($option);
+				$save_last = self::saveLastsourcereference($gh_data['github_client'], '');
+
 				return false;
 			}
 
-			// If not knowed Joomla version and feature is disabled is not required try it
-			if (!in_array($customisedref, $versions) && $allow_develop == 0)
-			{
-				return false;
-			}
-
-			// Unrequired move or update files again
-			if ($installed_version == $last_source && JFile::exists($xml_file))
-			{
-				return false;
-			}
-
-			// If feature is disable but last moved files to core folder are disctinct to Joomla version
-			// is required comeback to original version.
-			if (!empty($last_source) && $installed_version != $last_source && $allow_develop == 0)
+			// If feature is disabled but last used files are disctinct to default ones
+			// Is required make notice that we are coming back to local installed instance version.
+			if ($saved_ref != '0' && !empty($last_source) && $last_source != '0' && $allow_develop == 0)
 			{
 				$customisedref = $installed_version;
 
@@ -843,6 +848,34 @@ abstract class LocaliseHelper
 						),
 						'notice'
 						);
+
+				$option    = '0';
+				$revert    = self::setCustomisedsource($option);
+				$save_last = self::saveLastsourcereference($gh_data['github_client'], '');
+
+				return true;
+			}
+
+			// If not knowed Joomla version and feature is disabled is not required try it
+			if ($saved_ref != '0' && !in_array($customisedref, $versions) && $allow_develop == 0)
+			{
+				return false;
+			}
+
+			// If configured to local installed instance there is nothing to get from Github
+			if ($saved_ref == '0')
+			{
+				$save_last = self::saveLastsourcereference($gh_data['github_client'], '');
+
+				return true;
+			}
+
+			$xml_file = $custom_client_path . '/en-GB.xml';
+
+			// Unrequired move or update files again
+			if ($saved_ref != '0' && $installed_version == $last_source && JFile::exists($xml_file))
+			{
+				return false;
 			}
 
 			$gh_data['allow_develop']  = $allow_develop;
@@ -863,35 +896,16 @@ abstract class LocaliseHelper
 			if (JFile::exists($xml_file))
 			{
 				// We have done this trunk and is not required get the files from Github again.
-
-				// So we can move the customised source reference files to core client folder
-				$update_files = self::updateSourcereference($gh_client, $custom_client_path, $reference_client_path);
+				$update_files = self::updateSourcereference($gh_client, $custom_client_path);
 
 				if ($update_files == false)
 				{
 					return false;
 				}
 
-				$last_reference_file      = JPATH_COMPONENT_ADMINISTRATOR
-								. '/customisedref/'
-								. $gh_data['github_client']
-								. '_last_source_ref.txt';
+				$save_last = self::saveLastsourcereference($gh_data['github_client'], $customisedref);
 
-				// And save the last version of language files used for this client.
-				$file_contents = $customisedref . "\n";
-				JFile::write($last_reference_file, $file_contents);
-
-			return true;
-			}
-
-			if (!JFolder::exists($custom_client_path))
-			{
-				$create_folder = self::createFolder($gh_data, $index = 'true');
-
-				if ($create_folder == false)
-				{
-					return false;
-				}
+				return true;
 			}
 
 			$options = new JRegistry;
@@ -931,6 +945,16 @@ abstract class LocaliseHelper
 				return false;
 			}
 
+			if (!JFolder::exists($custom_client_path))
+			{
+				$create_folder = self::createFolder($gh_data, $index = 'true');
+
+				if ($create_folder == false)
+				{
+					return false;
+				}
+			}
+
 			$all_files_list = self::getLanguagefileslist($custom_client_path);
 			$ini_files_list = self::getInifileslist($custom_client_path);
 
@@ -954,7 +978,7 @@ abstract class LocaliseHelper
 				if (!empty($custom_file) && isset($custom_file->content))
 				{
 					$file_to_include = $repostoryfile->name;
-					$file_contents = base64_decode($custom_file->content);
+					$file_contents   = base64_decode($custom_file->content);
 					JFile::write($file_path, $file_contents);
 
 					if (!JFile::exists($file_path))
@@ -970,7 +994,7 @@ abstract class LocaliseHelper
 
 			if (!empty($all_files_list) && !empty($files_to_include))
 			{
-				// For files not present in dev yet.
+				// For files not present yet.
 				$files_to_delete = array_diff($all_files_list, $files_to_include);
 
 				if (!empty($files_to_delete))
@@ -1000,27 +1024,20 @@ abstract class LocaliseHelper
 				// We have done this trunk.
 
 				// So we can move the customised source reference files to core client folder
-				$update_files = self::updateSourcereference($gh_client, $custom_client_path, $reference_client_path);
+				$update_files = self::updateSourcereference($gh_client, $custom_client_path);
 
 				if ($update_files == false)
 				{
 					return false;
 				}
 
-				$last_reference_file      = JPATH_COMPONENT_ADMINISTRATOR
-								. '/customisedref/'
-								. $gh_data['github_client']
-								. '_last_source_ref.txt';
+				$save_last = self::saveLastsourcereference($gh_data['github_client'], $customisedref);
 
-				// And save the last version of language files used for this client.
-				$file_contents = $customisedref . "\n";
-				JFile::write($last_reference_file, $file_contents);
+				JFactory::getApplication()->enqueueMessage(
+					JText::sprintf('COM_LOCALISE_NOTICE_GITHUB_GETS_A_SOURCE_FULL_SET', $customisedref),
+					'notice');
 
-			JFactory::getApplication()->enqueueMessage(
-				JText::sprintf('COM_LOCALISE_NOTICE_GITHUB_GETS_A_SOURCE_FULL_SET', $customisedref),
-				'notice');
-
-			return true;
+				return true;
 			}
 
 			JFactory::getApplication()->enqueueMessage(
@@ -1033,6 +1050,134 @@ abstract class LocaliseHelper
 		JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_ERROR_GITHUB_NO_DATA_PRESENT'), 'warning');
 
 		return false;
+	}
+
+	/**
+	 * Gets the stable Joomla releases list.
+	 *
+	 * @return  array
+	 *
+	 * @since   4.11
+	 */
+	public static function getReleases()
+	{
+		$params        = JComponentHelper::getParams('com_localise');
+		$versions_path = JPATH_ROOT
+				. '/administrator/components/com_localise/customisedref/stable_joomla_releases.txt';
+		$versions_file = file_get_contents($versions_path);
+		$versions      = preg_split("/\\r\\n|\\r|\\n/", $versions_file);
+
+		$gh_user       = 'joomla';
+		$gh_project    = 'joomla-cms';
+		$gh_token      = $params->get('gh_token', '');
+
+		$options = new JRegistry;
+
+		if (!empty($gh_token))
+		{
+			$options->set('gh.token', $gh_token);
+			$github = new JGithub($options);
+		}
+		else
+		{
+			// Without a token runs fatal.
+			// $github = new JGithub;
+
+			// Trying with a 'read only' public repositories token
+			// But base 64 encoded to avoid Github alarms sharing it.
+			$gh_token = base64_decode('MzY2NzYzM2ZkMzZmMWRkOGU5NmRiMTdjOGVjNTFiZTIyMzk4NzVmOA==');
+			$options->set('gh.token', $gh_token);
+			$github = new JGithub($options);
+		}
+
+		try
+		{
+			$releases = $github->repositories->get(
+					$gh_user,
+					$gh_project . '/releases'
+					);
+
+			// Allowed tricks.
+			// Configured to 0 the 2.5.x series are not allowed. Configured to 1 it is allowed.
+			$allow_25x = 1;
+
+			foreach ($releases as $release)
+			{
+				$tag_name = $release->tag_name;
+				$tag_part = explode(".", $tag_name);
+				$undoted  = str_replace('.', '', $tag_name);
+				$excluded = 0;
+
+				if ($tag_part[0] == '2' && $allow_25x == '0')
+				{
+					$excluded = 1;
+				}
+				elseif ($tag_part[0] != '3' && $tag_part[0] != '2')
+				{
+					// Exclude platforms or similar stuff.
+					$excluded = 1;
+				}
+
+				// Filtering also by "is_numeric" disable betas or similar releases.
+				if (!in_array($tag_name, $versions) && is_numeric($undoted) && $excluded == 0)
+				{
+					$versions[] = $tag_name;
+					JFactory::getApplication()->enqueueMessage(
+						JText::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
+						'notice');
+				}
+			}
+		}
+		catch (Exception $e)
+		{
+			JFactory::getApplication()->enqueueMessage(
+				JText::_('COM_LOCALISE_ERROR_GITHUB_GETTING_RELEASES'),
+				'warning');
+		}
+
+		arsort($versions);
+
+		$versions_file = '';
+
+		foreach ($versions as $id => $version)
+		{
+			if (!empty($version))
+			{
+				$versions_file .= $version . "\n";
+			}
+		}
+
+		JFile::write($versions_path, $versions_file);
+
+		return $versions;
+	}
+
+	/**
+	 * Save the last en-GB source version used as reference.
+	 *
+	 * @param   string  $client         The client
+	 *
+	 * @param   string  $customisedref  The version number
+	 *
+	 * @return  boolean
+	 *
+	 * @since   4.11
+	 */
+	public static function saveLastsourcereference($client = '', $customisedref = '')
+	{
+		$last_reference_file = JPATH_COMPONENT_ADMINISTRATOR
+					. '/customisedref/'
+					. $client
+					. '_last_source_ref.txt';
+
+		$file_contents = $customisedref . "\n";
+
+		if (!JFile::write($last_reference_file, $file_contents))
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -1089,18 +1234,11 @@ abstract class LocaliseHelper
 	{
 		$source_ref        = $gh_data['customisedref'];
 		$allow_develop     = $gh_data['allow_develop'];
-		$installed_version = new JVersion;
-		$installed_version = $installed_version->getShortVersion();
-
-		if ($source_ref == 0 || $allow_develop == '0')
-		{
-			$source_ref == $installed_version;
-		}
 
 		$sources = array();
 
-		// Detailing it one by one due in this case we can handle exceptions and add other Github users or projects
-		// To get the language files for a determined Joomla's version that is not present from main repository.
+		// Detailing it we can handle exceptions and add other Github users or projects.
+		// To get the language files for a determined Joomla's version that is not present from main Github repository.
 		$sources['3.4.1']['user']    = 'joomla';
 		$sources['3.4.1']['project'] = 'joomla-cms';
 		$sources['3.4.1']['branch']  = '3.4.1';
@@ -1119,7 +1257,77 @@ abstract class LocaliseHelper
 	}
 
 	/**
-	 * Keep updated the reference client path with the selected customised sourcefiles as reference.
+	 * Keep updated the customised client path including only the common files present in develop.
+	 *
+	 * @param   string  $client              The client
+	 *
+	 * @param   string  $custom_client_path  The path where the new source reference is stored
+	 *
+	 * @return  boolean
+	 *
+	 * @since   4.11
+	 */
+	public static function updateSourcereference($client, $custom_client_path)
+	{
+		$develop_client_path   = JPATH_ROOT . '/media/com_localise/develop/github/joomla-cms/en-GB/' . $client;
+		$develop_client_path   = JFolder::makeSafe($develop_client_path);
+
+		$custom_ini_files_list = self::getInifileslist($custom_client_path);
+		$last_ini_files_list   = self::getInifileslist($develop_client_path);
+
+		$files_to_exclude = array();
+
+		if (!JFile::exists($develop_client_path . '/en-GB.xml'))
+		{
+			JFactory::getApplication()->enqueueMessage(
+				JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_TARGET_FILES'),
+				'warning');
+
+			return false;
+		}
+		elseif (!JFile::exists($custom_client_path . '/en-GB.xml'))
+		{
+			JFactory::getApplication()->enqueueMessage(
+				JText::_('COM_LOCALISE_ERROR_GITHUB_UNABLE_TO_UPDATE_SOURCE_FILES'),
+				'warning');
+
+			return false;
+		}
+
+		// This one is for files not present within last in dev yet.
+		// Due have no sense add old language files to translate or revise for the comming soon package.
+
+		$files_to_exclude = array_diff($custom_ini_files_list, $last_ini_files_list);
+
+		if (!empty($files_to_exclude))
+		{
+			$errors = 0;
+
+			foreach ($files_to_exclude as $file_to_delete)
+			{
+				$custom_file_path = JFolder::makeSafe($custom_client_path . "/" . $file_to_delete);
+
+				if (!JFile::delete($custom_file_path))
+				{
+					$errors++;
+				}
+			}
+
+			if ($errors > 0)
+			{
+				JFactory::getApplication()->enqueueMessage(
+					JText::sprintf('COM_LOCALISE_ERROR_DELETING_EXTRA_SOURCE_FILES', $errors),
+					'warning');
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Keep updated the core path with the selected source files as reference (used at previous working mode).
 	 *
 	 * @param   string  $client                 The client
 	 *
@@ -1131,7 +1339,7 @@ abstract class LocaliseHelper
 	 *
 	 * @since   4.11
 	 */
-	public static function updateSourcereference($client, $custom_client_path, $reference_client_path)
+	public static function updateSourcereferencedirectly($client, $custom_client_path, $reference_client_path)
 	{
 		$develop_client_path   = JPATH_ROOT . '/media/com_localise/develop/github/joomla-cms/en-GB/' . $client;
 		$develop_client_path   = JFolder::makeSafe($develop_client_path);
@@ -1535,10 +1743,10 @@ abstract class LocaliseHelper
 				}
 			}
 
-		return $developdata;
+			return $developdata;
 		}
 
-	return array();
+		return array();
 	}
 
 	/**
@@ -1574,6 +1782,43 @@ abstract class LocaliseHelper
 		}
 
 		return $devpath;
+	}
+
+	/**
+	 * Gets the customised source path if exists
+	 *
+	 * @param   string  $client   The client
+	 * @param   string  $refpath  The data to the reference path
+	 *
+	 * @return  string
+	 *
+	 * @since   4.11
+	 */
+	public static function searchCustompath($client = '', $refpath = '')
+	{
+		$params             = JComponentHelper::getParams('com_localise');
+		$ref_tag            = $params->get('reference', 'en-GB');
+		$allow_develop      = $params->get('gh_allow_develop', 0);
+		$customisedref      = $params->get('customisedref', '0');
+		$custom_client_path = JPATH_ROOT
+					. '/media/com_localise/customisedref/github/'
+					. $client
+					. '/'
+					. $customisedref;
+
+		$ref_file         = basename($refpath);
+		$custom_file_path = JFolder::makeSafe("$custom_client_path/$ref_file");
+
+		if (JFile::exists($custom_file_path) && $allow_develop == 1 && $ref_tag == 'en-GB' && $customisedref != 0)
+		{
+			$custom_path = $custom_file_path;
+		}
+		else
+		{
+			$custom_path = '';
+		}
+
+		return $custom_path;
 	}
 
 	/**
@@ -1756,6 +2001,43 @@ abstract class LocaliseHelper
 	}
 
 	/**
+	 * Forces to save the customised source version to use. Option '0' returns to local installed instance.
+	 *
+	 * @param   string  $option  The option value to save.
+	 *
+	 * @return  bolean
+	 *
+	 * @since   4.11
+	 */
+	public static function setCustomisedsource($option = '0')
+	{
+		$params = JComponentHelper::getParams('com_localise');
+		$params->set('customisedref', $option);
+
+		$localise_id = JComponentHelper::getComponent('com_localise')->id;
+
+		$table = JTable::getInstance('extension');
+		$table->load($localise_id);
+		$table->bind(array('params' => $params->toString()));
+
+		if (!$table->check())
+		{
+			JFactory::getApplication()->enqueueMessage($table->getError(), 'warning');
+
+			return false;
+		}
+
+		if (!$table->store())
+		{
+			JFactory::getApplication()->enqueueMessage($table->getError(), 'warning');
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Create the required folders for develop
 	 *
 	 * @param   array   $gh_data  Array with the data
@@ -1767,14 +2049,7 @@ abstract class LocaliseHelper
 	 */
 	public static function createFolder($gh_data = array(), $index = 'true')
 	{
-		$installed_version = new JVersion;
-		$installed_version = $installed_version->getShortVersion();
-		$source_ref        = $gh_data['customisedref'];
-
-		if ($source_ref == 0)
-		{
-			$source_ref == $installed_version;
-		}
+		$source_ref = $gh_data['customisedref'];
 
 		if (!empty($gh_data) && isset($source_ref))
 		{

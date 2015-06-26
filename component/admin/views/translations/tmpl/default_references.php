@@ -45,7 +45,6 @@ $has_installation  = LocaliseHelper::hasInstallation();
 	{
 		if (!empty($last_source[$client]) && $installed_version != $last_source[$client] && $allow_develop == 0)
 		{
-
 			JFactory::getApplication()->enqueueMessage(
 				JText::sprintf('COM_LOCALISE_WARNING_DISABLED_ALLOW_DEVELOP_WITHOUT_LOCAL_SET',
 					$client,
@@ -57,25 +56,24 @@ $has_installation  = LocaliseHelper::hasInstallation();
 
 	if ($allow_develop == 1)
 	{
-
-	$report .= '<b>Source reference</b><br />';
+		$report .= '<b>Source reference</b><br />';
 
 		foreach ($clients as $client)
 		{
 			if ($last_source[$client] == '')
 			{
-				$report .= strtoupper($client) . ' client is actualy using Joomla ' . $installed_version . ' language files as baseline.';
-				$version[$client] = $installed_version;
+				$report .= '<b>' . strtoupper($client) . '</b> client is actualy using the <b>Local installed instance</b> of Joomla language files as baseline.';
+				$version[$client] = '0';
 			}
 			else
 			{
-				$report .= strtoupper($client) . ' client is actualy using Joomla ' . $last_source[$client] . ' language files as baseline.';
+				$report .= '<b>' . strtoupper($client) . '</b> client is actualy using Joomla <b>' . $last_source[$client] . '</b> language files as baseline.';
 				$version[$client] = $last_source[$client];
 			}
 
-			if ($last_source[$client] == $installed_version)
+			if ($last_source[$client] == '')
 			{
-				$report .= ' This version matches with the local installed instance.';
+				$report .= ' You are working on Joomla <b>' . $installed_version . '</b> version.';
 			}
 
 			$report .= '<br />';
@@ -96,10 +94,32 @@ $has_installation  = LocaliseHelper::hasInstallation();
 				$equal_versions = 0;
 			}
 		}
+		
+		if (($version['administrator'] == '0' || $version['administrator'] == $installed_version)
+		&& ($version['site'] == '0' || $version['site'] == $installed_version))
+		{
+			$matches = 1;
+
+			if ($has_installation && $matches == 1)
+			{				
+				if ($version['installation'] == '0' || $version['installation'] == $installed_version)
+				{
+					$equal_versions = 2;
+				}
+			}
+			elseif ($matches == 1)
+			{
+				$equal_versions = 2;
+			}
+		}
 
 		if ($equal_versions == 0)
 		{
-			$report .= '<br />Please, note that now the clients are not using the same language files version.<br />';
+			$report .= '<br />Please, note that the clients are not using the same language files version:<br />';
+		}
+		elseif ($equal_versions == 2)
+		{
+			$report .= '<br />Please, note that there are clients using a cutomised version than matches with your actual Joomla version:<br />';
 		}
 		else
 		{
@@ -109,15 +129,21 @@ $has_installation  = LocaliseHelper::hasInstallation();
 
 		foreach ($clients as $client)
 		{
-			if (!empty($last_source[$client]) && $installed_version != $last_source[$client])
+			if (!empty($last_source[$client]))
 			{
-				$report .= '<br />Note that now the client ' . strtoupper($client) . ' is using customised reference files as source en-GB baseline.<br />';
+				$report .= '<br />The client ' . strtoupper($client) . ' is using <b>customised</b> reference files as source en-GB baseline.';
+				if ($last_source[$client] == $installed_version)
+				{
+					$report .= ' It matches with your actual Joomla version.';
+				}
+
+				$report .= '<br />';
 			}
 		}
 
 		$report .= '<br /><b>Target reference</b><br />';
 
-		$report .= 'The detected modified values or new keys in development to show are comming from the target language files within <b>' . $gh_branch . '</b> branch at Github.<br /><br />';
+		$report .= 'The detected modified values or new keys in development to show are coming from the target language files within <b>' . $gh_branch . '</b> branch at Github.<br /><br />';
 
 		foreach ($clients as $client)
 		{
@@ -130,7 +156,7 @@ $has_installation  = LocaliseHelper::hasInstallation();
 			}
 			else
 			{
-				$report .= 'The develop files of client ' . strtoupper($client) . ' have been updated on ' . $target_updates[$client] . '.<br />';
+				$report .= 'The develop files of client ' . strtoupper($client) . ' have been <b>updated</b> on ' . $target_updates[$client] . '.<br />';
 			}
 		}
 	}

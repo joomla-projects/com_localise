@@ -174,6 +174,7 @@ class LocaliseModelTranslation extends JModelAdmin
 				$gh_client           = $this->getState('translation.client');
 				$tag                 = $this->getState('translation.tag');
 				$reftag              = $this->getState('translation.reference');
+				$refpath             = $this->getState('translation.refpath');
 				$istranslation       = 0;
 
 				if (!empty($tag) && $tag != $reftag)
@@ -226,15 +227,21 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				if (JFile::exists($path))
 				{
-					$devpath   = '';
+					$devpath    = LocaliseHelper::searchDevpath($gh_client, $refpath);
+					$custompath = LocaliseHelper::searchCustompath($gh_client, $refpath);
 
 					if ($istranslation == 0 && $reftag == 'en-GB')
 					{
-						$devpath   = LocaliseHelper::searchDevpath($gh_client, $path);
-
 						if (!empty($devpath))
 						{
-							$this->item->source = LocaliseHelper::combineReferences($path, $devpath);
+							if (!empty($custompath))
+							{
+								$this->item->source = LocaliseHelper::combineReferences($custompath, $devpath);
+							}
+							else
+							{
+								$this->item->source = LocaliseHelper::combineReferences($path, $devpath);
+							}
 						}
 					}
 					else
@@ -242,10 +249,10 @@ class LocaliseModelTranslation extends JModelAdmin
 						$this->item->source = file_get_contents($path);
 					}
 
-					$stream             = new JStream;
+					$stream = new JStream;
 					$stream->open($path);
-					$begin = $stream->read(4);
-					$bom   = strtolower(bin2hex($begin));
+					$begin  = $stream->read(4);
+					$bom    = strtolower(bin2hex($begin));
 
 					if ($bom == '0000feff')
 					{
@@ -435,8 +442,17 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				if ($this->getState('translation.layout') != 'raw' && empty($this->item->error))
 				{
-					$sections            = LocaliseHelper::parseSections($this->getState('translation.path'));
-					$refsections         = LocaliseHelper::parseSections($this->getState('translation.refpath'));
+					$sections = LocaliseHelper::parseSections($this->getState('translation.path'));
+
+						if (!empty($custompath))
+						{
+							$refsections = LocaliseHelper::parseSections($custompath);
+						}
+						else
+						{
+							$refsections = LocaliseHelper::parseSections($this->getState('translation.refpath'));
+						}
+
 					$develop_client_path = JPATH_ROOT
 								. '/media/com_localise/develop/github/joomla-cms/en-GB/'
 								. $gh_client;
@@ -692,7 +708,7 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				if ($extras_amount > 0  || $text_changes_amount > 0)
 				{
-					$have_develop       = 1;
+					$have_develop      = 1;
 					$develop_file_path = $developdata['develop_file_path'];
 					$develop_sections  = LocaliseHelper::parseSections($develop_file_path);
 					$refsections       = $develop_sections;
