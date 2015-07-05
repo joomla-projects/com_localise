@@ -801,18 +801,19 @@ class LocaliseModelTranslations extends JModelList
 				if (preg_match("/$filter_state/", $state) && preg_match("/$filter_tag/", $translation->tag))
 				{
 					$developdata          = $item->developdata;
-					$extras_amount        = 0;
-					$text_changes_amount  = 0;
-					$have_develop         = 0;
 					$untranslateds_amount = $item->untranslated;
+					$translated_news      = $item->translatednews;
+					$extras_amount        = 0;
+					$unrevised_changes    = 0;
+					$have_develop         = 0;
 
 					if (!empty($developdata))
 					{
-						$extras_amount       = $developdata['extra_keys']['amount'];
-						$text_changes_amount = $developdata['text_changes']['amount'];
+						$extras_amount     = $developdata['extra_keys']['amount'];
+						$unrevised_changes = $developdata['text_changes']['unrevised'];
 					}
 
-					if ($extras_amount > 0  || $text_changes_amount > 0 || $untranslateds_amount > 0)
+					if (($extras_amount > 0 && $extras_amount > $translated_news) || $unrevised_changes > 0 || $untranslateds_amount > 0)
 					{
 						$have_develop = 1;
 					}

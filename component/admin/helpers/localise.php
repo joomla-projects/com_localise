@@ -1704,9 +1704,10 @@ abstract class LocaliseHelper
 			$keys_in_develop   = array_keys($develop_sections['keys']);
 
 			// Catching new keys in develop
-			$developdata['extra_keys']['amount'] = 0;
-			$developdata['extra_keys']['keys'] = array();
+			$developdata['extra_keys']['amount']  = 0;
+			$developdata['extra_keys']['keys']    = array();
 			$developdata['extra_keys']['strings'] = array();
+
 			$extras_in_develop = array_diff($keys_in_develop, $keys_in_reference);
 
 			if (!empty($extras_in_develop))
@@ -1714,16 +1715,19 @@ abstract class LocaliseHelper
 				foreach ($extras_in_develop as $extra_key)
 				{
 					$developdata['extra_keys']['amount']++;
-					$developdata['extra_keys']['keys'][] = $extra_key;
+					$developdata['extra_keys']['keys'][]              = $extra_key;
 					$developdata['extra_keys']['strings'][$extra_key] = $develop_sections['keys'][$extra_key];
 				}
 			}
 
 			// Catching text changes in develop
-			$developdata['text_changes']['amount'] = 0;
-			$developdata['text_changes']['keys'] = array();
+			$developdata['text_changes']['amount']     = 0;
+			$developdata['text_changes']['revised']    = 0;
+			$developdata['text_changes']['unrevised']  = 0;
+			$developdata['text_changes']['keys']       = array();
 			$developdata['text_changes']['ref_in_dev'] = array();
-			$developdata['text_changes']['diff'] = array();
+			$developdata['text_changes']['ref']        = array();
+			$developdata['text_changes']['diff']       = array();
 
 			foreach ($refsections['keys'] as $key => $string)
 			{
@@ -1735,10 +1739,10 @@ abstract class LocaliseHelper
 					if (!empty($text_changes))
 					{
 						$developdata['text_changes']['amount']++;
-						$developdata['text_changes']['keys'][] = $key;
+						$developdata['text_changes']['keys'][]           = $key;
 						$developdata['text_changes']['ref_in_dev'][$key] = $develop_sections['keys'][$key];
-						$developdata['text_changes']['ref'][$key] = $string;
-						$developdata['text_changes']['diff'][$key] = $text_changes;
+						$developdata['text_changes']['ref'][$key]        = $string;
+						$developdata['text_changes']['diff'][$key]       = $text_changes;
 					}
 				}
 			}
@@ -1829,7 +1833,7 @@ abstract class LocaliseHelper
 	 *
 	 * @param   string  $devpath  The data to the develop path
 	 *
-	 * @return  array
+	 * @return  string
 	 *
 	 * @since   4.11
 	 */
@@ -1838,10 +1842,10 @@ abstract class LocaliseHelper
 		$params             = JComponentHelper::getParams('com_localise');
 		$ref_tag            = $params->get('reference', 'en-GB');
 		$allow_develop      = $params->get('gh_allow_develop', 0);
+		$combined_content   = '';
 
 		if (JFile::exists($devpath) && JFile::exists($refpath) && $allow_develop == 1 && $ref_tag == 'en-GB')
 		{
-			$combined_content  = '';
 			$ref_sections      = self::parseSections($refpath);
 			$keys_in_reference = array_keys($ref_sections['keys']);
 
@@ -2035,6 +2039,172 @@ abstract class LocaliseHelper
 		}
 
 		return true;
+	}
+
+	/**
+	 * Load revised changes
+	 *
+	 * @param   array  $data  The required data.
+	 *
+	 * @return  array
+	 *
+	 * @since   4.11
+	 */
+	public static function searchRevisedvalue($data)
+	{
+		$client      = $data['client'];
+		$reftag      = $data['reftag'];
+		$tag         = $data['tag'];
+		$filename    = $data['filename'];
+		$revised     = $data['revised'];
+		$key         = $data['key'];
+		$target_text = $data['target_text'];
+		$source_text = $data['source_text'];
+
+		if (!empty($client) && !empty($reftag) && !empty($tag) && !empty($filename))
+		{
+			try
+			{
+				$db                 = JFactory::getDbo();
+				$query	            = $db->getQuery(true);
+				$search_client      = $db->quote($client);
+				$search_reftag      = $db->quote($reftag);
+				$search_tag         = $db->quote($tag);
+				$search_filename    = $db->quote($filename);
+				$search_key         = $db->quote($key);
+				$search_target_text = $db->quote($target_text);
+				$search_source_text = $db->quote($source_text);
+
+				$query->select(
+						array	(
+							$db->quoteName('revised')
+							)
+						);
+				$query->from(
+						$db->quoteName('#__localise_revised_values')
+						);
+				$query->where(
+						$db->quoteName('client') . '= ' . $search_client
+						);
+				$query->where(
+						$db->quoteName('reftag') . '= ' . $search_reftag
+
+						);
+				$query->where(
+						$db->quoteName('tag') . '= ' . $search_tag
+
+						);
+				$query->where(
+						$db->quoteName('filename') . '= ' . $search_filename
+						);
+				$query->where(
+						$db->quoteName('key') . '= ' . $search_key
+						);
+				$query->where(
+						$db->quoteName('target_text') . '= ' . $search_target_text
+						);
+				$query->where(
+						$db->quoteName('source_text') . '= ' . $search_source_text
+						);
+
+				$db->setQuery($query);
+
+					if (!$db->query())
+					{
+						throw new Exception($db->getErrorMsg());
+					}
+			}
+
+			catch (JException $e)
+			{
+				JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_ERROR_SEARCHING_REVISED_VALUES'), 'warning');
+
+				return array();
+			}
+
+			$result = $db->loadResult();
+
+				if (!is_null($result))
+				{
+					return (int) $result;
+				}
+				else
+				{
+					if (self::saveRevisedvalue($data))
+					{
+						return (int) $revised;
+					}
+					else
+					{
+						return null;
+					}
+				}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Save revised changes
+	 *
+	 * @param   array  $data  The required data.
+	 *
+	 * @return  array
+	 *
+	 * @since   4.11
+	 */
+	public static function saveRevisedvalue($data)
+	{
+		$client      = $data['client'];
+		$reftag      = $data['reftag'];
+		$tag         = $data['tag'];
+		$filename    = $data['filename'];
+		$revised     = $data['revised'];
+		$key         = $data['key'];
+		$target_text = $data['target_text'];
+		$source_text = $data['source_text'];
+
+		if (!empty($client) && !empty($reftag) && !empty($tag) && !empty($filename))
+		{
+			try
+			{
+				$db = JFactory::getDbo();
+
+				$saved_client      = $db->quote($client);
+				$saved_reftag      = $db->quote($reftag);
+				$saved_tag         = $db->quote($tag);
+				$saved_filename    = $db->quote($filename);
+				$saved_revised     = $db->quote($revised);
+				$saved_key         = $db->quote($key);
+				$saved_target_text = $db->quote($target_text);
+				$saved_source_text = $db->quote($source_text);
+
+				$query = $db->getQuery(true);
+
+				$columns = array('client', 'reftag', 'tag', 'filename', 'revised', 'key', 'target_text', 'source_text');
+
+				$values = array($saved_client, $saved_reftag, $saved_tag, $saved_filename, $saved_revised, $saved_key, $saved_target_text, $saved_source_text);
+
+				$query
+					->insert($db->quoteName('#__localise_revised_values'))
+					->columns($db->quoteName($columns))
+					->values(implode(',', $values));
+
+				$db->setQuery($query);
+				$db->execute();
+			}
+
+			catch (JException $e)
+			{
+				JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_ERROR_SAVING_REVISED_VALUES'), 'warning');
+
+				return false;
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

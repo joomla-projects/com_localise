@@ -186,12 +186,14 @@ class LocaliseModelTranslation extends JModelAdmin
 				$this->setState('translation.untranslatedkeys', array());
 				$this->setState('translation.unchangedkeys', array());
 				$this->setState('translation.textchangedkeys', array());
+				$this->setState('translation.revisedchanges', array());
 				$this->setState('translation.developdata', array());
 
 				$translatedkeys   = $this->getState('translation.translatedkeys');
 				$untranslatedkeys = $this->getState('translation.untranslatedkeys');
 				$unchangedkeys    = $this->getState('translation.unchangedkeys');
 				$textchangedkeys  = $this->getState('translation.textchangedkeys');
+				$revisedchanges  = $this->getState('translation.revisedchanges');
 				$developdata      = $this->getState('translation.developdata');
 
 				$this->item = new JObject(
@@ -214,6 +216,9 @@ class LocaliseModelTranslation extends JModelAdmin
 										'untranslatedkeys'    => (array) $untranslatedkeys,
 										'unchangedkeys'       => (array) $unchangedkeys,
 										'textchangedkeys'     => (array) $textchangedkeys,
+										'revisedchanges'      => (array) $revisedchanges,
+										'unrevised'           => 0,
+										'translatednews'      => 0,
 										'translated'          => 0,
 										'untranslated'        => 0,
 										'unchanged'           => 0,
@@ -459,6 +464,7 @@ class LocaliseModelTranslation extends JModelAdmin
 					$develop_client_path = JFolder::makeSafe($develop_client_path);
 					$ref_file            = basename($this->getState('translation.refpath'));
 					$develop_file_path   = "$develop_client_path/$ref_file";
+					$new_keys            = array();
 
 					if (JFile::exists($develop_file_path) && $allow_develop == 1 && $reftag == 'en-GB')
 					{
@@ -468,11 +474,56 @@ class LocaliseModelTranslation extends JModelAdmin
 
 						if ($developdata['extra_keys']['amount'] > 0  || $developdata['text_changes']['amount'] > 0)
 						{
+							if ($developdata['extra_keys']['amount'] > 0)
+							{
+								$new_keys = $developdata['extra_keys']['keys'];
+							}
+
 							if ($developdata['text_changes']['amount'] > 0)
 							{
 								$textchangedkeys = $developdata['text_changes']['keys'];
-								$this->item->textchangedkeys    = $textchangedkeys;
+								$this->item->textchangedkeys = $textchangedkeys;
 								$this->setState('translation.textchangedkeys', $textchangedkeys);
+
+								$changesdata['client']   = $gh_client;
+								$changesdata['reftag']   = $reftag;
+
+									if ($istranslation == 0)
+									{
+										$changesdata['tag'] = $reftag;
+									}
+									else
+									{
+										$changesdata['tag'] = $tag;
+									}
+
+								$changesdata['filename'] = $ref_file;
+
+								foreach ($textchangedkeys as $key_changed)
+								{
+									$target_text = $developdata['text_changes']['ref_in_dev'][$key_changed];
+									$source_text = $developdata['text_changes']['ref'][$key_changed];
+
+									$changesdata['revised']     = '0';
+									$changesdata['key']         = $key_changed;
+									$changesdata['target_text'] = $target_text;
+									$changesdata['source_text'] = $source_text;
+
+									$change_status = LocaliseHelper::searchRevisedvalue($changesdata);
+									$revisedchanges[$key_changed] = $change_status;
+
+									if ($change_status == 1)
+									{
+										$developdata['text_changes']['revised']++;
+									}
+									else
+									{
+										$developdata['text_changes']['unrevised']++;
+									}
+								}
+
+								$this->item->revisedchanges = $revisedchanges;
+								$this->setState('translation.revisedchanges', $revisedchanges);
 							}
 
 							// When develop changes are present, replace the reference keys
@@ -491,13 +542,31 @@ class LocaliseModelTranslation extends JModelAdmin
 
 							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']) && $sections['keys'][$key] != '')
 							{
-								if ($sections['keys'][$key] != $string)
+								if ($sections['keys'][$key] != $string && $istranslation == 1)
 								{
-									$this->item->translated++;
-									$translatedkeys[] = $key;
+									if (array_key_exists($key, $revisedchanges) && $revisedchanges[$key] == 0)
+									{
+										$this->item->unrevised++;
+										$translatedkeys[] = $key;
+									}
+									elseif (in_array($key, $new_keys))
+									{
+										$this->item->translatednews++;
+										$translatedkeys[] = $key;
+									}
+									else
+									{
+										$this->item->translated++;
+										$translatedkeys[] = $key;
+									}
 								}
-								elseif ($this->getState('translation.path') == $this->getState('translation.refpath'))
+								elseif ($istranslation == 0)
 								{
+									if (array_key_exists($key, $revisedchanges) && $revisedchanges[$key] == 0)
+									{
+										$this->item->unrevised++;
+									}
+
 									$this->item->translated++;
 								}
 								else
@@ -536,10 +605,10 @@ class LocaliseModelTranslation extends JModelAdmin
 					}
 
 					$this->item->completed = $this->item->total
-						? intval(100 * $this->item->translated / $this->item->total) + $this->item->unchanged / $this->item->total
+						? intval(100 * ($this->item->translated + $this->item->unchanged) / $this->item->total)
 						: 100;
 
-					$this->item->complete = $this->item->complete
+					$this->item->complete = $this->item->complete == 1 && $this->item->untranslated == 0 && $this->item->unrevised == 0
 						? 1
 						: ($this->item->completed == 100
 							? 1
