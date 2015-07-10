@@ -73,6 +73,15 @@
 		<field
 			name="svn"
 			type="hidden" />
+		<field
+			name="text_changes"
+			type="hidden" />
+		<field
+			name="source_text_changes"
+			type="hidden" />
+		<field
+			name="target_text_changes"
+			type="hidden" />
 	</fieldset>
 	<fields name="select">
 		<fieldset name="select">

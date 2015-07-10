@@ -485,8 +485,8 @@ class LocaliseModelTranslation extends JModelAdmin
 								$this->item->textchangedkeys = $textchangedkeys;
 								$this->setState('translation.textchangedkeys', $textchangedkeys);
 
-								$changesdata['client']   = $gh_client;
-								$changesdata['reftag']   = $reftag;
+								$changesdata['client'] = $gh_client;
+								$changesdata['reftag'] = $reftag;
 
 									if ($istranslation == 0)
 									{
@@ -605,7 +605,7 @@ class LocaliseModelTranslation extends JModelAdmin
 					}
 
 					$this->item->completed = $this->item->total
-						? intval(100 * ($this->item->translated + $this->item->unchanged) / $this->item->total)
+						? intval(100 * ($this->item->translated + $this->item->unchanged + $this->item->translatednews) / $this->item->total)
 						: 100;
 
 					$this->item->complete = $this->item->complete == 1 && $this->item->untranslated == 0 && $this->item->unrevised == 0
@@ -737,6 +737,7 @@ class LocaliseModelTranslation extends JModelAdmin
 
 		$have_develop        = 0;
 		$developdata         = array();
+		$revisedchanges      = array();
 		$istranslation       = '';
 		$extras_amount       = 0;
 		$text_changes_amount = 0;
@@ -757,8 +758,9 @@ class LocaliseModelTranslation extends JModelAdmin
 			$form->setFieldAttribute('legend', 'untranslated', $item->total - $item->translated - $item->unchanged, 'legend');
 			$form->setFieldAttribute('legend', 'extra', $item->extra, 'legend');
 
-			$developdata   = $item->developdata;
-			$istranslation = $item->istranslation;
+			$developdata    = $item->developdata;
+			$revisedchanges = $item->revisedchanges;
+			$istranslation  = $item->istranslation;
 		}
 
 		if ($this->getState('translation.layout') != 'raw')
@@ -860,14 +862,26 @@ class LocaliseModelTranslation extends JModelAdmin
 							? $sections['keys'][$key]
 							: '';
 
+						$field->addAttribute('istranslation', $istranslation);
+						$field->addAttribute('istextchange', 0);
+						$field->addAttribute('isextraindev', 0);
+
 						if ($have_develop == '1' && in_array($key, $developdata['text_changes']['keys']))
 						{
-							$change  = $developdata['text_changes']['diff'][$key];
+							$change     = $developdata['text_changes']['diff'][$key];
+							$sourcetext = $developdata['text_changes']['ref'][$key];
+							$targettext = $developdata['text_changes']['ref_in_dev'][$key];
+
 							$label   = '<b>'
 								. $key
 								. '</b><br /><p class="text_changes">'
 								. $change
 								. '</p>';
+
+							$field->attributes()->istextchange = 1;
+							$field->addAttribute('changestatus', $revisedchanges[$key]);
+							$field->addAttribute('sourcetext', $sourcetext);
+							$field->addAttribute('targettext', $targettext);
 						}
 						elseif ($have_develop == '1' && in_array($key, $developdata['extra_keys']['keys']))
 						{
@@ -877,6 +891,8 @@ class LocaliseModelTranslation extends JModelAdmin
 								. $key
 								. '</b><br />'
 								. htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
+
+							$field->attributes()->isextraindev = 1;
 						}
 						else
 						{
@@ -1277,6 +1293,36 @@ class LocaliseModelTranslation extends JModelAdmin
 		if (!empty($formData['strings']))
 		{
 			$data['strings'] = $formData['strings'];
+
+			if (!empty($formData['text_changes']))
+			{
+				$data['text_changes'] = $formData['text_changes'];
+				$data['source_text_changes'] = $formData['source_text_changes'];
+				$data['target_text_changes'] = $formData['target_text_changes'];
+
+				$changes_data = array();
+				$changes_data['client'] = $this->getState('translation.client');
+				$changes_data['reftag'] = $this->getState('translation.reference');
+				$changes_data['tag'] = $this->getState('translation.tag');
+				$changes_data['filename'] = basename($this->getState('translation.refpath'));
+$died = '';
+
+				foreach ($data['text_changes'] as $key => $revised)
+				{
+					$changes_data['revised'] = "0";
+
+					if ($revised == '1' || $revised == 'true')
+					{
+						$changes_data['revised'] = "1";
+					}
+
+					$changes_data['key'] = $key;
+					$changes_data['target_text'] = $data['target_text_changes'][$key];
+					$changes_data['source_text'] = $data['source_text_changes'][$key];
+
+					LocaliseHelper::updateRevisedvalue($changes_data);
+				}
+			}
 		}
 
 		// Special case for lib_joomla

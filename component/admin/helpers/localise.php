@@ -2067,6 +2067,7 @@ abstract class LocaliseHelper
 			{
 				$db                 = JFactory::getDbo();
 				$query	            = $db->getQuery(true);
+
 				$search_client      = $db->quote($client);
 				$search_reftag      = $db->quote($reftag);
 				$search_tag         = $db->quote($tag);
@@ -2142,6 +2143,76 @@ abstract class LocaliseHelper
 		}
 
 		return null;
+	}
+
+	/**
+	 * Update revised changes
+	 *
+	 * @param   array  $data  The required data.
+	 *
+	 * @return  array
+	 *
+	 * @since   4.11
+	 */
+	public static function updateRevisedvalue($data)
+	{
+		$client      = $data['client'];
+		$reftag      = $data['reftag'];
+		$tag         = $data['tag'];
+		$filename    = $data['filename'];
+		$revised     = $data['revised'];
+		$key         = $data['key'];
+		$target_text = $data['target_text'];
+		$source_text = $data['source_text'];
+
+		if (!empty($client) && !empty($reftag) && !empty($tag) && !empty($filename))
+		{
+			try
+			{
+				$db = JFactory::getDbo();
+
+				$updated_client      = $db->quote($client);
+				$updated_reftag      = $db->quote($reftag);
+				$updated_tag         = $db->quote($tag);
+				$updated_filename    = $db->quote($filename);
+				$updated_revised     = $db->quote($revised);
+				$updated_key         = $db->quote($key);
+				$updated_target_text = $db->quote($target_text);
+				$updated_source_text = $db->quote($source_text);
+
+				$query = $db->getQuery(true);
+
+				$fields = array(
+					$db->quoteName('revised') . ' = ' . $updated_revised
+				);
+
+				$conditions = array(
+					$db->quoteName('client') . ' = ' . $updated_client,
+					$db->quoteName('reftag') . ' = ' . $updated_reftag,
+					$db->quoteName('tag') . ' = ' . $updated_tag,
+					$db->quoteName('filename') . ' = ' . $updated_filename,
+					$db->quoteName('key') . ' = ' . $updated_key,
+					$db->quoteName('target_text') . ' = ' . $updated_target_text,
+					$db->quoteName('source_text') . ' = ' . $updated_source_text
+				);
+
+				$query->update($db->quoteName('#__localise_revised_values'))->set($fields)->where($conditions);
+
+				$db->setQuery($query);
+				$db->execute();
+			}
+
+			catch (JException $e)
+			{
+				JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_ERROR_UPDATING_REVISED_VALUES'), 'warning');
+
+				return false;
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

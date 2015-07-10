@@ -126,24 +126,24 @@ $lang      = JFactory::getLanguage();
 				<span class="hasTooltip" title="<?php echo $item->translated + $item->unchanged == 0 ? JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTSTARTED') : JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_INPROGRESS', $item->translated, $item->unchanged, $item->total, $item->extra); ?>">
 				<?php endif; ?>
 				<?php $unrevised = $item->total ? intval(100 * $item->unrevised / $item->total) : 0; ?>
-					<?php if ($item->unrevised > 0 && $unrevised == 0):?>
-					<?php $unrevised = 1; ?>
+					<?php if ($item->unrevised > 0 && $unrevised == 0) : ?>
+					<?php $unrevised = number_format(100 * $item->unrevised / $item->total, 2); ?>
 					<?php endif; ?>
 				<?php $untranslated = $item->total ? intval(100 * $item->untranslated / $item->total) : 0; ?>
-					<?php if ($item->untranslated > 0 && $untranslated == 0):?>
-					<?php $untranslated = 1; ?>
+					<?php if ($item->untranslated > 0 && $untranslated == 0) : ?>
+					<?php $untranslated = number_format(100 * $item->untranslated / $item->total, 2); ?>
 					<?php endif; ?>
-				<?php $translated = $item->total ? intval(100 * ($item->translated + $item->translatednews)/ $item->total) : 0; ?>
-					<?php if ($item->translated > 0 && $translated == 0):?>
-					<?php $translated = 1; ?>
+				<?php $translated = $item->total ? intval(100 * ($item->translated + $item->translatednews) / $item->total) : 0; ?>
+					<?php if ($item->translated > 0 && $translated == 0) : ?>
+					<?php $translated = number_format(100 * ($item->translated + $item->translatednews) / $item->total, 2); ?>
 					<?php endif; ?>
 				<?php $unchanged =  $item->total ? intval(100 * $item->unchanged / $item->total) : 0; ?>
-					<?php if ($item->unchanged > 0 && $unchanged == 0):?>
-					<?php $unchanged = 1; ?>
+					<?php if ($item->unchanged > 0 && $unchanged == 0) : ?>
+					<?php $unchanged = number_format(100 * $item->unchanged / $item->total, 2); ?>
 					<?php endif; ?>
 					<?php if ($item->unchanged):?>
-						( <?php echo $translated; ?> %+ <?php echo $unchanged; ?> %)
-					<?php else :?>
+						( <?php echo $translated; ?> % + <?php echo $unchanged; ?> %)
+					<?php else : ?>
 						<?php echo $translated; ?> %
 					<?php endif; ?>
 					<div style="text-align:left;border:solid silver 1px;width:100px;height:4px;">
@@ -192,7 +192,7 @@ $lang      = JFactory::getLanguage();
 					<?php echo $item->translated; ?>
 				<?php
 				else : ?>
-					<?php echo ($item->unchanged ? ("(" . $item->translated . "+" . $item->unchanged . ")") : $item->translated) . "/" . $item->total . ($item->extra ? "+" . $item->extra : ''); ?>
+					<?php echo ($item->unchanged ? ("(" . ($item->translated + $item->translatednews) . "+" . $item->unchanged . ")") : ($item->translated + $item->translatednews)) . "/" . $item->total . ($item->extra ? "+" . $item->extra : ''); ?>
 				<?php endif; ?>
 			<?php endif; ?>
 		</td>
