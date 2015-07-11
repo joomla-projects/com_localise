@@ -802,6 +802,7 @@ class LocaliseModelTranslation extends JModelAdmin
 					$have_develop      = 1;
 					$develop_file_path = $developdata['develop_file_path'];
 					$develop_sections  = LocaliseHelper::parseSections($develop_file_path);
+					$oldref            = $refsections;
 					$refsections       = $develop_sections;
 					$refpath           = $develop_file_path;
 
@@ -870,9 +871,20 @@ class LocaliseModelTranslation extends JModelAdmin
 						$header     = false;
 						$key        = $matches[1];
 						$field      = $fieldset->addChild('field');
-						$string     = $refsections['keys'][$key];
-						$translated = isset($sections['keys'][$key]);
-						$modified   = $translated && $sections['keys'][$key] != $refsections['keys'][$key];
+
+						if ($have_develop == '1' && $istranslation == 0 && array_key_exists($key, $oldref['keys']))
+						{
+							$string = $oldref['keys'][$key];
+							$translated = isset($sections['keys'][$key]);
+							$modified   = $translated && $sections['keys'][$key] != $oldref['keys'][$key];
+						}
+						else
+						{
+							$string = $refsections['keys'][$key];
+							$translated = isset($sections['keys'][$key]);
+							$modified   = $translated && $sections['keys'][$key] != $refsections['keys'][$key];
+						}
+
 						$status     = $modified
 							? 'translated'
 							: ($translated
