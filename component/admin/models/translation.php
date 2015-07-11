@@ -468,8 +468,15 @@ class LocaliseModelTranslation extends JModelAdmin
 
 					if (JFile::exists($develop_file_path) && $allow_develop == 1 && $reftag == 'en-GB')
 					{
+						$info                  = array();
+						$info['client']        = $gh_client;
+						$info['reftag']        = 'en-GB';
+						$info['tag']           = 'en-GB';
+						$info['filename']      = $ref_file;
+						$info['istranslation'] = $istranslation;
+
 						$develop_sections = LocaliseHelper::parseSections($develop_file_path);
-						$developdata      = LocaliseHelper::getDevelopchanges($refsections, $develop_sections);
+						$developdata      = LocaliseHelper::getDevelopchanges($info, $refsections, $develop_sections);
 						$developdata['develop_file_path'] = '';
 
 						if ($developdata['extra_keys']['amount'] > 0  || $developdata['text_changes']['amount'] > 0)

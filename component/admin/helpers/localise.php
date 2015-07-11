@@ -1689,6 +1689,7 @@ abstract class LocaliseHelper
 	/**
 	 * Gets the changes between language files versions
 	 *
+	 * @param   array  $info              The data to catch grammar cases
 	 * @param   array  $refsections       The released reference data
 	 * @param   array  $develop_sections  The developed reference data
 	 *
@@ -1696,10 +1697,11 @@ abstract class LocaliseHelper
 	 *
 	 * @since   4.11
 	 */
-	public static function getDevelopchanges($refsections = array(), $develop_sections = array())
+	public static function getDevelopchanges($info = array(), $refsections = array(), $develop_sections = array())
 	{
 		if (isset($refsections['keys']) && isset($develop_sections['keys']))
 		{
+			$istranslation     = $info['istranslation'];
 			$keys_in_reference = array_keys($refsections['keys']);
 			$keys_in_develop   = array_keys($develop_sections['keys']);
 
@@ -1738,11 +1740,28 @@ abstract class LocaliseHelper
 
 					if (!empty($text_changes))
 					{
-						$developdata['text_changes']['amount']++;
-						$developdata['text_changes']['keys'][]           = $key;
-						$developdata['text_changes']['ref_in_dev'][$key] = $develop_sections['keys'][$key];
-						$developdata['text_changes']['ref'][$key]        = $string;
-						$developdata['text_changes']['diff'][$key]       = $text_changes;
+						if ($istranslation == 1)
+						{
+							$info['key']         = $key;
+							$info['source_text'] = $string;
+							$info['target_text'] = $string_in_develop;
+							$info['catch_grammar'] = 1;
+							$info['revised'] = 0;
+							$grammar_case = self::searchRevisedvalue($info);
+						}
+						else
+						{
+							$grammar_case = '0';
+						}
+
+						if ($grammar_case == '0')
+						{
+							$developdata['text_changes']['amount']++;
+							$developdata['text_changes']['keys'][]           = $key;
+							$developdata['text_changes']['ref_in_dev'][$key] = $develop_sections['keys'][$key];
+							$developdata['text_changes']['ref'][$key]        = $string;
+							$developdata['text_changes']['diff'][$key]       = $text_changes;
+						}
 					}
 				}
 			}
@@ -2052,14 +2071,16 @@ abstract class LocaliseHelper
 	 */
 	public static function searchRevisedvalue($data)
 	{
-		$client      = $data['client'];
-		$reftag      = $data['reftag'];
-		$tag         = $data['tag'];
-		$filename    = $data['filename'];
-		$revised     = $data['revised'];
-		$key         = $data['key'];
-		$target_text = $data['target_text'];
-		$source_text = $data['source_text'];
+		$client        = $data['client'];
+		$reftag        = $data['reftag'];
+		$tag           = $data['tag'];
+		$filename      = $data['filename'];
+		$revised       = $data['revised'];
+		$key           = $data['key'];
+		$target_text   = $data['target_text'];
+		$source_text   = $data['source_text'];
+		$istranslation = $data['istranslation'];
+		$catch_grammar = $data['catch_grammar'];
 
 		if (!empty($client) && !empty($reftag) && !empty($tag) && !empty($filename))
 		{
@@ -2120,7 +2141,7 @@ abstract class LocaliseHelper
 			{
 				JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_ERROR_SEARCHING_REVISED_VALUES'), 'warning');
 
-				return array();
+				return null;
 			}
 
 			$result = $db->loadResult();
@@ -2128,6 +2149,10 @@ abstract class LocaliseHelper
 				if (!is_null($result))
 				{
 					return (int) $result;
+				}
+				elseif ($catch_grammar == '1')
+				{
+					return '0';
 				}
 				else
 				{
