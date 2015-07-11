@@ -511,10 +511,12 @@ class LocaliseModelTranslation extends JModelAdmin
 									$target_text = $developdata['text_changes']['ref_in_dev'][$key_changed];
 									$source_text = $developdata['text_changes']['ref'][$key_changed];
 
-									$changesdata['revised']     = '0';
-									$changesdata['key']         = $key_changed;
-									$changesdata['target_text'] = $target_text;
-									$changesdata['source_text'] = $source_text;
+									$changesdata['revised']       = '0';
+									$changesdata['key']           = $key_changed;
+									$changesdata['target_text']   = $target_text;
+									$changesdata['source_text']   = $source_text;
+									$changesdata['istranslation'] = $istranslation;
+									$changesdata['catch_grammar'] = '0';
 
 									$change_status = LocaliseHelper::searchRevisedvalue($changesdata);
 									$revisedchanges[$key_changed] = $change_status;
