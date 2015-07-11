@@ -137,11 +137,11 @@ $lang      = JFactory::getLanguage();
 					<?php if ($item->translated > 0 && $translated == 0) : ?>
 					<?php $translated = number_format(100 * ($item->translated + $item->translatednews) / $item->total, 2); ?>
 					<?php endif; ?>
-				<?php $unchanged =  $item->total ? intval(100 * $item->unchanged / $item->total) : 0; ?>
-					<?php if ($item->unchanged > 0 && $unchanged == 0) : ?>
-					<?php $unchanged = number_format(100 * $item->unchanged / $item->total, 2); ?>
+				<?php $unchangeds = $item->unchanged + $item->unchangednews; $unchanged =  $item->total ? intval(100 * ($unchangeds)/ $item->total) : 0; ?>
+					<?php if ($unchangeds > 0 && $unchanged == 0) : ?>
+					<?php $unchanged = number_format(100 * $unchangeds / $item->total, 2); ?>
 					<?php endif; ?>
-					<?php if ($item->unchanged):?>
+					<?php if ($unchangeds) : ?>
 						( <?php echo $translated; ?> % + <?php echo $unchanged; ?> %)
 					<?php else : ?>
 						<?php echo $translated; ?> %
@@ -160,7 +160,7 @@ $lang      = JFactory::getLanguage();
 				</span>
 			<?php endif; ?>
 			<?php if ($extras_amount > 0 || $text_changes_amount > 0) : ?>
-			<?php $revised = $text_changes_amount - $item->unrevised; $translatednews = $item->translatednews; ?>
+			<?php $revised = $text_changes_amount - $item->unrevised; $translatednews = $item->translatednews + $item->unchangednews; ?>
 				<?php if ($extras_amount > 0 && $text_changes_amount > 0) : ?>
 					<?php if ($istranslation == 1) : ?>
 					<br /><span class="icon-16-notice-note hasTooltip" title="<?php echo JText::sprintf('COM_LOCALISE_TOOLTIP_GITHUB_CASE_1', $translatednews, $extras_amount, $revised, $text_changes_amount); ?>"></span>
@@ -192,7 +192,7 @@ $lang      = JFactory::getLanguage();
 					<?php echo $item->translated; ?>
 				<?php
 				else : ?>
-					<?php echo ($item->unchanged ? ("(" . ($item->translated + $item->translatednews) . "+" . $item->unchanged . ")") : ($item->translated + $item->translatednews)) . "/" . $item->total . ($item->extra ? "+" . $item->extra : ''); ?>
+					<?php $unchangeds = $item->unchanged + $item->unchangednews; echo ($unchangeds ? ("(" . ($item->translated + $item->translatednews) . "+" . $unchangeds . ")") : ($item->translated + $item->translatednews)) . "/" . $item->total . ($item->extra ? "+" . $item->extra : ''); ?>
 				<?php endif; ?>
 			<?php endif; ?>
 		</td>

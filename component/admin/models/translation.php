@@ -219,6 +219,7 @@ class LocaliseModelTranslation extends JModelAdmin
 										'revisedchanges'      => (array) $revisedchanges,
 										'unrevised'           => 0,
 										'translatednews'      => 0,
+										'unchangednews'       => 0,
 										'translated'          => 0,
 										'untranslated'        => 0,
 										'unchanged'           => 0,
@@ -580,7 +581,15 @@ class LocaliseModelTranslation extends JModelAdmin
 								}
 								else
 								{
-									$this->item->unchanged++;
+									if (in_array($key, $new_keys))
+									{
+										$this->item->unchangednews++;
+									}
+									else
+									{
+										$this->item->unchanged++;
+									}
+
 									$unchangedkeys[] = $key;
 								}
 							}
@@ -613,8 +622,10 @@ class LocaliseModelTranslation extends JModelAdmin
 						}
 					}
 
+					$done = $this->item->translated + $this->item->unchanged + $this->item->translatednews + $this->item->unchangednews;
+
 					$this->item->completed = $this->item->total
-						? intval(100 * ($this->item->translated + $this->item->unchanged + $this->item->translatednews) / $this->item->total)
+						? intval(100 * $done / $this->item->total)
 						: 100;
 
 					$this->item->complete = $this->item->complete == 1 && $this->item->untranslated == 0 && $this->item->unrevised == 0

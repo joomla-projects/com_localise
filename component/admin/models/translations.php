@@ -803,6 +803,7 @@ class LocaliseModelTranslations extends JModelList
 					$developdata          = $item->developdata;
 					$untranslateds_amount = $item->untranslated;
 					$translated_news      = $item->translatednews;
+					$unchanged_news       = $item->unchangednews;
 					$extras_amount        = 0;
 					$unrevised_changes    = 0;
 					$have_develop         = 0;
@@ -813,7 +814,7 @@ class LocaliseModelTranslations extends JModelList
 						$unrevised_changes = $developdata['text_changes']['unrevised'];
 					}
 
-					if (($extras_amount > 0 && $extras_amount > $translated_news) || $unrevised_changes > 0 || $untranslateds_amount > 0)
+					if (($extras_amount > 0 && $extras_amount > $translated_news + $unchanged_news) || $unrevised_changes > 0 || $untranslateds_amount > 0)
 					{
 						$have_develop = 1;
 					}

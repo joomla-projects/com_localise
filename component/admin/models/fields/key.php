@@ -105,14 +105,14 @@ class JFormFieldKey extends JFormField
 			$textchanges_checkbox .= '" type="hidden" name="jform[source_text_changes][';
 			$textchanges_checkbox .= $this->element['name'];
 			$textchanges_checkbox .= ']" value="';
-			$textchanges_checkbox .= $textchange_source;
+			$textchanges_checkbox .= htmlspecialchars($textchange_source, ENT_COMPAT, 'UTF-8');
 			$textchanges_checkbox .= '" ></input>';
 			$textchanges_checkbox .= '<input id="';
 			$textchanges_checkbox .= $textchange_target_id;
 			$textchanges_checkbox .= '" type="hidden" name="jform[target_text_changes][';
 			$textchanges_checkbox .= $this->element['name'];
 			$textchanges_checkbox .= ']" value="';
-			$textchanges_checkbox .= $textchange_target;
+			$textchanges_checkbox .= htmlspecialchars($textchange_target, ENT_COMPAT, 'UTF-8');
 			$textchanges_checkbox .= '" ></input>';
 
 			$return = '';

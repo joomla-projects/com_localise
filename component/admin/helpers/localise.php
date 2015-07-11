@@ -1742,11 +1742,12 @@ abstract class LocaliseHelper
 					{
 						if ($istranslation == 1)
 						{
-							$info['key']         = $key;
-							$info['source_text'] = $string;
-							$info['target_text'] = $string_in_develop;
+							$info['key']           = $key;
+							$info['source_text']   = $string;
+							$info['target_text']   = $string_in_develop;
 							$info['catch_grammar'] = 1;
-							$info['revised'] = 0;
+							$info['revised']       = 0;
+
 							$grammar_case = self::searchRevisedvalue($info);
 						}
 						else
