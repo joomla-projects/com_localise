@@ -785,17 +785,50 @@ class LocaliseModelTranslation extends JModelAdmin
 
 		if ($this->getState('translation.layout') != 'raw')
 		{
-			$path        = $this->getState('translation.path');
-			$refpath     = $this->getState('translation.refpath');
-			$sections    = LocaliseHelper::parseSections($path);
-			$refsections = LocaliseHelper::parseSections($refpath);
-
 			$this->setState('translation.devpath', '');
 
 			if (!empty($developdata))
 			{
 				$extras_amount       = $developdata['extra_keys']['amount'];
 				$text_changes_amount = $developdata['text_changes']['amount'];
+				$refpath             = $this->getState('translation.refpath');
+
+				$custompath          = LocaliseHelper::searchCustompath($client, $refpath);
+
+				if ($istranslation == '0')
+				{
+					if (!empty($custompath))
+					{
+						$refpath     = $custompath;
+						$path        = $refpath;
+						$refsections = LocaliseHelper::parseSections($refpath);
+						$sections    = $refsections;
+					}
+					else
+					{
+						$refpath     = $this->getState('translation.refpath');
+						$path        = $refpath;
+						$refsections = LocaliseHelper::parseSections($refpath);
+						$sections    = $refsections;
+					}
+				}
+				else
+				{
+					if (!empty($custompath))
+					{
+						$refpath     = $custompath;
+						$path        = $this->getState('translation.path');
+						$refsections = LocaliseHelper::parseSections($refpath);
+						$sections    = LocaliseHelper::parseSections($path);
+					}
+					else
+					{
+						$refpath     = $this->getState('translation.refpath');
+						$path        = $this->getState('translation.path');
+						$refsections = LocaliseHelper::parseSections($refpath);
+						$sections    = LocaliseHelper::parseSections($path);
+					}
+				}
 
 				if ($extras_amount > 0  || $text_changes_amount > 0)
 				{
@@ -808,6 +841,13 @@ class LocaliseModelTranslation extends JModelAdmin
 
 					$this->setState('translation.devpath', $develop_file_path);
 				}
+			}
+			else
+			{
+				$path        = $this->getState('translation.path');
+				$refpath     = $this->getState('translation.refpath');
+				$sections    = LocaliseHelper::parseSections($path);
+				$refsections = LocaliseHelper::parseSections($refpath);
 			}
 
 			$addform     = new SimpleXMLElement('<form />');
@@ -872,7 +912,7 @@ class LocaliseModelTranslation extends JModelAdmin
 						$key        = $matches[1];
 						$field      = $fieldset->addChild('field');
 
-						if ($have_develop == '1' && $istranslation == 0 && array_key_exists($key, $oldref['keys']))
+						if ($have_develop == '1' && $istranslation == '0' && array_key_exists($key, $oldref['keys']))
 						{
 							$string = $oldref['keys'][$key];
 							$translated = isset($sections['keys'][$key]);
@@ -1058,26 +1098,37 @@ class LocaliseModelTranslation extends JModelAdmin
 	 */
 	public function saveFile($data)
 	{
-		$client    = $this->getState('translation.client');
-		$tag       = $this->getState('translation.tag');
-		$reftag    = $this->getState('translation.reference');
-		$path      = $this->getState('translation.path');
-		$refpath   = $this->getState('translation.refpath');
-		$devpath   = LocaliseHelper::searchDevpath($client, $refpath);
-		$exists    = JFile::exists($path);
-		$refexists = JFile::exists($refpath);
-		$combined  = 0;
+		$client     = $this->getState('translation.client');
+		$tag        = $this->getState('translation.tag');
+		$reftag     = $this->getState('translation.reference');
+		$path       = $this->getState('translation.path');
+		$refpath    = $this->getState('translation.refpath');
+		$devpath    = LocaliseHelper::searchDevpath($client, $refpath);
+		$custompath = LocaliseHelper::searchCustompath($client, $refpath);
+		$exists     = JFile::exists($path);
+		$refexists  = JFile::exists($refpath);
 
 		if ($refexists && !empty($devpath))
 		{
-			if ($reftag == 'en-GB' && $tag == 'en-GB')
+			if ($reftag == 'en-GB' && $tag == 'en-GB' && !empty($custompath))
 			{
-				// It is not translation
-				$combined = 1;
+				$params             = JComponentHelper::getParams('com_localise');
+				$customisedref      = $params->get('customisedref', '0');
+				$custom_short_path  = '../media/com_localise/customisedref/github/'
+							. $client
+							. '/'
+							. $customisedref;
+
+				// The saved file is not using the core language folders.
+				$path   = $custompath;
+				$exists = JFile::exists($path);
+
+		$ref_file         = basename($refpath);
+		$custom_file_path = JFolder::makeSafe("$custom_client_path/$ref_file");
 			}
 			elseif ($reftag == 'en-GB' &&  $tag != 'en-GB')
 			{
-				// It is translation
+				// It is a translation with the file in develop as reference.
 				$refpath = $devpath;
 			}
 		}
@@ -1291,6 +1342,12 @@ class LocaliseModelTranslation extends JModelAdmin
 				$this->setError(JText::sprintf('COM_LOCALISE_ERROR_TRANSLATION_FILESAVE', $path));
 
 				return false;
+			}
+			elseif (!empty($custompath))
+			{
+				JFactory::getApplication()->enqueueMessage(
+					JText::_('COM_LOCALISE_NOTICE_CUSTOM_EN_GB_FILE_SAVED') . $custom_short_path,
+					'notice');
 			}
 		}
 
