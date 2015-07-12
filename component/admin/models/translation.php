@@ -576,6 +576,10 @@ class LocaliseModelTranslation extends JModelAdmin
 									{
 										$this->item->unrevised++;
 									}
+									elseif (in_array($key, $new_keys))
+									{
+										$untranslatedkeys[] = $key;
+									}
 
 									$this->item->translated++;
 								}
