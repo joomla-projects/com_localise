@@ -1877,7 +1877,7 @@ abstract class LocaliseHelper
 			{
 				$line = $stream->gets();
 
-				if (preg_match('/^([A-Z][A-Z0-9_\-\.]*)\s*=/', $line, $matches))
+				if (preg_match('/^([A-Z][A-Z0-9_\*\-\.]*)\s*=/', $line, $matches))
 				{
 					$key = $matches[1];
 
