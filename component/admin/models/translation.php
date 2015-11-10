@@ -390,7 +390,7 @@ class LocaliseModelTranslation extends JModelAdmin
 						$line = $stream->gets();
 						$lineNumber++;
 
-						if (!preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $line))
+						if (!preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_\*\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $line))
 						{
 							$this->item->error[] = $lineNumber;
 						}
@@ -665,7 +665,7 @@ class LocaliseModelTranslation extends JModelAdmin
 						continue;
 					}
 					// Key lines
-					elseif (preg_match('/^([A-Z][A-Z0-9_\-\.]*)\s*=/', $line, $matches))
+					elseif (preg_match('/^([A-Z][A-Z0-9_\*\-\.]*)\s*=/', $line, $matches))
 					{
 						$header     = false;
 						$key        = $matches[1];
@@ -700,7 +700,7 @@ class LocaliseModelTranslation extends JModelAdmin
 						$field->addAttribute('filter', 'raw');
 						continue;
 					}
-					elseif (!preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $line))
+					elseif (!preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_\*\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $line))
 					{
 						$this->item->error[] = $lineNumber;
 					}
@@ -965,7 +965,7 @@ class LocaliseModelTranslation extends JModelAdmin
 
 			while (!$stream->eof())
 			{
-				if (preg_match('/^([A-Z][A-Z0-9_\-\.]*)\s*=/', $line, $matches))
+				if (preg_match('/^([A-Z][A-Z0-9_\*\-\.]*)\s*=/', $line, $matches))
 				{
 					$key = $matches[1];
 

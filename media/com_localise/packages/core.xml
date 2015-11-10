@@ -137,6 +137,8 @@
 		<filename>plg_editors-xtd_article.sys</filename>
 		<filename>plg_editors-xtd_image</filename>
 		<filename>plg_editors-xtd_image.sys</filename>
+		<filename>plg_editors-xtd_module</filename>
+		<filename>plg_editors-xtd_module.sys</filename>
 		<filename>plg_editors-xtd_pagebreak</filename>
 		<filename>plg_editors-xtd_pagebreak.sys</filename>
 		<filename>plg_editors-xtd_readmore</filename>
@@ -195,6 +197,10 @@
 		<filename>plg_system_remember.sys</filename>
 		<filename>plg_system_sef</filename>
 		<filename>plg_system_sef.sys</filename>
+		<filename>plg_system_stats</filename>
+		<filename>plg_system_stats.sys</filename>
+		<filename>plg_system_updatenotification</filename>
+		<filename>plg_system_updatenotification.sys</filename>
 		<filename>plg_twofactorauth_totp</filename>
 		<filename>plg_twofactorauth_totp.sys</filename>
 		<filename>plg_twofactorauth_yubikey</filename>
