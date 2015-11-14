@@ -207,7 +207,7 @@ class LocaliseModelLanguage extends JModelAdmin
 							foreach ($node->children() as $subnode)
 							{
 								$property            = $subnode->getName();
-								$language->$property = $subnode;
+								$language->$property = (string) $subnode;
 							}
 						}
 						else
@@ -219,17 +219,17 @@ class LocaliseModelLanguage extends JModelAdmin
 							{
 								if (isset($language->joomlacopyright))
 								{
-									$language->copyright[] = $node;
+									$language->copyright[] = (string) $node;
 								}
 								else
 								{
 									$language->copyright       = array();
-									$language->joomlacopyright = $node;
+									$language->joomlacopyright = (string) $node;
 								}
 							}
 							else
 							{
-								$language->$property = $node;
+								$language->$property = (string) $node;
 							}
 						}
 					}
