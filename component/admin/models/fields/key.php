@@ -75,7 +75,7 @@ class JFormFieldKey extends JFormField
 
 			if ($istranslation == '1')
 			{
-				$title = 'Revised';
+				$title = JText::_('COM_LOCALISE_REVISED');
 			}
 			else
 			{
