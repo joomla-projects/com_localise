@@ -280,3 +280,12 @@ ul.adminformlist li {
 	background-position: bottom left;
 	background-repeat: repeat-x;
 }
+
+#log {
+    background-color: #000;
+    color: #fff;
+    font-family: monospace;
+    max-height: 200px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
