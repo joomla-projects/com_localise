@@ -820,12 +820,12 @@ class LocaliseModelTranslations extends JModelList
 						$item->complete = 0;
 					}
 
-					if ($filter_develop == 'complete' && $have_develop == 1)
+					if ($filter_develop == 'complete' && $item->complete == 0)
 					{
 						unset($this->translations[$key]);
 						continue;
 					}
-					elseif ($filter_develop == 'incomplete' && $have_develop == 0)
+					elseif ($filter_develop == 'incomplete' && $item->complete)
 					{
 						unset($this->translations[$key]);
 						continue;
