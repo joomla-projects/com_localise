@@ -626,7 +626,7 @@ class LocaliseModelTranslation extends JModelAdmin
 						}
 					}
 
-					$done = $this->item->translated + $this->item->unchanged + $this->item->translatednews + $this->item->unchangednews;
+					$done = $this->item->translated + $this->item->translatednews + $this->item->unchangednews;
 
 					$this->item->completed = $this->item->total
 						? intval(100 * $done / $this->item->total)

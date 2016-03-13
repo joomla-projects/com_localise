@@ -817,6 +817,7 @@ class LocaliseModelTranslations extends JModelList
 					if (($extras_amount > 0 && $extras_amount > $translated_news + $unchanged_news) || $unrevised_changes > 0 || $untranslateds_amount > 0)
 					{
 						$have_develop = 1;
+						$item->complete = 0;
 					}
 
 					if ($filter_develop == 'complete' && $have_develop == 1)
