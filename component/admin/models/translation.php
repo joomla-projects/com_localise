@@ -1347,8 +1347,15 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				return false;
 			}
-			elseif (!empty($custompath))
+			elseif ($reftag == 'en-GB' && $tag == 'en-GB' && !empty($custompath))
 			{
+				$params             = JComponentHelper::getParams('com_localise');
+				$customisedref      = $params->get('customisedref', '0');
+				$custom_short_path  = '../media/com_localise/customisedref/github/'
+							. $client
+							. '/'
+							. $customisedref;
+
 				JFactory::getApplication()->enqueueMessage(
 					JText::_('COM_LOCALISE_NOTICE_CUSTOM_EN_GB_FILE_SAVED') . $custom_short_path,
 					'notice');
