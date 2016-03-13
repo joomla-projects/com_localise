@@ -139,6 +139,11 @@ $has_installation  = LocaliseHelper::hasInstallation();
 
 				$report .= '<br />';
 			}
+			else
+			{
+				$report .= '<br />The client ' . strtoupper($client) . ' is using ' . $installed_version . ' reference files as source en-GB baseline.';
+				$report .= '<br />';
+			}
 		}
 
 		$report .= '<br /><b>Target reference</b><br />';
