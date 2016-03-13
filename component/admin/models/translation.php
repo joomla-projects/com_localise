@@ -1127,8 +1127,8 @@ class LocaliseModelTranslation extends JModelAdmin
 				$path   = $custompath;
 				$exists = JFile::exists($path);
 
-		$ref_file         = basename($refpath);
-		$custom_file_path = JFolder::makeSafe("$custom_client_path/$ref_file");
+				$ref_file         = basename($refpath);
+				$custom_file_path = JFolder::makeSafe("$custompath/$ref_file");
 			}
 			elseif ($reftag == 'en-GB' &&  $tag != 'en-GB')
 			{
@@ -1277,7 +1277,7 @@ class LocaliseModelTranslation extends JModelAdmin
 					// Comment lines
 					if (preg_match('/^(;.*)$/', $line, $matches))
 					{
-						$contents[] = $matches[1] . "\n";
+						$contents[] = trim($matches[1]) . "\n";
 					}
 					else
 					{
@@ -1300,9 +1300,13 @@ class LocaliseModelTranslation extends JModelAdmin
 						unset($strings[$key]);
 					}
 				}
+				elseif (preg_match('/^(;.*)$/', $line, $matches))
+				{
+					$contents[] = trim($matches[1]) . "\n";
+				}
 				else
 				{
-					$contents[] = $line;
+					$contents[] = "\n";
 				}
 
 				$line = $stream->gets();
