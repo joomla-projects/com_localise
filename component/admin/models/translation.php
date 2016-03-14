@@ -860,8 +860,8 @@ class LocaliseModelTranslation extends JModelAdmin
 			$group->addAttribute('name', 'strings');
 
 			$fieldset = $group->addChild('fieldset');
-			$fieldset->addAttribute('name', 'Default');
-			$fieldset->addAttribute('label', 'Default');
+			$fieldset->addAttribute('name', 'JDEFAULT');
+			$fieldset->addAttribute('label', 'JDEFAULT');
 
 			if (JFile::exists($refpath))
 			{
@@ -1015,7 +1015,7 @@ class LocaliseModelTranslation extends JModelAdmin
 							{
 								$newstrings = true;
 								$form->load($addform, false);
-								$section = 'New Strings';
+								$section = 'COM_LOCALISE_TEXT_TRANSLATION_NOTINREFERENCE';
 								$addform = new SimpleXMLElement('<form />');
 								$group   = $addform->addChild('fields');
 								$group->addAttribute('name', 'strings');
