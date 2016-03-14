@@ -1293,7 +1293,7 @@ class LocaliseModelTranslation extends JModelAdmin
 			// Mounting the language file in this way will help to avoid save files with errors at the content.
 
 				// Blank lines
-				if ($line == '')
+				if (preg_match('/^\s*$/', $line))
 				{
 					$contents[] = "\n";
 				}
@@ -1318,10 +1318,19 @@ class LocaliseModelTranslation extends JModelAdmin
 						unset($strings[$key]);
 					}
 				}
+				// Content with EOL
+				elseif (preg_split("/\\r\\n|\\r|\\n/", $line))
+				{
+					// $this->setError(JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)));
+					$application = JFactory::getApplication();
+					$application->enqueueMessage(JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)), 'warning');
+				}
 				// Wrong lines
 				else
 				{
-					$this->setError(JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)));
+					// $this->setError(JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)));
+					$application = JFactory::getApplication();
+					$application->enqueueMessage(JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)), 'warning');
 				}
 
 				$line = $stream->gets();
