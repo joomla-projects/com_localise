@@ -1277,7 +1277,7 @@ class LocaliseModelTranslation extends JModelAdmin
 					// Comment lines
 					if (preg_match('/^(;.*)$/', $line, $matches))
 					{
-						$contents[] = trim($matches[1]) . "\n";
+						$contents[] = $matches[1] . "\n";
 					}
 					else
 					{
@@ -1290,7 +1290,25 @@ class LocaliseModelTranslation extends JModelAdmin
 
 			while (!$stream->eof())
 			{
-				if (preg_match('/^([A-Z][A-Z0-9_\-\.]*)\s*=/', $line, $matches))
+			// Mounting the language file in this way will help to avoid save files with errors at the content.
+
+				// Blank lines
+				if ($line == '')
+				{
+					$contents[] = "\n";
+				}
+				// Comments lines
+				elseif (preg_match('/^(;.*)$/', $line, $matches))
+				{
+					$contents[] = $matches[1] . "\n";
+				}
+				// Section lines
+				elseif (preg_match('/^\[([^\]]*)\]\s*$/', $line, $matches))
+				{
+					$contents[] = $matches[1] . "\n";
+				}
+				// Key lines
+				elseif (preg_match('/^([A-Z][A-Z0-9_\-\.]*)\s*=/', $line, $matches))
 				{
 					$key = $matches[1];
 
@@ -1300,13 +1318,10 @@ class LocaliseModelTranslation extends JModelAdmin
 						unset($strings[$key]);
 					}
 				}
-				elseif (preg_match('/^(;.*)$/', $line, $matches))
-				{
-					$contents[] = trim($matches[1]) . "\n";
-				}
+				// Wrong lines
 				else
 				{
-					$contents[] = "\n";
+					$this->setError(JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)));
 				}
 
 				$line = $stream->gets();
