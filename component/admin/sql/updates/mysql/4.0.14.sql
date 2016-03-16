@@ -3,11 +3,6 @@
 --
 -- Drop indexes which will be added again in step 2.
 --
--- This file here will be processed ignoring any exceptions caused by indexes
--- to be dropped do not exist.
---
--- The file for step 2 will the be processed with reporting exceptions.
---
 ALTER TABLE `#__localise` DROP KEY `idx_path`;
 
 --
@@ -17,9 +12,6 @@ ALTER TABLE `#__localise` DROP KEY `idx_path`;
 -- but with limited lenghts of columns, and then perform the conversions
 -- for utf8mb4.
 --
--- This file here will the be processed with reporting exceptions.
---
--- 
 -- Step 2.1: Limit indexes to first 100 so their max allowed lengths would not get exceeded with utf8mb4.
 -- 
 ALTER TABLE `#__localise` ADD UNIQUE KEY `idx_path` (`path`(100));
