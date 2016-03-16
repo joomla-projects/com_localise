@@ -28,8 +28,7 @@ ALTER TABLE `#__localise` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unico
 ALTER TABLE `#__localise_revised_values` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 --
--- Step 2.4: Set collation to utf8mb4_bin for formerly utf8_bin collated columns
--- and for the lang_code column of the languages table.
+-- Step 2.4: Set collation to utf8mb4_bin for formerly utf8_bin collated columns.
 --
 ALTER TABLE `#__localise` MODIFY `path` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '';
 
