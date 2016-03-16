@@ -87,6 +87,10 @@ class LocaliseModelTranslations extends JModelList
 			'filter.tag',
 			isset($data['select']['tag'])     ? $data['select']['tag'] :''
 		);
+		$this->setState(
+			'filter.develop',
+			isset($data['select']['develop']) ? $data['select']['develop'] :''
+		);
 
 		$params    = JComponentHelper::getParams('com_localise');
 		$this->setState('params', $params);
@@ -735,6 +739,7 @@ class LocaliseModelTranslations extends JModelList
 		{
 			$filter_client = $this->getState('filter.client');
 			$filter_tag   = $this->getState('filter.tag');
+			$filter_develop = $this->getState('filter.develop');
 
 			// Don't try to find translations if filters not set for client and language.
 			if (empty($filter_client) || empty($filter_tag))
@@ -744,6 +749,12 @@ class LocaliseModelTranslations extends JModelList
 
 				return $this->translations;
 			}
+
+			$gh_data = array();
+			$gh_data['github_client'] = $filter_client;
+
+			$get_github_files   = LocaliseHelper::getTargetgithubfiles($gh_data);
+			$get_customised_ref = LocaliseHelper::getSourceGithubfiles($gh_data);
 
 			$filter_state = $this->getState('filter.state') ? $this->getState('filter.state') : '.';
 			$filter_tag   = $filter_tag   ? ("^" . $filter_tag . "$") : '.';
@@ -789,6 +800,37 @@ class LocaliseModelTranslations extends JModelList
 
 				if (preg_match("/$filter_state/", $state) && preg_match("/$filter_tag/", $translation->tag))
 				{
+					$developdata          = $item->developdata;
+					$untranslateds_amount = $item->untranslated;
+					$translated_news      = $item->translatednews;
+					$unchanged_news       = $item->unchangednews;
+					$extras_amount        = 0;
+					$unrevised_changes    = 0;
+					$have_develop         = 0;
+
+					if (!empty($developdata))
+					{
+						$extras_amount     = $developdata['extra_keys']['amount'];
+						$unrevised_changes = $developdata['text_changes']['unrevised'];
+					}
+
+					if (($extras_amount > 0 && $extras_amount > $translated_news + $unchanged_news) || $unrevised_changes > 0 || $untranslateds_amount > 0)
+					{
+						$have_develop = 1;
+						$item->complete = 0;
+					}
+
+					if ($filter_develop == 'complete' && $item->complete == 0)
+					{
+						unset($this->translations[$key]);
+						continue;
+					}
+					elseif ($filter_develop == 'incomplete' && $item->complete)
+					{
+						unset($this->translations[$key]);
+						continue;
+					}
+
 					if (count($item->error))
 					{
 						$item->state     = 'error';

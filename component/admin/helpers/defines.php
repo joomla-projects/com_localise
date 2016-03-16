@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 // Define constants
 $params = JComponentHelper::getParams('com_localise');
+
 define('LOCALISEPATH_SITE', JPATH_SITE);
 define('LOCALISEPATH_ADMINISTRATOR', JPATH_ADMINISTRATOR);
 define('LOCALISEPATH_INSTALLATION', JPATH_ROOT . '/' . $params->get('installation', 'installation'));

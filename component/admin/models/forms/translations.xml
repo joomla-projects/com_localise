@@ -67,6 +67,15 @@
 				onchange="this.form.submit()">
 				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_TYPE_SELECT</option>
 			</field>
+			<field
+				id="develop"
+				name="develop"
+				type="develop"
+				class="span12 small"
+				hidden="true"
+				onchange="this.form.submit()">
+				<option value="">COM_LOCALISE_OPTION_TRANSLATIONS_DEVELOP_SELECT</option>
+			</field>
 		</fieldset>
 	</fields>
 </form>

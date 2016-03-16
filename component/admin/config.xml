@@ -131,6 +131,92 @@
 			description="COM_LOCALISE_LABEL_LICENSE_DESC" />
 	</fieldset>
 	<fieldset
+		name="github_develop"
+		label="COM_LOCALISE_LABEL_GITHUB_DEVELOP_TAB"
+		description="COM_LOCALISE_LABEL_GITHUB_DEVELOP_TAB_DESC">
+		<field
+			name="gh_allow_develop"
+			type="radio"
+			class="btn-group btn-group-yesno"
+			default="0"
+			label="COM_LOCALISE_LABEL_GITHUB_ALLOW_DEVELOP"
+			description="COM_LOCALISE_LABEL_GITHUB_ALLOW_DEVELOP_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+			name="gh_token"
+			type="text"
+			class="ltr"
+			default=""
+			label="COM_LOCALISE_LABEL_GITHUB_TOKEN"
+			description="COM_LOCALISE_LABEL_GITHUB_TOKEN_DESC" />
+		<field
+			type="spacer"
+			name="sourcespacer"
+			class="text"
+			label="COM_LOCALISE_SOURCE_SPACER_LABEL" />
+		<field
+			name="customisedref"
+			type="releases"
+			default="0"
+			label="COM_LOCALISE_LABEL_CUSTOMIZED_REF"
+			description="COM_LOCALISE_LABEL_CUSTOMIZED_REF_DESC">
+			<option	value="0">COM_LOCALISE_LOCAL_INSTALLED_INSTANCE</option>
+		</field>
+		<field
+			type="spacer"
+			name="targetspacer"
+			class="text"
+			label="COM_LOCALISE_TARGET_SPACER_LABEL" />
+		<field
+			name="gh_branch"
+			type="text"
+			class="ltr"
+			default="master"
+			label="COM_LOCALISE_LABEL_GITHUB_BRANCH"
+			description="COM_LOCALISE_LABEL_GITHUB_BRANCH_DESC" />
+		<field
+			name="gh_updates_interval"
+			type="list"
+			default="1"
+			label="COM_LOCALISE_LABEL_GITHUB_UPDATES_INTERVAL"
+			description="COM_LOCALISE_LABEL_GITHUB_UPDATES_INTERVAL_DESC">
+			<option	value="0">COM_LOCALISE_HOURLY</option>
+			<option	value="1">COM_LOCALISE_DAILY</option>
+		</field>
+		<field
+			name="gh_administrator_last_update"
+			type="calendar"
+			class="readonly"
+			label="COM_LOCALISE_LABEL_GITHUB_ADMINISTRATOR_LAST_UPDATE"
+			description="COM_LOCALISE_LABEL_GITHUB_ADMINISTRATOR_LAST_UPDATE_DESC"
+			size="22"
+			readonly="true"
+			format="%Y-%m-%d %H:%M:%S"
+			filter="user_utc" />
+		<field
+			name="gh_site_last_update"
+			type="calendar"
+			class="readonly"
+			label="COM_LOCALISE_LABEL_GITHUB_SITE_LAST_UPDATE"
+			description="COM_LOCALISE_LABEL_GITHUB_SITE_LAST_UPDATE_DESC"
+			size="22"
+			readonly="true"
+			format="%Y-%m-%d %H:%M:%S"
+			filter="user_utc" />
+		<field
+			name="gh_installation_last_update"
+			type="calendar"
+			class="readonly"
+			label="COM_LOCALISE_LABEL_GITHUB_INSTALLATION_LAST_UPDATE"
+			description="COM_LOCALISE_LABEL_GITHUB_INSTALLATION_LAST_UPDATE_DESC"
+			size="22"
+			readonly="true"
+			format="%Y-%m-%d %H:%M:%S"
+			filter="user_utc" />
+	</fieldset>
+	<fieldset
 		name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"
 		description="JCONFIG_PERMISSIONS_DESC">
