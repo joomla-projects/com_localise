@@ -56,24 +56,26 @@ $has_installation  = LocaliseHelper::hasInstallation();
 
 	if ($allow_develop == 1)
 	{
-		$report .= '<b>Source reference</b><br />';
+		$report .= '<strong>' . JText::_('COM_LOCALISE_REFERENCES_REPORT_SOURCE') . '</strong><br />';
 
 		foreach ($clients as $client)
 		{
 			if ($last_source[$client] == '')
 			{
-				$report .= '<b>' . strtoupper($client) . '</b> client is actualy using the <b>Local installed instance</b> of Joomla language files as baseline.';
+				$instance = JText::_('COM_LOCALISE_LOCAL_INSTALLED_INSTANCE');
+				$report .= JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_CLIENT', strtoupper($client), $instance);
 				$version[$client] = '0';
 			}
 			else
 			{
-				$report .= '<b>' . strtoupper($client) . '</b> client is actualy using Joomla <b>' . $last_source[$client] . '</b> language files as baseline.';
+				$instance = $last_source[$client];
+				$report .= JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_CLIENT', strtoupper($client), $instance);
 				$version[$client] = $last_source[$client];
 			}
 
 			if ($last_source[$client] == '')
 			{
-				$report .= ' You are working on Joomla <b>' . $installed_version . '</b> version.';
+				$report .= ' ' . JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_INSTALLED', $installed_version);
 			}
 
 			$report .= '<br />';
@@ -113,17 +115,20 @@ $has_installation  = LocaliseHelper::hasInstallation();
 			}
 		}
 
+		$report .= '<i>';
+
+		// Notes
 		if ($equal_versions == 0)
 		{
-			$report .= '<br />Please, note that the clients are not using the same language files version:<br />';
+			$report .= '<br />' . JText::_('COM_LOCALISE_REFERENCES_REPORT_NOT_EQUAL') . '<br /><br />';
 		}
 		elseif ($equal_versions == 2)
 		{
-			$report .= '<br />Please, note that there are clients using a cutomised version than matches with your actual Joomla version:<br />';
+			$report .= '<br />' . JText::_('COM_LOCALISE_REFERENCES_REPORT_CUSTOM') . '<br /><br />';
 		}
 		else
 		{
-			$report .= '<br />All the clients are using the same language files version.<br />';
+			$report .= '<br />' . JText::_('COM_LOCALISE_REFERENCES_REPORT_EQUAL') . '<br /><br />';
 
 		}
 
@@ -131,24 +136,28 @@ $has_installation  = LocaliseHelper::hasInstallation();
 		{
 			if (!empty($last_source[$client]))
 			{
-				$report .= '<br />The client ' . strtoupper($client) . ' is using <b>customised</b> reference files as source en-GB baseline.';
+				$report .= JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_CUSTOM_NOTE', strtoupper($client));
+
 				if ($last_source[$client] == $installed_version)
 				{
-					$report .= ' It matches with your actual Joomla version.';
+					$report .= JText::_('COM_LOCALISE_REFERENCES_REPORT_MATCH_NOTE');
 				}
 
 				$report .= '<br />';
 			}
 			else
 			{
-				$report .= '<br />The client ' . strtoupper($client) . ' is using ' . $installed_version . ' reference files as source en-GB baseline.';
+				$report .= JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_VERSION_NOTE', strtoupper($client), $installed_version);
 				$report .= '<br />';
 			}
 		}
+		
+		$report .= '</i>';
+		// End notes
 
-		$report .= '<br /><b>Target reference</b><br />';
+		$report .= '<br /><strong>' . JText::_('COM_LOCALISE_REFERENCES_REPORT_TARGET') . '</strong><br />';
 
-		$report .= 'The detected modified values or new keys in development to show are coming from the target language files within <b>' . $gh_branch . '</b> branch at Github.<br /><br />';
+		$report .= JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_TARGET_REFERENCE', $gh_branch) . '<br /><br />';
 
 		foreach ($clients as $client)
 		{
@@ -157,18 +166,18 @@ $has_installation  = LocaliseHelper::hasInstallation();
 
 			if ($target_updates[$client] == '')
 			{
-				$report .= 'The develop files of client ' . strtoupper($client) . ' never have been updated.<br />';
+				$report .= JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_NEVER_UPDATED', strtoupper($client)) . '<br />';
 			}
 			else
 			{
-				$report .= 'The develop files of client ' . strtoupper($client) . ' have been <b>updated</b> on ' . $target_updates[$client] . '.<br />';
+				$report .= JText::sprintf('COM_LOCALISE_REFERENCES_REPORT_UPDATED', strtoupper($client), $target_updates[$client]) . '<br />';
 			}
 		}
 	}
 	else
 	{
-		$report .= '<br /><b>Target reference</b><br />';
-		$report .= 'No modified values or new keys from development branches will be displayed as "Enable development reference language" is disabled.<br />';
+		$report .= '<br /><strong>' . JText::_('COM_LOCALISE_REFERENCES_REPORT_TARGET') . '</strong><br />';
+		$report .= JText::_('COM_LOCALISE_REFERENCES_REPORT_NO_DEVELOP');
 	}
 ?>
 <div class="accordion" id="accordionReferences">
