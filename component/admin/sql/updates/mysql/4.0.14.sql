@@ -43,4 +43,4 @@ ALTER TABLE `#__localise` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unico
 -- 
 -- Step 2.5: Set default character set and collation for all tables.
 -- 
-ALTER TABLE `#__localise` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+ALTER TABLE `#__localise` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
