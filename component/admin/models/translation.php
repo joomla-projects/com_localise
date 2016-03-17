@@ -225,6 +225,10 @@ class LocaliseModelTranslation extends JModelAdmin
 										'unchanged'           => 0,
 										'extra'               => 0,
 										'total'               => 0,
+										'linespath'           => 0,
+										'linesrefpath'        => 0,
+										'linesdevpath'        => 0,
+										'linescustompath'     => 0,
 										'complete'            => false,
 										'source'              => '',
 										'error'               => array()
@@ -438,6 +442,13 @@ class LocaliseModelTranslation extends JModelAdmin
 						if (!preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_\*\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $line))
 						{
 							$this->item->error[] = $lineNumber;
+						}
+					}
+					if ($tag != $reftag)
+					{
+						if (JFile::exists($custompath))
+						{
+							$this->item->linescustompath = count(file($custompath));
 						}
 					}
 
@@ -657,6 +668,32 @@ class LocaliseModelTranslation extends JModelAdmin
 				if ($caching)
 				{
 					$cache->store($this->item, $keycache);
+				}
+
+				// Count the number of lines in the ini file to check max_input_vars
+				if ($tag != $reftag)
+				{
+					if (JFile::exists($path))
+					{
+						$this->item->linespath = count(file($path));
+					}
+
+					if (JFile::exists($refpath))
+					{
+						$this->item->linesrefpath = count(file($refpath));
+					}
+
+					if (JFile::exists($develop_file_path))
+					{
+						$this->item->linesdevpath = count(file($develop_file_path));
+					}
+				}
+				else
+				{
+					if (JFile::exists($path))
+					{
+						$this->item->linespath = count(file($path));
+					}
 				}
 			}
 		}

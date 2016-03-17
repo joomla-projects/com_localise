@@ -16,8 +16,15 @@ $packages  = LocaliseHelper::getPackages();
 $user      = JFactory::getUser();
 $userId    = $user->get('id');
 $lang      = JFactory::getLanguage();
+$max_vars = ini_get('max_input_vars');
 ?>
 <?php foreach ($this->items as $i => $item) : ?>
+	<?php $limit = 0; ?>
+	<?php if ($max_vars > 0) : ?>
+		<?php if ($item->linespath > $max_vars || $item->linesrefpath > $max_vars || $item->linesdevpath > $max_vars || $item->linescustompath > $max_vars) : ?>
+			<?php $limit = 1; ?>
+		<?php endif; ?>
+	<?php endif; ?>
 	<?php $canEdit = $user->authorise('localise.edit', 'com_localise' . (isset($item->id) ? ('.' . $item->id) : '')); ?>
 	<?php $istranslation = $item->istranslation; ?>
 	<?php if (!empty($item->developdata)) :
@@ -73,9 +80,14 @@ $lang      = JFactory::getLanguage();
 				<input type="checkbox" id="cb<?php echo $i; ?>" class="hidden" name="cid[]" value="<?php echo $item->id; ?>">
 			<?php endif; ?>
 			<?php if ($item->writable && !$item->error && $canEdit) : ?>
-				<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=translation.edit&client='.$item->client.'&tag='.$item->tag.'&filename='.$item->filename.'&storage='.$item->storage.'&id='.LocaliseHelper::getFileId(LocaliseHelper::getTranslationPath($item->client,$item->tag, $item->filename, $item->storage)).($item->filename=='override' ? '&layout=raw' :'')); ?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_' . ($item->state=='unexisting' ? 'NEW' : 'EDIT')); ?>">
-				<?php echo $item->name; ?>.ini
-				</a>
+				<?php if ($limit == 0) : ?>
+					<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=translation.edit&client='.$item->client.'&tag='.$item->tag.'&filename='.$item->filename.'&storage='.$item->storage.'&id='.LocaliseHelper::getFileId(LocaliseHelper::getTranslationPath($item->client,$item->tag, $item->filename, $item->storage))); ?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_TRANSLATIONS_' . ($item->state=='unexisting' ? 'NEW' : 'EDIT')); ?>">
+					<?php echo $item->name; ?>.ini
+					</a>
+				<?php else : ?>
+					<?php echo "<font color=\"red\">" . $item->name . ".ini " . JText::_('COM_LOCALISE_ERROR_MAX_INPUT_VAR_PROTECTION') . "</font>"; ?>
+					<?php $app->enqueueMessage(JText::sprintf('COM_LOCALISE_ERROR_MAX_INPUT_VAR', $item->tag, $item->name), 'warning'); ?>
+				<?php endif; ?>
 			<?php elseif (!$canEdit) : ?>
 				<?php echo JHtml::_('jgrid.action', $i, '', array('tip'=>true, 'inactive_title'=>JText::sprintf('COM_LOCALISE_TOOLTIP_TRANSLATIONS_NOTEDITABLE', substr($item->path, strlen(JPATH_ROOT))), 'inactive_class'=>'16-error', 'enabled' => false, 'translate'=>false)); ?>
 				<?php echo $item->name; ?>.ini
