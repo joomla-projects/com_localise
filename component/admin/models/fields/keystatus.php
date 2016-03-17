@@ -65,6 +65,9 @@ class JFormFieldKeystatus extends JFormFieldList
 		$options[] = JHtml::_('select.option', 'unchangedkeys', JText::_('COM_LOCALISE_TEXT_TRANSLATION_UNCHANGED'),
 						array('option.attr' => 'attributes', 'attr' => 'class="unchanged"')
 						);
+		$options[] = JHtml::_('select.option', 'textchangedkeys', JText::_('COM_LOCALISE_TEXT_TRANSLATION_TEXTCHANGED'),
+						array('option.attr' => 'attributes', 'attr' => 'class="textchanged"')
+						);
 
 		return $options;
 	}

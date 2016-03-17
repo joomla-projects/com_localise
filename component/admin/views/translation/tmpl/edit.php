@@ -27,8 +27,34 @@ else
 	$istranslation = 0;
 }
 
+$params            = JComponentHelper::getParams('com_localise');
+$ref_tag           = $params->get('reference', 'en-GB');
+$allow_develop     = $params->get('gh_allow_develop', 0);
+$saved_ref         = $params->get('customisedref', 0);
+$source_ref        = $saved_ref;
+$istranslation     = $this->item->istranslation;
+$installed_version = new JVersion;
+$installed_version = $installed_version->getShortVersion();
+
+	if ($saved_ref == 0)
+	{
+		$source_ref = $installed_version;
+	}
+
+	if ($saved_ref != 0 && $allow_develop == 1 && $ref_tag == 'en-GB' && $istranslation == 0)
+	{
+		JFactory::getApplication()->enqueueMessage(
+		JText::sprintf('COM_LOCALISE_NOTICE_EDIT_REFERENCE_HAS_LIMITED_USE', $source_ref),
+		'notice');
+	}
+
 $input	= JFactory::getApplication()->input;
 $posted	= $input->post->get('jform', array(), 'array');
+
+$has_translatedkeys   = !empty($this->item->translatedkeys) ? 1 : 0;
+$has_untranslatedkeys = !empty($this->item->untranslatedkeys) ? 1 : 0;
+$has_unchangedkeys    = !empty($this->item->unchangedkeys) ? 1 : 0;
+$has_textchangedkeys  = !empty($this->item->textchangedkeys) ? 1 : 0;
 
 if (isset($posted['select']['keystatus'])
 	&& !empty($posted['select']['keystatus'])
@@ -200,7 +226,7 @@ JText::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 						</div>
 						<div class="key">
 							<div id="translationbar">
-								<?php if ($istranslation) : ?>
+								<?php //if ($istranslation) : ?>
 									<div class="pull-left">
 										<?php foreach($this->form->getFieldset('select') as $field): ?>
 											<?php if ($field->type != "Spacer") : ?>
@@ -214,7 +240,7 @@ JText::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 											<?php endif; ?>
 										<?php endforeach; ?>
 									</div>
-								<?php endif; ?>
+								<?php //endif; ?>
 								<a href="javascript:void(0);" class="btn bnt-small" id="translateall" onclick="translateAll();">
 									<i class="icon-translate-bing"></i> <?php echo JText::_('COM_LOCALISE_BUTTON_TRANSLATE_ALL');?>
 								</a>
@@ -368,3 +394,29 @@ JText::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 		<!-- End Localise Translation -->
 	</div>
 </form>
+<script type="text/javascript">
+var has_translatedkeys   = '<?php echo $has_translatedkeys; ?>';
+var has_untranslatedkeys = '<?php echo $has_untranslatedkeys; ?>';
+var has_unchangedkeys    = '<?php echo $has_unchangedkeys; ?>';
+var has_textchangedkeys  = '<?php echo $has_textchangedkeys; ?>';
+
+	if (has_translatedkeys=='0')
+	{
+		var x = document.getElementById("jform_select_keystatus").options[2].disabled = true;
+	}
+
+	if (has_untranslatedkeys=='0')
+	{
+		var x = document.getElementById("jform_select_keystatus").options[3].disabled = true;
+	}
+
+	if (has_unchangedkeys=='0')
+	{
+		var x = document.getElementById("jform_select_keystatus").options[4].disabled = true;
+	}
+
+	if (has_textchangedkeys=='0')
+	{
+		var x = document.getElementById("jform_select_keystatus").options[5].disabled = true;
+	}
+</script>

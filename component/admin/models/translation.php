@@ -26,8 +26,6 @@ class LocaliseModelTranslation extends JModelAdmin
 
 	protected $contents;
 
-	protected $filter_fields = array('translatedkeys', 'untranslatedkeys', 'unchangedkeys');
-
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -171,13 +169,32 @@ class LocaliseModelTranslation extends JModelAdmin
 					? $this->getState('translation.path')
 					: $this->getState('translation.refpath');
 
+				$params              = JComponentHelper::getParams('com_localise');
+				$allow_develop       = $params->get('gh_allow_develop', 0);
+				$gh_client           = $this->getState('translation.client');
+				$tag                 = $this->getState('translation.tag');
+				$reftag              = $this->getState('translation.reference');
+				$refpath             = $this->getState('translation.refpath');
+				$istranslation       = 0;
+
+				if (!empty($tag) && $tag != $reftag)
+				{
+					$istranslation = 1;
+				}
+
 				$this->setState('translation.translatedkeys', array());
 				$this->setState('translation.untranslatedkeys', array());
 				$this->setState('translation.unchangedkeys', array());
+				$this->setState('translation.textchangedkeys', array());
+				$this->setState('translation.revisedchanges', array());
+				$this->setState('translation.developdata', array());
 
 				$translatedkeys   = $this->getState('translation.translatedkeys');
 				$untranslatedkeys = $this->getState('translation.untranslatedkeys');
 				$unchangedkeys    = $this->getState('translation.unchangedkeys');
+				$textchangedkeys  = $this->getState('translation.textchangedkeys');
+				$revisedchanges  = $this->getState('translation.revisedchanges');
+				$developdata      = $this->getState('translation.developdata');
 
 				$this->item = new JObject(
 									array
@@ -193,10 +210,18 @@ class LocaliseModelTranslation extends JModelAdmin
 										'additionalcopyright' => array(),
 										'license'             => '',
 										'exists'              => JFile::exists($this->getState('translation.path')),
+										'istranslation'       => $istranslation,
+										'developdata'         => (array) $developdata,
 										'translatedkeys'      => (array) $translatedkeys,
 										'untranslatedkeys'    => (array) $untranslatedkeys,
 										'unchangedkeys'       => (array) $unchangedkeys,
+										'textchangedkeys'     => (array) $textchangedkeys,
+										'revisedchanges'      => (array) $revisedchanges,
+										'unrevised'           => 0,
+										'translatednews'      => 0,
+										'unchangednews'       => 0,
 										'translated'          => 0,
+										'untranslated'        => 0,
 										'unchanged'           => 0,
 										'extra'               => 0,
 										'total'               => 0,
@@ -208,11 +233,32 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				if (JFile::exists($path))
 				{
-					$this->item->source = file_get_contents($path);
-					$stream             = new JStream;
+					$devpath    = LocaliseHelper::searchDevpath($gh_client, $refpath);
+					$custompath = LocaliseHelper::searchCustompath($gh_client, $refpath);
+
+					if ($istranslation == 0 && $reftag == 'en-GB')
+					{
+						if (!empty($devpath))
+						{
+							if (!empty($custompath))
+							{
+								$this->item->source = LocaliseHelper::combineReferences($custompath, $devpath);
+							}
+							else
+							{
+								$this->item->source = LocaliseHelper::combineReferences($path, $devpath);
+							}
+						}
+					}
+					else
+					{
+						$this->item->source = file_get_contents($path);
+					}
+
+					$stream = new JStream;
 					$stream->open($path);
-					$begin = $stream->read(4);
-					$bom   = strtolower(bin2hex($begin));
+					$begin  = $stream->read(4);
+					$bom    = strtolower(bin2hex($begin));
 
 					if ($bom == '0000feff')
 					{
@@ -244,7 +290,6 @@ class LocaliseModelTranslation extends JModelAdmin
 					$continue   = true;
 					$lineNumber = 0;
 
-					$params             = JComponentHelper::getParams('com_localise');
 					$isTranslationsView = JFactory::getApplication()->input->get('view') == 'translations';
 
 					while (!$stream->eof())
@@ -403,8 +448,101 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				if ($this->getState('translation.layout') != 'raw' && empty($this->item->error))
 				{
-					$sections    = LocaliseHelper::parseSections($this->getState('translation.path'));
-					$refsections = LocaliseHelper::parseSections($this->getState('translation.refpath'));
+					$sections = LocaliseHelper::parseSections($this->getState('translation.path'));
+
+						if (!empty($custompath))
+						{
+							$refsections = LocaliseHelper::parseSections($custompath);
+						}
+						else
+						{
+							$refsections = LocaliseHelper::parseSections($this->getState('translation.refpath'));
+						}
+
+					$develop_client_path = JPATH_ROOT
+								. '/media/com_localise/develop/github/joomla-cms/en-GB/'
+								. $gh_client;
+					$develop_client_path = JFolder::makeSafe($develop_client_path);
+					$ref_file            = basename($this->getState('translation.refpath'));
+					$develop_file_path   = "$develop_client_path/$ref_file";
+					$new_keys            = array();
+
+					if (JFile::exists($develop_file_path) && $allow_develop == 1 && $reftag == 'en-GB')
+					{
+						$info                  = array();
+						$info['client']        = $gh_client;
+						$info['reftag']        = 'en-GB';
+						$info['tag']           = 'en-GB';
+						$info['filename']      = $ref_file;
+						$info['istranslation'] = $istranslation;
+
+						$develop_sections = LocaliseHelper::parseSections($develop_file_path);
+						$developdata      = LocaliseHelper::getDevelopchanges($info, $refsections, $develop_sections);
+						$developdata['develop_file_path'] = '';
+
+						if ($developdata['extra_keys']['amount'] > 0  || $developdata['text_changes']['amount'] > 0)
+						{
+							if ($developdata['extra_keys']['amount'] > 0)
+							{
+								$new_keys = $developdata['extra_keys']['keys'];
+							}
+
+							if ($developdata['text_changes']['amount'] > 0)
+							{
+								$textchangedkeys = $developdata['text_changes']['keys'];
+								$this->item->textchangedkeys = $textchangedkeys;
+								$this->setState('translation.textchangedkeys', $textchangedkeys);
+
+								$changesdata['client'] = $gh_client;
+								$changesdata['reftag'] = $reftag;
+
+									if ($istranslation == 0)
+									{
+										$changesdata['tag'] = $reftag;
+									}
+									else
+									{
+										$changesdata['tag'] = $tag;
+									}
+
+								$changesdata['filename'] = $ref_file;
+
+								foreach ($textchangedkeys as $key_changed)
+								{
+									$target_text = $developdata['text_changes']['ref_in_dev'][$key_changed];
+									$source_text = $developdata['text_changes']['ref'][$key_changed];
+
+									$changesdata['revised']       = '0';
+									$changesdata['key']           = $key_changed;
+									$changesdata['target_text']   = $target_text;
+									$changesdata['source_text']   = $source_text;
+									$changesdata['istranslation'] = $istranslation;
+									$changesdata['catch_grammar'] = '0';
+
+									$change_status = LocaliseHelper::searchRevisedvalue($changesdata);
+									$revisedchanges[$key_changed] = $change_status;
+
+									if ($change_status == 1)
+									{
+										$developdata['text_changes']['revised']++;
+									}
+									else
+									{
+										$developdata['text_changes']['unrevised']++;
+									}
+								}
+
+								$this->item->revisedchanges = $revisedchanges;
+								$this->setState('translation.revisedchanges', $revisedchanges);
+							}
+
+							// When develop changes are present, replace the reference keys
+							$refsections = $develop_sections;
+
+							// And store the path for future calls
+							$developdata['develop_file_path'] = $develop_file_path;
+						}
+					}
 
 					if (!empty($refsections['keys']))
 					{
@@ -414,37 +552,70 @@ class LocaliseModelTranslation extends JModelAdmin
 
 							if (!empty($sections['keys']) && array_key_exists($key, $sections['keys']) && $sections['keys'][$key] != '')
 							{
-								if ($sections['keys'][$key] != $string)
+								if ($sections['keys'][$key] != $string && $istranslation == 1)
 								{
-									$this->item->translated++;
-									$translatedkeys[] = $key;
+									if (array_key_exists($key, $revisedchanges) && $revisedchanges[$key] == 0)
+									{
+										$this->item->unrevised++;
+										$translatedkeys[] = $key;
+									}
+									elseif (in_array($key, $new_keys))
+									{
+										$this->item->translatednews++;
+										$translatedkeys[] = $key;
+									}
+									else
+									{
+										$this->item->translated++;
+										$translatedkeys[] = $key;
+									}
 								}
-								elseif ($this->getState('translation.path') == $this->getState('translation.refpath'))
+								elseif ($istranslation == 0)
 								{
+									if (array_key_exists($key, $revisedchanges) && $revisedchanges[$key] == 0)
+									{
+										$this->item->unrevised++;
+									}
+									elseif (in_array($key, $new_keys))
+									{
+										$untranslatedkeys[] = $key;
+									}
+
 									$this->item->translated++;
 								}
 								else
 								{
-									$this->item->unchanged++;
+									if (in_array($key, $new_keys))
+									{
+										$this->item->unchangednews++;
+									}
+									else
+									{
+										$this->item->unchanged++;
+									}
+
 									$unchangedkeys[] = $key;
 								}
 							}
 							elseif (!array_key_exists($key, $sections['keys']))
 							{
+								$this->item->untranslated++;
 								$untranslatedkeys[] = $key;
 							}
 						}
 					}
 
-					$this->item->translatedkeys = $translatedkeys;
+					$this->item->translatedkeys   = $translatedkeys;
 					$this->item->untranslatedkeys = $untranslatedkeys;
-					$this->item->unchangedkeys = $unchangedkeys;
+					$this->item->unchangedkeys    = $unchangedkeys;
+					$this->item->developdata      = $developdata;
 
 					$this->setState('translation.translatedkeys', $translatedkeys);
 					$this->setState('translation.untranslatedkeys', $untranslatedkeys);
 					$this->setState('translation.unchangedkeys', $unchangedkeys);
+					$this->setState('translation.developdata', $developdata);
 
-					if (!empty($sections['keys']))
+					if (!empty($sections['keys']) && $istranslation == 1)
 					{
 						foreach ($sections['keys'] as $key => $string)
 						{
@@ -455,11 +626,13 @@ class LocaliseModelTranslation extends JModelAdmin
 						}
 					}
 
+					$done = $this->item->translated + $this->item->translatednews + $this->item->unchangednews;
+
 					$this->item->completed = $this->item->total
-						? intval(100 * $this->item->translated / $this->item->total) + $this->item->unchanged / $this->item->total
+						? intval(100 * $done / $this->item->total)
 						: 100;
 
-					$this->item->complete = $this->item->complete
+					$this->item->complete = $this->item->complete == 1 && $this->item->untranslated == 0 && $this->item->unrevised == 0
 						? 1
 						: ($this->item->completed == 100
 							? 1
@@ -586,6 +759,13 @@ class LocaliseModelTranslation extends JModelAdmin
 		$app      = JFactory::getApplication();
 		$false    = false;
 
+		$have_develop        = 0;
+		$developdata         = array();
+		$revisedchanges      = array();
+		$istranslation       = '';
+		$extras_amount       = 0;
+		$text_changes_amount = 0;
+
 		// Compute all known languages
 		static $languages = array();
 		jimport('joomla.language.language');
@@ -601,22 +781,87 @@ class LocaliseModelTranslation extends JModelAdmin
 			$form->setFieldAttribute('legend', 'translated', $item->translated, 'legend');
 			$form->setFieldAttribute('legend', 'untranslated', $item->total - $item->translated - $item->unchanged, 'legend');
 			$form->setFieldAttribute('legend', 'extra', $item->extra, 'legend');
+
+			$developdata    = $item->developdata;
+			$revisedchanges = $item->revisedchanges;
+			$istranslation  = $item->istranslation;
 		}
 
 		if ($this->getState('translation.layout') != 'raw')
 		{
-			$path        = $this->getState('translation.path');
-			$refpath     = $this->getState('translation.refpath');
-			$sections    = LocaliseHelper::parseSections($path);
-			$refsections = LocaliseHelper::parseSections($refpath);
+			$this->setState('translation.devpath', '');
+
+			if (!empty($developdata))
+			{
+				$extras_amount       = $developdata['extra_keys']['amount'];
+				$text_changes_amount = $developdata['text_changes']['amount'];
+				$refpath             = $this->getState('translation.refpath');
+
+				$custompath          = LocaliseHelper::searchCustompath($client, $refpath);
+
+				if ($istranslation == '0')
+				{
+					if (!empty($custompath))
+					{
+						$refpath     = $custompath;
+						$path        = $refpath;
+						$refsections = LocaliseHelper::parseSections($refpath);
+						$sections    = $refsections;
+					}
+					else
+					{
+						$refpath     = $this->getState('translation.refpath');
+						$path        = $refpath;
+						$refsections = LocaliseHelper::parseSections($refpath);
+						$sections    = $refsections;
+					}
+				}
+				else
+				{
+					if (!empty($custompath))
+					{
+						$refpath     = $custompath;
+						$path        = $this->getState('translation.path');
+						$refsections = LocaliseHelper::parseSections($refpath);
+						$sections    = LocaliseHelper::parseSections($path);
+					}
+					else
+					{
+						$refpath     = $this->getState('translation.refpath');
+						$path        = $this->getState('translation.path');
+						$refsections = LocaliseHelper::parseSections($refpath);
+						$sections    = LocaliseHelper::parseSections($path);
+					}
+				}
+
+				if ($extras_amount > 0  || $text_changes_amount > 0)
+				{
+					$have_develop      = 1;
+					$develop_file_path = $developdata['develop_file_path'];
+					$develop_sections  = LocaliseHelper::parseSections($develop_file_path);
+					$oldref            = $refsections;
+					$refsections       = $develop_sections;
+					$refpath           = $develop_file_path;
+
+					$this->setState('translation.devpath', $develop_file_path);
+				}
+			}
+			else
+			{
+				$path        = $this->getState('translation.path');
+				$refpath     = $this->getState('translation.refpath');
+				$sections    = LocaliseHelper::parseSections($path);
+				$refsections = LocaliseHelper::parseSections($refpath);
+			}
+
 			$addform     = new SimpleXMLElement('<form />');
 
 			$group = $addform->addChild('fields');
 			$group->addAttribute('name', 'strings');
 
 			$fieldset = $group->addChild('fieldset');
-			$fieldset->addAttribute('name', 'Default');
-			$fieldset->addAttribute('label', 'Default');
+			$fieldset->addAttribute('name', 'JDEFAULT');
+			$fieldset->addAttribute('label', 'JDEFAULT');
 
 			if (JFile::exists($refpath))
 			{
@@ -670,9 +915,20 @@ class LocaliseModelTranslation extends JModelAdmin
 						$header     = false;
 						$key        = $matches[1];
 						$field      = $fieldset->addChild('field');
-						$string     = $refsections['keys'][$key];
-						$translated = isset($sections['keys'][$key]);
-						$modified   = $translated && $sections['keys'][$key] != $refsections['keys'][$key];
+
+						if ($have_develop == '1' && $istranslation == '0' && array_key_exists($key, $oldref['keys']))
+						{
+							$string = $oldref['keys'][$key];
+							$translated = isset($sections['keys'][$key]);
+							$modified   = $translated && $sections['keys'][$key] != $oldref['keys'][$key];
+						}
+						else
+						{
+							$string = $refsections['keys'][$key];
+							$translated = isset($sections['keys'][$key]);
+							$modified   = $translated && $sections['keys'][$key] != $refsections['keys'][$key];
+						}
+
 						$status     = $modified
 							? 'translated'
 							: ($translated
@@ -681,7 +937,47 @@ class LocaliseModelTranslation extends JModelAdmin
 						$default    = $translated
 							? $sections['keys'][$key]
 							: '';
-						$label      = '<b>' . $key . '</b><br />' . htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
+
+						$field->addAttribute('istranslation', $istranslation);
+						$field->addAttribute('istextchange', 0);
+						$field->addAttribute('isextraindev', 0);
+
+						if ($have_develop == '1' && in_array($key, $developdata['text_changes']['keys']))
+						{
+							$change     = $developdata['text_changes']['diff'][$key];
+							$sourcetext = $developdata['text_changes']['ref'][$key];
+							$targettext = $developdata['text_changes']['ref_in_dev'][$key];
+
+							$label   = '<b>'
+								. $key
+								. '</b><br /><p class="text_changes">'
+								. $change
+								. '</p>';
+
+							$field->attributes()->istextchange = 1;
+							$field->addAttribute('changestatus', $revisedchanges[$key]);
+							$field->addAttribute('sourcetext', $sourcetext);
+							$field->addAttribute('targettext', $targettext);
+						}
+						elseif ($have_develop == '1' && in_array($key, $developdata['extra_keys']['keys']))
+						{
+							$label   = '<span class="new_word"><b>['
+								. JText::_('COM_LOCALISE_NEW_KEY_IN_DEVELOP')
+								. ']</b> </span><b>'
+								. $key
+								. '</b><br />'
+								. htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
+
+							$field->attributes()->isextraindev = 1;
+						}
+						else
+						{
+							$label   = '<b>'
+								. $key
+								. '</b><br />'
+								. htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
+						}
+
 						$field->addAttribute('status', $status);
 						$field->addAttribute('description', $string);
 
@@ -719,7 +1015,7 @@ class LocaliseModelTranslation extends JModelAdmin
 							{
 								$newstrings = true;
 								$form->load($addform, false);
-								$section = 'New Strings';
+								$section = 'COM_LOCALISE_TEXT_TRANSLATION_NOTINREFERENCE';
 								$addform = new SimpleXMLElement('<form />');
 								$group   = $addform->addChild('fields');
 								$group->addAttribute('name', 'strings');
@@ -806,11 +1102,40 @@ class LocaliseModelTranslation extends JModelAdmin
 	 */
 	public function saveFile($data)
 	{
-		$path      = $this->getState('translation.path');
-		$refpath   = $this->getState('translation.refpath');
-		$exists    = JFile::exists($path);
-		$refexists = JFile::exists($refpath);
-		$client    = $this->getState('translation.client');
+		$client     = $this->getState('translation.client');
+		$tag        = $this->getState('translation.tag');
+		$reftag     = $this->getState('translation.reference');
+		$path       = $this->getState('translation.path');
+		$refpath    = $this->getState('translation.refpath');
+		$devpath    = LocaliseHelper::searchDevpath($client, $refpath);
+		$custompath = LocaliseHelper::searchCustompath($client, $refpath);
+		$exists     = JFile::exists($path);
+		$refexists  = JFile::exists($refpath);
+
+		if ($refexists && !empty($devpath))
+		{
+			if ($reftag == 'en-GB' && $tag == 'en-GB' && !empty($custompath))
+			{
+				$params             = JComponentHelper::getParams('com_localise');
+				$customisedref      = $params->get('customisedref', '0');
+				$custom_short_path  = '../media/com_localise/customisedref/github/'
+							. $client
+							. '/'
+							. $customisedref;
+
+				// The saved file is not using the core language folders.
+				$path   = $custompath;
+				$exists = JFile::exists($path);
+
+				$ref_file         = basename($refpath);
+				$custom_file_path = JFolder::makeSafe("$custompath/$ref_file");
+			}
+			elseif ($reftag == 'en-GB' &&  $tag != 'en-GB')
+			{
+				// It is a translation with the file in develop as reference.
+				$refpath = $devpath;
+			}
+		}
 
 		// Set FTP credentials, if given.
 		JClientHelper::setCredentialsFromRequest('ftp');
@@ -965,7 +1290,25 @@ class LocaliseModelTranslation extends JModelAdmin
 
 			while (!$stream->eof())
 			{
-				if (preg_match('/^([A-Z][A-Z0-9_\*\-\.]*)\s*=/', $line, $matches))
+			// Mounting the language file in this way will help to avoid save files with errors at the content.
+
+				// Blank lines
+				if (preg_match('/^\s*$/', $line))
+				{
+					$contents[] = "\n";
+				}
+				// Comments lines
+				elseif (preg_match('/^(;.*)$/', $line, $matches))
+				{
+					$contents[] = $matches[1] . "\n";
+				}
+				// Section lines
+				elseif (preg_match('/^\[([^\]]*)\]\s*$/', $line, $matches))
+				{
+					$contents[] = $matches[1] . "\n";
+				}
+				// Key lines
+				elseif (preg_match('/^([A-Z][A-Z0-9_\*\-\.]*)\s*=/', $line, $matches))
 				{
 					$key = $matches[1];
 
@@ -975,9 +1318,19 @@ class LocaliseModelTranslation extends JModelAdmin
 						unset($strings[$key]);
 					}
 				}
+				// Content with EOL
+				elseif (preg_split("/\\r\\n|\\r|\\n/", $line))
+				{
+					// $this->setError(JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)));
+					$application = JFactory::getApplication();
+					$application->enqueueMessage(JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)), 'warning');
+				}
+				// Wrong lines
 				else
 				{
-					$contents[] = $line;
+					// $this->setError(JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)));
+					$application = JFactory::getApplication();
+					$application->enqueueMessage(JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)), 'warning');
 				}
 
 				$line = $stream->gets();
@@ -1022,6 +1375,19 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				return false;
 			}
+			elseif ($reftag == 'en-GB' && $tag == 'en-GB' && !empty($custompath))
+			{
+				$params             = JComponentHelper::getParams('com_localise');
+				$customisedref      = $params->get('customisedref', '0');
+				$custom_short_path  = '../media/com_localise/customisedref/github/'
+							. $client
+							. '/'
+							. $customisedref;
+
+				JFactory::getApplication()->enqueueMessage(
+					JText::_('COM_LOCALISE_NOTICE_CUSTOM_EN_GB_FILE_SAVED') . $custom_short_path,
+					'notice');
+			}
 		}
 
 		// Remove the cache
@@ -1055,6 +1421,36 @@ class LocaliseModelTranslation extends JModelAdmin
 		if (!empty($formData['strings']))
 		{
 			$data['strings'] = $formData['strings'];
+
+			if (!empty($formData['text_changes']))
+			{
+				$data['text_changes'] = $formData['text_changes'];
+				$data['source_text_changes'] = $formData['source_text_changes'];
+				$data['target_text_changes'] = $formData['target_text_changes'];
+
+				$changes_data = array();
+				$changes_data['client'] = $this->getState('translation.client');
+				$changes_data['reftag'] = $this->getState('translation.reference');
+				$changes_data['tag'] = $this->getState('translation.tag');
+				$changes_data['filename'] = basename($this->getState('translation.refpath'));
+$died = '';
+
+				foreach ($data['text_changes'] as $key => $revised)
+				{
+					$changes_data['revised'] = "0";
+
+					if ($revised == '1' || $revised == 'true')
+					{
+						$changes_data['revised'] = "1";
+					}
+
+					$changes_data['key'] = $key;
+					$changes_data['target_text'] = $data['target_text_changes'][$key];
+					$changes_data['source_text'] = $data['source_text_changes'][$key];
+
+					LocaliseHelper::updateRevisedvalue($changes_data);
+				}
+			}
 		}
 
 		// Special case for lib_joomla
