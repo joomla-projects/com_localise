@@ -444,6 +444,7 @@ class LocaliseModelTranslation extends JModelAdmin
 							$this->item->error[] = $lineNumber;
 						}
 					}
+
 					if ($tag != $reftag)
 					{
 						if (JFile::exists($custompath))
