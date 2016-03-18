@@ -191,6 +191,13 @@
 	vertical-align: text-top;
 	width: 16px !important;
 }
+span.icon-16-notice-note {
+    background: url("../../../media/com_localise/images/icon-16-notice-note.png");
+    background-repeat: no-repeat;
+    height: 16px !important;
+    vertical-align: text-top;
+    width: 16px !important;
+}
 .pointer {
 	cursor: pointer;
 	float: left;
@@ -279,4 +286,23 @@ ul.adminformlist li {
 	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUXCToH00Y1UgAAACFJREFUCNdjPMDBUc/AwNDAAAFMTAwMDA0OP34wQgX/AQBYgwYEx4f9lQAAAABJRU5ErkJggg==);
 	background-position: bottom left;
 	background-repeat: repeat-x;
+}
+.text_changes {
+border: 1px dashed gray !important;
+background-color: #FFFFCC;
+margin-top: 0em;
+text-align: left;
+}
+.diff_del {
+background-color: #E3A0AB !important;
+}
+.diff_ins {
+background-color: lightgreen !important;
+}
+.red-space {
+background-color: red !important;
+
+}
+.new_word {
+color:#8B0000 !important;
 }
