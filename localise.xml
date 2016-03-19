@@ -17,7 +17,7 @@
 		<sql>
 			<!--
 			Pre Joomla 3.5.0 doesn't recognize utf8mb4 charset so they will only run the utf8 charset script.
-			Joomla 3.5.0+ versions will execute the utf8mb4 file on utf8mb4 capable db servers and the utf8 file on non utf8mb4 capable db servers.
+			Joomla 3.5.0+ versions will execute the utf8mb4 file on utf8mb4 capable database servers and the utf8 file on non utf8mb4 capable database servers.
 			-->
 			<file driver="mysql" charset="utf8">sql/install/mysql/install.utf8.sql</file>
 			<file driver="mysql" charset="utf8mb4">sql/install/mysql/install.utf8mb4.sql</file>
@@ -26,7 +26,7 @@
 	<uninstall>
 		<sql>
 			<!--
-			The uninstall can be the same for utf8 or non utf8mb4 capable db servers.
+			The uninstall can be the same for utf8 or non utf8mb4 capable database servers.
 			-->
 			<file driver="mysql" charset="utf8">sql/install/mysql/uninstall.sql</file>
 		</sql>
@@ -35,8 +35,8 @@
 		<schemas>
 			<!--
 			The order here is important:
-			Pre Joomla 3.5.0 will only run the queries on the first schemapath, because by design they are limit to only run the first schemapath.
-			Joomla 3.5.0+ versions will execute the utf8mb4 schemapath on utf8mb4 capable db servers and the utf8 schemapath on non utf8mb4 capable db servers.
+			Better would be: "Pre Joomla 3.5.0 will only run the update sql files in the first schemapath, because those Joomla versions don't check any charset atrribute but take the first one they find for the chosen database server type."
+			Joomla 3.5.0+ versions will run the update sql files in the utf8mb4 schemapath on utf8mb4 capable database servers and the update sql files in the utf8 schemapath on non utf8mb4 capable database servers.
 			-->
 			<schemapath type="mysql" charset="utf8">sql/updates/mysql</schemapath>
 			<schemapath type="mysql" charset="utf8mb4">sql/updates/mysql-utf8mb4</schemapath>
