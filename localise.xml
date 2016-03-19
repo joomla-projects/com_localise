@@ -15,17 +15,32 @@
 	<scriptfile>install.php</scriptfile>
 	<install>
 		<sql>
+			<!--
+			The order here is important:
+			- pre Joomla 3.5.0 doesn't recognize utf8mb4 charset so they will only run the first one.
+			- 3.5.0+ versions will execute the utf8mb4 schemapath on utf8mb4 capable db servers
+			  and the utf8 schemapath on non utf8mb4 capable db servers.
+			-->
 			<file driver="mysql" charset="utf8">sql/install/mysql/install.utf8.sql</file>
 			<file driver="mysql" charset="utf8mb4">sql/install/mysql/install.utf8mb4.sql</file>
 		</sql>
 	</install>
 	<uninstall>
 		<sql>
+			<!--
+			The uninstall can be the same for utf8 or non utf8mb4 capable db servers.
+			-->
 			<file driver="mysql" charset="utf8">sql/install/mysql/uninstall.sql</file>
 		</sql>
 	</uninstall>
 	<update>
 		<schemas>
+			<!--
+			The order here is important:
+			- pre Joomla 3.5.0 will only run the queries on the first schemapath.
+			- 3.5.0+ versions will execute the utf8mb4 schemapath on utf8mb4 capable db servers
+			  and the utf8 schemapath on non utf8mb4 capable db servers.
+			-->
 			<schemapath type="mysql" charset="utf8">sql/updates/mysql</schemapath>
 			<schemapath type="mysql" charset="utf8mb4">sql/updates/mysql-utf8mb4</schemapath>
 		</schemas>
