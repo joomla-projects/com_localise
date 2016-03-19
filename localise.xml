@@ -35,7 +35,7 @@
 		<schemas>
 			<!--
 			The order here is important:
-			Better would be: "Pre Joomla 3.5.0 will only run the update sql files in the first schemapath, because those Joomla versions don't check any charset atrribute but take the first one they find for the chosen database server type."
+			Pre Joomla 3.5.0 will only run the update sql files in the first schemapath, because those Joomla versions don't check any charset atrribute but take the first one they find for the chosen database server type.
 			Joomla 3.5.0+ versions will run the update sql files in the utf8mb4 schemapath on utf8mb4 capable database servers and the update sql files in the utf8 schemapath on non utf8mb4 capable database servers.
 			-->
 			<schemapath type="mysql" charset="utf8">sql/updates/mysql</schemapath>
