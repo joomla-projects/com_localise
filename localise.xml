@@ -15,9 +15,8 @@
 	<scriptfile>install.php</scriptfile>
 	<install>
 		<sql>
-			<file driver="mysql" charset="utf8mb4">sql/install/mysql/install.sql</file>
-			<!-- UTF-8 fallback for non utf8mb4 mysql database capable systems (MySql lower than 5.5.3) -->
-			<file driver="mysql" charset="utf8">sql/install/mysql/install-utf8.sql</file>
+			<file driver="mysql" charset="utf8">sql/install/mysql/install.utf8.sql</file>
+			<file driver="mysql" charset="utf8mb4">sql/install/mysql/install.utf8mb4.sql</file>
 		</sql>
 	</install>
 	<uninstall>
@@ -27,9 +26,8 @@
 	</uninstall>
 	<update>
 		<schemas>
-			<schemapath type="mysql" charset="utf8mb4">sql/updates/mysql</schemapath>
-			<!-- UTF-8 fallback for non utf8mb4 mysql database capable systems (MySql lower than 5.5.3) -->
-			<schemapath type="mysql" charset="utf8">sql/updates/mysql-utf8</schemapath>
+			<schemapath type="mysql" charset="utf8">sql/updates/mysql</schemapath>
+			<schemapath type="mysql" charset="utf8mb4">sql/updates/mysql-utf8mb4</schemapath>
 		</schemas>
 	</update>
 	<media destination="com_localise" folder="media/com_localise">
