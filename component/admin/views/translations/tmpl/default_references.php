@@ -50,7 +50,7 @@ $has_installation  = LocaliseHelper::hasInstallation();
 					$client,
 					$last_source[$client],
 					$installed_version),
-				'warning');
+				'notice');
 		}
 	}
 
@@ -96,14 +96,14 @@ $has_installation  = LocaliseHelper::hasInstallation();
 				$equal_versions = 0;
 			}
 		}
-		
+
 		if (($version['administrator'] == '0' || $version['administrator'] == $installed_version)
 		&& ($version['site'] == '0' || $version['site'] == $installed_version))
 		{
 			$matches = 1;
 
 			if ($has_installation && $matches == 1)
-			{				
+			{
 				if ($version['installation'] == '0' || $version['installation'] == $installed_version)
 				{
 					$equal_versions = 2;
@@ -151,7 +151,7 @@ $has_installation  = LocaliseHelper::hasInstallation();
 				$report .= '<br />';
 			}
 		}
-		
+
 		$report .= '</i>';
 		// End notes
 
