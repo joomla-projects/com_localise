@@ -3,10 +3,6 @@ sudo: false
 
 language: php
 
-env:
-  global:
-    - RUN_PHPCS="no"
-
 matrix:
   include:
     - php: 5.3
