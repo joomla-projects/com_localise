@@ -1,11 +1,22 @@
+# Forces new Travis-CI Infrastructure
+sudo: false
+
 language: php
 
-php:
-  - 5.3
-  - 5.4
-  - 5.5
+env:
+  global:
+    - RUN_PHPCS="no"
+
+matrix:
+  include:
+    - php: 5.3
+    - php: 5.4
+    - php: 5.5
+    - php: 5.6
+    - php: 7.0
 
 before_script:
+  # Make sure all dev dependencies are installed
   - composer install
 
 script:
