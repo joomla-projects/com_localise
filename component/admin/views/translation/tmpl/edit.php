@@ -93,6 +93,7 @@ $ftpSets   = $this->formftp->getFieldsets();
 
 // Prepare Bing translation
 JText::script('COM_LOCALISE_BINGTRANSLATING_NOW');
+JText::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
 ?>
 <script type="text/javascript">
 	var bingTranslateComplete = false, translator;
@@ -152,7 +153,14 @@ JText::script('COM_LOCALISE_BINGTRANSLATING_NOW');
 
 	Joomla.submitbutton = function(task)
 	{
-		if (task == 'translation.cancel' || document.formvalidator.isValid(document.id('localise-translation-form')))
+		if ((task == 'translation.apply' || task == 'translation.save') && document.formvalidator.isValid(document.id('localise-translation-form')))
+		{
+			if (confirm(Joomla.JText._('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE')))
+			{
+				Joomla.submitform(task, document.getElementById('localise-translation-form'));
+			}
+		}
+		else if (task == 'translation.cancel')
 		{
 			Joomla.submitform(task, document.getElementById('localise-translation-form'));
 		}
