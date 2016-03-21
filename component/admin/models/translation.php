@@ -1259,7 +1259,12 @@ class LocaliseModelTranslation extends JModelAdmin
 
 			if (array_key_exists('complete', $data) && ($data['complete'] == '1'))
 			{
+				$this->setState('translation.complete', 1);
 				$contents2 .= "; @note        Complete\n";
+			}
+			else
+			{
+				$this->setState('translation.complete', 0);
 			}
 
 			$contents2 .= "; @note        Client " . ucfirst($client) . "\n";
@@ -1539,6 +1544,15 @@ $died = '';
 			$this->setError($table->getError());
 
 			return false;
+		}
+
+		if ($this->getState('translation.complete') == 1)
+		{
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_NOTICE_TRANSLATION_COMPLETE'), 'notice');
+		}
+		else
+		{
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_NOTICE_TRANSLATION_NOT_COMPLETE'), 'notice');
 		}
 
 		return true;
