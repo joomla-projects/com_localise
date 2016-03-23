@@ -84,5 +84,4 @@ class LocaliseViewTranslations extends JViewLegacy
 
 		JToolBarHelper::help('screen.translations', true);
 	}
-
 }
