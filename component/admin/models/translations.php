@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Translations Model class for the Localise component
@@ -24,11 +25,31 @@ class LocaliseModelTranslations extends JModelList
 {
 	protected $context = 'com_localise.translations';
 
-	protected $filter_fields = array('tag', 'filename', 'path', 'completed', 'translated');
-
 	protected $translations;
 
 	protected $items;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @see     JController
+	 * @since   3.5
+	 */
+	public function __construct($config = array())
+	{
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array(
+				'filename',
+				'completed',
+				'translated',
+			);
+		}
+
+		parent::__construct($config);
+	}
 
 	/**
 	 * Method to auto-populate the model state.
@@ -100,7 +121,7 @@ class LocaliseModelTranslations extends JModelList
 		$this->setState('translations.reference', $reference);
 
 		// Call auto-populate parent method
-		parent::populateState('filename', 'asc');
+		parent::populateState($ordering, $direction);
 	}
 
 	/**
@@ -876,18 +897,10 @@ class LocaliseModelTranslations extends JModelList
 				}
 			}
 
-			$direction = -1;
-
-			if ($this->getState('list.direction'))
-			{
-				$direction = 1;
-			}
-
-			JArrayHelper::sortObjects(
-				$this->translations,
-				$this->getState('list.ordering', 'name'),
-				$direction
-			);
+			// Process ordering.
+			$listOrder = $this->getState('list.ordering', 'name');
+			$listDirn  = $this->getState('list.direction', 'ASC');
+			$this->translations = ArrayHelper::sortObjects($this->translations, $listOrder, strtolower($listDirn) === 'desc' ? -1 : 1, true, true);
 
 			$this->translations = array_values($this->translations);
 		}

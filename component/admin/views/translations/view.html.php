@@ -42,6 +42,8 @@ class LocaliseViewTranslations extends JViewLegacy
 		$this->state      = $this->get('State');
 		$this->form       = $this->get('Form');
 		$this->packages   = $this->get('Items', 'Packages');
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
 
 		LocaliseHelper::addSubmenu('translations');
 
@@ -83,21 +85,4 @@ class LocaliseViewTranslations extends JViewLegacy
 		JToolBarHelper::help('screen.translations', true);
 	}
 
-	/**
-	 * Returns an array of fields the table can be sorted by
-	 *
-	 * @return  array  Array containing the field name to sort by as the key and display text as value
-	 *
-	 * @since 3.0
-	 */
-	protected function getSortFields()
-	{
-		return array(
-			'filename'   => JText::_('COM_LOCALISE_HEADING_TRANSLATIONS_NAME'),
-			'tag'        => JText::_('COM_LOCALISE_HEADING_TRANSLATIONS_TAG'),
-			'path'       => JText::_('COM_LOCALISE_HEADING_TRANSLATIONS_PATH'),
-			'completed'  => JText::_('COM_LOCALISE_HEADING_TRANSLATIONS_TRANSLATED'),
-			'translated' => JText::_('COM_LOCALISE_HEADING_TRANSLATIONS_PHRASES'),
-		);
-	}
 }
