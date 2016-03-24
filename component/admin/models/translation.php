@@ -686,7 +686,7 @@ class LocaliseModelTranslation extends JModelAdmin
 
 					if ($this->getState('translation.layout') != 'raw')
 					{
-						if (JFile::exists($develop_file_path))
+						if (isset($develop_file_path) && JFile::exists($develop_file_path))
 						{
 							$this->item->linesdevpath = count(file($develop_file_path));
 						}
