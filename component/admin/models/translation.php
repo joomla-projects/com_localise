@@ -1397,6 +1397,9 @@ class LocaliseModelTranslation extends JModelAdmin
 			$contents = $contents2 . $contents;
 		}
 
+		// Make sure EOL is Unix
+		$contents = str_replace(array("\r\n", "\n", "\r"), "\n", $contents);
+
 		$return = JFile::write($path, $contents);
 
 		// Try to make the template file unwriteable.
