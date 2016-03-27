@@ -684,9 +684,12 @@ class LocaliseModelTranslation extends JModelAdmin
 						$this->item->linesrefpath = count(file($refpath));
 					}
 
-					if (JFile::exists($develop_file_path))
+					if ($this->getState('translation.layout') != 'raw')
 					{
-						$this->item->linesdevpath = count(file($develop_file_path));
+						if (isset($develop_file_path) && JFile::exists($develop_file_path))
+						{
+							$this->item->linesdevpath = count(file($develop_file_path));
+						}
 					}
 				}
 				else
@@ -1259,7 +1262,12 @@ class LocaliseModelTranslation extends JModelAdmin
 
 			if (array_key_exists('complete', $data) && ($data['complete'] == '1'))
 			{
+				$this->setState('translation.complete', 1);
 				$contents2 .= "; @note        Complete\n";
+			}
+			else
+			{
+				$this->setState('translation.complete', 0);
 			}
 
 			$contents2 .= "; @note        Client " . ucfirst($client) . "\n";
@@ -1388,6 +1396,9 @@ class LocaliseModelTranslation extends JModelAdmin
 			$contents = implode($contents);
 			$contents = $contents2 . $contents;
 		}
+
+		// Make sure EOL is Unix
+		$contents = str_replace(array("\r\n", "\n", "\r"), "\n", $contents);
 
 		$return = JFile::write($path, $contents);
 
@@ -1539,6 +1550,15 @@ $died = '';
 			$this->setError($table->getError());
 
 			return false;
+		}
+
+		if ($this->getState('translation.complete') == 1)
+		{
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_NOTICE_TRANSLATION_COMPLETE'), 'notice');
+		}
+		else
+		{
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_NOTICE_TRANSLATION_NOT_COMPLETE'), 'notice');
 		}
 
 		return true;

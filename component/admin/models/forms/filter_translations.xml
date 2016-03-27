@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="filter">
+		<field
+			name="search"
+			type="text"
+			label="JSEARCH_FILTER"
+			description="JSEARCH_FILTER"
+			hint="JSEARCH_FILTER"
+		/>
+	</fields>
+	<fields name="list">
+		<field
+			name="fullordering"
+			type="list"
+			label="JGLOBAL_SORT_BY"
+			description="JGLOBAL_SORT_BY"
+			onchange="this.form.submit();"
+			default="filename ASC"
+			>
+			<option value="">JGLOBAL_SORT_BY</option>
+			<option value="filename ASC">COM_LOCALISE_HEADING_TRANSLATIONS_FILES_ASC</option>
+			<option value="filename DESC">COM_LOCALISE_HEADING_TRANSLATIONS_FILES_DESC</option>
+			<option value="completed ASC">COM_LOCALISE_HEADING_TRANSLATIONS_TRANSLATED_ASC</option>
+			<option value="completed DESC">COM_LOCALISE_HEADING_TRANSLATIONS_TRANSLATED_DESC</option>
+			<option value="translated ASC">COM_LOCALISE_HEADING_TRANSLATIONS_PHRASES_ASC</option>
+			<option value="translated DESC">COM_LOCALISE_HEADING_TRANSLATIONS_PHRASES_DESC</option>
+		</field>
+		<field
+			name="limit"
+			type="limitbox"
+			label="JGLOBAL_LIMIT"
+			description="JGLOBAL_LIMIT"
+			class="input-mini"
+			default="25"
+			onchange="this.form.submit();"
+		/>
+	</fields>
+</form>

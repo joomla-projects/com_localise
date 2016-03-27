@@ -6,29 +6,26 @@
 	<author>Christophe Demko</author>
 	<author>Jean-Marie Simonet</author>
 	<author>Ifan Evans</author>
-	<copyright>(C) 2015 Open Source Matters. All rights reserved.</copyright>
+	<copyright>(C) 2016 Open Source Matters. All rights reserved.</copyright>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>https://github.com/joomla-projects/com_localise</authorUrl>
-	<version>4.0.14-dev</version>
+	<version>4.0.16-dev</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>COM_LOCALISE_XML_DESCRIPTION</description>
 	<scriptfile>install.php</scriptfile>
 	<install>
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install/mysql/install.sql</file>
-			<file driver="mysqli" charset="utf8">sql/install/mysql/install.sql</file>
 		</sql>
 	</install>
 	<uninstall>
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install/mysql/uninstall.sql</file>
-			<file driver="mysqli" charset="utf8">sql/install/mysql/uninstall.sql</file>
 		</sql>
 	</uninstall>
 	<update>
 		<schemas>
-			<schemapath type="mysql">sql/updates/mysql</schemapath>
-			<schemapath type="mysqli">sql/updates/mysql</schemapath>
+			<schemapath type="mysql" charset="utf8">sql/updates/mysql</schemapath>
 		</schemas>
 	</update>
 	<media destination="com_localise" folder="media/com_localise">

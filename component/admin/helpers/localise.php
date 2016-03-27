@@ -1612,7 +1612,7 @@ abstract class LocaliseHelper
 						}
 
 						JFactory::getApplication()->enqueueMessage(
-							JText::_('COM_LOCALISE_NOTICE_GITHUB_FILE_ADDED'),
+							JText::sprintf('COM_LOCALISE_NOTICE_GITHUB_FILE_ADDED', $file_to_include, $gh_branch, $gh_client),
 							'notice');
 					}
 				}
