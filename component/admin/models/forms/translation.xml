@@ -58,11 +58,16 @@
 			description="COM_LOCALISE_LABEL_TRANSLATION_LICENSE_DESC" />
 		<field
 			name="complete"
-			type="checkbox"
-			value="1"
+			type="radio"
+			class="btn-group btn-group-yesno"
 			default="0"
 			label="COM_LOCALISE_LABEL_TRANSLATION_COMPLETE"
-			description="COM_LOCALISE_LABEL_TRANSLATION_COMPLETE_DESC" />
+			description="COM_LOCALISE_LABEL_TRANSLATION_COMPLETE_DESC">
+			<option
+				value="1">JYES</option>
+			<option
+				value="0">JNO</option>
+		</field>
 		<field
 			name="asset_id"
 			type="hidden"

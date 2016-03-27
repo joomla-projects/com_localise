@@ -225,6 +225,10 @@ class LocaliseModelTranslation extends JModelAdmin
 										'unchanged'           => 0,
 										'extra'               => 0,
 										'total'               => 0,
+										'linespath'           => 0,
+										'linesrefpath'        => 0,
+										'linesdevpath'        => 0,
+										'linescustompath'     => 0,
 										'complete'            => false,
 										'source'              => '',
 										'error'               => array()
@@ -438,6 +442,14 @@ class LocaliseModelTranslation extends JModelAdmin
 						if (!preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_\*\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $line))
 						{
 							$this->item->error[] = $lineNumber;
+						}
+					}
+
+					if ($tag != $reftag)
+					{
+						if (JFile::exists($custompath))
+						{
+							$this->item->linescustompath = count(file($custompath));
 						}
 					}
 
@@ -657,6 +669,35 @@ class LocaliseModelTranslation extends JModelAdmin
 				if ($caching)
 				{
 					$cache->store($this->item, $keycache);
+				}
+
+				// Count the number of lines in the ini file to check max_input_vars
+				if ($tag != $reftag)
+				{
+					if (JFile::exists($path))
+					{
+						$this->item->linespath = count(file($path));
+					}
+
+					if (JFile::exists($refpath))
+					{
+						$this->item->linesrefpath = count(file($refpath));
+					}
+
+					if ($this->getState('translation.layout') != 'raw')
+					{
+						if (isset($develop_file_path) && JFile::exists($develop_file_path))
+						{
+							$this->item->linesdevpath = count(file($develop_file_path));
+						}
+					}
+				}
+				else
+				{
+					if (JFile::exists($path))
+					{
+						$this->item->linespath = count(file($path));
+					}
 				}
 			}
 		}
@@ -1221,7 +1262,12 @@ class LocaliseModelTranslation extends JModelAdmin
 
 			if (array_key_exists('complete', $data) && ($data['complete'] == '1'))
 			{
+				$this->setState('translation.complete', 1);
 				$contents2 .= "; @note        Complete\n";
+			}
+			else
+			{
+				$this->setState('translation.complete', 0);
 			}
 
 			$contents2 .= "; @note        Client " . ucfirst($client) . "\n";
@@ -1350,6 +1396,9 @@ class LocaliseModelTranslation extends JModelAdmin
 			$contents = implode($contents);
 			$contents = $contents2 . $contents;
 		}
+
+		// Make sure EOL is Unix
+		$contents = str_replace(array("\r\n", "\n", "\r"), "\n", $contents);
 
 		$return = JFile::write($path, $contents);
 
@@ -1501,6 +1550,15 @@ $died = '';
 			$this->setError($table->getError());
 
 			return false;
+		}
+
+		if ($this->getState('translation.complete') == 1)
+		{
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_NOTICE_TRANSLATION_COMPLETE'), 'notice');
+		}
+		else
+		{
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_LOCALISE_NOTICE_TRANSLATION_NOT_COMPLETE'), 'notice');
 		}
 
 		return true;
