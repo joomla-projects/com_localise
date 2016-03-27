@@ -1351,7 +1351,7 @@ class LocaliseModelTranslation extends JModelAdmin
 				// Section lines
 				elseif (preg_match('/^\[([^\]]*)\]\s*$/', $line, $matches))
 				{
-					$contents[] = $matches[1] . "\n";
+					$contents[] = "[" . $matches[1] . "]\n";
 				}
 				// Key lines
 				elseif (preg_match('/^([A-Z][A-Z0-9_\*\-\.]*)\s*=/', $line, $matches))
