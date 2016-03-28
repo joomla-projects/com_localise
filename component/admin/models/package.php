@@ -700,7 +700,7 @@ class LocaliseModelPackage extends JModelAdmin
 			$site_txt .= "\t" . '<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
 			$site_txt .= "\t" . '<copyright>' . $data['copyright'] . '</copyright>' . "\n";
 			$site_txt .= "\t" . '<license>' . $data['license'] . '</license>' . "\n";
-			$site_txt .= "\t" . '<description>' . $data['language'] . 'site language</description>' . "\n";
+			$site_txt .= "\t" . '<description>' . $data['language'] . ' - Site language</description>' . "\n";
 			$site_txt .= "\t" . '<files>' . "\n";
 
 			// As this is a core package, the main joomla file xx-XX.ini should be in the package
@@ -907,7 +907,7 @@ class LocaliseModelPackage extends JModelAdmin
 			$admin_txt .= "\t" . '<authorUrl>' . $data['authorurl'] . '</authorUrl>' . "\n";
 			$admin_txt .= "\t" . '<copyright>' . $data['copyright'] . '</copyright>' . "\n";
 			$admin_txt .= "\t" . '<license>' . $data['license'] . '</license>' . "\n";
-			$admin_txt .= "\t" . '<description>' . $data['language'] . 'site language</description>' . "\n";
+			$admin_txt .= "\t" . '<description>' . $data['language'] . ' - Administration language</description>' . "\n";
 			$admin_txt .= "\t" . '<files>' . "\n";
 
 			// As this is a core package, the main joomla file xx-XX.ini should be in the package
