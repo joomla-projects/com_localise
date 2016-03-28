@@ -735,7 +735,7 @@ class LocaliseModelTranslations extends JModelList
 							'client' => $client,
 							'storage' => 'global',
 							'filename' => 'override',
-							'name' => JText::_('COM_LOCALISE_LABEL_TRANSLATIONS_OVERRIDE'),
+							'name' => 'override',
 							'refpath' => $path,
 							'path' => $path,
 							'state' => 'inlanguage',
