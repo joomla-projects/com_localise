@@ -7,7 +7,6 @@
 		<action name="localise.delete" title="COM_LOCALISE_ACCESS_DELETE" description="COM_LOCALISE_ACCESS_DELETE_DESC" />
 		<action name="localise.edit" title="COM_LOCALISE_ACCESS_EDIT" description="COM_LOCALISE_ACCESS_EDIT_DESC" />
 		<action name="translation.edit" title="COM_LOCALISE_ACCESS_TRANSLATION_EDIT" description="COM_LOCALISE_ACCESS_TRANSLATION_EDIT_DESC" />
-		<action name="package.batch" title="COM_LOCALISE_ACCESS_PACKAGE_BATCH" description="COM_LOCALISE_ACCESS_PACKAGE_BATCH_DESC" />
 	</section>
 	<section name="language">
 		<action name="localise.edit" title="COM_LOCALISE_ACCESS_LANGUAGE_EDIT" description="COM_LOCALISE_ACCESS_LANGUAGE_EDIT_DESC" />
@@ -18,6 +17,5 @@
 	</section>
 	<section name="package">
 		<action name="localise.edit" title="COM_LOCALISE_ACCESS_PACKAGE_EDIT" description="COM_LOCALISE_ACCESS_PACKAGE_EDIT_DESC" />
-		<action name="package.batch" title="COM_LOCALISE_ACCESS_PACKAGE_BATCH" description="COM_LOCALISE_ACCESS_PACKAGE_BATCH_DESC" />
 	</section>
 </access>

@@ -123,12 +123,6 @@ class LocaliseViewPackages extends JViewLegacy
 			JToolBarHelper::divider();
 		}
 
-		if ($canDo->get('package.batch'))
-		{
-			JToolBarHelper::custom('package.batch', 'refresh.png', 'refresh.png', 'COM_LOCALISE_TOOLBAR_PACKAGES_BATCH', true);
-			JToolbarHelper::divider();
-		}
-
 		if ($canDo->get('core.admin'))
 		{
 			JToolbarHelper::preferences('com_localise');
