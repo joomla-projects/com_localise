@@ -72,18 +72,25 @@ class LocaliseModelTranslations extends JModelList
 		{
 			$data = array();
 			$data['select'] = $app->getUserState('com_localise.select');
-			$data['search'] = $app->getUserState('com_localise.translations.search');
 		}
 		else
 		{
 			$app->setUserState('com_localise.select', $data['select']);
-			$app->setUserState('com_localise.translations.search', isset($data['search']) ? $data['search'] : '');
 		}
 
-		$this->setState(
-			'filter.search',
-			isset($data['search']['expr'])    ? $data['search']['expr'] : ''
-		);
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string');
+		$search = JFilterInput::getInstance()->clean($search, 'TRIM');
+		$search = strtolower($search);
+
+		if ($search)
+		{
+			$app->setUserState('filter.search', strtolower($search));
+		}
+		else
+		{
+			$app->setUserState('filter.search', '');
+		}
+
 		$this->setState(
 			'filter.storage',
 			isset($data['select']['storage']) ? $data['select']['storage'] : ''
@@ -158,7 +165,7 @@ class LocaliseModelTranslations extends JModelList
 		}
 
 		// Check the session for previously entered form data.
-		$data = $app->getUserState('com_localise.translations.search', array());
+		$data = $app->getUserState('com_localise.translations.filter.search', array());
 
 		// Bind the form data if present.
 		if (!empty($data))
@@ -176,6 +183,8 @@ class LocaliseModelTranslations extends JModelList
 	 */
 	private function scanLocalTranslationsFolders()
 	{
+		$app = JFactory::getApplication();
+
 		$filter_storage = $this->getState('filter.storage');
 		$filter_origin  = $this->getState('filter.origin') ? $this->getState('filter.origin') : '.';
 		$reftag         = $this->getState('translations.reference');
@@ -183,7 +192,7 @@ class LocaliseModelTranslations extends JModelList
 		if ($filter_storage != 'global')
 		{
 			$filter_tag    = $this->getState('filter.tag') ? ("^($reftag|" . $this->getState('filter.tag') . ")$") : '.';
-			$filter_search = $this->getState('filter.search') ? $this->getState('filter.search') : '.';
+			$filter_search = $app->getUserState('filter.search') ? $app->getUserState('filter.search') : '.';
 			$scans         = LocaliseHelper::getScans($this->getState('filter.client'), $this->getState('filter.type'));
 
 			foreach ($scans as $scan)
@@ -243,6 +252,8 @@ class LocaliseModelTranslations extends JModelList
 	 */
 	private function scanGlobalTranslationsFolders()
 	{
+		$app            = JFactory::getApplication();
+
 		$filter_storage = $this->getState('filter.storage');
 		$reftag         = $this->getState('translations.reference');
 
@@ -252,7 +263,7 @@ class LocaliseModelTranslations extends JModelList
 			$filter_client = $this->getState('filter.client');
 			$filter_tag    = $this->getState('filter.tag')    ? ("^($reftag|" . $this->getState('filter.tag') . ")$") : '.';
 			$filter_type   = $this->getState('filter.type')   ? $this->getState('filter.type')   : '.';
-			$filter_search = $this->getState('filter.search') ? $this->getState('filter.search') : '.';
+			$filter_search = $app->getUserState('filter.search') ? $app->getUserState('filter.search') : '.';
 			$filter_origin = $this->getState('filter.origin') ? $this->getState('filter.origin') : '.';
 
 			if (empty($filter_client))
@@ -380,9 +391,11 @@ class LocaliseModelTranslations extends JModelList
 	 */
 	private function scanReference()
 	{
+		$app            = JFactory::getApplication();
+
 		$reftag         = $this->getState('translations.reference');
 		$filter_tag     = $this->getState('filter.tag')    ? ("^($reftag|" . $this->getState('filter.tag') . ")$") : '.';
-		$filter_search  = $this->getState('filter.search') ? $this->getState('filter.search') : '.';
+		$filter_search  = $app->getUserState('filter.search') ? $app->getUserState('filter.search') : '.';
 		$filter_storage = $this->getState('filter.storage');
 		$filter_origin  = $this->getState('filter.origin');
 		$filter_client  = $this->getState('filter.client');
@@ -692,6 +705,8 @@ class LocaliseModelTranslations extends JModelList
 	 */
 	private function scanOverride()
 	{
+		$app = JFactory::getApplication();
+
 		// Scan overrides ini files
 		$reftag         = $this->getState('translations.reference');
 		$filter_client  = $this->getState('filter.client');
@@ -699,7 +714,7 @@ class LocaliseModelTranslations extends JModelList
 		$filter_storage = $this->getState('filter.storage');
 		$filter_type    = $this->getState('filter.type');
 		$filter_origin  = $this->getState('filter.origin') ? $this->getState('filter.origin') : '.';
-		$filter_search  = $this->getState('filter.search') ? $this->getState('filter.search') : '.';
+		$filter_search  = $app->getUserState('filter.search') ? $app->getUserState('filter.search') : '.';
 
 		if ((empty($filter_client) || $filter_client != 'installation')
 			&& (empty($filter_storage) || $filter_storage == 'global')
@@ -756,6 +771,8 @@ class LocaliseModelTranslations extends JModelList
 	 */
 	private function getTranslations()
 	{
+		$app = JFactory::getApplication();
+
 		if (!isset($this->translations))
 		{
 			$filter_client = $this->getState('filter.client');
@@ -787,7 +804,7 @@ class LocaliseModelTranslations extends JModelList
 				. ($this->getState('filter.storage') ? $this->getState('filter.storage') . '-' : '')
 				. ($this->getState('filter.tag')     ? ("^(" . $this->getState('translations.reference') . "|" . $this->getState('filter.tag') . ")$") . '-' : '')
 				. ($this->getState('filter.type')    ? $this->getState('filter.type') . '-' : '')
-				. ($this->getState('filter.search')  ? $this->getState('filter.search') . '-' : '')
+				. ($app->getUserState('filter.search')  ? $app->getUserState('filter.search') . '-' : '')
 				. ($this->getState('filter.origin')  ? $this->getState('filter.origin') . '-' : '');
 
 			$key = substr($key, 0, strlen($key) - 1);
