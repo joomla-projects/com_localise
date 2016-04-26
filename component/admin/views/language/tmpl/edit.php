@@ -14,6 +14,10 @@ JHtml::_('formbehavior.chosen', 'select');
 
 $fieldSets = $this->form->getFieldsets();
 $ftpSets   = $this->formftp->getFieldsets();
+$params    = JComponentHelper::getParams('com_localise');
+$ref_tag   = $params->get('reference', 'en-GB');
+$isNew     = empty($this->item->id);
+$tag       = $this->item->tag ;
 
 JHtml::_('script', 'media/com_localise/js/language-form.js', false, false, false, false);
 ?>
@@ -31,6 +35,11 @@ JHtml::_('script', 'media/com_localise/js/language-form.js', false, false, false
 	<div class="row-fluid">
 		<!-- Begin Localise Language -->
 		<div class="span12 form-horizontal">
+			<?php if ($isNew) : ?>
+				<p><em><?php echo JText::_('COM_LOCALISE_COPY_REF_TO_NEW_LANG_FIRSTSAVE'); ?></em><p>
+			<?php else : ?>
+				<p><em> <?php echo JText::sprintf('COM_LOCALISE_COPY_REF_TO_NEW_LANG_TIP', $tag, $ref_tag); ?></em></p>
+			<?php endif; ?>
 			<fieldset>
 				<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => $this->ftp ? 'ftp' : 'default')); ?>
 					<?php if ($this->ftp) : ?>

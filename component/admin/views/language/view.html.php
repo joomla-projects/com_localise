@@ -68,6 +68,7 @@ class LocaliseViewLanguage extends JViewLegacy
 	protected function addToolbar()
 	{
 		JFactory::getApplication()->input->set('hidemainmenu', true);
+		$canDo = JHelperContent::getActions('com_localise', 'component');
 
 		$user       = JFactory::getUser();
 		$isNew      = empty($this->item->id);
@@ -90,6 +91,13 @@ class LocaliseViewLanguage extends JViewLegacy
 
 		JToolBarHelper::cancel('language.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 		JToolBarHelper::divider();
+
+		if ($canDo->get('localise.create') && !$isNew)
+		{
+			JToolbarHelper::custom('language.copy', 'copy.png', 'copy.png', 'COM_LOCALISE_COPY_REF_TO_NEW_LANG', false);
+			JToolBarHelper::divider();
+		}
+
 		JToolBarHelper::help('screen.language', true);
 	}
 }
