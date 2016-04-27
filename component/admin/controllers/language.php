@@ -146,26 +146,26 @@ class LocaliseControllerLanguage extends JControllerForm
 		// Check for request forgeries
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-		$app = JFactory::getApplication();
-		$model   = $this->getModel();
-		$params  = JComponentHelper::getParams('com_localise');
-		$data    = $app->getUserState('com_localise.select');
+		$app      = JFactory::getApplication();
+		$model    = $this->getModel();
+		$params   = JComponentHelper::getParams('com_localise');
+		$data     = $app->input->get('jform', array(), 'array');
+		$recordId = $app->input->getInt('id');
 
 		$client  = $data['client'];
 		$tag     = $data['tag'];
 		$ref_tag = $params->get('reference', 'en-GB');
 
+		$this->setRedirect(JRoute::_('index.php?option=com_localise&view=language' . $this->getRedirectToItemAppend($recordId), false));
+
 		// Call model's copy method
 		if (!$model->copy())
 		{
 			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_COULD_NOT_COPY_FILES', $client, $ref_tag, $tag), 'error');
-			$this->setRedirect(JRoute::_('index.php?option=com_localise&view=languages', false));
 
 			return false;
 		}
 
 		$this->setMessage(JText::sprintf('COM_LOCALISE_LANGUAGE_COPY_SUCCESS', $client, $ref_tag, $tag));
-
-		$this->setRedirect(JRoute::_('index.php?option=com_localise&view=languages', false));
 	}
 }

@@ -539,7 +539,7 @@ class LocaliseModelLanguage extends JModelAdmin
 	{
 		$app     = JFactory::getApplication();
 		$params  = JComponentHelper::getParams('com_localise');
-		$data    = $app->getUserState('com_localise.select');
+		$data    = $app->input->get('jform', array(), 'array');
 
 		$id      = $app->getUserState('com_localise.edit.language.id');
 		$ref_tag = $params->get('reference', 'en-GB');
@@ -594,6 +594,8 @@ class LocaliseModelLanguage extends JModelAdmin
 		$refclassname	= ucfirst($refclassname);
 		$langclassname	= str_replace('-', '_', $tag);
 		$langclassname	= ucfirst($langclassname);
+		$refComment     = "* " . $ref_tag . " localise class";
+		$langComment    = "* " . $tag . " localise class";
 
 		$localisephpPath = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.localise.php";
 
@@ -601,6 +603,7 @@ class LocaliseModelLanguage extends JModelAdmin
 		{
 			$language_data = file_get_contents($localisephpPath);
 			$language_data = str_replace($refclassname, $langclassname, $language_data);
+			$language_data = str_replace($refComment, $langComment, $language_data);
 			JFile::write($localisephpPath, $language_data);
 		}
 
