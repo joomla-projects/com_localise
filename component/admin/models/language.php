@@ -527,4 +527,86 @@ class LocaliseModelLanguage extends JModelAdmin
 
 		return parent::delete($pks);
 	}
+
+	/**
+	 * Method to copy the files from the reference lang to the translation language
+	 *
+	 * @return  boolean   true if copy is fine, false otherwise
+	 *
+	 * @since	4.0.17
+	 */
+	public function copy()
+	{
+		$app     = JFactory::getApplication();
+		$params  = JComponentHelper::getParams('com_localise');
+		$data    = $app->input->get('jform', array(), 'array');
+
+		$id      = $app->getUserState('com_localise.edit.language.id');
+		$ref_tag = $params->get('reference', 'en-GB');
+		$tag     = $data['tag'];
+		$client  = $data['client'];
+
+		$fromPath = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$ref_tag/";
+		$toPath   = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/";
+
+		// Make sure new language and reference language are different
+		// en-GB should be left alone
+		if ($tag == $ref_tag || $tag == 'en-GB')
+		{
+			$app->enqueueMessage(JText::_('COM_LOCALISE_ERROR_LANGUAGE_COPY_FILES_NOT_PERMITTED'), 'error');
+
+			return false;
+		}
+
+		// Are there already ini files in the destination folder?
+		$inifiles = JFolder::files($toPath, ".ini$");
+
+		if (!empty($inifiles))
+		{
+			$app->enqueueMessage(JText::sprintf('COM_LOCALISE_ERROR_LANGUAGE_NOT_ONLY_XML', $client, $tag), 'error');
+
+			return false;
+		}
+
+		$refFiles = JFolder::files($fromPath);
+
+		foreach ($refFiles as $file)
+		{
+			$ext = JFile::getExt($file);
+
+			// We do not want to copy existing xmls
+			if ($ext !== 'xml')
+			{
+				// Changing prefix for the copied files
+				$destFile = str_replace($ref_tag, $tag, $file);
+
+				if (!JFile::copy($fromPath . $file, $toPath . $destFile))
+				{
+					$app->enqueueMessage(JText::Sprintf('COM_LOCALISE_ERROR_LANGUAGE_COULD_NOT_COPY_FILES', $client, $ref_tag, $tag), 'error');
+
+					return false;
+				}
+			}
+		}
+
+		// Modify localise.php to fit new tag
+		$refclassname	= str_replace('-', '_', $ref_tag);
+		$refclassname	= ucfirst($refclassname);
+		$langclassname	= str_replace('-', '_', $tag);
+		$langclassname	= ucfirst($langclassname);
+		$refComment     = "* " . $ref_tag . " localise class";
+		$langComment    = "* " . $tag . " localise class";
+
+		$localisephpPath = constant('LOCALISEPATH_' . strtoupper($client)) . "/language/$tag/$tag.localise.php";
+
+		if (JFile::exists($localisephpPath))
+		{
+			$language_data = file_get_contents($localisephpPath);
+			$language_data = str_replace($refclassname, $langclassname, $language_data);
+			$language_data = str_replace($refComment, $langComment, $language_data);
+			JFile::write($localisephpPath, $language_data);
+		}
+
+		return true;
+	}
 }
