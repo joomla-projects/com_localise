@@ -153,9 +153,18 @@ JText::script('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE');
 
 	Joomla.submitbutton = function(task)
 	{
+		var complete = <?php echo (int) JComponentHelper::getParams('com_localise')->get('complete', 0); ?>;
+
 		if ((task == 'translation.apply' || task == 'translation.save') && document.formvalidator.isValid(document.id('localise-translation-form')))
 		{
-			if (confirm(Joomla.JText._('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE')))
+			if (complete)
+			{
+				if (confirm(Joomla.JText._('COM_LOCALISE_CONFIRM_TRANSLATION_SAVE')))
+				{
+					Joomla.submitform(task, document.getElementById('localise-translation-form'));
+				}
+			}
+			else
 			{
 				Joomla.submitform(task, document.getElementById('localise-translation-form'));
 			}
