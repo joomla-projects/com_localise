@@ -15,7 +15,7 @@
   <packager></packager>
   <packagerurl></packagerurl>
   <servername>Accredited Joomla! Translations</servername>
-  <serverurl>http://update.joomla.org/language/translationlist_3.xml</serverurl>
+  <serverurl>https://update.joomla.org/language/translationlist_3.xml</serverurl>
   <site>
     <filename>joomla.ini</filename>
     <filename>com_ajax.ini</filename>
