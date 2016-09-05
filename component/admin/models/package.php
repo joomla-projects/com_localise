@@ -676,6 +676,13 @@ class LocaliseModelPackage extends JModelAdmin
 			if (JFile::exists($path))
 			{
 				$xmldata = file_get_contents($path);
+
+				// Fetch the language name for the install.xml
+				if (!empty($xmldata))
+				{
+					$xml         = simplexml_load_file($path);
+					$installName = (string) $xml->name;
+				}
 			}
 
 			if (!JFile::exists($path) || empty($xmldata))
@@ -691,7 +698,7 @@ class LocaliseModelPackage extends JModelAdmin
 
 			$site_txt = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 			$site_txt .= '<extension version="' . $small_version . '" client="site" type="language" method="upgrade">' . "\n";
-			$site_txt .= "\t" . '<name>' . $data['name'] . '</name>' . "\n";
+			$site_txt .= "\t" . '<name>' . $installName . '</name>' . "\n";
 			$site_txt .= "\t" . '<tag>' . $data['language'] . '</tag>' . "\n";
 			$site_txt .= "\t" . '<version>' . $data['version'] . '.' . $data['packversion'] . '</version>' . "\n";
 			$site_txt .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
@@ -898,7 +905,7 @@ class LocaliseModelPackage extends JModelAdmin
 
 			$admin_txt = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 			$admin_txt .= '<extension version="' . $small_version . '" client="administrator" type="language" method="upgrade">' . "\n";
-			$admin_txt .= "\t" . '<name>' . $data['name'] . '</name>' . "\n";
+			$admin_txt .= "\t" . '<name>' . $installName . '</name>' . "\n";
 			$admin_txt .= "\t" . '<tag>' . $data['language'] . '</tag>' . "\n";
 			$admin_txt .= "\t" . '<version>' . $data['version'] . '.' . $data['packversion'] . '</version>' . "\n";
 			$admin_txt .= "\t" . '<creationDate>' . date('d/m/Y') . '</creationDate>' . "\n";
