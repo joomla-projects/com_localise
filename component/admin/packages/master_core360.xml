@@ -255,8 +255,8 @@
 	<filename>plg_installer_packageinstaller.sys.ini</filename>
 	<filename>plg_installer_urlinstaller.ini</filename>
 	<filename>plg_installer_urlinstaller.sys.ini</filename>
-	<filename>plg_installer_webinstaller</filename>
-	<filename>plg_installer_webinstaller.sys</filename>
+	<filename>plg_installer_webinstaller.ini</filename>
+	<filename>plg_installer_webinstaller.sys.ini</filename>
     <filename>plg_quickicon_extensionupdate.ini</filename>
     <filename>plg_quickicon_extensionupdate.sys.ini</filename>
     <filename>plg_quickicon_joomlaupdate.ini</filename>
