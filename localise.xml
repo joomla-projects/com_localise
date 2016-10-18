@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="3.6" method="upgrade">
+<extension type="component" version="3.7" method="upgrade">
 	<name>com_localise</name>
 	<creationDate>August 2011</creationDate>
-	<author>Mohammad Hasani Eghtedar</author>
 	<author>Christophe Demko</author>
 	<author>Jean-Marie Simonet</author>
 	<author>Ifan Evans</author>
 	<copyright>(C) 2016 Open Source Matters. All rights reserved.</copyright>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>https://github.com/joomla-projects/com_localise</authorUrl>
-	<version>4.0.21-dev</version>
+	<version>4.0.22-dev</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>COM_LOCALISE_XML_DESCRIPTION</description>
 	<scriptfile>install.php</scriptfile>

@@ -135,8 +135,12 @@
 		<filename>plg_editors_tinymce.sys</filename>
 		<filename>plg_editors-xtd_article</filename>
 		<filename>plg_editors-xtd_article.sys</filename>
+		<filename>plg_editors-xtd_contact</filename>
+		<filename>plg_editors-xtd_contact.sys</filename>
 		<filename>plg_editors-xtd_image</filename>
 		<filename>plg_editors-xtd_image.sys</filename>
+		<filename>plg_editors-xtd_menu</filename>
+		<filename>plg_editors-xtd_menu.sys</filename>
 		<filename>plg_editors-xtd_module</filename>
 		<filename>plg_editors-xtd_module.sys</filename>
 		<filename>plg_editors-xtd_pagebreak</filename>
