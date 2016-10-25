@@ -12,6 +12,64 @@
 			description="COM_LOCALISE_LABEL_LANGUAGE_CLIENT_DESC"
 			required="true" />
 		<field
+			name="tag"
+			type="text"
+			maxlength="7"
+			size="10"
+			required="true"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_LANGUAGE_TAG"
+			description="COM_LOCALISE_LABEL_LANGUAGE_TAG_DESC" />
+		<field
+			name="name"
+			type="text"
+			required="true"
+			default="[Name of language] ([Country name])"
+			label="COM_LOCALISE_LABEL_LANGUAGE_NAME"
+			description="COM_LOCALISE_LABEL_LANGUAGE_NAME_DESC" />
+		<field
+			name="description"
+			type="textarea"
+			default="[Name of language] [site, administrator or installation] language for Joomla"
+			label="COM_LOCALISE_LABEL_LANGUAGE_DESCRIPTION"
+			description="COM_LOCALISE_LABEL_LANGUAGE_DESCRIPTION_DESC" />
+		<field
+			name="version"
+			type="text"
+			required="true"
+			class="ltr"
+			label="COM_LOCALISE_LABEL_LANGUAGE_VERSION"
+			description="COM_LOCALISE_LABEL_LANGUAGE_VERSION_DESC" />
+		<field
+			name="asset_id"
+			type="hidden"
+			filter="unset" />
+		<field
+			name="id"
+			type="hidden" />
+	</fieldset>
+	<fieldset
+		name="meta"
+		description="COM_LOCALISE_FIELDSET_LANGUAGE_META_DESC">
+
+		<field
+			name="rtl"
+			type="radio"
+			class="btn-group btn-group-yesno"
+			default="0"
+			required="true"
+			label="COM_LOCALISE_LABEL_LANGUAGE_RTL"
+			description="COM_LOCALISE_LABEL_LANGUAGE_RTL_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field
+			name="locale"
+			type="text"
+			required="true"
+			label="COM_LOCALISE_LABEL_LANGUAGE_LOCALE"
+			description="COM_LOCALISE_LABEL_LANGUAGE_LOCALE_DESC" />
+		<field
 			name="firstDay"
 			type="list"
 			default="0"
@@ -33,55 +91,24 @@
 			size="10"
 			label="COM_LOCALISE_LABEL_LANGUAGE_WEEKEND"
 			description="COM_LOCALISE_LABEL_LANGUAGE_WEEKEND_DESC" />
-		<field
-			name="tag"
-			type="text"
-			maxlength="7"
-			size="10"
-			required="true"
-			class="ltr"
-			label="COM_LOCALISE_LABEL_LANGUAGE_TAG"
-			description="COM_LOCALISE_LABEL_LANGUAGE_TAG_DESC" />
-		<field
-			name="name"
-			type="text"
-			required="true"
-			class="span4"
-			default="[Name of language] ([Country name])"
-			label="COM_LOCALISE_LABEL_LANGUAGE_NAME"
-			description="COM_LOCALISE_LABEL_LANGUAGE_NAME_DESC" />
-		<field
-			name="description"
-			type="textarea"
-			class="span4"
-			default="[Name of language] [site, administrator or installation] language for Joomla"
-			label="COM_LOCALISE_LABEL_LANGUAGE_DESCRIPTION"
-			description="COM_LOCALISE_LABEL_LANGUAGE_DESCRIPTION_DESC" />
-		<field
-			name="rtl"
-			type="radio"
-			class="btn-group btn-group-yesno"
-			default="0"
-			required="true"
-			label="COM_LOCALISE_LABEL_LANGUAGE_RTL"
-			description="COM_LOCALISE_LABEL_LANGUAGE_RTL_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field
-			name="locale"
-			type="text"
-			required="true"
-			label="COM_LOCALISE_LABEL_LANGUAGE_LOCALE"
-			description="COM_LOCALISE_LABEL_LANGUAGE_LOCALE_DESC" />
-		<field
-			name="asset_id"
-			type="hidden"
-			filter="unset" />
-		<field
-			name="id"
-			type="hidden" />
 	</fieldset>
+	<fieldset
+		name="metanew">
+		<field
+			name="nativeName"
+			type="text"
+			required="true"
+			label="COM_LOCALISE_LABEL_LANGUAGE_NATIVE_NAME"
+			description="COM_LOCALISE_LABEL_LANGUAGE_NATIVE_NAME_DESC" />
+		<field
+			name="calendar"
+			type="text"
+			default="gregorian"
+			required="true"
+			label="COM_LOCALISE_LABEL_LANGUAGE_CALENDAR"
+			description="COM_LOCALISE_LABEL_LANGUAGE_CALENDAR_DESC" />
+	</fieldset>
+
 	<fieldset
 		name="permissions"
 		label="COM_LOCALISE_FIELDSET_LANGUAGE_PERMISSIONS">
@@ -120,13 +147,6 @@
 			class="validate-url ltr"
 			label="COM_LOCALISE_LABEL_LANGUAGE_URL"
 			description="COM_LOCALISE_LABEL_LANGUAGE_URL_DESC" />
-		<field
-			name="version"
-			type="text"
-			required="true"
-			class="ltr"
-			label="COM_LOCALISE_LABEL_LANGUAGE_VERSION"
-			description="COM_LOCALISE_LABEL_LANGUAGE_VERSION_DESC" />
 		<field
 			name="creationDate"
 			type="text"
