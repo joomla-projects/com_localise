@@ -71,20 +71,48 @@ JHtml::_('script', 'media/com_localise/js/language-form.js', false, false, false
 
 					<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'default', JText::_($fieldSets['default']->label, true)); ?>
 
-						<?php if (!empty($fieldSets['default']->description)):?>
+						<div class="span6">
+						<?php if (!empty($fieldSets['default']->description)) : ?>
 							<p class="tip"><?php echo JText::_($fieldSets['default']->description); ?></p>
 						<?php endif;?>
-
-						<?php foreach($this->form->getFieldset('default') as $field): ?>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $field->label; ?>
+							<?php foreach($this->form->getFieldset('default') as $field): ?>
+							<div class="control-group">
+								<div class="control-label">
+									<?php echo $field->label; ?>
+								</div>
+								<div class="controls">
+									<?php echo $field->input; ?>
+								</div>
 							</div>
-							<div class="controls">
-								<?php echo $field->input; ?>
-							</div>
+							<?php endforeach; ?>
 						</div>
-						<?php endforeach; ?>
+						<div class="span6">
+						<?php if (!empty($fieldSets['meta']->description)) : ?>
+							<p class="tip"><?php echo JText::_($fieldSets['meta']->description); ?></p>
+						<?php endif;?>
+							<?php foreach ($this->form->getFieldset('meta') as $field) : ?>
+								<div class="control-group">
+									<div class="control-label">
+										<?php echo $field->label; ?>
+									</div>
+									<div class="controls">
+										<?php echo $field->input; ?>
+									</div>
+								</div>
+							<?php endforeach; ?>
+							<?php if (version_compare(JVERSION, '3.7', 'ge')) : ?>
+								<?php foreach ($this->form->getFieldset('metanew') as $field) : ?>
+									<div class="control-group">
+										<div class="control-label">
+											<?php echo $field->label; ?>
+										</div>
+										<div class="controls">
+											<?php echo $field->input; ?>
+										</div>
+									</div>
+								<?php endforeach; ?>
+							<?php endif;?>
+						</div>
 
 					<?php echo JHtml::_('bootstrap.endTab'); ?>
 

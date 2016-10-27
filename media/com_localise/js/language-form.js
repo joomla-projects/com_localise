@@ -11,9 +11,12 @@
 			// Change attributes
 			$('#jform_locale').removeAttr('required').removeClass('required');
 			$('#jform_locale-lbl').removeClass('required').find('span.star').remove();
+			$('#jform_calendar').removeAttr('required').removeClass('required');
+			$('#jform_calendar-lbl').removeClass('required').find('span.star').remove();
 
 			// Hide fields
 			$('#jform_locale').closest('.control-group').fadeOut()
+			$('#jform_calendar').closest('.control-group').fadeOut();
 			$('#jform_firstDay-lbl').closest('.control-group').fadeOut();
 			$('#jform_weekEnd-lbl').closest('.control-group').fadeOut();
 			$('#jform_authorEmail').closest('.control-group').fadeOut();
@@ -34,9 +37,12 @@
 				// Change attributes
 				$('#jform_locale').attr('required', 'required').addClass('required');
 				$('#jform_locale-lbl').addClass('required').append('<span class=\"star\"> *</span>');
+				$('#jform_calendar').attr('required', 'required').addClass('required');
+				$('#jform_calendar-lbl').addClass('required').append('<span class=\"star\"> *</span>');
 
 				// Show fields
 				$('#jform_locale').closest('.control-group').fadeIn();
+				$('#jform_calendar').closest('.control-group').fadeIn();
 				$('#jform_firstDay').closest('.control-group').fadeIn();
 				$('#jform_weekEnd').closest('.control-group').fadeIn();
 				$('#jform_authorEmail').closest('.control-group').fadeIn();

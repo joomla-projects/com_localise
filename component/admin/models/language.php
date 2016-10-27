@@ -86,10 +86,23 @@ class LocaliseModelLanguage extends JModelAdmin
 				$form->setFieldAttribute('firstDay', 'required', 'false');
 				$form->setFieldAttribute('firstDay', 'disabled', 'true');
 
+				$form->setFieldAttribute('calendar', 'required', 'false');
+				$form->setFieldAttribute('calendar', 'disabled', 'true');
+
 				$form->setFieldAttribute('authorEmail', 'disabled', 'true');
 				$form->setFieldAttribute('authorUrl', 'disabled', 'true');
 				$form->setFieldAttribute('copyright', 'disabled', 'true');
 			}
+		}
+
+		// Calendar and Native Name fields are new in 3.7.x
+		if (version_compare(JVERSION, '3.7', 'lt'))
+		{
+			$form->setFieldAttribute('calendar', 'required', 'false');
+			$form->setFieldAttribute('calendar', 'disabled', 'true');
+
+			$form->setFieldAttribute('nativeName', 'required', 'false');
+			$form->setFieldAttribute('nativeName', 'disabled', 'true');
 		}
 
 		return $form;
@@ -266,6 +279,8 @@ class LocaliseModelLanguage extends JModelAdmin
 			$form->setFieldAttribute('locale', 'required', 'false');
 
 			$form->setFieldAttribute('firstDay', 'required', 'false');
+
+			$form->setFieldAttribute('calendar', 'required', 'false');
 		}
 
 		return parent::validate($form, $data, $group);
@@ -356,6 +371,12 @@ class LocaliseModelLanguage extends JModelAdmin
 			$text .= "\t" . '<description>' . htmlspecialchars($data['description'], ENT_COMPAT, 'UTF-8') . '</description>' . "\n";
 			$text .= "\t" . '<metadata>' . "\n";
 			$text .= "\t\t" . '<name>' . htmlspecialchars($data['name'], ENT_COMPAT, 'UTF-8') . '</name>' . "\n";
+
+			if (version_compare(JVERSION, '3.7', 'ge'))
+			{
+				$text .= "\t\t" . '<nativeName>' . htmlspecialchars($data['nativeName'], ENT_COMPAT, 'UTF-8') . '</nativeName>' . "\n";
+			}
+
 			$text .= "\t\t" . '<tag>' . htmlspecialchars($data['tag'], ENT_COMPAT, 'UTF-8') . '</tag>' . "\n";
 			$text .= "\t\t" . '<rtl>' . htmlspecialchars($data['rtl'], ENT_COMPAT, 'UTF-8') . '</rtl>' . "\n";
 
@@ -365,6 +386,11 @@ class LocaliseModelLanguage extends JModelAdmin
 				$text .= "\t\t" . '<locale>' . htmlspecialchars($data['locale'], ENT_COMPAT, 'UTF-8') . '</locale>' . "\n";
 				$text .= "\t\t" . '<firstDay>' . htmlspecialchars($data['firstDay'], ENT_COMPAT, 'UTF-8') . '</firstDay>' . "\n";
 				$text .= "\t\t" . '<weekEnd>' . htmlspecialchars($data['weekEnd'], ENT_COMPAT, 'UTF-8') . '</weekEnd>' . "\n";
+
+				if (version_compare(JVERSION, '3.7', 'ge'))
+				{
+					$text .= "\t\t" . '<calendar>' . htmlspecialchars($data['calendar'], ENT_COMPAT, 'UTF-8') . '</calendar>' . "\n";
+				}
 			}
 
 			$text .= "\t" . '</metadata>' . "\n";
