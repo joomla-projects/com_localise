@@ -29,6 +29,8 @@
 		<filename>com_contenthistory.sys</filename>
 		<filename>com_cpanel</filename>
 		<filename>com_cpanel.sys</filename>
+		<filename>com_fields</filename>
+		<filename>com_fields.sys</filename>
 		<filename>com_finder</filename>
 		<filename>com_finder.sys</filename>
 		<filename>com_installer</filename>
@@ -149,8 +151,10 @@
 		<filename>plg_editors-xtd_readmore.sys</filename>
 		<filename>plg_extension_joomla</filename>
 		<filename>plg_extension_joomla.sys</filename>
-		<filename>plg_finder_categories</filename>
-		<filename>plg_finder_categories.sys</filename>
+		<filename>plg_extension_joomla</filename>
+		<filename>plg_extension_joomla.sys</filename>
+		<filename>plg_fields_gallery</filename>
+		<filename>plg_fields_gallery.sys</filename>
 		<filename>plg_finder_contacts</filename>
 		<filename>plg_finder_contacts.sys</filename>
 		<filename>plg_finder_content</filename>
@@ -189,6 +193,8 @@
 		<filename>plg_system_cache.sys</filename>
 		<filename>plg_system_debug</filename>
 		<filename>plg_system_debug.sys</filename>
+		<filename>plg_system_fields</filename>
+		<filename>plg_system_fields.sys</filename>
 		<filename>plg_system_highlight</filename>
 		<filename>plg_system_highlight.sys</filename>
 		<filename>plg_system_languagecode</filename>

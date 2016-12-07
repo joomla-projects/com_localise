@@ -123,6 +123,8 @@
     <filename>com_contenthistory.sys.ini</filename>
     <filename>com_cpanel.ini</filename>
     <filename>com_cpanel.sys.ini</filename>
+    <filename>com_fields.ini</filename>
+    <filename>com_fields.sys.ini</filename>
     <filename>com_finder.ini</filename>
     <filename>com_finder.sys.ini</filename>
     <filename>com_installer.ini</filename>
@@ -241,6 +243,8 @@
     <filename>plg_editors_tinymce.sys.ini</filename>
     <filename>plg_extension_joomla.ini</filename>
     <filename>plg_extension_joomla.sys.ini</filename>
+    <filename>plg_fields_gallery.ini</filename>
+    <filename>plg_fields_gallery.sys.ini</filename>
     <filename>plg_finder_categories.ini</filename>
     <filename>plg_finder_categories.sys.ini</filename>
     <filename>plg_finder_contacts.ini</filename>
@@ -281,6 +285,8 @@
     <filename>plg_system_cache.sys.ini</filename>
     <filename>plg_system_debug.ini</filename>
     <filename>plg_system_debug.sys.ini</filename>
+    <filename>plg_system_fields.ini</filename>
+    <filename>plg_system_fields.sys.ini</filename>
     <filename>plg_system_highlight.ini</filename>
     <filename>plg_system_highlight.sys.ini</filename>
     <filename>plg_system_languagecode.ini</filename>
