@@ -177,6 +177,8 @@
 		<filename>plg_quickicon_extensionupdate.sys</filename>
 		<filename>plg_quickicon_joomlaupdate</filename>
 		<filename>plg_quickicon_joomlaupdate.sys</filename>
+		<filename>plg_quickicon_phpversioncheck</filename>
+		<filename>plg_quickicon_phpversioncheck.sys</filename>
 		<filename>plg_search_categories</filename>
 		<filename>plg_search_categories.sys</filename>
 		<filename>plg_search_contacts</filename>

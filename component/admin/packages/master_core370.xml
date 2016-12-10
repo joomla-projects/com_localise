@@ -269,6 +269,8 @@
     <filename>plg_quickicon_extensionupdate.sys.ini</filename>
     <filename>plg_quickicon_joomlaupdate.ini</filename>
     <filename>plg_quickicon_joomlaupdate.sys.ini</filename>
+    <filename>plg_quickicon_phpversioncheck.ini</filename>
+    <filename>plg_quickicon_phpversioncheck.sys.ini</filename>
     <filename>plg_search_categories.ini</filename>
     <filename>plg_search_categories.sys.ini</filename>
     <filename>plg_search_contacts.ini</filename>
