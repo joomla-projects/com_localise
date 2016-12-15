@@ -52,6 +52,18 @@
 			label="COM_LOCALISE_LABEL_PACKAGE_PACK_VERSION"
 			description="COM_LOCALISE_LABEL_PACKAGE_PACK_VERSION_DESC" />
 		<field
+			id="blockuninstall"
+			name="blockuninstall"
+			type="radio"
+			label="COM_LOCALISE_LABEL_PACKAGE_BLOCKUNINSTALL"
+			description="COM_LOCALISE_LABEL_PACKAGE_BLOCKUNINSTALL_DESC"
+			class="btn-group btn-group-yesno"
+			default="true"
+			>
+			<option value="true">JYES</option>
+			<option value="false">JNO</option>
+		</field>
+		<field
 			id="author"
 			name="author"
 			type="text"

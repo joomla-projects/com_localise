@@ -196,23 +196,24 @@ class LocaliseModelPackage extends JModelAdmin
 				// $package->client      = $client;
 				// $package->standalone  = substr($manifest, 0, 4) == 'fil_';
 
-				$package->core        = ((string) $xml->attributes()->core) == 'true';
-				$package->title       = (string) $xml->title;
-				$package->version     = (string) $xml->version;
-				$package->packversion = (string) $xml->packversion;
-				$package->description = (string) $xml->description;
-				$package->language    = (string) $xml->language;
-				$package->license     = (string) $xml->license;
-				$package->copyright   = (string) $xml->copyright;
-				$package->author      = (string) $xml->author;
-				$package->authoremail = (string) $xml->authoremail;
-				$package->authorurl   = (string) $xml->authorurl;
-				$package->url         = (string) $xml->url;
-				$package->packager    = (string) $xml->packager;
-				$package->packagerurl = (string) $xml->packagerurl;
-				$package->servername  = (string) $xml->servername;
-				$package->serverurl   = (string) $xml->serverurl;
-				$package->writable    = LocaliseHelper::isWritable($package->path);
+				$package->core           = ((string) $xml->attributes()->core) == 'true';
+				$package->title          = (string) $xml->title;
+				$package->version        = (string) $xml->version;
+				$package->packversion    = (string) $xml->packversion;
+				$package->description    = (string) $xml->description;
+				$package->language       = (string) $xml->language;
+				$package->blockuninstall = (string) $xml->blockuninstall;
+				$package->license        = (string) $xml->license;
+				$package->copyright      = (string) $xml->copyright;
+				$package->author         = (string) $xml->author;
+				$package->authoremail    = (string) $xml->authoremail;
+				$package->authorurl      = (string) $xml->authorurl;
+				$package->url            = (string) $xml->url;
+				$package->packager       = (string) $xml->packager;
+				$package->packagerurl    = (string) $xml->packagerurl;
+				$package->servername     = (string) $xml->servername;
+				$package->serverurl      = (string) $xml->serverurl;
+				$package->writable       = LocaliseHelper::isWritable($package->path);
 
 				$user = JFactory::getUser($table->checked_out);
 				$package->setProperties($table->getProperties());
@@ -333,6 +334,7 @@ class LocaliseModelPackage extends JModelAdmin
 			$manifestElement = $dom->createElement('manifest', $manifest);
 			$versionElement = $dom->createElement('version', $data['version']);
 			$packversionElement = $dom->createElement('packversion', $data['packversion']);
+			$blockUninstallElement = $dom->createElement('blockuninstall', $data['blockuninstall']);
 			$authorElement = $dom->createElement('author', $data['author']);
 			$licenseElement = $dom->createElement('license', $data['license']);
 			$authorEmailElement = $dom->createElement('authoremail', $data['authoremail']);
@@ -363,6 +365,7 @@ class LocaliseModelPackage extends JModelAdmin
 			$packageXml->appendChild($manifestElement);
 			$packageXml->appendChild($versionElement);
 			$packageXml->appendChild($packversionElement);
+			$packageXml->appendChild($blockUninstallElement);
 			$packageXml->appendChild($authorElement);
 			$packageXml->appendChild($copyrightElement);
 			$packageXml->appendChild($licenseElement);
@@ -665,6 +668,7 @@ class LocaliseModelPackage extends JModelAdmin
 		$text .= "\t" . '<packager>' . $data['packager'] . '</packager>' . "\n";
 		$text .= "\t" . '<packagerurl>' . $data['packagerurl'] . '</packagerurl>' . "\n";
 		$text .= "\t" . '<description><![CDATA[' . $data['description'] . ']]></description>' . "\n";
+		$text .= "\t" . '<blockChildUninstall>' . $data['blockuninstall'] . '</blockChildUninstall>' . "\n";
 		$text .= "\t" . '<files>' . "\n";
 
 		if (count($site))
