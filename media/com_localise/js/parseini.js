@@ -53,12 +53,28 @@ CodeMirror.defineMode("parseini", function() {
 			else if (ch === '"' && state.position === "string")
 			{
 				state.position = "string";
-				stream.skipTo('"'); stream.eat('"');
-				return 'string';
+
+				while(stream.skipTo('"'))
+				{
+					if (stream.eol())
+					{
+						return 'string';
+					}
+
+					if (stream.string.charAt(stream.pos-1) == '\\')
+					{
+						stream.pos++;
+						continue;
+					}
+
+					stream.eat('"');
+					return 'string';
+				}
+				return 'error';
 			}
 			else if (ch === '_' && state.position === "string")
 			{
-				if(stream.match('QQ_'))
+				if (stream.match('QQ_'))
 				{
 					state.position = "string";
 					return 'constant';

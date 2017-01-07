@@ -438,6 +438,7 @@ class LocaliseModelTranslation extends JModelAdmin
 					{
 						$line = $stream->gets();
 						$lineNumber++;
+						$line = str_replace('\"', '"_QQ_"', $line);
 
 						if (!preg_match('/^(|(\[[^\]]*\])|([A-Z][A-Z0-9_\*\-\.]*\s*=(\s*(("[^"]*")|(_QQ_)))+))\s*(;.*)?$/', $line))
 						{
@@ -1360,21 +1361,19 @@ class LocaliseModelTranslation extends JModelAdmin
 
 					if (isset($strings[$key]))
 					{
-						$contents[] = $key . '="' . str_replace('"', '"_QQ_"', $strings[$key]) . "\"\n";
+						$contents[] = $key . '="' . str_replace('"', '\"', $strings[$key]) . "\"\n";
 						unset($strings[$key]);
 					}
 				}
 				// Content with EOL
 				elseif (preg_split("/\\r\\n|\\r|\\n/", $line))
 				{
-					// $this->setError(JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)));
 					$application = JFactory::getApplication();
 					$application->enqueueMessage(JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)), 'warning');
 				}
 				// Wrong lines
 				else
 				{
-					// $this->setError(JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)));
 					$application = JFactory::getApplication();
 					$application->enqueueMessage(JText::sprintf('COM_LOCALISE_WRONG_LINE_CONTENT', htmlspecialchars($line)), 'warning');
 				}
@@ -1388,7 +1387,7 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				foreach ($strings as $key => $string)
 				{
-					$contents[] = $key . '="' . str_replace('"', '"_QQ_"', $string) . "\"\n";
+					$contents[] = $key . '="' . str_replace('"', '/"', $string) . "\"\n";
 				}
 			}
 
