@@ -223,14 +223,14 @@
     <filename>plg_content_vote.sys.ini</filename>
     <filename>plg_editors-xtd_article.ini</filename>
     <filename>plg_editors-xtd_article.sys.ini</filename>
-	<filename>plg_editors-xtd_contact.ini</filename>
-	<filename>plg_editors-xtd_contact.sys.ini</filename>
-	<filename>plg_editors-xtd_image.ini</filename>
-	<filename>plg_editors-xtd_image.sys.ini</filename>
-	<filename>plg_editors-xtd_menu.ini</filename>
-	<filename>plg_editors-xtd_menu.sys.ini</filename>
+    <filename>plg_editors-xtd_contact.ini</filename>
+    <filename>plg_editors-xtd_contact.sys.ini</filename>
+    <filename>plg_editors-xtd_image.ini</filename>
+    <filename>plg_editors-xtd_image.sys.ini</filename>
+    <filename>plg_editors-xtd_menu.ini</filename>
+    <filename>plg_editors-xtd_menu.sys.ini</filename>
     <filename>plg_editors-xtd_module.ini</filename>
-	<filename>plg_editors-xtd_module.sys.ini</filename>
+    <filename>plg_editors-xtd_module.sys.ini</filename>
     <filename>plg_editors-xtd_pagebreak.ini</filename>
     <filename>plg_editors-xtd_pagebreak.sys.ini</filename>
     <filename>plg_editors-xtd_readmore.ini</filename>
@@ -243,8 +243,40 @@
     <filename>plg_editors_tinymce.sys.ini</filename>
     <filename>plg_extension_joomla.ini</filename>
     <filename>plg_extension_joomla.sys.ini</filename>
+    <filename>plg_fields_calendar.ini</filename>
+    <filename>plg_fields_calendar.sys.ini</filename>
+    <filename>plg_fields_checkboxes.ini</filename>
+    <filename>plg_fields_checkboxes.sys.ini</filename>
+    <filename>plg_fields_color.ini</filename>
+    <filename>plg_fields_color.sys.ini</filename>
+    <filename>plg_fields_editor.ini</filename>
+    <filename>plg_fields_editor.sys.ini</filename>
     <filename>plg_fields_gallery.ini</filename>
     <filename>plg_fields_gallery.sys.ini</filename>
+    <filename>plg_fields_image.ini</filename>
+    <filename>plg_fields_image.sys.ini</filename>
+    <filename>plg_fields_imagelist.ini</filename>
+    <filename>plg_fields_imagelist.sys.ini</filename>
+    <filename>plg_fields_integer.ini</filename>
+    <filename>plg_fields_integer.sys.ini</filename>
+    <filename>plg_fields_list.ini</filename>
+    <filename>plg_fields_list.sys.ini</filename>
+    <filename>plg_fields_media.ini</filename>
+    <filename>plg_fields_media.sys.ini</filename>
+    <filename>plg_fields_radio.ini</filename>
+    <filename>plg_fields_radio.sys.ini</filename>
+    <filename>plg_fields_sql.ini</filename>
+    <filename>plg_fields_sql.sys.ini</filename>
+    <filename>plg_fields_text.ini</filename>
+    <filename>plg_fields_text.sys.ini</filename>
+    <filename>plg_fields_textarea.ini</filename>
+    <filename>plg_fields_textarea.sys.ini</filename>
+    <filename>plg_fields_url.ini</filename>
+    <filename>plg_fields_url.sys.ini</filename>
+    <filename>plg_fields_user.ini</filename>
+    <filename>plg_fields_user.sys.ini</filename>
+    <filename>plg_fields_usergrouplist.ini</filename>
+    <filename>plg_fields_usergrouplist.sys.ini</filename>
     <filename>plg_finder_categories.ini</filename>
     <filename>plg_finder_categories.sys.ini</filename>
     <filename>plg_finder_contacts.ini</filename>

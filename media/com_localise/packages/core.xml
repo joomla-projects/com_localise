@@ -153,8 +153,40 @@
 		<filename>plg_extension_joomla.sys</filename>
 		<filename>plg_extension_joomla</filename>
 		<filename>plg_extension_joomla.sys</filename>
+		<filename>plg_fields_calendar</filename>
+		<filename>plg_fields_calendar.sys</filename>
+		<filename>plg_fields_checkboxes</filename>
+		<filename>plg_fields_checkboxes.sys</filename>
+		<filename>plg_fields_color</filename>
+		<filename>plg_fields_color.sys</filename>
+		<filename>plg_fields_editor</filename>
+		<filename>plg_fields_editor.sys</filename>
 		<filename>plg_fields_gallery</filename>
 		<filename>plg_fields_gallery.sys</filename>
+		<filename>plg_fields_image</filename>
+		<filename>plg_fields_image.sys</filename>
+		<filename>plg_fields_imagelist</filename>
+		<filename>plg_fields_imagelist.sys</filename>
+		<filename>plg_fields_integer</filename>
+		<filename>plg_fields_integer.sys</filename>
+		<filename>plg_fields_list</filename>
+		<filename>plg_fields_list.sys</filename>
+		<filename>plg_fields_media</filename>
+		<filename>plg_fields_media.sys</filename>
+		<filename>plg_fields_radio</filename>
+		<filename>plg_fields_radio.sys</filename>
+		<filename>plg_fields_sql</filename>
+		<filename>plg_fields_sql.sys</filename>
+		<filename>plg_fields_text</filename>
+		<filename>plg_fields_text.sys</filename>
+		<filename>plg_fields_textarea</filename>
+		<filename>plg_fields_textarea.sys</filename>
+		<filename>plg_fields_url</filename>
+		<filename>plg_fields_url.sys</filename>
+		<filename>plg_fields_user</filename>
+		<filename>plg_fields_user.sys</filename>
+		<filename>plg_fields_usergrouplist</filename>
+		<filename>plg_fields_usergrouplist.sys</filename>
 		<filename>plg_finder_contacts</filename>
 		<filename>plg_finder_contacts.sys</filename>
 		<filename>plg_finder_content</filename>
