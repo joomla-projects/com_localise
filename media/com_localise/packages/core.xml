@@ -13,6 +13,8 @@
 		<filename>com_banners.sys</filename>
 		<filename>com_ajax</filename>
 		<filename>com_ajax.sys</filename>
+		<filename>com_associations</filename>
+		<filename>com_associations.sys</filename>
 		<filename>com_cache</filename>
 		<filename>com_cache.sys</filename>
 		<filename>com_categories</filename>
