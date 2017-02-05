@@ -211,6 +211,8 @@
     <filename>plg_content_contact.sys.ini</filename>
     <filename>plg_content_emailcloak.ini</filename>
     <filename>plg_content_emailcloak.sys.ini</filename>
+    <filename>plg_content_fields.ini</filename>
+    <filename>plg_content_fields.sys.ini</filename>
     <filename>plg_content_finder.ini</filename>
     <filename>plg_content_finder.sys.ini</filename>
     <filename>plg_content_joomla.ini</filename>

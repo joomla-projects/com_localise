@@ -119,6 +119,8 @@
 		<filename>plg_content_contact</filename>
 		<filename>plg_content_contact.sys</filename>
 		<filename>plg_content_emailcloak.sys</filename>
+		<filename>plg_content_fields</filename>
+		<filename>plg_content_fields.sys</filename>
 		<filename>plg_content_finder</filename>
 		<filename>plg_content_finder.sys</filename>
 		<filename>plg_content_joomla</filename>
