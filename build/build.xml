@@ -24,7 +24,7 @@
 
 	<!-- Load extension version property in XML file -->
 	<xmlproperty
-			file="${project.dir}/localise.xml"
+			file="${project.basedir}/../localise.xml"
 			prefix="extensionDetails"
 			keepRoot="false" />
 	<property
