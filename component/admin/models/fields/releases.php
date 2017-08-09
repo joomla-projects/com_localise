@@ -39,6 +39,13 @@ class JFormFieldReleases extends JFormFieldList
 		$params        = JComponentHelper::getParams('com_localise');
 		$versions_path = JPATH_ROOT
 				. '/administrator/components/com_localise/customisedref/stable_joomla_releases.txt';
+
+		// Empty txt file to make sure it contains only stable releases after save.
+		if ($params->get('pre_stable', '0') == '0')
+		{
+			file_put_contents($versions_path, '');
+		}
+
 		$versions_file = file_get_contents($versions_path);
 		$versions      = preg_split("/\\r\\n|\\r|\\n/", $versions_file);
 
@@ -93,13 +100,26 @@ class JFormFieldReleases extends JFormFieldList
 					$excluded = 1;
 				}
 
-				// Filtering also by "is_numeric" disable betas or similar releases.
-				if (!in_array($tag_name, $versions) && is_numeric($undoted) && $excluded == 0)
+				// Filtering by "is_numeric" disable betas or similar releases.
+				if ($params->get('pre_stable', '0') == '0')
 				{
-					$versions[] = $tag_name;
-					JFactory::getApplication()->enqueueMessage(
-						JText::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
-						'notice');
+					if (!in_array($tag_name, $versions) && is_numeric($undoted) && $excluded == 0)
+					{
+						$versions[] = $tag_name;
+						JFactory::getApplication()->enqueueMessage(
+							JText::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
+							'notice');
+					}
+				}
+				else
+				{
+					if (!in_array($tag_name, $versions) && $excluded == 0)
+					{
+						$versions[] = $tag_name;
+						JFactory::getApplication()->enqueueMessage(
+							JText::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
+							'notice');
+					}
 				}
 			}
 		}
