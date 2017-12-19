@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Github\Github;
+
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.path');
 jimport("joomla.utilities.date");
@@ -913,7 +915,7 @@ abstract class LocaliseHelper
 			if (!empty($gh_token))
 			{
 				$options->set('gh.token', $gh_token);
-				$github = new JGithub($options);
+				$github = new Github($options);
 			}
 			else
 			{
@@ -924,7 +926,7 @@ abstract class LocaliseHelper
 				// But base 64 encoded to avoid Github alarms sharing it.
 				$gh_token = base64_decode('MzY2NzYzM2ZkMzZmMWRkOGU5NmRiMTdjOGVjNTFiZTIyMzk4NzVmOA==');
 				$options->set('gh.token', $gh_token);
-				$github = new JGithub($options);
+				$github = new Github($options);
 			}
 
 			try
@@ -1076,7 +1078,7 @@ abstract class LocaliseHelper
 		if (!empty($gh_token))
 		{
 			$options->set('gh.token', $gh_token);
-			$github = new JGithub($options);
+			$github = new Github($options);
 		}
 		else
 		{
@@ -1087,7 +1089,7 @@ abstract class LocaliseHelper
 			// But base 64 encoded to avoid Github alarms sharing it.
 			$gh_token = base64_decode('MzY2NzYzM2ZkMzZmMWRkOGU5NmRiMTdjOGVjNTFiZTIyMzk4NzVmOA==');
 			$options->set('gh.token', $gh_token);
-			$github = new JGithub($options);
+			$github = new Github($options);
 		}
 
 		try
@@ -1514,7 +1516,7 @@ abstract class LocaliseHelper
 			if (!empty($gh_token))
 			{
 				$options->set('gh.token', $gh_token);
-				$github = new JGithub($options);
+				$github = new Github($options);
 			}
 			else
 			{
@@ -1525,7 +1527,7 @@ abstract class LocaliseHelper
 				// But base 64 encoded to avoid Github alarms sharing it.
 				$gh_token = base64_decode('MzY2NzYzM2ZkMzZmMWRkOGU5NmRiMTdjOGVjNTFiZTIyMzk4NzVmOA==');
 				$options->set('gh.token', $gh_token);
-				$github = new JGithub($options);
+				$github = new Github($options);
 			}
 
 			try
