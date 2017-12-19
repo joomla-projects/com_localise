@@ -60,3 +60,14 @@ build/logs
 !index.html
 !index.php
 
+# Don't commit unneeded files added by composer
+/component/admin/vendor/joomla/github/.github
+/component/admin/vendor/joomla/github/Tests
+/component/admin/vendor/joomla/http/.github
+/component/admin/vendor/joomla/http/Tests
+/component/admin/vendor/joomla/registry/Tests
+/component/admin/vendor/joomla/string/.github
+/component/admin/vendor/joomla/string/Tests
+/component/admin/vendor/joomla/uri/Tests
+/component/admin/vendor/joomla/utilities/.github
+/component/admin/vendor/joomla/utilities/Tests

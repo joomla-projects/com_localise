@@ -1,0 +1,515 @@
+[
+    {
+        "name": "composer/ca-bundle",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/composer/ca-bundle.git",
+            "reference": "943b2c4fcad1ef178d16a713c2468bf7e579c288"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/composer/ca-bundle/zipball/943b2c4fcad1ef178d16a713c2468bf7e579c288",
+            "reference": "943b2c4fcad1ef178d16a713c2468bf7e579c288",
+            "shasum": ""
+        },
+        "require": {
+            "ext-openssl": "*",
+            "ext-pcre": "*",
+            "php": "^5.3.2 || ^7.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.8.35",
+            "psr/log": "^1.0",
+            "symfony/process": "^2.5 || ^3.0 || ^4.0"
+        },
+        "time": "2017-11-29T09:37:33+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Composer\\CaBundle\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jordi Boggiano",
+                "email": "j.boggiano@seld.be",
+                "homepage": "http://seld.be"
+            }
+        ],
+        "description": "Lets you find a path to the system CA bundle, and includes a fallback to the Mozilla CA bundle.",
+        "keywords": [
+            "cabundle",
+            "cacert",
+            "certificate",
+            "ssl",
+            "tls"
+        ]
+    },
+    {
+        "name": "ircmaxell/password-compat",
+        "version": "v1.0.4",
+        "version_normalized": "1.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ircmaxell/password_compat.git",
+            "reference": "5c5cde8822a69545767f7c7f3058cb15ff84614c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ircmaxell/password_compat/zipball/5c5cde8822a69545767f7c7f3058cb15ff84614c",
+            "reference": "5c5cde8822a69545767f7c7f3058cb15ff84614c",
+            "shasum": ""
+        },
+        "require-dev": {
+            "phpunit/phpunit": "4.*"
+        },
+        "time": "2014-11-20T16:49:30+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "lib/password.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Anthony Ferrara",
+                "email": "ircmaxell@php.net",
+                "homepage": "http://blog.ircmaxell.com"
+            }
+        ],
+        "description": "A compatibility library for the proposed simplified password hashing algorithm: https://wiki.php.net/rfc/password_hash",
+        "homepage": "https://github.com/ircmaxell/password_compat",
+        "keywords": [
+            "hashing",
+            "password"
+        ]
+    },
+    {
+        "name": "joomla/compat",
+        "version": "1.2.0",
+        "version_normalized": "1.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/joomla-framework/compat.git",
+            "reference": "f23565fe0184517778996226eb4b2333deb369c4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/joomla-framework/compat/zipball/f23565fe0184517778996226eb4b2333deb369c4",
+            "reference": "f23565fe0184517778996226eb4b2333deb369c4",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.10"
+        },
+        "time": "2015-02-24T00:21:06+00:00",
+        "type": "joomla-package",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/JsonSerializable.php",
+                "src/CallbackFilterIterator.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "description": "Joomla Compat Package",
+        "homepage": "https://github.com/joomla-framework/compat",
+        "keywords": [
+            "compat",
+            "framework",
+            "joomla"
+        ]
+    },
+    {
+        "name": "joomla/github",
+        "version": "1.5.3",
+        "version_normalized": "1.5.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/joomla-framework/github-api.git",
+            "reference": "5f4198716973309d9b91cf0ab5b5b6b02dbb21ce"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/joomla-framework/github-api/zipball/5f4198716973309d9b91cf0ab5b5b6b02dbb21ce",
+            "reference": "5f4198716973309d9b91cf0ab5b5b6b02dbb21ce",
+            "shasum": ""
+        },
+        "require": {
+            "joomla/http": "^1.2.2",
+            "joomla/registry": "~1.0",
+            "joomla/uri": "~1.0",
+            "php": "^5.3.10|~7.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.8|~5.0",
+            "squizlabs/php_codesniffer": "1.*"
+        },
+        "time": "2017-01-28T23:18:16+00:00",
+        "type": "joomla-package",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Joomla\\Github\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "description": "Joomla Github Package",
+        "homepage": "https://github.com/joomla-framework/github-api",
+        "keywords": [
+            "framework",
+            "github",
+            "joomla"
+        ]
+    },
+    {
+        "name": "joomla/http",
+        "version": "1.3.0",
+        "version_normalized": "1.3.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/joomla-framework/http.git",
+            "reference": "51caeb5c5c83f9379b88d347b6a9cc53f27683de"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/joomla-framework/http/zipball/51caeb5c5c83f9379b88d347b6a9cc53f27683de",
+            "reference": "51caeb5c5c83f9379b88d347b6a9cc53f27683de",
+            "shasum": ""
+        },
+        "require": {
+            "composer/ca-bundle": "~1.0",
+            "joomla/uri": "~1.0",
+            "php": "^5.3.10|~7.0"
+        },
+        "require-dev": {
+            "joomla/test": "~1.0",
+            "phpunit/phpunit": "~4.8|~5.0",
+            "squizlabs/php_codesniffer": "1.*"
+        },
+        "suggest": {
+            "ext-curl": "To use cURL for HTTP connections",
+            "joomla/registry": "Registry can be used as an alternative to using an array for the package options."
+        },
+        "time": "2016-09-26T10:03:36+00:00",
+        "type": "joomla-package",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Joomla\\Http\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "description": "Joomla HTTP Package",
+        "homepage": "https://github.com/joomla-framework/http",
+        "keywords": [
+            "framework",
+            "http",
+            "joomla"
+        ]
+    },
+    {
+        "name": "joomla/registry",
+        "version": "1.5.2",
+        "version_normalized": "1.5.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/joomla-framework/registry.git",
+            "reference": "bd3592c6f0554a72811df52aeaea98c7815f6e5a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/joomla-framework/registry/zipball/bd3592c6f0554a72811df52aeaea98c7815f6e5a",
+            "reference": "bd3592c6f0554a72811df52aeaea98c7815f6e5a",
+            "shasum": ""
+        },
+        "require": {
+            "joomla/compat": "~1.0",
+            "joomla/utilities": "~1.0",
+            "php": ">=5.3.10|>=7.0",
+            "symfony/polyfill-php55": "~1.0"
+        },
+        "require-dev": {
+            "joomla/test": "~1.0",
+            "phpunit/phpunit": "~4.8|~5.0",
+            "squizlabs/php_codesniffer": "1.*",
+            "symfony/yaml": "~2.0|~3.0"
+        },
+        "suggest": {
+            "symfony/yaml": "Install symfony/yaml if you require YAML support."
+        },
+        "time": "2016-05-14T20:42:05+00:00",
+        "type": "joomla-package",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Joomla\\Registry\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "description": "Joomla Registry Package",
+        "homepage": "https://github.com/joomla-framework/registry",
+        "keywords": [
+            "framework",
+            "joomla",
+            "registry"
+        ]
+    },
+    {
+        "name": "joomla/string",
+        "version": "1.4.1",
+        "version_normalized": "1.4.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/joomla-framework/string.git",
+            "reference": "66363d317e6c020f30a70265c129281c77c43ca0"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/joomla-framework/string/zipball/66363d317e6c020f30a70265c129281c77c43ca0",
+            "reference": "66363d317e6c020f30a70265c129281c77c43ca0",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.3.10|~7.0"
+        },
+        "require-dev": {
+            "joomla/test": "~1.0",
+            "phpunit/phpunit": "~4.8|~5.0",
+            "squizlabs/php_codesniffer": "1.*"
+        },
+        "suggest": {
+            "ext-mbstring": "For improved processing"
+        },
+        "time": "2016-12-10T18:13:42+00:00",
+        "type": "joomla-package",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Joomla\\String\\": "src/"
+            },
+            "files": [
+                "src/phputf8/utf8.php",
+                "src/phputf8/ord.php",
+                "src/phputf8/str_ireplace.php",
+                "src/phputf8/str_pad.php",
+                "src/phputf8/str_split.php",
+                "src/phputf8/strcasecmp.php",
+                "src/phputf8/strcspn.php",
+                "src/phputf8/stristr.php",
+                "src/phputf8/strrev.php",
+                "src/phputf8/strspn.php",
+                "src/phputf8/trim.php",
+                "src/phputf8/ucfirst.php",
+                "src/phputf8/ucwords.php",
+                "src/phputf8/utils/ascii.php",
+                "src/phputf8/utils/validation.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "description": "Joomla String Package",
+        "homepage": "https://github.com/joomla-framework/string",
+        "keywords": [
+            "framework",
+            "joomla",
+            "string"
+        ]
+    },
+    {
+        "name": "joomla/uri",
+        "version": "1.1.1",
+        "version_normalized": "1.1.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/joomla-framework/uri.git",
+            "reference": "980e532e4235bb8f1ada15b28822abbeb171da3f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/joomla-framework/uri/zipball/980e532e4235bb8f1ada15b28822abbeb171da3f",
+            "reference": "980e532e4235bb8f1ada15b28822abbeb171da3f",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.10"
+        },
+        "time": "2014-02-09T02:57:17+00:00",
+        "type": "joomla-package",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Joomla\\Uri\\": "src/",
+                "Joomla\\Uri\\Tests\\": "Tests/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "description": "Joomla Uri Package",
+        "homepage": "https://github.com/joomla-framework/uri",
+        "keywords": [
+            "framework",
+            "joomla",
+            "uri"
+        ]
+    },
+    {
+        "name": "joomla/utilities",
+        "version": "1.4.1",
+        "version_normalized": "1.4.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/joomla-framework/utilities.git",
+            "reference": "8913ca02aad7b929e0d52d78fd5a6961070bdbc6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/joomla-framework/utilities/zipball/8913ca02aad7b929e0d52d78fd5a6961070bdbc6",
+            "reference": "8913ca02aad7b929e0d52d78fd5a6961070bdbc6",
+            "shasum": ""
+        },
+        "require": {
+            "joomla/string": "~1.3",
+            "php": "^5.3.10|~7.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.8|~5.0",
+            "squizlabs/php_codesniffer": "1.*"
+        },
+        "time": "2016-12-10T17:09:33+00:00",
+        "type": "joomla-package",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Joomla\\Utilities\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "description": "Joomla Utilities Package",
+        "homepage": "https://github.com/joomla-framework/utilities",
+        "keywords": [
+            "framework",
+            "joomla",
+            "utilities"
+        ]
+    },
+    {
+        "name": "symfony/polyfill-php55",
+        "version": "v1.6.0",
+        "version_normalized": "1.6.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/polyfill-php55.git",
+            "reference": "b64e7f0c37ecf144ecc16668936eef94e628fbfd"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/polyfill-php55/zipball/b64e7f0c37ecf144ecc16668936eef94e628fbfd",
+            "reference": "b64e7f0c37ecf144ecc16668936eef94e628fbfd",
+            "shasum": ""
+        },
+        "require": {
+            "ircmaxell/password-compat": "~1.0",
+            "php": ">=5.3.3"
+        },
+        "time": "2017-10-11T12:05:26+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.6-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Polyfill\\Php55\\": ""
+            },
+            "files": [
+                "bootstrap.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Grekas",
+                "email": "p@tchwork.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony polyfill backporting some PHP 5.5+ features to lower PHP versions",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "compatibility",
+            "polyfill",
+            "portable",
+            "shim"
+        ]
+    }
+]

@@ -1,0 +1,15 @@
+{
+	"name": "joomla-projects/com_localise",
+	"type": "project",
+	"description": "Joomla! Localise Component",
+	"minimum-stability": "stable",
+	"keywords": ["joomla", "cms"],
+	"homepage": "https://github.com/joomla-projects/com_localise",
+	"license": "GPL-2.0+",
+	"config": {
+		"vendor-dir": "admin/vendor"
+	},
+	"require": {
+		"joomla/github": "1.5.3"
+	}
+}
