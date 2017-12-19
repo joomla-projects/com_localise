@@ -37,6 +37,8 @@ class JFormFieldReleases extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
+		require_once JPATH_ADMINISTRATOR . '/components/com_localise/vendor/autoload.php';
+
 		$attributes    = '';
 		$params        = JComponentHelper::getParams('com_localise');
 		$versions_path = JPATH_ROOT
