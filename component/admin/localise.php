@@ -22,7 +22,6 @@ require_once JPATH_COMPONENT . '/helpers/localise.php';
 // Load Composer Autoloader
 require_once (JPATH_COMPONENT_ADMINISTRATOR . '/vendor/autoload.php');
 
-
 // Get the controller
 $controller = JControllerLegacy::getInstance('Localise');
 
