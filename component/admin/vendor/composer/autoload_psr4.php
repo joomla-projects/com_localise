@@ -6,12 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname(dirname($vendorDir));
 
 return array(
-    'Symfony\\Polyfill\\Php55\\' => array($vendorDir . '/symfony/polyfill-php55'),
-    'Joomla\\Utilities\\' => array($vendorDir . '/joomla/utilities/src'),
-    'Joomla\\Uri\\Tests\\' => array($vendorDir . '/joomla/uri/Tests'),
-    'Joomla\\Uri\\' => array($vendorDir . '/joomla/uri/src'),
-    'Joomla\\String\\' => array($vendorDir . '/joomla/string/src'),
-    'Joomla\\Registry\\' => array($vendorDir . '/joomla/registry/src'),
     'Joomla\\Http\\' => array($vendorDir . '/joomla/http/src'),
     'Joomla\\Github\\' => array($vendorDir . '/joomla/github/src'),
     'Composer\\CaBundle\\' => array($vendorDir . '/composer/ca-bundle/src'),

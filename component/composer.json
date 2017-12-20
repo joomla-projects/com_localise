@@ -1,15 +1,23 @@
 {
-	"name": "joomla-projects/com_localise",
-	"type": "project",
-	"description": "Joomla! Localise Component",
-	"minimum-stability": "stable",
-	"keywords": ["joomla", "cms"],
-	"homepage": "https://github.com/joomla-projects/com_localise",
-	"license": "GPL-2.0+",
-	"config": {
-		"vendor-dir": "admin/vendor"
-	},
-	"require": {
-		"joomla/github": "1.5.3"
-	}
+  "name": "joomla-projects/com_localise",
+  "description": "Joomla! Localise Component",
+  "minimum-stability": "stable",
+  "keywords": ["joomla","cms"],
+  "homepage": "https://github.com/joomla-projects/com_localise",
+  "license": "GPL-2.0+",
+  "config": {
+    "vendor-dir": "admin/vendor"
+  },
+  "require": {
+    "joomla/github": "^1.5"
+  },
+  "replace": {
+    "ircmaxell/password-compat": "*",
+    "joomla/compat": "*",
+    "joomla/registry": "*",
+    "joomla/string": "*",
+    "joomla/uri": "*",
+    "joomla/utilities": "*",
+    "symfony/polyfill-php55": "*"
+  }
 }
