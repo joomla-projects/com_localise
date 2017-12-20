@@ -55,6 +55,7 @@
 			<folder>packages</folder>
 			<folder>sql</folder>
 			<folder>tables</folder>
+			<folder>vendor</folder>
 			<folder>views</folder>
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
