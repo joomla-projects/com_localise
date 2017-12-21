@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Github\Github;
+
 JFormHelper::loadFieldClass('list');
 
 /**
@@ -35,6 +37,8 @@ class JFormFieldReleases extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
+		require_once JPATH_ADMINISTRATOR . '/components/com_localise/vendor/autoload.php';
+
 		$attributes    = '';
 		$params        = JComponentHelper::getParams('com_localise');
 		$versions_path = JPATH_ROOT
@@ -58,7 +62,7 @@ class JFormFieldReleases extends JFormFieldList
 		if (!empty($gh_token))
 		{
 			$options->set('gh.token', $gh_token);
-			$github = new JGithub($options);
+			$github = new Github($options);
 		}
 		else
 		{
@@ -69,7 +73,7 @@ class JFormFieldReleases extends JFormFieldList
 			// But base 64 encoded to avoid Github alarms sharing it.
 			$gh_token = base64_decode('MzY2NzYzM2ZkMzZmMWRkOGU5NmRiMTdjOGVjNTFiZTIyMzk4NzVmOA==');
 			$options->set('gh.token', $gh_token);
-			$github = new JGithub($options);
+			$github = new Github($options);
 		}
 
 		try
