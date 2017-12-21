@@ -9,41 +9,35 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Installer\InstallerScript;
+
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
  * @package  Localise
  * @since    4.0
  */
-class Com_LocaliseInstallerScript
+class Com_LocaliseInstallerScript extends InstallerScript
 {
 	/**
-	 * Minimum supported version of the CMS
+	 * The extension name. This should be set in the installer script.
 	 *
 	 * @var    string
-	 * @since  4.0
+	 * @since  4.0.31
 	 */
-	protected $minCmsVersion = '3.3';
-
+	protected $extension = 'com_localise';
 	/**
-	 * Function to act prior to installation process begins
+	 * Minimum PHP version required to install the extension
 	 *
-	 * @param   string               $type    The action being performed
-	 * @param   JInstallerComponent  $parent  The class calling this method
-	 *
-	 * @return  boolean  True on success
-	 *
-	 * @since   4.0
+	 * @var    string
+	 * @since  4.0.31
 	 */
-	public function preflight($type, $parent)
-	{
-		if (version_compare(JVERSION, $this->minCmsVersion, 'lt'))
-		{
-			JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_LOCALISE_ERROR_INSTALL_JVERSION', $this->minCmsVersion));
-
-			return false;
-		}
-
-		return true;
-	}
+	protected $minimumPhp = '5.3.10';
+	/**
+	 * Minimum Joomla! version required to install the extension
+	 *
+	 * @var    string
+	 * @since  4.0.31
+	 */
+	protected $minimumJoomla = '3.8.0';
 }
