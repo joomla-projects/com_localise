@@ -83,10 +83,6 @@ class JFormFieldReleases extends JFormFieldList
 					$gh_project . '/releases'
 					);
 
-			// Allowed tricks.
-			// Configured to 0 the 2.5.x series are not allowed. Configured to 1 it is allowed.
-			$allow_25x = 1;
-
 			foreach ($releases as $release)
 			{
 				$tag_name = $release->tag_name;
@@ -94,14 +90,23 @@ class JFormFieldReleases extends JFormFieldList
 				$undoted  = str_replace('.', '', $tag_name);
 				$excluded = 0;
 
-				if ($tag_part[0] == '2' && $allow_25x == '0')
+				if (version_compare(JVERSION, '3', 'ge'))
 				{
-					$excluded = 1;
+					if ($tag_part[0] != '3')
+					{
+						$excluded = 1;
+					}
 				}
-				elseif ($tag_part[0] != '3' && $tag_part[0] != '2')
+				elseif (version_compare(JVERSION, '4', 'ge'))
 				{
-					// Exclude platforms or similar stuff.
-					$excluded = 1;
+					if ($tag_part[0] == '4' || $tag_part[0] == '3')
+					{
+						$excluded = 0;
+					}
+					else
+					{
+						$excluded = 1;
+					}
 				}
 
 				// Filtering by "is_numeric" disable betas or similar releases.

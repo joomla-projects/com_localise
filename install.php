@@ -23,21 +23,21 @@ class Com_LocaliseInstallerScript extends InstallerScript
 	 * The extension name. This should be set in the installer script.
 	 *
 	 * @var    string
-	 * @since  4.0.31
+	 * @since  4.0.32
 	 */
 	protected $extension = 'com_localise';
 	/**
 	 * Minimum PHP version required to install the extension
 	 *
 	 * @var    string
-	 * @since  4.0.31
+	 * @since  4.0.32
 	 */
 	protected $minimumPhp = '5.3.10';
 	/**
 	 * Minimum Joomla! version required to install the extension
 	 *
 	 * @var    string
-	 * @since  4.0.31
+	 * @since  4.0.32
 	 */
 	protected $minimumJoomla = '3.8.0';
 }
