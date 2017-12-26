@@ -9,15 +9,13 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Installer\InstallerScript;
-
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
  * @package  Localise
  * @since    4.0
  */
-class Com_LocaliseInstallerScript extends InstallerScript
+class Com_LocaliseInstallerScript extends JInstallerScript
 {
 	/**
 	 * The extension name. This should be set in the installer script.
