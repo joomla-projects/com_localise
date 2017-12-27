@@ -27,6 +27,8 @@ class LocaliseViewPackages extends JViewLegacy
 
 	protected $state;
 
+	protected $minCmsVersion = '3.8';
+
 	/**
 	 * Display the view
 	 *
@@ -43,6 +45,13 @@ class LocaliseViewPackages extends JViewLegacy
 		$this->state		= $this->get('State');
 		$this->form			= $this->get('Form');
 		$this->file			= $app->input->get('file');
+
+		if (version_compare(JVERSION, $this->minCmsVersion, 'lt'))
+		{
+			JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_LOCALISE_ERROR_INSTALL_JVERSION', $this->minCmsVersion), 'warning');
+
+			return false;
+		}
 
 		LocaliseHelper::addSubmenu('packages');
 

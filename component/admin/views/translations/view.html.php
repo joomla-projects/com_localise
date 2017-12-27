@@ -27,6 +27,8 @@ class LocaliseViewTranslations extends JViewLegacy
 
 	protected $state;
 
+	protected $minCmsVersion = '3.8';
+
 	/**
 	 * Display the view
 	 *
@@ -44,6 +46,13 @@ class LocaliseViewTranslations extends JViewLegacy
 		$this->packages   = $this->get('Items', 'Packages');
 		$this->filterForm    = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
+
+		if (version_compare(JVERSION, $this->minCmsVersion, 'lt'))
+		{
+			JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_LOCALISE_ERROR_INSTALL_JVERSION', $this->minCmsVersion), 'warning');
+
+			return false;
+		}
 
 		LocaliseHelper::addSubmenu('translations');
 

@@ -27,6 +27,8 @@ class LocaliseViewLanguages extends JViewLegacy
 
 	protected $form;
 
+	protected $minCmsVersion = '3.8';
+
 	/**
 	 * Display the view
 	 *
@@ -41,6 +43,13 @@ class LocaliseViewLanguages extends JViewLegacy
 		$this->pagination = $this->get('Pagination');
 		$this->state      = $this->get('State');
 		$this->form       = $this->get('Form');
+
+		if (version_compare(JVERSION, $this->minCmsVersion, 'lt'))
+		{
+			JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_LOCALISE_ERROR_INSTALL_JVERSION', $this->minCmsVersion), 'warning');
+
+			return false;
+		}
 
 		LocaliseHelper::addSubmenu('languages');
 

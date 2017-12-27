@@ -193,7 +193,7 @@
 			name="gh_branch"
 			type="text"
 			class="ltr"
-			default="master"
+			default="staging"
 			label="COM_LOCALISE_LABEL_GITHUB_BRANCH"
 			description="COM_LOCALISE_LABEL_GITHUB_BRANCH_DESC" />
 		<field
