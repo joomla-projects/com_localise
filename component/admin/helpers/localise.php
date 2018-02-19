@@ -1110,23 +1110,49 @@ abstract class LocaliseHelper
 				$undoted  = str_replace('.', '', $tag_name);
 				$excluded = 0;
 
-				if ($tag_part[0] == '2' && $allow_25x == '0')
+				if (version_compare(JVERSION, '2', 'eq'))
 				{
 					$excluded = 1;
 				}
-				elseif ($tag_part[0] != '3' && $tag_part[0] != '2')
+				elseif (version_compare(JVERSION, '3', 'eq'))
 				{
-					// Exclude platforms or similar stuff.
-					$excluded = 1;
+					if ($tag_part[0] != '3')
+					{
+						$excluded = 1;
+					}
+				}
+				elseif (version_compare(JVERSION, '4', 'ge'))
+				{
+					if ($tag_part[0] == '4' || $tag_part[0] == '3')
+					{
+						$excluded = 0;
+					}
+					else
+					{
+						$excluded = 1;
+					}
 				}
 
-				// Filtering also by "is_numeric" disable betas or similar releases.
-				if (!in_array($tag_name, $versions) && is_numeric($undoted) && $excluded == 0)
+				// Filtering by "is_numeric" disable betas or similar releases.
+				if ($params->get('pre_stable', '0') == '0')
 				{
-					$versions[] = $tag_name;
-					JFactory::getApplication()->enqueueMessage(
-						JText::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
-						'notice');
+					if (!in_array($tag_name, $versions) && is_numeric($undoted) && $excluded == 0)
+					{
+						$versions[] = $tag_name;
+						JFactory::getApplication()->enqueueMessage(
+							JText::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
+							'notice');
+					}
+				}
+				else
+				{
+					if (!in_array($tag_name, $versions) && $excluded == 0)
+					{
+						$versions[] = $tag_name;
+						JFactory::getApplication()->enqueueMessage(
+							JText::sprintf('COM_LOCALISE_NOTICE_NEW_VERSION_DETECTED', $tag_name),
+							'notice');
+					}
 				}
 			}
 		}
