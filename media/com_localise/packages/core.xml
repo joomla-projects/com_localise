@@ -4,7 +4,7 @@
 	<description>com_localise_package_core_desc</description>
 	<manifest client="administrator">com_localise</manifest>
 	<author>Joomla! Project</author>
-	<maincopyright>Copyright (C) 2005 - 2015 Open Source Matters. All rights reserved.</maincopyright>
+	<maincopyright>Copyright (C) 2005 - 2018 Open Source Matters. All rights reserved.</maincopyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<administrator>
 		<filename>com_admin</filename>
@@ -255,6 +255,8 @@
 		<filename>plg_system_remember.sys</filename>
 		<filename>plg_system_sef</filename>
 		<filename>plg_system_sef.sys</filename>
+		<filename>plg_system_sessiongc</filename>
+		<filename>plg_system_sessiongc.sys</filename>
 		<filename>plg_system_stats</filename>
 		<filename>plg_system_stats.sys</filename>
 		<filename>plg_system_updatenotification</filename>
