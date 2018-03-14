@@ -90,18 +90,18 @@ class JFormFieldReleases extends JFormFieldList
 				$undoted  = str_replace('.', '', $tag_name);
 				$excluded = 0;
 
-			if (version_compare(JVERSION, '2', 'eq'))
+				if (version_compare(JVERSION[0], '2', 'eq'))
 				{
 					$excluded = 1;
 				}
-				elseif (version_compare(JVERSION, '3', 'eq'))
+				elseif (version_compare(JVERSION[0], '3', 'eq'))
 				{
 					if ($tag_part[0] != '3')
 					{
 						$excluded = 1;
 					}
 				}
-				elseif (version_compare(JVERSION, '4', 'ge'))
+				elseif (version_compare(JVERSION[0], '4', 'ge'))
 				{
 					if ($tag_part[0] == '4' || $tag_part[0] == '3')
 					{

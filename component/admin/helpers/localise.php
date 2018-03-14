@@ -1099,10 +1099,6 @@ abstract class LocaliseHelper
 					$gh_project . '/releases'
 					);
 
-			// Allowed tricks.
-			// Configured to 0 the 2.5.x series are not allowed. Configured to 1 it is allowed.
-			$allow_25x = 1;
-
 			foreach ($releases as $release)
 			{
 				$tag_name = $release->tag_name;
@@ -1110,18 +1106,18 @@ abstract class LocaliseHelper
 				$undoted  = str_replace('.', '', $tag_name);
 				$excluded = 0;
 
-				if (version_compare(JVERSION, '2', 'eq'))
+				if (version_compare(JVERSION[0], '2', 'eq'))
 				{
 					$excluded = 1;
 				}
-				elseif (version_compare(JVERSION, '3', 'eq'))
+				elseif (version_compare(JVERSION[0], '3', 'eq'))
 				{
 					if ($tag_part[0] != '3')
 					{
 						$excluded = 1;
 					}
 				}
-				elseif (version_compare(JVERSION, '4', 'ge'))
+				elseif (version_compare(JVERSION[0], '4', 'ge'))
 				{
 					if ($tag_part[0] == '4' || $tag_part[0] == '3')
 					{
