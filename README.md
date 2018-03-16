@@ -26,12 +26,6 @@ With the new com_localise we are trying to solve the following needs:
 * the tool could be Git based, but on it's base, not in it's interface (because translators are not necessarily developers)
 * and maybe, the tool could become something that can be used too by 3rd party extension developers to want to get support from the Joomla community translating their open source solutions. Something like JED, maybe?
 
-# actors
-The following image details the actors and use cases of the application:
-
-![image](https://raw.githubusercontent.com/joomla-projects/translate-joomla/master/images/structure/actors.png)
-
-
 
 # Todo's (Tasks)
 * Code Style tasks and refactoring: https://github.com/joomla-projects/com_localise/issues?milestone=1&state=open
