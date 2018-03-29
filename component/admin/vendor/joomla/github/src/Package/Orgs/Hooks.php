@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Github Package
  *
- * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -16,7 +16,7 @@ use Joomla\Github\AbstractPackage;
  * All actions against organization webhooks require the authenticated user to be an admin of the organization being managed.
  * Additionally, OAuth tokens require the "admin:org_hook" scope.
  *
- * @documentation http://developer.github.com/v3/orgs/hooks/
+ * @link   https://developer.github.com/v3/orgs/hooks/
  *
  * @since  1.4.0
  */

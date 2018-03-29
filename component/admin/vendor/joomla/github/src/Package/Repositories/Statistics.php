@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Github Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -17,7 +17,7 @@ use Joomla\Http\Response;
  * The Repository Statistics API allows you to fetch the data that GitHub uses for
  * visualizing different types of repository activity.
  *
- * @documentation http://developer.github.com/v3/repos/statistics
+ * @link   https://developer.github.com/v3/repos/statistics
  *
  * @since  1.0
  */

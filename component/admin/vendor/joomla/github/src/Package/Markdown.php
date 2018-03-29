@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Github Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -14,7 +14,7 @@ use Joomla\Http\Exception\UnexpectedResponseException;
 /**
  * GitHub API Markdown class.
  *
- * @documentation http://developer.github.com/v3/markdown
+ * @link   https://developer.github.com/v3/markdown
  *
  * @since  1.0
  */
@@ -48,7 +48,10 @@ class Markdown extends AbstractPackage
 		$path = '/markdown';
 
 		// Build the request data.
-		$data = str_replace('\\/', '/', json_encode(
+		$data = str_replace(
+			'\\/',
+			'/',
+			json_encode(
 				array(
 					'text'    => $text,
 					'mode'    => $mode,

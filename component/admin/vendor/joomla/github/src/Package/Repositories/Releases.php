@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Github Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -13,7 +13,7 @@ use Joomla\Github\AbstractPackage;
 /**
  * GitHub API References class for the Joomla Platform.
  *
- * @documentation http://developer.github.com/v3/repos/releases
+ * @link   https://developer.github.com/v3/repos/releases
  *
  * @since  1.1.0
  */
@@ -102,7 +102,8 @@ class Releases extends AbstractPackage
 	 * @throws  \DomainException
 	 */
 	public function edit($user, $repo, $releaseId, $tagName,
-		$targetCommitish = null, $name = null, $body = null, $draft = null, $preRelease = null)
+		$targetCommitish = null, $name = null, $body = null, $draft = null, $preRelease = null
+	)
 	{
 		// Build the request path.
 		$path = '/repos/' . $user . '/' . $repo . '/releases/' . (int) $releaseId;

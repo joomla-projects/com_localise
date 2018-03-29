@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Github Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -14,7 +14,7 @@ use Joomla\Uri\Uri;
 /**
  * GitHub API Issues class for the Joomla Framework.
  *
- * @documentation http://developer.github.com/v3/issues
+ * @link   https://developer.github.com/v3/issues
  *
  * @since  1.0
  *
@@ -43,7 +43,9 @@ class Issues extends AbstractPackage
 	 * @since   1.0
 	 * @throws  \DomainException
 	 */
-	public function create($user, $repo, $title, $body = null, $assignee = null, $milestone = null, array $labels = array(), array $assignees = array())
+	public function create($user, $repo, $title, $body = null, $assignee = null, $milestone = null, array $labels = array(),
+		array $assignees = array()
+	)
 	{
 		// Build the request path.
 		$path = '/repos/' . $user . '/' . $repo . '/issues';
@@ -55,16 +57,29 @@ class Issues extends AbstractPackage
 		}
 
 		// Build the request data.
-		$data = json_encode(
-			array(
-				'title'     => $title,
-				'assignee'  => $assignee,
-				'milestone' => $milestone,
-				'labels'    => $labels,
-				'body'      => $body,
-				'assignees' => $assignees,
-			)
+		$data = array(
+			'title'     => $title,
+			'milestone' => $milestone,
+			'labels'    => $labels,
+			'body'      => $body
 		);
+
+		if (is_string($assignee) && !empty($assignees))
+		{
+			throw new \UnexpectedValueException('You cannot pass both assignee and assignees. Only one may be provided.');
+		}
+
+		if (!empty($assignees))
+		{
+			$data['assignees'] = array_values($assignees);
+		}
+		elseif (is_string($assignee))
+		{
+			$data['assignee'] = $assignee;
+		}
+
+		// Encode the request data.
+		$data = json_encode($data);
 
 		// Send the request.
 		return $this->processResponse($this->client->post($this->fetchUrl($path), $data), 201);
@@ -88,7 +103,9 @@ class Issues extends AbstractPackage
 	 * @since   1.0
 	 * @throws  \DomainException
 	 */
-	public function edit($user, $repo, $issueId, $state = null, $title = null, $body = null, $assignee = null, $milestone = null, array $labels = null)
+	public function edit($user, $repo, $issueId, $state = null, $title = null, $body = null, $assignee = null, $milestone = null,
+		array $labels = null
+	)
 	{
 		// Build the request path.
 		$path = '/repos/' . $user . '/' . $repo . '/issues/' . (int) $issueId;
@@ -184,7 +201,8 @@ class Issues extends AbstractPackage
 	 * @throws  \DomainException
 	 */
 	public function getList($filter = null, $state = null, $labels = null, $sort = null,
-		$direction = null, \DateTime $since = null, $page = 0, $limit = 0)
+		$direction = null, \DateTime $since = null, $page = 0, $limit = 0
+	)
 	{
 		// Build the request path.
 		$path = '/issues';
@@ -247,7 +265,8 @@ class Issues extends AbstractPackage
 	 * @throws  \DomainException
 	 */
 	public function getListByRepository($user, $repo, $milestone = null, $state = null, $assignee = null, $mentioned = null, $labels = null,
-		$sort = null, $direction = null, \DateTime $since = null, $page = 0, $limit = 0)
+		$sort = null, $direction = null, \DateTime $since = null, $page = 0, $limit = 0
+	)
 	{
 		// Build the request path.
 		$path = '/repos/' . $user . '/' . $repo . '/issues';

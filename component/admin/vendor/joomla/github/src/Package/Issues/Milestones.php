@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Github Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -13,7 +13,7 @@ use Joomla\Github\AbstractPackage;
 /**
  * GitHub API Milestones class for the Joomla Framework.
  *
- * @documentation http://developer.github.com/v3/issues/milestones/
+ * @link   https://developer.github.com/v3/issues/milestones/
  *
  * @since  1.0
  */
@@ -77,15 +77,15 @@ class Milestones extends AbstractPackage
 	 * @param   integer  $title        The title of the milestone.
 	 * @param   string   $state        Can be open (default) or closed.
 	 * @param   string   $description  Optional description for milestone.
-	 * @param   string   $due_on       The milestone due date. This is a timestamp in ISO 8601 format.
+	 * @param   string   $dueOn        The milestone due date. This is a timestamp in ISO 8601 format.
 	 *
 	 * @return  object
 	 *
-	 * @note    As of 2.0 the $due_on parameter will be typehinted to a \DateTime object
+	 * @note    As of 2.0 the $dueOn parameter will be typehinted to a \DateTime object
 	 * @since   1.0
 	 * @throws  \DomainException
 	 */
-	public function create($user, $repo, $title, $state = null, $description = null, $due_on = null)
+	public function create($user, $repo, $title, $state = null, $description = null, $dueOn = null)
 	{
 		// Build the request path.
 		$path = '/repos/' . $user . '/' . $repo . '/milestones';
@@ -105,9 +105,9 @@ class Milestones extends AbstractPackage
 			$data['description'] = $description;
 		}
 
-		if (!is_null($due_on))
+		if (!is_null($dueOn))
 		{
-			$data['due_on'] = $due_on;
+			$data['due_on'] = $dueOn;
 		}
 
 		$data = json_encode($data);
@@ -125,15 +125,15 @@ class Milestones extends AbstractPackage
 	 * @param   integer  $title        Optional title of the milestone.
 	 * @param   string   $state        Can be open (default) or closed.
 	 * @param   string   $description  Optional description for milestone.
-	 * @param   string   $due_on       The milestone due date. This is a timestamp in ISO 8601 format.
+	 * @param   string   $dueOn        The milestone due date. This is a timestamp in ISO 8601 format.
 	 *
 	 * @return  object
 	 *
-	 * @note    As of 2.0 the $due_on parameter will be typehinted to a \DateTime object
+	 * @note    As of 2.0 the $dueOn parameter will be typehinted to a \DateTime object
 	 * @since   1.0
 	 * @throws  \DomainException
 	 */
-	public function edit($user, $repo, $milestoneId, $title = null, $state = null, $description = null, $due_on = null)
+	public function edit($user, $repo, $milestoneId, $title = null, $state = null, $description = null, $dueOn = null)
 	{
 		// Build the request path.
 		$path = '/repos/' . $user . '/' . $repo . '/milestones/' . (int) $milestoneId;
@@ -156,9 +156,9 @@ class Milestones extends AbstractPackage
 			$data['description'] = $description;
 		}
 
-		if (!is_null($due_on))
+		if (!is_null($dueOn))
 		{
-			$data['due_on'] = $due_on;
+			$data['due_on'] = $dueOn;
 		}
 
 		$data = json_encode($data);

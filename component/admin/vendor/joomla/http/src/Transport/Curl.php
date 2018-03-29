@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Http Package
  *
- * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -34,7 +34,7 @@ class Curl implements TransportInterface
 	 *
 	 * @param   array|\ArrayAccess  $options  Client options array.
 	 *
-	 * @see     http://www.php.net/manual/en/function.curl-setopt.php
+	 * @link    https://secure.php.net/manual/en/function.curl-setopt.php
 	 * @since   1.0
 	 * @throws  \InvalidArgumentException
 	 * @throws  \RuntimeException
@@ -185,6 +185,12 @@ class Curl implements TransportInterface
 			$options[CURLOPT_HTTPAUTH] = CURLAUTH_BASIC;
 		}
 
+		// Configure protocol version
+		if (isset($this->options['protocolVersion']))
+		{
+			$options[CURLOPT_HTTP_VERSION] = $this->mapProtocolVersion($this->options['protocolVersion']);
+		}
+
 		// Set any custom transport options
 		if (isset($this->options['transport.curl']))
 		{
@@ -240,21 +246,37 @@ class Curl implements TransportInterface
 		// Create the response object.
 		$return = new Response;
 
-		// Get the number of redirects that occurred.
-		$redirects = isset($info['redirect_count']) ? $info['redirect_count'] : 0;
+		// Try to get header size
+		if (isset($info['header_size']))
+		{
+			$headerString = trim(substr($content, 0, $info['header_size']));
+			$headerArray  = explode("\r\n\r\n", $headerString);
 
-		/*
-		 * Split the response into headers and body. If cURL encountered redirects, the headers for the redirected requests will
-		 * also be included. So we split the response into header + body + the number of redirects and only use the last two
-		 * sections which should be the last set of headers and the actual body.
-		 */
-		$response = explode("\r\n\r\n", $content, 2 + $redirects);
+			// Get the last set of response headers as an array.
+			$headers = explode("\r\n", array_pop($headerArray));
 
-		// Set the body for the response.
-		$return->body = array_pop($response);
+			// Set the body for the response.
+			$return->body = substr($content, $info['header_size']);
+		}
+		// Fallback and try to guess header count by redirect count
+		else
+		{
+			// Get the number of redirects that occurred.
+			$redirects = isset($info['redirect_count']) ? $info['redirect_count'] : 0;
 
-		// Get the last set of response headers as an array.
-		$headers = explode("\r\n", array_pop($response));
+			/*
+			 * Split the response into headers and body. If cURL encountered redirects, the headers for the redirected requests will
+			 * also be included. So we split the response into header + body + the number of redirects and only use the last two
+			 * sections which should be the last set of headers and the actual body.
+			 */
+			$response = explode("\r\n\r\n", $content, 2 + $redirects);
+
+			// Set the body for the response.
+			$return->body = array_pop($response);
+
+			// Get the last set of response headers as an array.
+			$headers = explode("\r\n", array_pop($response));
+		}
 
 		// Get the response code from the first offset of the response headers.
 		preg_match('/[0-9]{3}/', array_shift($headers), $matches);
@@ -292,6 +314,36 @@ class Curl implements TransportInterface
 	public static function isSupported()
 	{
 		return function_exists('curl_version') && curl_version();
+	}
+
+	/**
+	 * Get the cURL constant for a HTTP protocol version
+	 *
+	 * @param   string  $version  The HTTP protocol version to use
+	 *
+	 * @return  integer
+	 *
+	 * @since   1.3.1
+	 */
+	private function mapProtocolVersion($version)
+	{
+		switch ($version)
+		{
+			case '1.0':
+				return CURL_HTTP_VERSION_1_0;
+
+			case '1.1':
+				return CURL_HTTP_VERSION_1_1;
+
+			case '2.0':
+			case '2':
+				if (defined('CURL_HTTP_VERSION_2'))
+				{
+					return CURL_HTTP_VERSION_2;
+				}
+		}
+
+		return CURL_HTTP_VERSION_NONE;
 	}
 
 	/**

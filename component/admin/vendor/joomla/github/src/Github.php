@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Github Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -19,6 +19,7 @@ use Joomla\Registry\Registry;
  * @property-read  Package\Emojis         $emojis         GitHub API object for the emojis package.
  * @property-read  Package\Gists          $gists          GitHub API object for the gists package.
  * @property-read  Package\Gitignore      $gitignore      GitHub API object for the gitignore package.
+ * @property-read  Package\Graphql        $graphql        GitHub API object for the GraphQL v4 API.
  * @property-read  Package\Issues         $issues         GitHub API object for the issues package.
  * @property-read  Package\Markdown       $markdown       GitHub API object for the markdown package.
  * @property-read  Package\Meta           $meta           GitHub API object for the meta package.
@@ -70,7 +71,7 @@ class Github
 	 *
 	 * @param   string  $name  Name of property to retrieve
 	 *
-	 * @return  Object  GitHub API object (gists, issues, pulls, etc).
+	 * @return  AbstractGithubObject  GitHub API object (gists, issues, pulls, etc).
 	 *
 	 * @since   1.0
 	 * @throws  \InvalidArgumentException If $name is not a valid sub class.
