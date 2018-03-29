@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework GitHub Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -13,7 +13,7 @@ use Joomla\Github\AbstractPackage;
 /**
  * GitHub API Repositories Merging class for the Joomla Framework.
  *
- * @documentation http://developer.github.com/v3/repos/merging
+ * @link   https://developer.github.com/v3/repos/merging
  *
  * @since  1.0
  */
@@ -22,19 +22,19 @@ class Merging extends AbstractPackage
 	/**
 	 * Perform a merge.
 	 *
-	 * @param   string  $owner           The name of the owner of the GitHub repository.
-	 * @param   string  $repo            The name of the GitHub repository.
-	 * @param   string  $base            The name of the base branch that the head will be merged into.
-	 * @param   string  $head            The head to merge. This can be a branch name or a commit SHA1.
-	 * @param   string  $commit_message  Commit message to use for the merge commit.
-	 *                                   If omitted, a default message will be used.
-	 *
-	 * @throws \UnexpectedValueException
-	 * @since   1.0
+	 * @param   string  $owner          The name of the owner of the GitHub repository.
+	 * @param   string  $repo           The name of the GitHub repository.
+	 * @param   string  $base           The name of the base branch that the head will be merged into.
+	 * @param   string  $head           The head to merge. This can be a branch name or a commit SHA1.
+	 * @param   string  $commitMessage  Commit message to use for the merge commit.
+	 *                                  If omitted, a default message will be used.
 	 *
 	 * @return  boolean
+	 *
+	 * @since   1.0
+	 * @throws  \UnexpectedValueException
 	 */
-	public function perform($owner, $repo, $base, $head, $commit_message = '')
+	public function perform($owner, $repo, $base, $head, $commitMessage = '')
 	{
 		// Build the request path.
 		$path = '/repos/' . $owner . '/' . $repo . '/merges';
@@ -44,9 +44,9 @@ class Merging extends AbstractPackage
 		$data->base = $base;
 		$data->head = $head;
 
-		if ($commit_message)
+		if ($commitMessage)
 		{
-			$data->commit_message = $commit_message;
+			$data->commit_message = $commitMessage;
 		}
 
 		// Send the request.

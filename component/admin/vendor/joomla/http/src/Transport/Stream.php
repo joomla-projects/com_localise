@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Http Package
  *
- * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -123,6 +123,9 @@ class Stream implements TransportInterface
 		// Follow redirects.
 		$options['follow_location'] = isset($this->options['follow_location']) ? (int) $this->options['follow_location'] : 1;
 
+		// Configure protocol version, use transport's default if not set otherwise.
+		$options['follow_location'] = isset($this->options['protocolVersion']) ? $this->options['protocolVersion'] : '1.0';
+
 		// Add the proxy configuration if enabled
 		$proxyEnabled = isset($this->options['proxy.enabled']) ? (bool) $this->options['proxy.enabled'] : false;
 
@@ -187,6 +190,12 @@ class Stream implements TransportInterface
 			)
 		);
 
+		// Ensure the ssl peer name is verified where possible
+		if (version_compare(PHP_VERSION, '5.6.0') >= 0)
+		{
+			$streamOptions['ssl']['verify_peer_name'] = true;
+		}
+
 		// The cacert may be a file or path
 		$certpath = isset($this->options['stream.certpath']) ? $this->options['stream.certpath'] : CaBundle::getSystemCaRootBundlePath();
 
@@ -203,7 +212,7 @@ class Stream implements TransportInterface
 
 		// Capture PHP errors
 		$php_errormsg = '';
-		$track_errors = ini_get('track_errors');
+		$trackErrors = ini_get('track_errors');
 		ini_set('track_errors', true);
 
 		// Open the stream for reading.
@@ -219,13 +228,13 @@ class Stream implements TransportInterface
 			}
 
 			// Restore error tracking to give control to the exception handler
-			ini_set('track_errors', $track_errors);
+			ini_set('track_errors', $trackErrors);
 
 			throw new \RuntimeException($php_errormsg);
 		}
 
 		// Restore error tracking to what it was before.
-		ini_set('track_errors', $track_errors);
+		ini_set('track_errors', $trackErrors);
 
 		// Get the metadata for the stream, including response headers.
 		$metadata = stream_get_meta_data($stream);

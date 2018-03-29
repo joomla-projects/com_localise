@@ -58,85 +58,35 @@
         ]
     },
     {
-        "name": "joomla/github",
-        "version": "1.5.3",
-        "version_normalized": "1.5.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/joomla-framework/github-api.git",
-            "reference": "5f4198716973309d9b91cf0ab5b5b6b02dbb21ce"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/joomla-framework/github-api/zipball/5f4198716973309d9b91cf0ab5b5b6b02dbb21ce",
-            "reference": "5f4198716973309d9b91cf0ab5b5b6b02dbb21ce",
-            "shasum": ""
-        },
-        "require": {
-            "joomla/http": "^1.2.2",
-            "joomla/registry": "~1.0",
-            "joomla/uri": "~1.0",
-            "php": "^5.3.10|~7.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "~4.8|~5.0",
-            "squizlabs/php_codesniffer": "1.*"
-        },
-        "time": "2017-01-28T23:18:16+00:00",
-        "type": "joomla-package",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Joomla\\Github\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-2.0+"
-        ],
-        "description": "Joomla Github Package",
-        "homepage": "https://github.com/joomla-framework/github-api",
-        "keywords": [
-            "framework",
-            "github",
-            "joomla"
-        ]
-    },
-    {
         "name": "joomla/http",
-        "version": "1.3.0",
-        "version_normalized": "1.3.0.0",
+        "version": "1.3.1",
+        "version_normalized": "1.3.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/joomla-framework/http.git",
-            "reference": "51caeb5c5c83f9379b88d347b6a9cc53f27683de"
+            "reference": "468d564f492be1625a9b564587b2a6536b111713"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/joomla-framework/http/zipball/51caeb5c5c83f9379b88d347b6a9cc53f27683de",
-            "reference": "51caeb5c5c83f9379b88d347b6a9cc53f27683de",
+            "url": "https://api.github.com/repos/joomla-framework/http/zipball/468d564f492be1625a9b564587b2a6536b111713",
+            "reference": "468d564f492be1625a9b564587b2a6536b111713",
             "shasum": ""
         },
         "require": {
             "composer/ca-bundle": "~1.0",
-            "joomla/uri": "~1.0",
+            "joomla/uri": "~1.0|~2.0",
             "php": "^5.3.10|~7.0"
         },
         "require-dev": {
+            "joomla/coding-standards": "~2.0@alpha",
             "joomla/test": "~1.0",
-            "phpunit/phpunit": "~4.8|~5.0",
-            "squizlabs/php_codesniffer": "1.*"
+            "phpunit/phpunit": "^4.8.35|^5.4.3|~6.0"
         },
         "suggest": {
             "ext-curl": "To use cURL for HTTP connections",
             "joomla/registry": "Registry can be used as an alternative to using an array for the package options."
         },
-        "time": "2016-09-26T10:03:36+00:00",
+        "time": "2018-03-13T01:48:53+00:00",
         "type": "joomla-package",
         "extra": {
             "branch-alias": {
@@ -151,13 +101,63 @@
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "GPL-2.0+"
+            "GPL-2.0-or-later"
         ],
         "description": "Joomla HTTP Package",
         "homepage": "https://github.com/joomla-framework/http",
         "keywords": [
             "framework",
             "http",
+            "joomla"
+        ]
+    },
+    {
+        "name": "joomla/github",
+        "version": "1.6.0",
+        "version_normalized": "1.6.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/joomla-framework/github-api.git",
+            "reference": "a6759fbdb7d221f38358cf992898586732afee89"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/joomla-framework/github-api/zipball/a6759fbdb7d221f38358cf992898586732afee89",
+            "reference": "a6759fbdb7d221f38358cf992898586732afee89",
+            "shasum": ""
+        },
+        "require": {
+            "joomla/http": "^1.2.2|~2.0",
+            "joomla/registry": "^1.4.5|~2.0",
+            "joomla/uri": "~1.0|~2.0",
+            "php": "^5.3.10|~7.0"
+        },
+        "require-dev": {
+            "joomla/coding-standards": "~2.0@alpha",
+            "phpunit/phpunit": "^4.8.35|^5.4.3|~6.0"
+        },
+        "time": "2018-03-13T01:41:22+00:00",
+        "type": "joomla-package",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Joomla\\Github\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0-or-later"
+        ],
+        "description": "Joomla Github Package",
+        "homepage": "https://github.com/joomla-framework/github-api",
+        "keywords": [
+            "framework",
+            "github",
             "joomla"
         ]
     }

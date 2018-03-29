@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Github Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -16,7 +16,7 @@ use Joomla\Github\AbstractPackage;
  * Management of email addresses via the API requires that you are authenticated
  * through basic auth or OAuth with the user scope.
  *
- * @documentation http://developer.github.com/v3/repos/users/emails
+ * @link   https://developer.github.com/v3/users/emails
  *
  * @since  1.0
  */

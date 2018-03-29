@@ -2,7 +2,7 @@
 /**
  * Part of the Joomla Framework Github Package
  *
- * @copyright  Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -13,7 +13,7 @@ use Joomla\Github\AbstractPackage;
 /**
  * GitHub API Hooks class for the Joomla Framework.
  *
- * @documentation http://developer.github.com/v3/repos/hooks
+ * @link   https://developer.github.com/v3/repos/hooks
  *
  * @since  1.0
  */
@@ -102,7 +102,8 @@ class Hooks extends AbstractPackage
 	 * @throws  \RuntimeException
 	 */
 	public function edit($user, $repo, $id, $name, $config, array $events = array('push'), array $addEvents = array(),
-		array $removeEvents = array(), $active = true)
+		array $removeEvents = array(), $active = true
+	)
 	{
 		// Check to ensure all events are in the allowed list
 		foreach ($events as $event)
