@@ -193,6 +193,8 @@
 		<filename>plg_fields_user.sys</filename>
 		<filename>plg_fields_usergrouplist</filename>
 		<filename>plg_fields_usergrouplist.sys</filename>
+		<filename>plg_finder_categories</filename>
+		<filename>plg_finder_categories.sys</filename>
 		<filename>plg_finder_contacts</filename>
 		<filename>plg_finder_contacts.sys</filename>
 		<filename>plg_finder_content</filename>
