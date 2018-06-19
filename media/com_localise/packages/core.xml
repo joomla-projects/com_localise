@@ -181,6 +181,8 @@
 		<filename>plg_fields_media.sys</filename>
 		<filename>plg_fields_radio</filename>
 		<filename>plg_fields_radio.sys</filename>
+		<filename>plg_fields_repeatable</filename>
+		<filename>plg_fields_repeatable.sys</filename>
 		<filename>plg_fields_sql</filename>
 		<filename>plg_fields_sql.sys</filename>
 		<filename>plg_fields_text</filename>
