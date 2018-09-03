@@ -220,6 +220,8 @@
     <filename>plg_authentication_ldap.sys.ini</filename>
     <filename>plg_captcha_recaptcha.ini</filename>
     <filename>plg_captcha_recaptcha.sys.ini</filename>
+    <filename>plg_captcha_recaptcha_invisible.ini</filename>
+    <filename>plg_captcha_recaptcha_invisible.sys.ini</filename>
     <filename>plg_content_confirmconsent.ini</filename>
     <filename>plg_content_confirmconsent.sys.ini</filename>
     <filename>plg_content_contact.ini</filename>

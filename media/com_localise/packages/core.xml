@@ -126,6 +126,8 @@
 		<filename>plg_authentication_ldap.sys</filename>
 		<filename>plg_captcha_recaptcha</filename>
 		<filename>plg_captcha_recaptcha.sys</filename>
+		<filename>plg_captcha_recaptcha_invisible</filename>
+		<filename>plg_captcha_recaptcha_invisible.sys</filename>
 		<filename>plg_content_confirmconsent</filename>
 		<filename>plg_content_confirmconsent.sys</filename>
 		<filename>plg_content_contact</filename>
