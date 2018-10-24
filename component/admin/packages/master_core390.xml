@@ -324,6 +324,8 @@
     <filename>plg_installer_webinstaller.sys.ini</filename>
     <filename>plg_privacy_actionlogs.ini</filename>
     <filename>plg_privacy_actionlogs.sys.ini</filename>
+    <filename>plg_privacy_consents.ini</filename>
+    <filename>plg_privacy_consents.sys.ini</filename>
     <filename>plg_privacy_contact.ini</filename>
     <filename>plg_privacy_contact.sys.ini</filename>
     <filename>plg_privacy_content.ini</filename>

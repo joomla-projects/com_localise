@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="3.8" method="upgrade">
+<extension type="component" version="3.9" method="upgrade">
 	<name>com_localise</name>
 	<creationDate>August 2011</creationDate>
 	<author>Christophe Demko</author>
@@ -8,7 +8,7 @@
 	<copyright>(C) 2018 Open Source Matters. All rights reserved.</copyright>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>https://github.com/joomla-projects/com_localise</authorUrl>
-	<version>4.0.34-dev</version>
+	<version>4.0.35-dev</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>COM_LOCALISE_XML_DESCRIPTION</description>
 	<scriptfile>install.php</scriptfile>

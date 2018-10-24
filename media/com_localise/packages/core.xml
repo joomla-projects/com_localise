@@ -230,6 +230,8 @@
 		<filename>plg_installer_webinstaller.sys</filename>
 		<filename>plg_privacy_actionlogs</filename>
 		<filename>plg_privacy_actionlogs.sys</filename>
+		<filename>plg_privacy_consents</filename>
+		<filename>plg_privacy_consents.sys</filename>
 		<filename>plg_privacy_contact</filename>
 		<filename>plg_privacy_contact.sys</filename>
 		<filename>plg_privacy_content</filename>
