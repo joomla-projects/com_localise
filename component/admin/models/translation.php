@@ -1387,7 +1387,7 @@ class LocaliseModelTranslation extends JModelAdmin
 
 				foreach ($strings as $key => $string)
 				{
-					$contents[] = $key . '="' . str_replace('"', '/"', $string) . "\"\n";
+					$contents[] = $key . '="' . str_replace('"', '\"', $string) . "\"\n";
 				}
 			}
 
