@@ -5,10 +5,10 @@
 	<author>Christophe Demko</author>
 	<author>Jean-Marie Simonet</author>
 	<author>Ifan Evans</author>
-	<copyright>(C) 2018 Open Source Matters. All rights reserved.</copyright>
+	<copyright>(C) 2020 Open Source Matters</copyright>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>https://github.com/joomla-projects/com_localise</authorUrl>
-	<version>4.0.36-dev</version>
+	<version>4.0.37-dev</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>COM_LOCALISE_XML_DESCRIPTION</description>
 	<scriptfile>install.php</scriptfile>
