@@ -11,8 +11,16 @@ defined('_JEXEC') or die;
 
 JHtml::_('stylesheet', 'com_localise/localise.css', null, true);
 JHtml::_('formbehavior.chosen', 'select');
-JHtml::_('behavior.framework', true);
 JHtml::_('bootstrap.tooltip');
+
+if (version_compare(JVERSION, '4.0', 'ge'))
+{
+	JHtml::_('behavior.core');
+}
+else
+{
+	JHtml::_('behavior.framework', true);
+}
 
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
