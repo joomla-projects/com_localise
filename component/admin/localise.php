@@ -9,10 +9,19 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Access\Exception\NotAllowed;
+
 // Access check.
 if (!JFactory::getUser()->authorise('core.manage', 'com_localise'))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	if (version_compare(JVERSION, '4.0', 'ge'))
+	{
+		throw new NotAllowed(JText::_('JERROR_ALERTNOAUTHOR'), 403);
+	}
+	else
+	{
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
 }
 
 // Include helper files

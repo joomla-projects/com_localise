@@ -85,7 +85,7 @@ class LocaliseModelPackageFile extends JModelAdmin
 		$form->setFieldAttribute('translations', 'packagefile', $name, 'translations');
 
 		// Check for an error.
-		if (JError::isError($form))
+		if (version_compare(JVERSION, '4.0', 'le') && JError::isError($form))
 		{
 			$this->setError($form->getMessage());
 
@@ -133,7 +133,7 @@ class LocaliseModelPackageFile extends JModelAdmin
 		}
 
 		// Check for an error.
-		if (JError::isError($form))
+		if (version_compare(JVERSION, '4.0', 'le') && JError::isError($form))
 		{
 			$this->setError($form->getMessage());
 
