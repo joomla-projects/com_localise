@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.formvalidator');
 JHtml::_('stylesheet', 'com_localise/localise.css', null, true);
 
 $parts = explode('-', $this->state->get('translation.reference'));
