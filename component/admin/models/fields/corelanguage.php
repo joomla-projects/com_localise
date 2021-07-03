@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 JFormHelper::loadFieldClass('list');
 
 /**
@@ -53,10 +55,10 @@ class JFormFieldCoreLanguage extends JFormFieldList
 
 		foreach ($languages as $i => $language)
 		{
-			$languages[$i] = JArrayHelper::toObject($language);
+			$languages[$i] = ArrayHelper::toObject($language);
 		}
 
-		JArrayHelper::sortObjects($languages, 'name');
+		ArrayHelper::sortObjects($languages, 'name');
 		$options = array();
 
 		foreach ($this->element->children() as $option)
