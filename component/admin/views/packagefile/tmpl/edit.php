@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.formvalidator');
 
 $fieldSets = $this->form->getFieldsets();
 $ftpSets   = $this->formftp->getFieldsets();
