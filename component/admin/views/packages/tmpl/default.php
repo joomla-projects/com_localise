@@ -9,8 +9,7 @@
 
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.modal');
-JHTML::_('stylesheet', 'com_localise/localise.css', null, true);
+JHtml::_('stylesheet', 'com_localise/localise.css', null, true);
 JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('jquery.framework');
 JHtml::_('bootstrap.tooltip');
@@ -83,25 +82,26 @@ JFactory::getDocument()->addScriptDeclaration("
 	<!-- End Content -->
 </form>
 
-<div id="fileModal" class="modal hide fade">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h3><?php echo JText::_('COM_LOCALISE_IMPORT_NEW_PACKAGE_HEADER'); ?></h3>
-	</div>
-	<div class="modal-body">
-		<div class="column">
-			<form method="post" action="<?php echo JRoute::_('index.php?option=com_localise&task=package.uploadFile&file=' . $this->file); ?>"
-				class="well" enctype="multipart/form-data" name="filemodalForm" id="filemodalForm">
-				<fieldset>
-					<input type="file" name="files" required />
-					<a href="#" class="hasTooltip btn btn-primary fileupload">
-						<?php echo JText::_('COM_LOCALISE_BUTTON_IMPORT'); ?>
-					</a>
-				</fieldset>
-			</form>
-		</div>
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn" data-dismiss="modal"><?php echo JText::_('COM_LOCALISE_MODAL_CLOSE'); ?></a>
-	</div>
-</div>
+<?php
+echo JHtml::_(
+	'bootstrap.renderModal',
+	'fileModal',
+	array(
+		'title'       => JText::_('COM_LOCALISE_IMPORT_NEW_PACKAGE_HEADER'),
+		'closeButton' => true,
+		'backdrop'    => 'static',
+		'keyboard'    => false,
+		'footer'      => '<button type="button" class="btn btn-primary" data' .
+            (version_compare(JVERSION, '4.0', 'ge') ? '-bs' : '') . '-dismiss="modal">' .
+            JText::_('COM_LOCALISE_MODAL_CLOSE') . '</button>' .
+            '<button type="button" class="hasTooltip btn btn-primary fileupload">' .
+			    JText::_('COM_LOCALISE_BUTTON_IMPORT') .
+			'</button>'
+	),
+	'<form method="post" action="' . JRoute::_('index.php?option=com_localise&task=package.uploadFile&file=' . $this->file) . '"
+        class="well" enctype="multipart/form-data" name="filemodalForm" id="filemodalForm">
+        <fieldset>
+            <input type="file" name="files" required />
+        </fieldset>
+    </form>'
+);
