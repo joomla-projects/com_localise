@@ -148,7 +148,7 @@ class LocaliseModelTranslations extends JModelList
 		$form = JForm::getInstance('com_localise.translations', 'translations', array('control' => 'filters', 'event' => 'onPrepareForm'));
 
 		// Check for an error.
-		if (JError::isError($form))
+		if (version_compare(JVERSION, '4.0', 'le') && JError::isError($form))
 		{
 			$this->setError($form->getMessage());
 
