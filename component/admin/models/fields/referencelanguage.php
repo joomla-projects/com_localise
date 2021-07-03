@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 JFormHelper::loadFieldClass('list');
 jimport('joomla.filesystem.folder');
 include_once JPATH_ADMINISTRATOR . '/components/com_localise/helpers/defines.php';
@@ -53,10 +55,10 @@ class JFormFieldReferenceLanguage extends JFormFieldList
 
 		foreach ($languages as $i => $language)
 		{
-			$languages[$i] = JArrayHelper::toObject($language);
+			$languages[$i] = ArrayHelper::toObject($language);
 		}
 
-		JArrayHelper::sortObjects($languages, 'name');
+		ArrayHelper::sortObjects($languages, 'name');
 
 		$options = parent::getOptions();
 

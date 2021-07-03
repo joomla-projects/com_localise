@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 jimport('joomla.form.formfield');
 
 /**
@@ -90,7 +92,7 @@ class JFormFieldOrigin extends JFormField
 		}
 		*/
 
-		$packages_options = JArrayHelper::sortObjects($packages_options, 'text');
+		$packages_options = ArrayHelper::sortObjects($packages_options, 'text');
 		$thirdparty       = JHtml::_('select.option', '_thirdparty', JText::sprintf('COM_LOCALISE_OPTION_TRANSLATIONS_ORIGIN_THIRDPARTY'),
 							array('option.attr' => 'attributes', 'attr' => 'class="iconlist-16-thirdparty"')
 							);

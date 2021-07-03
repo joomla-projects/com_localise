@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 jimport('joomla.filesystem.folder');
 
 /**
@@ -236,7 +238,7 @@ class LocaliseModelLanguages extends JModelList
 			$ordering = $this->getState('list.ordering')
 				? $this->getState('list.ordering')
 				: 'name';
-			JArrayHelper::sortObjects(
+			ArrayHelper::sortObjects(
 				$this->languages,
 				$ordering, $this->getState('list.direction') == 'desc' ? -1 : 1
 			);

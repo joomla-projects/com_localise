@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 jimport('joomla.html.html');
 jimport('joomla.filesystem.folder');
 JFormHelper::loadFieldClass('groupedlist');
@@ -132,7 +134,7 @@ class JFormFieldTranslations extends JFormFieldGroupedList
 
 		foreach ($groups as $client => $extensions)
 		{
-			JArrayHelper::sortObjects($groups[$client], 'text');
+			ArrayHelper::sortObjects($groups[$client], 'text');
 		}
 
 		// Merge any additional options in the XML definition.

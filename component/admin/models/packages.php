@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 
@@ -113,7 +115,7 @@ class LocaliseModelPackages extends JModelList
 			}
 
 			$ordering = $this->getState('list.ordering') ? $this->getState('list.ordering') : 'title';
-			JArrayHelper::sortObjects($this->packages, $ordering, $this->getState('list.direction') == 'desc' ? -1 : 1);
+			ArrayHelper::sortObjects($this->packages, $ordering, $this->getState('list.direction') == 'desc' ? -1 : 1);
 		}
 
 		return $this->packages;
