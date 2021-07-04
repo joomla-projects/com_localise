@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `#__localise` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `asset_id` int(11) NOT NULL,
+  `asset_id` int unsigned NOT NULL DEFAULT 0 COMMENT 'FK to the #__assets table.',
   `path` varchar(255) NOT NULL,
   `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
