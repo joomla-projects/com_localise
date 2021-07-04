@@ -806,8 +806,18 @@ class LocaliseModelPackageFile extends JModelAdmin
 
 		$ziproot = JPATH_ROOT . '/tmp/' . uniqid('com_localise_main_') . '.zip';
 
+		if (version_compare(JVERSION, '4.0', 'ge'))
+		{
+			$archiveClass = new \Joomla\Archive\Archive;
+			$packager = $archiveClass->getAdapter('zip');
+		}
+		else
+		{
+			$packager = JArchive::getAdapter('zip');
+		}
+
 		// Run the packager
-		if (!$packager = JArchive::getAdapter('zip'))
+		if (!$packager)
 		{
 			$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
 

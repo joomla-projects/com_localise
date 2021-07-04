@@ -866,7 +866,17 @@ class LocaliseModelPackage extends JModelAdmin
 
 			$site_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
 
-			if (!$packager = JArchive::getAdapter('zip'))
+			if (version_compare(JVERSION, '4.0', 'ge'))
+			{
+				$archiveClass = new \Joomla\Archive\Archive;
+				$packager = $archiveClass->getAdapter('zip');
+			}
+			else
+			{
+				$packager = JArchive::getAdapter('zip');
+			}
+
+			if (!$packager)
 			{
 				$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
 
@@ -1015,8 +1025,17 @@ class LocaliseModelPackage extends JModelAdmin
 			$admin_package_files[] = array('name' => 'index.html','data' => $language_data);
 
 			$admin_zip_path = JPATH_ROOT . '/tmp/' . uniqid('com_localise_') . '.zip';
+			if (version_compare(JVERSION, '4.0', 'ge'))
+			{
+				$archiveClass = new \Joomla\Archive\Archive;
+				$packager = $archiveClass->getAdapter('zip');
+			}
+			else
+			{
+				$packager = JArchive::getAdapter('zip');
+			}
 
-			if (!$packager = JArchive::getAdapter('zip'))
+			if (!$packager)
 			{
 				$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
 
@@ -1049,9 +1068,18 @@ class LocaliseModelPackage extends JModelAdmin
 		$main_package_files[] = array('name' => 'pkg_' . $data['language'] . '.xml', 'data' => $text);
 
 		$ziproot = JPATH_ROOT . '/tmp/' . uniqid('com_localise_main_') . '.zip';
+		if (version_compare(JVERSION, '4.0', 'ge'))
+		{
+			$archiveClass = new \Joomla\Archive\Archive;
+			$packager = $archiveClass->getAdapter('zip');
+		}
+		else
+		{
+			$packager = JArchive::getAdapter('zip');
+		}
 
 		// Run the packager
-		if (!$packager = JArchive::getAdapter('zip'))
+		if (!$packager)
 		{
 			$this->setError(JText::_('COM_LOCALISE_ERROR_EXPORT_ADAPTER'));
 
