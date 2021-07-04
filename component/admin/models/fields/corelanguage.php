@@ -48,7 +48,7 @@ class JFormFieldCoreLanguage extends JFormFieldList
 		$params    = JComponentHelper::getParams('com_localise');
 		$reference = $params->get('reference', 'en-GB');
 
-		if (version_compare(JVERSION, '4.0', 'ge'))
+		if (version_compare(JVERSION, '3.7', 'ge'))
 		{
 			$admin = JLanguageHelper::getKnownLanguages(LOCALISEPATH_ADMINISTRATOR);
 			$site  = JLanguageHelper::getKnownLanguages(LOCALISEPATH_SITE);

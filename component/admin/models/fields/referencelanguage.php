@@ -40,7 +40,7 @@ class JFormFieldReferenceLanguage extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		if (version_compare(JVERSION, '4.0', 'ge'))
+		if (version_compare(JVERSION, '3.7', 'ge'))
 		{
 			$admin = JLanguageHelper::getKnownLanguages(LOCALISEPATH_ADMINISTRATOR);
 			$site  = JLanguageHelper::getKnownLanguages(LOCALISEPATH_SITE);
@@ -53,7 +53,7 @@ class JFormFieldReferenceLanguage extends JFormFieldList
 
 		if (JFolder::exists(LOCALISEPATH_INSTALLATION))
 		{
-			if (version_compare(JVERSION, '4.0', 'ge'))
+			if (version_compare(JVERSION, '3.7', 'ge'))
 			{
 				$installation = JLanguageHelper::getKnownLanguages(LOCALISEPATH_INSTALLATION);
 			}
