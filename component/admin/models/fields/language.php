@@ -50,12 +50,28 @@ class JFormFieldLanguage extends JFormFieldList
 
 		$params    = JComponentHelper::getParams('com_localise');
 		$reference = $params->get('reference', 'en-GB');
-		$admin     = JLanguage::getKnownLanguages(LOCALISEPATH_ADMINISTRATOR);
-		$site      = JLanguage::getKnownLanguages(LOCALISEPATH_SITE);
+
+		if (version_compare(JVERSION, '4.0', 'ge'))
+		{
+			$admin = JLanguageHelper::getKnownLanguages(LOCALISEPATH_ADMINISTRATOR);
+			$site  = JLanguageHelper::getKnownLanguages(LOCALISEPATH_SITE);
+		}
+		else
+		{
+			$admin = JLanguage::getKnownLanguages(LOCALISEPATH_ADMINISTRATOR);
+			$site  = JLanguage::getKnownLanguages(LOCALISEPATH_SITE);
+		}
 
 		if (JFolder::exists(LOCALISEPATH_INSTALLATION))
 		{
-			$install = JLanguage::getKnownLanguages(LOCALISEPATH_INSTALLATION);
+			if (version_compare(JVERSION, '4.0', 'ge'))
+			{
+				$install = JLanguageHelper::getKnownLanguages(LOCALISEPATH_INSTALLATION);
+			}
+			else
+			{
+				$install = JLanguage::getKnownLanguages(LOCALISEPATH_INSTALLATION);
+			}
 		}
 		else
 		{

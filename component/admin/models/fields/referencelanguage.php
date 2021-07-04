@@ -40,12 +40,28 @@ class JFormFieldReferenceLanguage extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$admin = JLanguage::getKnownLanguages(LOCALISEPATH_ADMINISTRATOR);
-		$site  = JLanguage::getKnownLanguages(LOCALISEPATH_SITE);
+		if (version_compare(JVERSION, '4.0', 'ge'))
+		{
+			$admin = JLanguageHelper::getKnownLanguages(LOCALISEPATH_ADMINISTRATOR);
+			$site  = JLanguageHelper::getKnownLanguages(LOCALISEPATH_SITE);
+		}
+		else
+		{
+			$admin = JLanguage::getKnownLanguages(LOCALISEPATH_ADMINISTRATOR);
+			$site  = JLanguage::getKnownLanguages(LOCALISEPATH_SITE);
+		}
 
 		if (JFolder::exists(LOCALISEPATH_INSTALLATION))
 		{
-			$installation = JLanguage::getKnownLanguages(LOCALISEPATH_INSTALLATION);
+			if (version_compare(JVERSION, '4.0', 'ge'))
+			{
+				$installation = JLanguageHelper::getKnownLanguages(LOCALISEPATH_INSTALLATION);
+			}
+			else
+			{
+				$installation = JLanguage::getKnownLanguages(LOCALISEPATH_INSTALLATION);
+			}
+
 			$languages    = array_intersect_key($admin, $site, $installation);
 		}
 		else

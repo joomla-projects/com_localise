@@ -814,7 +814,14 @@ class LocaliseModelTranslation extends JModelAdmin
 
 		if (!array_key_exists($client, $languages))
 		{
-			$languages[$client] = JLanguage::getKnownLanguages(constant('LOCALISEPATH_' . strtoupper($client)));
+			if (version_compare(JVERSION, '4.0', 'ge'))
+			{
+				$languages[$client] = JLanguageHelper::getKnownLanguages(constant('LOCALISEPATH_' . strtoupper($client)));
+			}
+			else
+			{
+				$languages[$client] = JLanguage::getKnownLanguages(constant('LOCALISEPATH_' . strtoupper($client)));
+			}
 		}
 
 		if (is_object($item))
