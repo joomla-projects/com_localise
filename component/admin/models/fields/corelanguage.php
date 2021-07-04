@@ -47,8 +47,17 @@ class JFormFieldCoreLanguage extends JFormFieldList
 
 		$params    = JComponentHelper::getParams('com_localise');
 		$reference = $params->get('reference', 'en-GB');
-		$admin     = JLanguage::getKnownLanguages(LOCALISEPATH_ADMINISTRATOR);
-		$site      = JLanguage::getKnownLanguages(LOCALISEPATH_SITE);
+
+		if (version_compare(JVERSION, '4.0', 'ge'))
+		{
+			$admin = JLanguageHelper::getKnownLanguages(LOCALISEPATH_ADMINISTRATOR);
+			$site  = JLanguageHelper::getKnownLanguages(LOCALISEPATH_SITE);
+		}
+		else
+		{
+			$admin = JLanguage::getKnownLanguages(LOCALISEPATH_ADMINISTRATOR);
+			$site  = JLanguage::getKnownLanguages(LOCALISEPATH_SITE);
+		}
 
 		$languages  = array_merge($admin, $site);
 		$attributes .= ' class="' . (string) $this->element['class'] . ($this->value == $reference ? ' iconlist-16-reference"' : '"');
