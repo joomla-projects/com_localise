@@ -7,3 +7,5 @@ cp ../localise.xml packaging
 cp ../install.php packaging
 cd packaging
 zip -r ../packages/com_localise.zip component/ media/ localise.xml install.php
+cd ../
+rm -rf ./packaging
